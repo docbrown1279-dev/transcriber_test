@@ -1,0 +1,7 @@
+{
+  "method": "sentence-transformers",
+  "status": "fail",
+  "notes": "pip_rc=0 tail=ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\ndeepfilternet 0.5.6 requires numpy<2.0,>=1.22, but you have numpy 2.5.2 which is incompatible.\n",
+  "error": "OSError: We couldn't connect to 'https://huggingface.co' to load the files, and couldn't find them in the cached files.\nCheck your internet connection or see how to run the library in offline mode at 'https://huggingface.co/docs/transformers/installation#offline-mode'.",
+  "runtime_sec": 130.49
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "excerpt_clean",
+    "rw": 1.0,
+    "gate": true,
+    "chars": 2639,
+    "oov": 2,
+    "sample": "ok"
+  },
+  {
+    "name": "excerpt_noisy",
+    "rw": 1.0,
+    "gate": true,
+    "chars": 2112,
+    "oov": 3,
+    "sample": "ok"
+  },
+  {
+    "name": "denoised_ffmpeg_afftdn",
+    "rw": 1.0,
+    "gate": true,
+    "chars": 1373,
+    "oov": 1,
+    "sample": "ok"
+  },
+  {
+    "name": "denoised_ffmpeg_anlmdn",
+    "rw": 1.0,
+    "gate": true,
+    "chars": 2131,
+    "oov": 1,
+    "sample": "ok"
+  }
+]

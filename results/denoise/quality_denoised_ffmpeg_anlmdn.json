@@ -1,0 +1,30 @@
+{
+  "source": "/workspace/results/denoise/asr_denoised_ffmpeg_anlmdn.json",
+  "word_count": 350,
+  "cyr_word_count": 350,
+  "rw_ratio": 1.0,
+  "oo_words": [
+    "УДС"
+  ],
+  "oov_count": 1,
+  "sample_check": "ok",
+  "fragments": [
+    {
+      "fragment": "Давайте по протоколу есть. Если там дают обратную связь, что правительство не, а, дали обратную связь.",
+      "verdict": "ok",
+      "reasons": []
+    },
+    {
+      "fragment": "Ну, направим, а, пару вопросов есть, э, попросим уточнить, направим, да. А, дополнительно вы задавали вопрос по унификации, по второй части, куда это девается.",
+      "verdict": "ok",
+      "reasons": []
+    },
+    {
+      "fragment": "Данная задача, в принципе, на год. Вот, а, короче, пока.",
+      "verdict": "ok",
+      "reasons": []
+    }
+  ],
+  "gate_pass": true,
+  "status": "success"
+}

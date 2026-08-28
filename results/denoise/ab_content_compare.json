@@ -1,0 +1,20 @@
+{
+  "excerpt_noisy": {
+    "chars": 2112,
+    "char_ratio_vs_clean": 0.8,
+    "jaccard": 0.359,
+    "token_recall": 0.472
+  },
+  "denoised_ffmpeg_afftdn": {
+    "chars": 1373,
+    "char_ratio_vs_clean": 0.52,
+    "jaccard": 0.341,
+    "token_recall": 0.391
+  },
+  "denoised_ffmpeg_anlmdn": {
+    "chars": 2131,
+    "char_ratio_vs_clean": 0.808,
+    "jaccard": 0.377,
+    "token_recall": 0.489
+  }
+}

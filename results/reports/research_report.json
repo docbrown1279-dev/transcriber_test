@@ -1,12 +1,157 @@
 {
   "meta": {
     "stage": 1,
-    "status": "not_started",
-    "fixture": "data/fixtures/meeting_sample.m4a"
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "cpu-only Intel Xeon 4c / 16GB RAM / no GPU / Ubuntu",
+    "created_at": "2026-08-28T23:45:00Z",
+    "status": "completed_with_api_fallback"
   },
-  "asr_results": [],
-  "denoise_results": [],
-  "chunking_results": [],
-  "llm_summary_results": [],
-  "recommendations": ""
+  "asr_results": [
+    {
+      "lib": "faster-whisper",
+      "model": "medium",
+      "status": "fail",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": 0.9,
+      "artifact": "results/asr/local_attempts.json",
+      "notes": "Скачивание Systran/faster-whisper-medium с Hugging Face невозможно: egress блокирует huggingface.co (SSL EOF)."
+    },
+    {
+      "lib": "faster-whisper",
+      "model": "large-v3",
+      "status": "fail",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 2,
+      "runtime_sec": 0.51,
+      "artifact": "results/asr/local_attempts.json",
+      "notes": "Повторная попытка Hub: LocalEntryNotFoundError / ConnectError SSL."
+    },
+    {
+      "lib": "faster-whisper",
+      "model": "medium(via-openai-azure-pt)",
+      "status": "fail",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 3,
+      "runtime_sec": 0.03,
+      "artifact": "results/asr/local_attempts.json",
+      "notes": "Альтернативный CDN openaipublic.azureedge.net также заблокирован egress."
+    },
+    {
+      "lib": "gemini-api-fallback",
+      "model": "models/gemini-3.5-transcribe",
+      "status": "success",
+      "rw_ratio": 0.9397,
+      "oo_words": [
+        "УДС",
+        "ПД",
+        "ТП",
+        "АГК",
+        "ЖПР",
+        "ССС",
+        "ВП",
+        "РУ",
+        "УВР",
+        "хмм",
+        "пла",
+        "УКН"
+      ],
+      "sample_check": "ok",
+      "attempt": 1,
+      "runtime_sec": 159.28,
+      "artifact": "results/asr/gemini_transcribe.json",
+      "notes": "Локальный Whisper недоступен из-за сети. По политике Stage 1 использован Gemini ASR (чанки 8 мин). Quality: results/asr/gemini_transcribe_quality.json (rw_ratio=0.9397, sample_check=ok, oov_count=12)."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "ffmpeg_afftdn+highpass",
+      "status": "success",
+      "asr_before_rw_ratio": 1.0,
+      "asr_after_rw_ratio": 1.0,
+      "quality_delta": "worse",
+      "artifacts": "results/denoise/ab_summary.json; results/denoise/ab_content_compare.json",
+      "recommend": false,
+      "notes": "На синтетическом pink-noise excerpt (180с): token_recall к clean 0.391 vs noisy 0.472; сильная потеря текста (chars 1373 vs clean 2639). Переподавление."
+    },
+    {
+      "method": "ffmpeg_anlmdn+highpass",
+      "status": "success",
+      "asr_before_rw_ratio": 1.0,
+      "asr_after_rw_ratio": 1.0,
+      "quality_delta": "better",
+      "artifacts": "results/denoise/ab_summary.json; results/denoise/ab_content_compare.json",
+      "recommend": true,
+      "notes": "Лёгкий выигрыш vs noisy: token_recall 0.489 vs 0.472, jaccard 0.377 vs 0.359. Не восстанавливает до clean. Для MVP — опционально, мягкие настройки."
+    },
+    {
+      "method": "DeepFilterNet",
+      "status": "skipped",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "unknown",
+      "artifacts": "",
+      "recommend": false,
+      "notes": "Пакет deepfilternet установлен, но torch с download.pytorch.org недоступен (egress). Модели DF также требуют Hub."
+    },
+    {
+      "method": "RNNoise/arnndn",
+      "status": "skipped",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "unknown",
+      "artifacts": "",
+      "recommend": false,
+      "notes": "Модель rnnoise (.rnnn) в системе отсутствует; отдельная установка не выполнялась без весов."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "sentence-transformers+e5-small",
+      "embedding_model": "intfloat/multilingual-e5-small",
+      "status": "fail",
+      "threshold": null,
+      "num_chunks": null,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/local_embeddings_attempt.json",
+      "notes": "sentence-transformers установлен, загрузка модели с HF заблокирована egress."
+    },
+    {
+      "method": "semantic_neighbor_cosine",
+      "embedding_model": "models/gemini-embedding-001",
+      "status": "success",
+      "threshold": 0.88,
+      "num_chunks": 20,
+      "spot_check": "ok",
+      "artifact": "results/chunking/semantic_chunks_t088.json",
+      "notes": "Порог 0.7 дал 0 разрывов (mean_sim≈0.91). Адаптивно выбран 0.88 (≈ mean−std) → 20 чанков. Выборочная проверка 5 границ: ok. Фиксированный 0.7 для Gemini-эмбеддингов слишком низкий."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "ollama",
+      "model": "qwen2.5:7b-instruct",
+      "status": "fail",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "artifact": "",
+      "notes": "Ollama не установлен; локальные GGUF недоступны без HF/OLLAMA registry."
+    },
+    {
+      "runtime": "gemini-api-fallback",
+      "model": "models/gemini-2.5-flash",
+      "status": "success",
+      "runtime_sec": 29.22,
+      "hallucination_flag": false,
+      "artifact": "results/llm/summary_gemini.json",
+      "notes": "Саммари по смысловым чанкам: решения/действия/открытые вопросы на русском, факты опираются на транскрипт. Один API-вызов."
+    }
+  ],
+  "recommendations": "Итоговый стек для MVP (при доступе к Hugging Face / model CDN): ASR=faster-whisper medium int8 CPU (+ large-v3 при необходимости); Denoise=опционально мягкий ffmpeg anlmdn/highpass, не afftdn агрессивно; Chunking=sentence-transformers (E5-small/BGE-M3) с порогом ~mean−std соседних cosine; LLM=Qwen2.5-7B-Instruct GGUF через llama.cpp/Ollama. В данной cloud-среде Hugging Face и OpenAI Whisper CDN заблокированы egress — локальный Whisper/эмбеддинги/LLM не стартовали; рабочий fallback-пайплайн: gemini-3.5-transcribe → ffmpeg denoise A/B → gemini-embedding-001 semantic chunking (thr=0.88) → gemini-2.5-flash summary. Для повторяемости Stage 1 локально: добавить в allowlist huggingface.co, *.huggingface.co, cdn-lfs.huggingface.co, hf.co, cas-bridge.xethub.hf.co (и при необходимости openaipublic.azureedge.net)."
 }

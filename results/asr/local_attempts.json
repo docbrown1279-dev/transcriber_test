@@ -1,0 +1,38 @@
+[
+  {
+    "attempt": 1,
+    "lib": "faster-whisper",
+    "model": "medium",
+    "status": "fail",
+    "rw_ratio": null,
+    "oo_words": [],
+    "sample_check": "n/a",
+    "runtime_sec": 0.9,
+    "artifact": "",
+    "notes": "Hub download SSL EOF — huggingface.co blocked by egress allowlist"
+  },
+  {
+    "attempt": 2,
+    "lib": "faster-whisper",
+    "model": "large-v3",
+    "status": "fail",
+    "rw_ratio": null,
+    "oo_words": [],
+    "sample_check": "n/a",
+    "runtime_sec": 0.51,
+    "artifact": "",
+    "notes": "Hub download failed: LocalEntryNotFoundError: Got: ConnectError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)\nAn error happened while trying to locate the files on the Hub, and we cannot find the appropriate snapshot folder for the specified revision on the local disk. Please c"
+  },
+  {
+    "attempt": 3,
+    "lib": "faster-whisper",
+    "model": "medium(via-openai-azure-pt)",
+    "status": "fail",
+    "rw_ratio": null,
+    "oo_words": [],
+    "sample_check": "n/a",
+    "runtime_sec": 0.03,
+    "artifact": "",
+    "notes": "Alternate OpenAI CDN blocked: URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>"
+  }
+]
