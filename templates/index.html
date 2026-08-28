@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline Transcriber</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <main class="card">
+    <header class="header">
+      <div class="logo" aria-hidden="true">🎙️</div>
+      <h1>Offline Transcriber</h1>
+      <p class="subtitle">Speech-to-text that runs entirely on this machine — no API keys, no cloud.</p>
+    </header>
+
+    <section
+      id="dropzone"
+      class="dropzone"
+      tabindex="0"
+      role="button"
+      aria-label="Upload an audio file"
+    >
+      <input type="file" id="fileInput" accept="audio/*" hidden />
+      <div class="dropzone-inner">
+        <div class="dropzone-icon" aria-hidden="true">⬆️</div>
+        <p class="dropzone-title">Drop an audio file here or click to browse</p>
+        <p class="dropzone-hint">Supports wav, mp3, m4a, ogg, flac, webm</p>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button id="sampleBtn" class="btn btn-secondary" type="button">
+        Try a demo sample
+      </button>
+      <span id="fileName" class="file-name" aria-live="polite"></span>
+    </div>
+
+    <section id="status" class="status" aria-live="polite" hidden></section>
+
+    <section id="resultWrap" class="result-wrap" hidden>
+      <h2 class="result-title">Transcript</h2>
+      <p id="result" class="result"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Powered by PocketSphinx + ffmpeg
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
