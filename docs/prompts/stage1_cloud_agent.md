@@ -19,10 +19,10 @@ You are the Researcher agent for this repository.
 **Autonomy (unattended run):**
 - **Full green light:** install system/Python packages from `docs/environment.md` as needed without waiting for approval. Create `.venv`, download models, run the full Stage 1 pipeline end-to-end.
 - Do **not** pause for confirmations, package lists, or “should I continue?” — keep going until reports are done or a hard blocker (no disk, missing secrets, ASR total FAIL after 3 attempts).
-- Use `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` for Hub downloads. Gemini + NVIDIA APIs sparingly (daily limits): only if local fails or would take too long.
+- Use `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` for Hub downloads. Gemini + NVIDIA only if local fails/too slow, with hard caps **≤3 Gemini + ≤3 NVIDIA calls** for the whole run.
 - Never print, commit, or paste secret values.
-- Max 3 ASR attempts per library family. Denoise is a separate A/B.
-- Commit progress and push to your working branch / open a PR so results are visible: at least `results/reports/research_report.json`, `results/reports/notes.md`, and useful scripts under `scripts/`. Prefer not force-pushing `main`.
+- Hard budgets: ASR ≤3 faster-whisper attempts; denoise ≤3 methods; chunking ≤2 embeddings; local LLM ≤1 try. No infinite retries — cap → fail/skip → finish report → push.
+- Commit/push to your branch/PR (`research_report.json`, `notes.md`, scripts). No force-push to `main`.
 - Write report narratives in Russian.
 
 **Start now:** inventory → install → ASR → denoise → chunking → LLM → finalize reports. No waiting.

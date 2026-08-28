@@ -66,27 +66,28 @@ Do blocks in order. If ASR fails all attempts, still write the report with FAIL 
   2. If pass: pick 3 random ~2-sentence fragments; judge sense. Nonsense → FAIL.
   3. Emit OOV word list.
 - Max 3 attempts per library family. Record each attempt in the report.
+- See `AGENTS.md` **Hard budgets** for global caps (denoise ≤3 methods, chunking ≤2 models, LLM ≤1 local, API ≤3+≤3).
 
 ### 2. Denoise (separate track)
 
-- Tools: DeepFilterNet, RNNoise, ffmpeg (highpass / afftdn / similar).
+- Tools: DeepFilterNet, RNNoise, ffmpeg (highpass / afftdn / similar) — pick **at most 3**.
 - Take the worst quality material (quiet / echo / noise).
-- Run ASR **before and after** each denoise method (same ASR config).
+- Run ASR **before and after** each denoise method (same ASR config). **One** A/B per method; no hyperparameter sweeps.
 - Decide: better / worse / robotic artifacts. Recommend use or skip.
 
 ### 3. Chunking
 
 - Hypothesis: fixed-time splits are weak; prefer semantic breaks.
-- Embeddings: sentence-transformers + BGE-M3 or E5-class models that fit RAM.
-- Split transcript → cosine similarity between neighbors → break when below ~0.7.
-- Spot-check breaks vs topic change. Optionally title contiguous regions with local LLM.
+- Embeddings: sentence-transformers + BGE-M3 or E5-class — **≤ 2** model tries.
+- Split transcript → cosine similarity between neighbors → break when below ~0.7 (**one** threshold; one nudge max).
+- Spot-check breaks vs topic change. Optionally title contiguous regions with local LLM (counts toward LLM budget).
 
 ### 4. LLM summary (local first)
 
-- Prefer Qwen2.5-7B-Instruct (or newer similar) via Ollama / llama.cpp / vLLM if GPU.
+- Prefer Qwen2.5-7B-Instruct (or newer similar) via Ollama / llama.cpp / vLLM if GPU — **one** local try.
 - Prompt: short summary + decisions + action items (Russian).
 - Soft limit: generation should not exceed ~10 min for ~20 min audio equivalent.
-- If local is too slow/unusable: one economical Gemini or NVIDIA API pass on chunked text (not raw audio unless necessary); note tradeoff in the report.
+- If local is too slow/unusable: **at most one** Gemini **or** NVIDIA call on chunked text (counts toward the ≤3 per provider caps).
 - Flag hallucinations / empty fluff.
 
 ## Report outputs
@@ -116,6 +117,7 @@ Prefer small scripts under `scripts/` (English filenames). Reuse if they already
 
 ## Stop conditions
 
+- Cap from `AGENTS.md` Hard budgets hit for a block → mark fail/skip and move on; if ASR fully failed, skip dependents and finalize report.
 - Human says pause / Stage 2 only.
 - Disk or RAM exhaustion — document and stop cleanly with partial report.
-- Whisper family completely unusable after 3 attempts — document; only then consider listing NeMo as next experiment (do not implement unless asked).
+- Whisper family completely unusable after budgeted attempts — document; only then consider listing NeMo as next experiment (do not implement unless asked).
