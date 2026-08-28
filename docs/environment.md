@@ -1,6 +1,6 @@
 # Environment — Stage 1
 
-Dependencies are **proposed**, not installed by default. A human must approve installs (project rule).
+On **unattended Stage 1** runs the agent may install these without further human approval. Prefer the starter set; record exact versions in `results/reports/notes.md`.
 
 ## System packages (typical Ubuntu)
 
@@ -12,8 +12,6 @@ sudo apt-get install -y ffmpeg build-essential git
 Optional for whisper.cpp / llama.cpp builds: `cmake`, `pkg-config`.
 
 ## Python (3.10+ recommended)
-
-Create a venv when approved:
 
 ```bash
 python3 -m venv .venv
@@ -32,7 +30,7 @@ pip install -U pip wheel
 | Denoise | DeepFilterNet / RNNoise as researched | Install only the tools you actually run |
 | LLM | Ollama **or** llama.cpp | Prefer one runtime first |
 
-Suggested starter `pip` line (install only after approval):
+Suggested starter `pip` line:
 
 ```text
 faster-whisper
@@ -41,7 +39,7 @@ pymorphy3-dicts-ru
 sentence-transformers
 ```
 
-Do **not** add a committed `requirements.txt` with unapproved pins until the human asks. Prefer recording exact versions used in `results/reports/notes.md` after a successful run.
+Optional: write a `requirements-stage1.txt` with pinned versions after a successful run (for reproducibility).
 
 ## Models (download on demand)
 

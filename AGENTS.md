@@ -50,9 +50,9 @@ Scripts may read keys from the environment and call APIs; do not hardcode secret
 - Prefer **CPU**-friendly **local** stacks; note GPU if available but do not require it.
 - Max **3 attempts** per ASR library/config family.
 - Quality gate: Russian word ratio ≥ **0.9**, then human-like sample check on 3–5 fragments.
-- Do **not** install packages or change dependency lockfiles unless the human explicitly approved the package list for this run.
+- **Unattended Stage 1:** you **may** create `.venv` and install packages/models from `docs/environment.md` (and minimal extras required by a block) **without waiting** for further human approval. Prefer the documented starter set; note exact versions in `notes.md`.
 - Do **not** delete audio or results; move unwanted files to `.trash/` if needed.
-- Do **not** commit or push unless asked.
+- **Do** commit and push research outputs to the agent working branch / PR when finished (or at stable checkpoints). Avoid force-push to `main`.
 - Do **not** read aloud, log, or commit secret values.
 - Write all agent-facing notes and reports in **Russian** (domain language); code/comments in English is fine.
 
@@ -64,9 +64,9 @@ Write under `results/reports/`:
 2. `notes.md` — problems, observations, failed attempts
 3. Intermediate artifacts under `results/{asr,denoise,chunking,llm}/` with clear names
 
-## Environment bootstrap (when approved)
+## Environment bootstrap
 
-See [`docs/environment.md`](docs/environment.md). Until dependencies are approved/installed, inventory the machine (CPU/RAM/disk, ffmpeg, Python, GPU) and propose a minimal install list — do not install yet.
+See [`docs/environment.md`](docs/environment.md). Inventory the machine, then install and continue — **do not stop for install approval** on unattended Stage 1 runs.
 
 ## Launch checklist
 
@@ -74,8 +74,9 @@ See [`docs/environment.md`](docs/environment.md). Until dependencies are approve
 - [ ] Read docs/research_plan.md
 - [ ] Read .cursor/skills/asr-research/SKILL.md
 - [ ] Inventory hardware + existing tools
-- [ ] Confirm/propose dependency list; wait for approval if not installed
+- [ ] Install deps (.venv + packages/models as needed) — no wait
 - [ ] Run ASR block → denoise → chunking → LLM (or stop early with justified FAIL)
 - [ ] Write research_report.json + notes.md
+- [ ] Commit/push branch or PR with results
 - [ ] Summarize recommended MVP stack in recommendations
 ```

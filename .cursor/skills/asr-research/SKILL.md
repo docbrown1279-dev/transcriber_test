@@ -24,8 +24,8 @@ ffmpeg -version | head -1
 command -v nvidia-smi && nvidia-smi || echo "no GPU"
 ```
 
-3. Propose packages from `docs/environment.md`. **Stop and wait for human approval before installing.**
-4. Confirm credentials are available as env vars (do not print values): HF token for Hub downloads; Gemini + NVIDIA for API fallbacks. See `docs/environment.md` § Credentials.
+3. Install packages from `docs/environment.md` (create `.venv`). On **unattended Stage 1**, do **not** wait for human approval — install and continue. Log versions in `notes.md`.
+4. Confirm credentials are available as env vars (do not print values): HF token for Hub downloads; Gemini + NVIDIA for API fallbacks. See `docs/environment.md` § Credentials. If a secret is missing, skip only the paths that need it and continue.
 
 ## Local first, API sparingly
 
@@ -44,12 +44,13 @@ Copy and track:
 
 ```
 Stage 1 Progress:
-- [ ] 0. Inventory + approved deps
+- [ ] 0. Inventory + install deps (no wait)
 - [ ] 1. ASR (faster-whisper medium / large-v3)
 - [ ] 2. Denoise A/B on worst-quality audio
 - [ ] 3. Semantic chunking (embeddings)
 - [ ] 4. Local LLM summary
 - [ ] 5. research_report.json + notes.md
+- [ ] 6. Commit/push branch or PR
 ```
 
 Do blocks in order. If ASR fails all attempts, still write the report with FAIL and skip dependent blocks that need usable transcript (note why).

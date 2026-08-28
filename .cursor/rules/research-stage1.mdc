@@ -12,6 +12,6 @@ alwaysApply: true
 - Denoise is a separate A/B track (`DeepFilterNet`, `RNNoise`, ffmpeg filters).
 - Quality: Russian word ratio ≥ 0.9, then 3–5 fragment human-like check; max 3 attempts per library.
 - HF token (`HF_TOKEN`) for Hub downloads; Gemini + NVIDIA APIs allowed in scripts but **local first**, API only if local fails or is too slow (daily limits). Never log secrets.
+- Unattended Stage 1: install deps/models without waiting for approval; commit/push results to the agent branch/PR (no force-push to `main`).
 - Outputs: `results/reports/research_report.json` + `results/reports/notes.md`.
-- Do not install packages without explicit human approval. Do not commit/push unless asked.
 - Keep denoise experiments separate from ASR configs in reports.

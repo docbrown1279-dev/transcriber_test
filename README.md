@@ -23,9 +23,10 @@ Example meeting audio:
 
 1. Open this repo in Cursor (Agents Window / Cloud Agent).
 2. Ensure the agent can read `AGENTS.md` and `.cursor/skills/asr-research/`.
-3. Paste the prompt from [`docs/prompts/stage1_cloud_agent.md`](docs/prompts/stage1_cloud_agent.md).
-4. Approve any dependency installs the agent proposes (`docs/environment.md`).
-5. When finished, review `results/reports/research_report.json` and `notes.md`.
+3. Paste the prompt from [`docs/prompts/stage1_cloud_agent.md`](docs/prompts/stage1_cloud_agent.md) (unattended / full green light).
+4. If an agent already paused for install approval, paste [`docs/prompts/stage1_overnight_reply.md`](docs/prompts/stage1_overnight_reply.md).
+5. Ensure secrets are set (`HF_TOKEN`, optional Gemini/NVIDIA).
+6. When finished, review the agent branch/PR: `results/reports/research_report.json` and `notes.md`.
 
 ## Local humans
 
