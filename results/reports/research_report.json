@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "stage": 1,
+    "status": "not_started",
+    "fixture": "data/fixtures/meeting_sample.m4a"
+  },
+  "asr_results": [],
+  "denoise_results": [],
+  "chunking_results": [],
+  "llm_summary_results": [],
+  "recommendations": ""
+}

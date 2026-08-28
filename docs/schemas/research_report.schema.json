@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://speech_rec_test.local/schemas/research_report.schema.json",
+  "title": "Stage1ResearchReport",
+  "type": "object",
+  "required": [
+    "asr_results",
+    "denoise_results",
+    "chunking_results",
+    "llm_summary_results",
+    "recommendations"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "stage": { "const": 1 },
+        "fixture": { "type": "string" },
+        "host": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "asr_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["lib", "status"],
+        "properties": {
+          "lib": { "type": "string" },
+          "model": { "type": "string" },
+          "status": { "enum": ["success", "fail", "skipped"] },
+          "rw_ratio": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "oo_words": { "type": "array", "items": { "type": "string" } },
+          "sample_check": { "enum": ["ok", "bad", "n/a"] },
+          "attempt": { "type": "integer", "minimum": 1, "maximum": 3 },
+          "runtime_sec": { "type": ["number", "null"] },
+          "artifact": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "denoise_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["method", "status"],
+        "properties": {
+          "method": { "type": "string" },
+          "status": { "enum": ["success", "fail", "skipped"] },
+          "asr_before_rw_ratio": { "type": ["number", "null"] },
+          "asr_after_rw_ratio": { "type": ["number", "null"] },
+          "quality_delta": { "enum": ["better", "worse", "same", "unknown"] },
+          "artifacts": { "type": "string" },
+          "recommend": { "type": "boolean" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "chunking_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["method", "status"],
+        "properties": {
+          "method": { "type": "string" },
+          "embedding_model": { "type": "string" },
+          "status": { "enum": ["success", "fail", "skipped"] },
+          "threshold": { "type": ["number", "null"] },
+          "num_chunks": { "type": ["integer", "null"] },
+          "spot_check": { "enum": ["ok", "bad", "n/a"] },
+          "artifact": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "llm_summary_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["runtime", "model", "status"],
+        "properties": {
+          "runtime": { "type": "string", "description": "ollama | llama.cpp | vllm | other" },
+          "model": { "type": "string" },
+          "status": { "enum": ["success", "fail", "skipped"] },
+          "runtime_sec": { "type": ["number", "null"] },
+          "hallucination_flag": { "type": ["boolean", "null"] },
+          "artifact": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "string",
+      "description": "Итоговый стек для MVP"
+    }
+  },
+  "additionalProperties": true
+}

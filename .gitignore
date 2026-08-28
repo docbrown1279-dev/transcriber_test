@@ -1,0 +1,31 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.trash/
+.DS_Store
+
+# Large / regenerated audio (keep fixtures in docs/)
+data/processed/*
+!data/processed/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+
+# Heavy model caches
+models/
+*.gguf
+.cache/
+
+# Intermediate run artifacts (reports are tracked)
+results/asr/*
+!results/asr/.gitkeep
+results/denoise/*
+!results/denoise/.gitkeep
+results/chunking/*
+!results/chunking/.gitkeep
+results/llm/*
+!results/llm/.gitkeep
