@@ -29,3 +29,10 @@ results/chunking/*
 !results/chunking/.gitkeep
 results/llm/*
 !results/llm/.gitkeep
+
+# Human gold transcript — local only, never push (cloud agents clone git)
+eval/gold.json
+eval/gold.jsonl
+eval/gold.txt
+eval/gold.rttm
+
