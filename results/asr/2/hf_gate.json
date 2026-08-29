@@ -1,0 +1,34 @@
+{
+  "checked_at": "2026-08-29T23:31:54.986621+00:00",
+  "token_present": true,
+  "method": "GET",
+  "follow_redirects": true,
+  "probes": [
+    {
+      "repository": "pyannote/speaker-diarization-3.1",
+      "file": "config.yaml",
+      "gated": true,
+      "requested_url": "https://huggingface.co/pyannote/speaker-diarization-3.1/resolve/main/config.yaml",
+      "requested_host": "huggingface.co",
+      "status": 200,
+      "final_host": "huggingface.co",
+      "redirects": [],
+      "result": "success",
+      "error_kind": null
+    },
+    {
+      "repository": "pyannote/segmentation-3.0",
+      "file": "config.yaml",
+      "gated": true,
+      "requested_url": "https://huggingface.co/pyannote/segmentation-3.0/resolve/main/config.yaml",
+      "requested_host": "huggingface.co",
+      "status": 200,
+      "final_host": "huggingface.co",
+      "redirects": [],
+      "result": "success",
+      "error_kind": null
+    }
+  ],
+  "result": "success",
+  "error_kind": null
+}
