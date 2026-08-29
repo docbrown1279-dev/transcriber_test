@@ -1,0 +1,447 @@
+{
+  "runtime": {
+    "python": "3.12.3",
+    "whisperx": "unknown"
+  },
+  "model_load_sec": 10.655,
+  "total_runtime_sec": 38.969,
+  "clips": [
+    {
+      "clip_id": "english_09m39",
+      "input_artifact": "results/asr/isolated_clips/english_09m39.wav",
+      "requested_interval": {
+        "start": 579.614,
+        "end": 590.896,
+        "padding_sec": 0.35
+      },
+      "execution_mode": "local",
+      "provider": "WhisperX",
+      "model": "large-v3",
+      "language": "ru",
+      "device": "cpu",
+      "compute_type": "int8",
+      "vad_method": "silero",
+      "alignment": "WhisperX ru alignment model",
+      "diarization": null,
+      "speaker_source": "copied from Stage 1b table",
+      "runtime_sec": 9.552,
+      "segments": [
+        {
+          "id": 1,
+          "start": 579.626,
+          "end": 590.565,
+          "clip_start": 0.362,
+          "clip_end": 11.301,
+          "text": "будет точно известно или оно еще может помен delighted ну вот все значит мы тогда с точки зрения инженерии ждем",
+          "speaker": "SPEAKER_02",
+          "words": [
+            {
+              "word": "будет",
+              "start": 579.626,
+              "end": 580.568,
+              "score": 0.707
+            },
+            {
+              "word": "точно",
+              "start": 580.608,
+              "end": 580.968,
+              "score": 0.801
+            },
+            {
+              "word": "известно",
+              "start": 581.008,
+              "end": 581.449,
+              "score": 0.82
+            },
+            {
+              "word": "или",
+              "start": 581.469,
+              "end": 581.609,
+              "score": 0.442
+            },
+            {
+              "word": "оно",
+              "start": 581.63,
+              "end": 581.73,
+              "score": 0.412
+            },
+            {
+              "word": "еще",
+              "start": 581.75,
+              "end": 581.91,
+              "score": 0.2
+            },
+            {
+              "word": "может",
+              "start": 581.95,
+              "end": 582.13,
+              "score": 0.841
+            },
+            {
+              "word": "помен",
+              "start": 582.15,
+              "end": 582.691,
+              "score": 0.637
+            },
+            {
+              "word": "delighted",
+              "start": 582.731,
+              "end": 583.473,
+              "score": 0.887
+            },
+            {
+              "word": "ну",
+              "start": 587.059,
+              "end": 587.159,
+              "score": 0.83
+            },
+            {
+              "word": "вот",
+              "start": 587.199,
+              "end": 587.319,
+              "score": 0.84
+            },
+            {
+              "word": "все",
+              "start": 587.339,
+              "end": 587.52,
+              "score": 0.834
+            },
+            {
+              "word": "значит",
+              "start": 587.56,
+              "end": 587.86,
+              "score": 0.915
+            },
+            {
+              "word": "мы",
+              "start": 587.9,
+              "end": 587.96,
+              "score": 0.982
+            },
+            {
+              "word": "тогда",
+              "start": 588.0,
+              "end": 588.822,
+              "score": 0.853
+            },
+            {
+              "word": "с",
+              "start": 588.862,
+              "end": 588.882,
+              "score": 0.99
+            },
+            {
+              "word": "точки",
+              "start": 588.922,
+              "end": 589.182,
+              "score": 0.976
+            },
+            {
+              "word": "зрения",
+              "start": 589.223,
+              "end": 589.623,
+              "score": 0.704
+            },
+            {
+              "word": "инженерии",
+              "start": 589.663,
+              "end": 590.204,
+              "score": 0.94
+            },
+            {
+              "word": "ждем",
+              "start": 590.264,
+              "end": 590.565,
+              "score": 0.944
+            }
+          ]
+        }
+      ],
+      "text": "будет точно известно или оно еще может помен delighted ну вот все значит мы тогда с точки зрения инженерии ждем"
+    },
+    {
+      "clip_id": "english_14m51",
+      "input_artifact": "results/asr/isolated_clips/english_14m51.wav",
+      "requested_interval": {
+        "start": 885.176,
+        "end": 909.591,
+        "padding_sec": 0.35
+      },
+      "execution_mode": "local",
+      "provider": "WhisperX",
+      "model": "large-v3",
+      "language": "ru",
+      "device": "cpu",
+      "compute_type": "int8",
+      "vad_method": "silero",
+      "alignment": "WhisperX ru alignment model",
+      "diarization": null,
+      "speaker_source": "copied from Stage 1b table",
+      "runtime_sec": 14.792,
+      "segments": [
+        {
+          "id": 1,
+          "start": 885.132,
+          "end": 898.477,
+          "clip_start": 0.306,
+          "clip_end": 13.651,
+          "text": "Если у нас мощность корпуса 9-го сов repairs совпадает с, с 8-ым или с каким-то, мы говорим, bumped-up, мы говорим, что у нас все то же самое.",
+          "speaker": "SPEAKER_02",
+          "words": [
+            {
+              "word": "Если",
+              "start": 885.132,
+              "end": 885.352,
+              "score": 0.848
+            },
+            {
+              "word": "у",
+              "start": 885.372,
+              "end": 885.392,
+              "score": 0.999
+            },
+            {
+              "word": "нас",
+              "start": 885.432,
+              "end": 885.612,
+              "score": 0.851
+            },
+            {
+              "word": "мощность",
+              "start": 885.692,
+              "end": 886.132,
+              "score": 0.909
+            },
+            {
+              "word": "корпуса",
+              "start": 886.232,
+              "end": 887.153,
+              "score": 0.521
+            },
+            {
+              "word": "9-го",
+              "start": 887.173,
+              "end": 887.393,
+              "score": 0.786
+            },
+            {
+              "word": "сов",
+              "start": 887.533,
+              "end": 887.833,
+              "score": 0.677
+            },
+            {
+              "word": "repairs",
+              "start": 887.853,
+              "end": 888.353,
+              "score": 0.889
+            },
+            {
+              "word": "совпадает",
+              "start": 888.393,
+              "end": 888.994,
+              "score": 0.915
+            },
+            {
+              "word": "с,",
+              "start": 889.034,
+              "end": 889.174,
+              "score": 0.652
+            },
+            {
+              "word": "с",
+              "start": 889.194,
+              "end": 889.254,
+              "score": 0.893
+            },
+            {
+              "word": "8-ым",
+              "start": 889.294,
+              "end": 889.714,
+              "score": 0.824
+            },
+            {
+              "word": "или",
+              "start": 889.734,
+              "end": 889.854,
+              "score": 0.656
+            },
+            {
+              "word": "с",
+              "start": 889.894,
+              "end": 889.914,
+              "score": 0.975
+            },
+            {
+              "word": "каким-то,",
+              "start": 889.954,
+              "end": 891.655,
+              "score": 0.833
+            },
+            {
+              "word": "мы",
+              "start": 891.675,
+              "end": 891.775,
+              "score": 0.834
+            },
+            {
+              "word": "говорим,",
+              "start": 891.815,
+              "end": 892.175,
+              "score": 0.998
+            },
+            {
+              "word": "bumped-up,",
+              "start": 892.195,
+              "end": 893.675,
+              "score": 0.823
+            },
+            {
+              "word": "мы",
+              "start": 893.695,
+              "end": 893.796,
+              "score": 0.576
+            },
+            {
+              "word": "говорим,",
+              "start": 893.816,
+              "end": 895.756,
+              "score": 0.728
+            },
+            {
+              "word": "что",
+              "start": 895.776,
+              "end": 895.836,
+              "score": 0.01
+            },
+            {
+              "word": "у",
+              "start": 895.956,
+              "end": 896.116,
+              "score": 0.772
+            },
+            {
+              "word": "нас",
+              "start": 896.136,
+              "end": 896.477,
+              "score": 0.528
+            },
+            {
+              "word": "все",
+              "start": 896.617,
+              "end": 897.097,
+              "score": 0.782
+            },
+            {
+              "word": "то",
+              "start": 897.117,
+              "end": 897.217,
+              "score": 0.59
+            },
+            {
+              "word": "же",
+              "start": 897.257,
+              "end": 897.437,
+              "score": 0.768
+            },
+            {
+              "word": "самое.",
+              "start": 897.617,
+              "end": 898.477,
+              "score": 0.758
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "start": 898.537,
+          "end": 899.478,
+          "clip_start": 13.711,
+          "clip_end": 14.652,
+          "text": "Если... Ну, да.",
+          "speaker": "SPEAKER_02 → SPEAKER_03 at 898.587",
+          "words": [
+            {
+              "word": "Если...",
+              "start": 898.537,
+              "end": 898.878,
+              "score": 0.512
+            },
+            {
+              "word": "Ну,",
+              "start": 898.898,
+              "end": 899.278,
+              "score": 0.578
+            },
+            {
+              "word": "да.",
+              "start": 899.298,
+              "end": 899.478,
+              "score": 0.569
+            }
+          ]
+        }
+      ],
+      "text": "Если у нас мощность корпуса 9-го сов repairs совпадает с, с 8-ым или с каким-то, мы говорим, bumped-up, мы говорим, что у нас все то же самое. Если... Ну, да."
+    },
+    {
+      "clip_id": "loop_staff",
+      "input_artifact": "results/asr/isolated_clips/loop_staff.wav",
+      "requested_interval": {
+        "start": 645.247,
+        "end": 648.35,
+        "padding_sec": 0.35
+      },
+      "execution_mode": "local",
+      "provider": "WhisperX",
+      "model": "large-v3",
+      "language": "ru",
+      "device": "cpu",
+      "compute_type": "int8",
+      "vad_method": "silero",
+      "alignment": "WhisperX ru alignment model",
+      "diarization": null,
+      "speaker_source": "copied from Stage 1b table",
+      "runtime_sec": 3.968,
+      "segments": [
+        {
+          "id": 1,
+          "start": 645.645,
+          "end": 648.7,
+          "clip_start": 0.748,
+          "clip_end": 3.803,
+          "text": "или какой-то ретро взяток.",
+          "speaker": "SPEAKER_03",
+          "words": [
+            {
+              "word": "или",
+              "start": 645.645,
+              "end": 645.725,
+              "score": 0.167
+            },
+            {
+              "word": "какой-то",
+              "start": 645.745,
+              "end": 646.67,
+              "score": 0.708
+            },
+            {
+              "word": "ретро",
+              "start": 646.851,
+              "end": 647.655,
+              "score": 0.551
+            },
+            {
+              "word": "взяток.",
+              "start": 647.675,
+              "end": 648.7,
+              "score": 0.557
+            }
+          ]
+        }
+      ],
+      "text": "или какой-то ретро взяток."
+    }
+  ]
+}

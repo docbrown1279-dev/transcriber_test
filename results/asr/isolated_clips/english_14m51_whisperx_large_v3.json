@@ -1,0 +1,225 @@
+{
+  "clip_id": "english_14m51",
+  "input_artifact": "results/asr/isolated_clips/english_14m51.wav",
+  "requested_interval": {
+    "start": 885.176,
+    "end": 909.591,
+    "padding_sec": 0.35
+  },
+  "execution_mode": "local",
+  "provider": "WhisperX",
+  "model": "large-v3",
+  "language": "ru",
+  "device": "cpu",
+  "compute_type": "int8",
+  "vad_method": "silero",
+  "alignment": "WhisperX ru alignment model",
+  "diarization": null,
+  "speaker_source": "copied from Stage 1b table",
+  "runtime_sec": 14.792,
+  "segments": [
+    {
+      "id": 1,
+      "start": 885.132,
+      "end": 898.477,
+      "clip_start": 0.306,
+      "clip_end": 13.651,
+      "text": "Если у нас мощность корпуса 9-го сов repairs совпадает с, с 8-ым или с каким-то, мы говорим, bumped-up, мы говорим, что у нас все то же самое.",
+      "speaker": "SPEAKER_02",
+      "words": [
+        {
+          "word": "Если",
+          "start": 885.132,
+          "end": 885.352,
+          "score": 0.848
+        },
+        {
+          "word": "у",
+          "start": 885.372,
+          "end": 885.392,
+          "score": 0.999
+        },
+        {
+          "word": "нас",
+          "start": 885.432,
+          "end": 885.612,
+          "score": 0.851
+        },
+        {
+          "word": "мощность",
+          "start": 885.692,
+          "end": 886.132,
+          "score": 0.909
+        },
+        {
+          "word": "корпуса",
+          "start": 886.232,
+          "end": 887.153,
+          "score": 0.521
+        },
+        {
+          "word": "9-го",
+          "start": 887.173,
+          "end": 887.393,
+          "score": 0.786
+        },
+        {
+          "word": "сов",
+          "start": 887.533,
+          "end": 887.833,
+          "score": 0.677
+        },
+        {
+          "word": "repairs",
+          "start": 887.853,
+          "end": 888.353,
+          "score": 0.889
+        },
+        {
+          "word": "совпадает",
+          "start": 888.393,
+          "end": 888.994,
+          "score": 0.915
+        },
+        {
+          "word": "с,",
+          "start": 889.034,
+          "end": 889.174,
+          "score": 0.652
+        },
+        {
+          "word": "с",
+          "start": 889.194,
+          "end": 889.254,
+          "score": 0.893
+        },
+        {
+          "word": "8-ым",
+          "start": 889.294,
+          "end": 889.714,
+          "score": 0.824
+        },
+        {
+          "word": "или",
+          "start": 889.734,
+          "end": 889.854,
+          "score": 0.656
+        },
+        {
+          "word": "с",
+          "start": 889.894,
+          "end": 889.914,
+          "score": 0.975
+        },
+        {
+          "word": "каким-то,",
+          "start": 889.954,
+          "end": 891.655,
+          "score": 0.833
+        },
+        {
+          "word": "мы",
+          "start": 891.675,
+          "end": 891.775,
+          "score": 0.834
+        },
+        {
+          "word": "говорим,",
+          "start": 891.815,
+          "end": 892.175,
+          "score": 0.998
+        },
+        {
+          "word": "bumped-up,",
+          "start": 892.195,
+          "end": 893.675,
+          "score": 0.823
+        },
+        {
+          "word": "мы",
+          "start": 893.695,
+          "end": 893.796,
+          "score": 0.576
+        },
+        {
+          "word": "говорим,",
+          "start": 893.816,
+          "end": 895.756,
+          "score": 0.728
+        },
+        {
+          "word": "что",
+          "start": 895.776,
+          "end": 895.836,
+          "score": 0.01
+        },
+        {
+          "word": "у",
+          "start": 895.956,
+          "end": 896.116,
+          "score": 0.772
+        },
+        {
+          "word": "нас",
+          "start": 896.136,
+          "end": 896.477,
+          "score": 0.528
+        },
+        {
+          "word": "все",
+          "start": 896.617,
+          "end": 897.097,
+          "score": 0.782
+        },
+        {
+          "word": "то",
+          "start": 897.117,
+          "end": 897.217,
+          "score": 0.59
+        },
+        {
+          "word": "же",
+          "start": 897.257,
+          "end": 897.437,
+          "score": 0.768
+        },
+        {
+          "word": "самое.",
+          "start": 897.617,
+          "end": 898.477,
+          "score": 0.758
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "start": 898.537,
+      "end": 899.478,
+      "clip_start": 13.711,
+      "clip_end": 14.652,
+      "text": "Если... Ну, да.",
+      "speaker": "SPEAKER_02 → SPEAKER_03 at 898.587",
+      "words": [
+        {
+          "word": "Если...",
+          "start": 898.537,
+          "end": 898.878,
+          "score": 0.512
+        },
+        {
+          "word": "Ну,",
+          "start": 898.898,
+          "end": 899.278,
+          "score": 0.578
+        },
+        {
+          "word": "да.",
+          "start": 899.298,
+          "end": 899.478,
+          "score": 0.569
+        }
+      ]
+    }
+  ],
+  "text": "Если у нас мощность корпуса 9-го сов repairs совпадает с, с 8-ым или с каким-то, мы говорим, bumped-up, мы говорим, что у нас все то же самое. Если... Ну, да."
+}

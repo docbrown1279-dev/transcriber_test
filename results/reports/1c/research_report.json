@@ -1,0 +1,187 @@
+{
+  "meta": {
+    "stage": 1,
+    "substage": "1c",
+    "status": "success",
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "Linux x86_64, 4 CPU, 15 GiB RAM",
+    "created_at": "2026-08-29T15:40:00Z",
+    "scope": "Только изолированный повтор ASR трёх проверенно плохих интервалов"
+  },
+  "clips": [
+    {
+      "id": "english_09m39",
+      "start": 579.614,
+      "end": 590.896,
+      "padding_sec": 0.35,
+      "speakers": [
+        "SPEAKER_02"
+      ],
+      "stage1b_text": "будет точно известно staff we are waiting to bet with the apartment… 300 megawatts…",
+      "stage1a_medium_text": "Количество квартир на сегодня уже точно известно, или оно еще может поменяться? Это наш вопрос. Ну вот все, значит мы тогда с точки зрения инженерии ждем согласования.",
+      "new_text": {
+        "whisperx_large_v3": "будет точно известно или оно еще может помен delighted ну вот все значит мы тогда с точки зрения инженерии ждем",
+        "faster_whisper_large_v3": "Ну, как бы точно известно, или оно еще может помен kill? Наш вопрос, конечно. Еще может поменять. Ну вот все, значит, мы тогда с точки зрения инженерии ждем согласования.",
+        "qwen2_5_omni_3b": "будет ну как бы точно известно или она еще может поменяться на что наша прошлость может поменяться ну вот все значит мы тогда с точки зрения инженерии ждем согласование"
+      },
+      "stack_verdicts": {
+        "whisperx_large_v3": "systematic",
+        "faster_whisper_large_v3": "systematic",
+        "qwen2_5_omni_3b": "local_glitch"
+      },
+      "verdict": "systematic",
+      "notes": "Точный длинный rollback Stage 1b исчез, но обе Whisper-реализации снова вставили английский токен. Audio Qwen дал русский текст без цикла."
+    },
+    {
+      "id": "english_14m51",
+      "start": 885.176,
+      "end": 909.591,
+      "padding_sec": 0.35,
+      "speakers": [
+        "SPEAKER_02 до 898.587",
+        "SPEAKER_03 после 898.587"
+      ],
+      "stage1b_text": "Русское начало, затем chopsticks / Yes, yes… / height, size, drain.",
+      "stage1a_medium_text": "И, соответственно, мы. Если это так, вы смотрите, что по высоте, по габаритам прошло, расстояние.",
+      "new_text": {
+        "whisperx_large_v3": "Если у нас мощность корпуса 9-го сов repairs совпадает с, с 8-ым или с каким-то, мы говорим, bumped-up, мы говорим, что у нас все то же самое. Если... Ну, да.",
+        "faster_whisper_large_v3": "Если у нас мощность корпуса 9-го совпадает с 8-м или с каким-то, мы говорим, что у нас все то же самое. Ну да, если трансформ chilling могут отличаться по мощности, по массе габаритных характеристик, они будут одинаковые, например. Просто там катушек больше будет, или габаритных характеристик, по массе вряд ли. Вот, если это так...",
+        "qwen2_5_omni_3b": "если у нас мощность условно там корпусу там девятого совпадает там с восьмым или с каким-то да мы говорим что у нас все то же самое если ну да если нет трансформаторы могут отличаться по мощности по массе и по конструкции они будут одинаковы вопрос там какую штуковину выбрать сама себе вот если это так"
+      },
+      "stack_verdicts": {
+        "whisperx_large_v3": "systematic",
+        "faster_whisper_large_v3": "systematic",
+        "qwen2_5_omni_3b": "local_glitch"
+      },
+      "verdict": "systematic",
+      "notes": "Обе Whisper-реализации восстановили русский смысловой каркас, но сохранили английскую контаминацию. Audio Qwen дал русский текст без цикла."
+    },
+    {
+      "id": "loop_staff",
+      "start": 645.247,
+      "end": 648.35,
+      "padding_sec": 0.35,
+      "speakers": [
+        "SPEAKER_03"
+      ],
+      "stage1b_text": "staff staff staff staff staff staff staff",
+      "stage1a_medium_text": "",
+      "new_text": {
+        "whisperx_large_v3": "или какой-то ретро взяток.",
+        "faster_whisper_large_v3": "ى ى ى ى ى ى ى ى",
+        "qwen2_5_omni_3b": "очень маленький такой где вот здесь вот здесь"
+      },
+      "stack_verdicts": {
+        "whisperx_large_v3": "local_glitch",
+        "faster_whisper_large_v3": "systematic",
+        "qwen2_5_omni_3b": "local_glitch"
+      },
+      "verdict": "systematic",
+      "notes": "Точная лексема staff не повторилась, но faster-whisper снова ушёл в цикл и создал таймкоды за пределами 3,8-секундного клипа."
+    }
+  ],
+  "asr_results": [
+    {
+      "lib": "WhisperX 3.8.6",
+      "model": "large-v3",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "WhisperX / faster-whisper 1.2.1",
+      "input_artifact": "results/asr/isolated_clips/*.wav",
+      "failure_kind": "quality",
+      "rw_ratio": null,
+      "oo_words": [
+        "delighted",
+        "repairs",
+        "bumped-up"
+      ],
+      "sample_check": "bad",
+      "meaning_check": "n/a",
+      "diarization": null,
+      "speakers": 2,
+      "attempt": 1,
+      "runtime_sec": 40.154,
+      "artifact": "results/asr/isolated_clips/whisperx_large_v3_summary.json",
+      "notes": "CPU int8, language=ru, Silero VAD, alignment выполнен. Pyannote и диаризация не запускались. Английские вставки остались в обоих English-клипах."
+    },
+    {
+      "lib": "faster-whisper 1.2.1",
+      "model": "large-v3",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "faster-whisper",
+      "input_artifact": "results/asr/isolated_clips/*.wav",
+      "failure_kind": "quality",
+      "rw_ratio": null,
+      "oo_words": [
+        "kill",
+        "chilling",
+        "ى"
+      ],
+      "sample_check": "bad",
+      "meaning_check": "n/a",
+      "diarization": null,
+      "speakers": 2,
+      "attempt": 1,
+      "runtime_sec": 162.2,
+      "artifact": "results/asr/isolated_clips/faster_whisper_large_v3_summary.json",
+      "notes": "language=ru, VAD включён, condition_on_previous_text=false. Английские вставки остались; loop_staff дал повтор символов и невозможные таймкоды."
+    },
+    {
+      "lib": "Transformers 4.57.6",
+      "model": "Qwen/Qwen2.5-Omni-3B",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "Hugging Face Transformers",
+      "input_artifact": "results/asr/isolated_clips/*.wav",
+      "failure_kind": "none",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "ok",
+      "meaning_check": "n/a",
+      "diarization": null,
+      "speakers": 2,
+      "attempt": 2,
+      "runtime_sec": 62.429,
+      "artifact": "results/asr/isolated_clips/qwen2_5_omni_3b_summary.json",
+      "notes": "CPU bfloat16. Первый запуск остановился до модели из-за отсутствующего audioread; единственный повтор успешно дал три непустых русских ответа без английских вставок и циклов."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "не применимо",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Stage 1c: denoise явно вне скоупа."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "не применимо",
+      "status": "skipped",
+      "spot_check": "n/a",
+      "notes": "Stage 1c: чанкинг явно вне скоупа."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "не применимо",
+      "model": "не применимо",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "не применимо",
+      "input_artifact": "results/asr/isolated_clips/comparison.json",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "notes": "Stage 1c: саммари не запускалось; Qwen2.5-Omni использован только как audio ASR."
+    }
+  ],
+  "api_usage": {
+    "gemini_calls_stage1c": 0,
+    "nvidia_calls_stage1c": 0,
+    "audio_uploaded": false,
+    "notes": "Gemini не вызывался, потому что локальный audio Qwen успешно обработал все три клипа."
+  },
+  "recommendations": "Для автоматических точечных retry на этих трёх интервалах не использовать WhisperX/faster-whisper large-v3 без проверки: английская контаминация и loop систематически воспроизводятся хотя бы в одном Whisper-стеке. Локальный Qwen2.5-Omni-3B — единственный пригодный retry-кандидат в этом ограниченном эксперименте: 3/3 русских непустых ответов без циклов. Перед заменой сегментов обязательна человеческая проверка дословности."
+}

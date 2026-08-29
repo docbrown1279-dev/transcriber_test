@@ -1,0 +1,242 @@
+{
+  "clip_id": "english_09m39",
+  "input_artifact": "results/asr/isolated_clips/english_09m39.wav",
+  "requested_interval": {
+    "start": 579.614,
+    "end": 590.896,
+    "padding_sec": 0.35
+  },
+  "execution_mode": "local",
+  "provider": "faster-whisper",
+  "model": "large-v3",
+  "language": "ru",
+  "language_probability": 1,
+  "device": "cpu",
+  "compute_type": "int8",
+  "vad_filter": true,
+  "condition_on_previous_text": false,
+  "diarization": null,
+  "speaker_source": "copied from Stage 1b table",
+  "runtime_sec": 7.671,
+  "segments": [
+    {
+      "id": 1,
+      "start": 579.784,
+      "end": 582.484,
+      "clip_start": 0.52,
+      "clip_end": 3.22,
+      "text": "Ну, как бы точно известно, или оно еще может помен kill?",
+      "speaker": "SPEAKER_02",
+      "words": [
+        {
+          "word": " Ну,",
+          "start": 579.784,
+          "end": 580.224,
+          "probability": 0.27275
+        },
+        {
+          "word": " как",
+          "start": 580.224,
+          "end": 580.344,
+          "probability": 0.947267
+        },
+        {
+          "word": " бы",
+          "start": 580.344,
+          "end": 580.464,
+          "probability": 0.991946
+        },
+        {
+          "word": " точно",
+          "start": 580.464,
+          "end": 580.684,
+          "probability": 0.720074
+        },
+        {
+          "word": " известно,",
+          "start": 580.684,
+          "end": 581.364,
+          "probability": 0.910752
+        },
+        {
+          "word": " или",
+          "start": 581.364,
+          "end": 581.484,
+          "probability": 0.99714
+        },
+        {
+          "word": " оно",
+          "start": 581.484,
+          "end": 581.624,
+          "probability": 0.970859
+        },
+        {
+          "word": " еще",
+          "start": 581.624,
+          "end": 581.804,
+          "probability": 0.674735
+        },
+        {
+          "word": " может",
+          "start": 581.804,
+          "end": 582.004,
+          "probability": 0.999203
+        },
+        {
+          "word": " помен",
+          "start": 582.004,
+          "end": 582.284,
+          "probability": 0.999051
+        },
+        {
+          "word": " kill?",
+          "start": 582.284,
+          "end": 582.484,
+          "probability": 0.0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "start": 582.764,
+      "end": 583.844,
+      "clip_start": 3.5,
+      "clip_end": 4.58,
+      "text": "Наш вопрос, конечно.",
+      "speaker": "SPEAKER_02",
+      "words": [
+        {
+          "word": " Наш",
+          "start": 582.764,
+          "end": 583.204,
+          "probability": 0.531329
+        },
+        {
+          "word": " вопрос,",
+          "start": 583.204,
+          "end": 583.364,
+          "probability": 0.974058
+        },
+        {
+          "word": " конечно.",
+          "start": 583.704,
+          "end": 583.844,
+          "probability": 0.965023
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "start": 583.964,
+      "end": 584.884,
+      "clip_start": 4.7,
+      "clip_end": 5.62,
+      "text": "Еще может поменять.",
+      "speaker": "SPEAKER_02",
+      "words": [
+        {
+          "word": " Еще",
+          "start": 583.964,
+          "end": 584.044,
+          "probability": 0.108212
+        },
+        {
+          "word": " может",
+          "start": 584.044,
+          "end": 584.364,
+          "probability": 0.925129
+        },
+        {
+          "word": " поменять.",
+          "start": 584.364,
+          "end": 584.884,
+          "probability": 0.90907
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "start": 586.284,
+      "end": 591.224,
+      "clip_start": 7.02,
+      "clip_end": 11.96,
+      "text": "Ну вот все, значит, мы тогда с точки зрения инженерии ждем согласования.",
+      "speaker": "SPEAKER_02",
+      "words": [
+        {
+          "word": " Ну",
+          "start": 586.284,
+          "end": 586.724,
+          "probability": 0.496566
+        },
+        {
+          "word": " вот",
+          "start": 586.724,
+          "end": 587.164,
+          "probability": 0.575379
+        },
+        {
+          "word": " все,",
+          "start": 587.164,
+          "end": 587.404,
+          "probability": 0.784003
+        },
+        {
+          "word": " значит,",
+          "start": 587.464,
+          "end": 587.684,
+          "probability": 0.865034
+        },
+        {
+          "word": " мы",
+          "start": 587.764,
+          "end": 587.864,
+          "probability": 0.97869
+        },
+        {
+          "word": " тогда",
+          "start": 587.864,
+          "end": 588.104,
+          "probability": 0.98985
+        },
+        {
+          "word": " с",
+          "start": 588.104,
+          "end": 588.784,
+          "probability": 0.876788
+        },
+        {
+          "word": " точки",
+          "start": 588.784,
+          "end": 588.964,
+          "probability": 0.999707
+        },
+        {
+          "word": " зрения",
+          "start": 588.964,
+          "end": 589.464,
+          "probability": 0.998875
+        },
+        {
+          "word": " инженерии",
+          "start": 589.464,
+          "end": 590.044,
+          "probability": 0.9966
+        },
+        {
+          "word": " ждем",
+          "start": 590.044,
+          "end": 590.524,
+          "probability": 0.988394
+        },
+        {
+          "word": " согласования.",
+          "start": 590.524,
+          "end": 591.224,
+          "probability": 0.899269
+        }
+      ]
+    }
+  ],
+  "text": "Ну, как бы точно известно, или оно еще может помен kill? Наш вопрос, конечно. Еще может поменять. Ну вот все, значит, мы тогда с точки зрения инженерии ждем согласования."
+}

@@ -1,0 +1,410 @@
+{
+  "clip_id": "english_14m51",
+  "input_artifact": "results/asr/isolated_clips/english_14m51.wav",
+  "requested_interval": {
+    "start": 885.176,
+    "end": 909.591,
+    "padding_sec": 0.35
+  },
+  "execution_mode": "local",
+  "provider": "faster-whisper",
+  "model": "large-v3",
+  "language": "ru",
+  "language_probability": 1,
+  "device": "cpu",
+  "compute_type": "int8",
+  "vad_filter": true,
+  "condition_on_previous_text": false,
+  "diarization": null,
+  "speaker_source": "copied from Stage 1b table",
+  "runtime_sec": 11.454,
+  "segments": [
+    {
+      "id": 1,
+      "start": 884.826,
+      "end": 894.286,
+      "clip_start": 0.0,
+      "clip_end": 9.46,
+      "text": "Если у нас мощность корпуса 9-го совпадает с 8-м или с каким-то, мы говорим, что у нас все то же самое.",
+      "speaker": "SPEAKER_02",
+      "words": [
+        {
+          "word": " Если",
+          "start": 884.826,
+          "end": 885.206,
+          "probability": 0.439663
+        },
+        {
+          "word": " у",
+          "start": 885.206,
+          "end": 885.366,
+          "probability": 0.933567
+        },
+        {
+          "word": " нас",
+          "start": 885.366,
+          "end": 885.486,
+          "probability": 0.990315
+        },
+        {
+          "word": " мощность",
+          "start": 885.486,
+          "end": 886.046,
+          "probability": 0.984666
+        },
+        {
+          "word": " корпуса",
+          "start": 886.046,
+          "end": 887.586,
+          "probability": 0.764679
+        },
+        {
+          "word": " 9",
+          "start": 887.586,
+          "end": 887.886,
+          "probability": 0.772054
+        },
+        {
+          "word": "-го",
+          "start": 887.886,
+          "end": 888.286,
+          "probability": 0.583336
+        },
+        {
+          "word": " совпадает",
+          "start": 888.286,
+          "end": 888.906,
+          "probability": 0.972469
+        },
+        {
+          "word": " с",
+          "start": 888.906,
+          "end": 889.066,
+          "probability": 0.958048
+        },
+        {
+          "word": " 8",
+          "start": 889.066,
+          "end": 889.346,
+          "probability": 0.905198
+        },
+        {
+          "word": "-м",
+          "start": 889.346,
+          "end": 889.606,
+          "probability": 0.726702
+        },
+        {
+          "word": " или",
+          "start": 889.606,
+          "end": 889.726,
+          "probability": 0.782696
+        },
+        {
+          "word": " с",
+          "start": 889.726,
+          "end": 889.886,
+          "probability": 0.924536
+        },
+        {
+          "word": " каким",
+          "start": 889.886,
+          "end": 890.126,
+          "probability": 0.961695
+        },
+        {
+          "word": "-то,",
+          "start": 890.126,
+          "end": 890.386,
+          "probability": 0.95913
+        },
+        {
+          "word": " мы",
+          "start": 890.466,
+          "end": 891.646,
+          "probability": 0.864349
+        },
+        {
+          "word": " говорим,",
+          "start": 891.646,
+          "end": 892.126,
+          "probability": 0.997099
+        },
+        {
+          "word": " что",
+          "start": 892.126,
+          "end": 892.386,
+          "probability": 0.993674
+        },
+        {
+          "word": " у",
+          "start": 892.386,
+          "end": 893.406,
+          "probability": 0.972185
+        },
+        {
+          "word": " нас",
+          "start": 893.406,
+          "end": 893.586,
+          "probability": 0.990868
+        },
+        {
+          "word": " все",
+          "start": 893.586,
+          "end": 893.706,
+          "probability": 0.422874
+        },
+        {
+          "word": " то",
+          "start": 893.706,
+          "end": 893.826,
+          "probability": 0.799553
+        },
+        {
+          "word": " же",
+          "start": 893.826,
+          "end": 893.926,
+          "probability": 0.989749
+        },
+        {
+          "word": " самое.",
+          "start": 893.926,
+          "end": 894.286,
+          "probability": 0.998655
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "start": 895.306,
+      "end": 902.846,
+      "clip_start": 10.48,
+      "clip_end": 18.02,
+      "text": "Ну да, если трансформ chilling могут отличаться по мощности, по массе габаритных характеристик, они будут одинаковые, например.",
+      "speaker": "SPEAKER_02 → SPEAKER_03 at 898.587",
+      "words": [
+        {
+          "word": " Ну",
+          "start": 895.306,
+          "end": 895.866,
+          "probability": 0.229619
+        },
+        {
+          "word": " да,",
+          "start": 895.866,
+          "end": 896.146,
+          "probability": 0.862901
+        },
+        {
+          "word": " если",
+          "start": 896.326,
+          "end": 896.826,
+          "probability": 0.665124
+        },
+        {
+          "word": " трансформ",
+          "start": 896.826,
+          "end": 897.746,
+          "probability": 0.732595
+        },
+        {
+          "word": " chilling",
+          "start": 897.746,
+          "end": 898.046,
+          "probability": 0.0
+        },
+        {
+          "word": " могут",
+          "start": 898.046,
+          "end": 898.246,
+          "probability": 0.194772
+        },
+        {
+          "word": " отличаться",
+          "start": 898.246,
+          "end": 899.106,
+          "probability": 0.950298
+        },
+        {
+          "word": " по",
+          "start": 899.106,
+          "end": 899.286,
+          "probability": 0.951623
+        },
+        {
+          "word": " мощности,",
+          "start": 899.286,
+          "end": 899.826,
+          "probability": 0.874744
+        },
+        {
+          "word": " по",
+          "start": 899.826,
+          "end": 900.106,
+          "probability": 0.78396
+        },
+        {
+          "word": " массе",
+          "start": 900.106,
+          "end": 900.466,
+          "probability": 0.63424
+        },
+        {
+          "word": " габаритных",
+          "start": 900.466,
+          "end": 900.906,
+          "probability": 0.779317
+        },
+        {
+          "word": " характеристик,",
+          "start": 900.906,
+          "end": 901.526,
+          "probability": 0.454228
+        },
+        {
+          "word": " они",
+          "start": 901.546,
+          "end": 901.686,
+          "probability": 0.0
+        },
+        {
+          "word": " будут",
+          "start": 901.686,
+          "end": 901.866,
+          "probability": 0.0
+        },
+        {
+          "word": " одинаковые,",
+          "start": 901.866,
+          "end": 902.566,
+          "probability": 0.0
+        },
+        {
+          "word": " например.",
+          "start": 902.646,
+          "end": 902.846,
+          "probability": 0.0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "start": 903.066,
+      "end": 907.806,
+      "clip_start": 18.24,
+      "clip_end": 22.98,
+      "text": "Просто там катушек больше будет, или габаритных характеристик, по массе вряд ли.",
+      "speaker": "SPEAKER_03",
+      "words": [
+        {
+          "word": " Просто",
+          "start": 903.066,
+          "end": 903.586,
+          "probability": 0.0
+        },
+        {
+          "word": " там",
+          "start": 903.586,
+          "end": 903.886,
+          "probability": 0.0
+        },
+        {
+          "word": " катушек",
+          "start": 903.886,
+          "end": 904.726,
+          "probability": 0.0
+        },
+        {
+          "word": " больше",
+          "start": 904.726,
+          "end": 905.026,
+          "probability": 0.0
+        },
+        {
+          "word": " будет,",
+          "start": 905.026,
+          "end": 905.266,
+          "probability": 0.0
+        },
+        {
+          "word": " или",
+          "start": 905.506,
+          "end": 905.866,
+          "probability": 0.0
+        },
+        {
+          "word": " габаритных",
+          "start": 905.866,
+          "end": 906.586,
+          "probability": 0.0
+        },
+        {
+          "word": " характеристик,",
+          "start": 906.586,
+          "end": 906.926,
+          "probability": 0.0
+        },
+        {
+          "word": " по",
+          "start": 906.926,
+          "end": 907.166,
+          "probability": 0.0
+        },
+        {
+          "word": " массе",
+          "start": 907.166,
+          "end": 907.426,
+          "probability": 0.0
+        },
+        {
+          "word": " вряд",
+          "start": 907.426,
+          "end": 907.686,
+          "probability": 0.498954
+        },
+        {
+          "word": " ли.",
+          "start": 907.686,
+          "end": 907.806,
+          "probability": 0.995096
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "start": 907.966,
+      "end": 909.726,
+      "clip_start": 23.14,
+      "clip_end": 24.9,
+      "text": "Вот, если это так...",
+      "speaker": "SPEAKER_03",
+      "words": [
+        {
+          "word": " Вот,",
+          "start": 907.966,
+          "end": 908.526,
+          "probability": 0.57654
+        },
+        {
+          "word": " если",
+          "start": 908.606,
+          "end": 909.186,
+          "probability": 0.996774
+        },
+        {
+          "word": " это",
+          "start": 909.186,
+          "end": 909.406,
+          "probability": 0.995859
+        },
+        {
+          "word": " так...",
+          "start": 909.406,
+          "end": 909.726,
+          "probability": 0.84545
+        }
+      ]
+    }
+  ],
+  "text": "Если у нас мощность корпуса 9-го совпадает с 8-м или с каким-то, мы говорим, что у нас все то же самое. Ну да, если трансформ chilling могут отличаться по мощности, по массе габаритных характеристик, они будут одинаковые, например. Просто там катушек больше будет, или габаритных характеристик, по массе вряд ли. Вот, если это так..."
+}

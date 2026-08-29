@@ -1,0 +1,25 @@
+{
+  "clip_id": "loop_staff",
+  "input_artifact": "results/asr/isolated_clips/loop_staff.wav",
+  "requested_interval": {
+    "start": 645.247,
+    "end": 648.35,
+    "padding_sec": 0.35
+  },
+  "execution_mode": "local",
+  "provider": "Hugging Face Transformers",
+  "model": "Qwen/Qwen2.5-Omni-3B",
+  "device": "cpu",
+  "dtype": "bfloat16",
+  "prompt": "Транскрибируй русскую речь совещания как есть, не переводи, не добавляй английский, не делай саммари. Верни только дословную расшифровку.",
+  "runtime_sec": 2.722,
+  "segments": [
+    {
+      "start": 645.247,
+      "end": 648.35,
+      "speaker": "SPEAKER_03",
+      "text": "очень маленький такой где вот здесь вот здесь"
+    }
+  ],
+  "text": "очень маленький такой где вот здесь вот здесь"
+}

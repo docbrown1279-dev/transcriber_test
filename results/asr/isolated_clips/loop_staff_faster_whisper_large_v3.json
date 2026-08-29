@@ -1,0 +1,111 @@
+{
+  "clip_id": "loop_staff",
+  "input_artifact": "results/asr/isolated_clips/loop_staff.wav",
+  "requested_interval": {
+    "start": 645.247,
+    "end": 648.35,
+    "padding_sec": 0.35
+  },
+  "execution_mode": "local",
+  "provider": "faster-whisper",
+  "model": "large-v3",
+  "language": "ru",
+  "language_probability": 1,
+  "device": "cpu",
+  "compute_type": "int8",
+  "vad_filter": true,
+  "condition_on_previous_text": false,
+  "diarization": null,
+  "speaker_source": "copied from Stage 1b table",
+  "runtime_sec": 137.031,
+  "segments": [
+    {
+      "id": 1,
+      "start": 645.417,
+      "end": 646.237,
+      "clip_start": 0.52,
+      "clip_end": 1.34,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": [
+        {
+          "word": "ىىىىىىىى",
+          "start": 645.417,
+          "end": 646.237,
+          "probability": 0.001342
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "start": 661.417,
+      "end": 661.957,
+      "clip_start": 16.52,
+      "clip_end": 17.06,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    },
+    {
+      "id": 3,
+      "start": 661.957,
+      "end": 665.417,
+      "clip_start": 17.06,
+      "clip_end": 20.52,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    },
+    {
+      "id": 4,
+      "start": 665.417,
+      "end": 665.557,
+      "clip_start": 20.52,
+      "clip_end": 20.66,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    },
+    {
+      "id": 5,
+      "start": 665.557,
+      "end": 665.957,
+      "clip_start": 20.66,
+      "clip_end": 21.06,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    },
+    {
+      "id": 6,
+      "start": 665.957,
+      "end": 666.317,
+      "clip_start": 21.06,
+      "clip_end": 21.42,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    },
+    {
+      "id": 7,
+      "start": 666.317,
+      "end": 666.617,
+      "clip_start": 21.42,
+      "clip_end": 21.72,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    },
+    {
+      "id": 8,
+      "start": 666.617,
+      "end": 674.897,
+      "clip_start": 21.72,
+      "clip_end": 30.0,
+      "text": "ى",
+      "speaker": "SPEAKER_03",
+      "words": []
+    }
+  ],
+  "text": "ى ى ى ى ى ى ى ى"
+}

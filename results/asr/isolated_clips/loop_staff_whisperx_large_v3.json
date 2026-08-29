@@ -1,0 +1,58 @@
+{
+  "clip_id": "loop_staff",
+  "input_artifact": "results/asr/isolated_clips/loop_staff.wav",
+  "requested_interval": {
+    "start": 645.247,
+    "end": 648.35,
+    "padding_sec": 0.35
+  },
+  "execution_mode": "local",
+  "provider": "WhisperX",
+  "model": "large-v3",
+  "language": "ru",
+  "device": "cpu",
+  "compute_type": "int8",
+  "vad_method": "silero",
+  "alignment": "WhisperX ru alignment model",
+  "diarization": null,
+  "speaker_source": "copied from Stage 1b table",
+  "runtime_sec": 3.968,
+  "segments": [
+    {
+      "id": 1,
+      "start": 645.645,
+      "end": 648.7,
+      "clip_start": 0.748,
+      "clip_end": 3.803,
+      "text": "или какой-то ретро взяток.",
+      "speaker": "SPEAKER_03",
+      "words": [
+        {
+          "word": "или",
+          "start": 645.645,
+          "end": 645.725,
+          "score": 0.167
+        },
+        {
+          "word": "какой-то",
+          "start": 645.745,
+          "end": 646.67,
+          "score": 0.708
+        },
+        {
+          "word": "ретро",
+          "start": 646.851,
+          "end": 647.655,
+          "score": 0.551
+        },
+        {
+          "word": "взяток.",
+          "start": 647.675,
+          "end": 648.7,
+          "score": 0.557
+        }
+      ]
+    }
+  ],
+  "text": "или какой-то ретро взяток."
+}
