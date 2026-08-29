@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-08-29T00:17:07.392430+00:00",
+  "probe": "anonymous HEAD",
+  "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/main/model.bin",
+  "status": "fail",
+  "failure_kind": "tls",
+  "final_host": "huggingface.co",
+  "hops": [],
+  "detail": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+}
