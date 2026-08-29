@@ -97,3 +97,18 @@ Fallback API:
 
 Локальный ASR пригоден как основа: `faster-whisper medium int8` дал читаемую стенограмму быстрее реального времени. Проверенный denoise ухудшил полноту, прямой E5-чанкинг коротких сегментов дал ненадёжные границы, а локальное саммари требует проверки фактов и ответственных. Полная связка для MVP пока не подтверждена, но ASR-компонент подтверждён.
 
+## Stage 1b — обязательная проверка доступа HF
+
+- Возобновление выполнено с сохранением всех артефактов Stage 1a. Результат `faster-whisper medium` рассматривается только как прежний baseline и не считается успехом Stage 1b.
+- Проверка начата до установок, `loudnorm`, ASR и диаризации.
+- Ни `HF_TOKEN`, ни `HUGGING_FACE_HUB_TOKEN` в среде не заданы. Значения секретов не читались и не выводились.
+- Поэтому аутентифицированные GET-пробы `pyannote/speaker-diarization-3.1`, `pyannote/segmentation-3.0`, `pyannote/speaker-diarization-community-1` и публичного `Systran/faster-whisper-large-v3` не запускались: без токена такая проверка не подтверждает gated-доступ.
+- Санитизированное доказательство записано в `results/asr/hf_access_preflight.json`: `token_present=false`, статус каждой пробы — `not_run`, `error_kind=missing_token`. Заголовки авторизации и токен в файл не записывались.
+- По обязательному стоп-условию прогон завершён с `failure_kind=auth`. WhisperX/pyannote не устанавливались; fixture не преобразовывался и не передавался ни локальному ASR, ни API.
+- `loudnorm`, WhisperX `large-v3`, отдельный faster-whisper + pyannote, whisper.cpp, Qwen3-8B meaning check и нейросетевой denoise не запускались.
+- Chunking и summary пропущены как явно находящиеся вне скоупа Stage 1b. Вызовов Gemini/NVIDIA в Stage 1b не было, аудио в API не передавалось.
+
+### Что требуется для продолжения
+
+Задать `HF_TOKEN` или `HUGGING_FACE_HUB_TOKEN` и принять условия доступа ко всем трём репозиториям pyannote. Новый прогон должен снова начать с аутентифицированного HF preflight; только после HTTP-успеха всех gated-проб можно продолжать `loudnorm` и ASR с диаризацией.
+

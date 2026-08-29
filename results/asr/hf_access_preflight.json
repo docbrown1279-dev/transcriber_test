@@ -1,0 +1,52 @@
+{
+  "checked_at": "2026-08-29T07:30:37.492598+00:00",
+  "token_present": false,
+  "method": "GET",
+  "follow_redirects": true,
+  "probes": [
+    {
+      "repository": "pyannote/speaker-diarization-3.1",
+      "file": "config.yaml",
+      "gated": true,
+      "initial_host": "huggingface.co",
+      "status": null,
+      "final_host": null,
+      "redirects": [],
+      "result": "not_run",
+      "error_kind": "missing_token"
+    },
+    {
+      "repository": "pyannote/segmentation-3.0",
+      "file": "config.yaml",
+      "gated": true,
+      "initial_host": "huggingface.co",
+      "status": null,
+      "final_host": null,
+      "redirects": [],
+      "result": "not_run",
+      "error_kind": "missing_token"
+    },
+    {
+      "repository": "pyannote/speaker-diarization-community-1",
+      "file": "README.md",
+      "gated": true,
+      "initial_host": "huggingface.co",
+      "status": null,
+      "final_host": null,
+      "redirects": [],
+      "result": "not_run",
+      "error_kind": "missing_token"
+    },
+    {
+      "repository": "Systran/faster-whisper-large-v3",
+      "file": "config.json",
+      "gated": false,
+      "initial_host": "huggingface.co",
+      "status": null,
+      "final_host": null,
+      "redirects": [],
+      "result": "not_run",
+      "error_kind": "missing_token"
+    }
+  ]
+}
