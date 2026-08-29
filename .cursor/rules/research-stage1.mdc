@@ -1,17 +1,15 @@
 ---
-description: Stage 1 ASR research constraints and deliverables for this repo
+description: Stage 1b — coherent diarized transcript, bounded search
 alwaysApply: true
 ---
 
-# Stage 1 — ASR research
+# Stage 1b — text + diarization
 
 - Source of truth: `docs/research_plan.md` and `AGENTS.md`.
-- Goal: evaluate `ASR + denoise + semantic chunking + local LLM` for Russian meetings; produce reports only.
-- Stage 2 testing details are deferred — do not build a full test framework yet.
-- ASR: Whisper family only (`faster-whisper` primary, `whisper.cpp` optional). No NeMo unless Whisper fails completely.
-- Denoise is a separate A/B track (`DeepFilterNet`, `RNNoise`, ffmpeg filters).
-- Quality: Russian word ratio ≥ 0.9, then 3–5 fragment human-like check.
-- HF token for Hub; Gemini/NVIDIA local-first with hard caps: ≤3 Gemini + ≤3 NVIDIA calls/run; ASR ≤3; denoise ≤3 methods; chunking ≤2; local LLM ≤1. Cap → fail/skip → report → push.
-- Unattended Stage 1: install without waiting; commit/push agent branch/PR (no force-push `main`). Never log secrets.
-- Outputs: `results/reports/research_report.json` + `results/reports/notes.md`.
-- Keep denoise experiments separate from ASR configs in reports.
+- Goal: coherent Russian meeting text **with speakers**. No chunking, no summary this stage.
+- Pass = Qwen3-8B meaning check on samples (per speaker if diarized), **not** rw_ratio ≥ 0.9.
+- Stacks (max 3): WhisperX large-v3 + loudnorm → faster-whisper large-v3 + pyannote → whisper.cpp large + pyannote.
+- Denoise only if meaning fails: ≤2 neural libs (DeepFilterNet, RNNoise); skip ffmpeg; ≤3 presets each; optional worst-speaker-only pass.
+- `HF_TOKEN` required for pyannote/WhisperX. No cloud ASR. No audio to APIs.
+- Unattended: install and continue; commit/push working branch (prefer `cursor/stage1-asr-research-dc41`). Never log secrets.
+- Outputs: `results/reports/research_report.json` + `notes.md`.

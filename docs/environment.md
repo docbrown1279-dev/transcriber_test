@@ -19,24 +19,25 @@ source .venv/bin/activate
 pip install -U pip wheel
 ```
 
-### Proposed Stage 1 packages
+### Proposed Stage 1b packages
 
 | Area | Packages | Notes |
 |---|---|---|
-| ASR | `faster-whisper` | Primary ASR |
-| Metrics | `pymorphy3`, `pymorphy3-dicts-ru` | Russian word ratio / morphology |
-| Audio I/O | already via ffmpeg + faster-whisper | Keep extras minimal |
-| Embeddings | `sentence-transformers` | Pull BGE-M3 / E5 when needed |
-| Denoise | DeepFilterNet / RNNoise as researched | Install only the tools you actually run |
-| LLM | Ollama **or** llama.cpp | Prefer one runtime first |
+| ASR | `whisperx` (preferred), else `faster-whisper` | large-v3 |
+| Diarization | WhisperX built-in / `pyannote.audio` | Gated; needs `HF_TOKEN` + license accept on Hub |
+| Metrics | `pymorphy3`, `pymorphy3-dicts-ru` | Telemetry only |
+| Denoise | DeepFilterNet, RNNoise | Only if meaning check fails; **not** ffmpeg afftdn |
+| Meaning LLM | `llama-cpp-python` + Qwen3-8B GGUF | Q5_K_M preferred |
 
-Suggested starter `pip` line:
+Install only what the current stack needs. Do not install embedding/summary extras in 1b.
+
+Suggested starter (WhisperX path):
 
 ```text
-faster-whisper
+whisperx
 pymorphy3
 pymorphy3-dicts-ru
-sentence-transformers
+llama-cpp-python
 ```
 
 Optional: write a `requirements-stage1.txt` with pinned versions after a successful run (for reproducibility).
@@ -45,9 +46,10 @@ Optional: write a `requirements-stage1.txt` with pinned versions after a success
 
 | Model | Used for | Size (order of magnitude) |
 |---|---|---|
-| Whisper `medium` / `large-v3` | ASR | ~1.5–3 GB |
-| BGE-M3 or E5 (small/base) | Chunking | hundreds of MB–GB |
-| Qwen2.5-7B-Instruct (GGUF Q4/Q5) | Summary | ~4–5 GB quantized |
+| Whisper `large-v3` (WhisperX / faster-whisper) | ASR | ~3 GB |
+| `pyannote/speaker-diarization-3.1` | Speakers | ~hundreds of MB; **gated** |
+| Qwen3-8B Instruct GGUF Q5_K_M | Meaning check | ~5–6 GB |
+| DeepFilterNet / RNNoise weights | Denoise if needed | hundreds of MB |
 
 Ensure free disk before download. Cache under standard HF / Ollama paths; note paths in `notes.md`.
 
@@ -72,14 +74,13 @@ Provide secrets via environment / Cursor cloud secrets — **never** commit them
 | `GEMINI_API_KEY` | `GOOGLE_API_KEY` | Google Gemini API |
 | `NVIDIA_API_KEY` | — | NVIDIA API / NIM |
 
-### API usage policy
+### API usage policy (Stage 1b)
 
-1. **Local first** for ASR, denoise, embeddings, and summary.
-2. **Gemini / NVIDIA** only as fallback when local cannot finish with acceptable quality or would take too long.
-3. Respect **daily quotas** — few short calls; cache results; avoid retries loops against paid/limited APIs.
-4. Scripts may call these APIs via env vars; never hardcode keys; never print keys in logs or reports.
+1. **No cloud ASR.** Do not upload audio.
+2. Meaning check is **Qwen3-8B local**. Gemini/NVIDIA only if that model cannot run: **≤1** text-only clip review.
+3. Never hardcode or print keys.
 
-If a required env var is missing, ask the human or mark that path `skipped` in the report.
+If `HF_TOKEN` is missing, diarization will likely fail — document `failure_kind: auth` and still try WhisperX/fw without speakers, then stop that branch.
 
 ## Layout
 

@@ -1,167 +1,84 @@
 ---
 name: asr-research
-description: Runs Stage 1 speech recognition research (Whisper ASR, denoise, semantic chunking, local LLM summary) and writes research_report.json. Use when starting ASR research, meeting transcription experiments, Whisper/faster-whisper evaluation, denoise A/B, or producing Stage 1 reports.
+description: Runs Stage 1b research for coherent Russian meeting text with diarization (WhisperX/large-v3, loudnorm, Qwen3-8B meaning check, optional neural denoise). Use when continuing ASR research, WhisperX, pyannote, or Stage 1b reports.
 ---
 
-# ASR Research — Stage 1
+# ASR Research — Stage 1b
 
-## When to use
+## Goal
 
-Cloud or local agent tasked with Stage 1 technology evaluation for Russian meeting transcription.
+Coherent diarized transcript on CPU. No chunking, no summary.
 
-## Before any install
+## Resume
 
-1. Read `docs/research_plan.md` and `AGENTS.md`.
-2. Inventory host:
+Inspect `results/` and branch `cursor/stage1-asr-research-dc41`. Keep 1a artifacts. Do **not** rerun ffmpeg afftdn. Do **not** stop after medium `rw_ratio`.
+
+## Checklist
+
+```
+Stage 1b:
+- [ ] 0. Inventory + .venv + HF_TOKEN present (need for pyannote)
+- [ ] 1. loudnorm (no compressor) → data/processed/
+- [ ] 2. WhisperX large-v3 + diarization
+- [ ] 2b. If WhisperX fails: faster-whisper large-v3 + pyannote
+- [ ] 2c. If large cannot run: whisper.cpp large + pyannote
+- [ ] 3. Qwen3-8B meaning check (2–3 random; per speaker if diarized)
+- [ ] 4. If meaning bad: DeepFilterNet and/or RNNoise (≤2 libs, ≤3 presets each)
+- [ ] 4b. Optional: denoise/re-ASR worst speaker only
+- [ ] 5. Report + push
+```
+
+## Audio preprocess
+
+One command family, once:
 
 ```bash
-uname -a
-nproc
-free -h
-df -h .
-python3 --version
-ffmpeg -version | head -1
-command -v nvidia-smi && nvidia-smi || echo "no GPU"
+ffmpeg -y -i data/fixtures/meeting_sample.m4a \
+  -af loudnorm=I=-16:TP=-1.5:LRA=11 \
+  data/processed/meeting_sample_loudnorm.wav
 ```
 
-3. Install packages from `docs/environment.md` (create `.venv`). On **unattended Stage 1**, do **not** wait for human approval or ask permission questions — install and continue. Allow at most two install attempts per tool family, then skip that path and document it. Log versions in `notes.md`.
-4. Confirm credentials are available as env vars (do not print values): HF token for Hub downloads; Gemini + NVIDIA for API fallbacks. See `docs/environment.md` § Credentials. If a secret is missing, skip only the paths that need it and continue.
-5. Inspect `results/` and the current branch before running anything. Reuse
-   completed artifacts and attempt counts; do not repeat API calls from a prior
-   agent.
+No `acompressor`, `compand`, or ffmpeg denoise here.
 
-## Network preflight
+## ASR + diarization
 
-Before the first ASR attempt:
+All local. No cloud ASR.
 
-1. Fetch the public `Systran/faster-whisper-medium` `config.json`
-   **anonymously**. This model is not gated.
-2. Test an actual small model-file download or resolve its redirects so DNS,
-   TLS, LFS, and Xet endpoints are covered—not only the Hub API.
-3. Save sanitized evidence to `results/asr/network_preflight.json`: timestamp,
-   requested URL, redirect hosts, DNS/TLS/HTTP outcome, and exact blocked host.
-   Never save headers containing credentials.
-4. If anonymous access is blocked, one token-authenticated comparison is
-   allowed. Identical DNS/TLS failure means `failure_kind: network`, not auth.
-5. If Hugging Face fails at DNS/TLS before HTTP, do not spend another attempt
-   on `large-v3` at the same host. Follow the fallback order below.
+1. **WhisperX** `large-v3` on loudnorm WAV; align + diarize (`pyannote` via WhisperX). `HF_TOKEN` required.
+2. If install/runtime fail after ≤2 retries: **faster-whisper** `large-v3` on the same WAV, then **pyannote** `speaker-diarization-3.1` (or current 3.x) separately; merge by timestamps.
+3. If OOM / ~90 min with no transcript: **whisper.cpp** quantized large + pyannote.
 
-### ASR transport fallback
+Output under `results/asr/`: json (segments: start, end, text, speaker), txt, diarization sidecar.
 
-1. Try public `faster-whisper medium` from Hugging Face.
-2. If Hugging Face transport is blocked, try official `openai-whisper medium`
-   locally once. Its checkpoint is hosted at `openaipublic.azureedge.net`; this
-   is a transport/runtime fallback, not cloud ASR.
-3. Do not use unofficial mirrors. Do not retry `large-v3` when the shared Hub
-   endpoint itself failed.
-4. If the official OpenAI checkpoint/package transport is also blocked, or the
-   CPU run exceeds a documented reasonable wall, finalize a partial report and
-   mark transcript-dependent blocks skipped.
+## Meaning check (Qwen3-8B)
 
-## Local first, API sparingly
+Not a full summary. Sample fragments only.
 
-- **Default:** local Whisper / embeddings / Qwen (or similar).
-- **Hugging Face:** use `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` when downloading models (`huggingface-cli` / `huggingface_hub`).
-- **Cloud ASR is prohibited:** do not upload audio to Gemini, NVIDIA, or another
-  API and do not use an API transcript as evidence for local Whisper.
-- **Gemini + NVIDIA APIs:** allowed only for text summary or secondary review
-  after a successful local transcript exists and the local LLM attempt failed
-  or exceeded its time wall.
-- Prefer short prompts, small context, one call per decision; cache outputs under `results/`.
-- Record every API call in `notes.md`: provider, model, why local was insufficient, approx tokens/time. Never log API keys.
+- Prompt: the fragment + «Связный текст совещания на русском или бессмыслица из правдоподобных слов? Ответь: ok/bad и одно предложение почему.»
+- Save `results/asr/meaning_check_*.json`.
+- If diarization exists, sample **2–3 clips per speaker**, not only globally.
+- Block `success` iff most sampled clips are `ok`.
 
-## Workflow order
+If Qwen3-8B cannot run: one optional Gemini **text-only** meaning check on the same clips (≤1 call). Never upload audio.
 
-Copy and track:
+## Neural denoise (only if meaning is bad)
 
-```
-Stage 1 Progress:
-- [ ] 0. Inventory + install deps (no wait)
-- [ ] 1. ASR (faster-whisper medium / large-v3)
-- [ ] 2. Denoise A/B on worst-quality audio
-- [ ] 3. Semantic chunking (embeddings)
-- [ ] 4. Local LLM summary
-- [ ] 5. research_report.json + notes.md
-- [ ] 6. Commit/push branch or PR
-```
+Skip ffmpeg. At most **DeepFilterNet** and **RNNoise**.
 
-Do blocks in order. If ASR fails all attempts, still write the report with FAIL and skip dependent blocks that need usable transcript (note why).
+Per library:
 
-### 1. ASR
+1. Default preset → ASR (same stack that produced the text) → meaning check on the **same clip timestamps**.
+2. At most two parameter changes. Log what changed (clarity vs robotic vs dropped speech).
+3. Stop that library if meaning becomes ok, speech coverage drops a lot, or 3 presets used.
 
-- Primary: `faster-whisper medium`; use `large-v3` only after a completed medium
-  run fails the quality gate—not after a shared network/TLS failure.
-- Transport fallback: official local `openai-whisper medium` via
-  `openaipublic.azureedge.net`.
-- Optional: `whisper.cpp` for CPU speed comparison when model weights are
-  already available locally.
-- ASR must execute locally. API transcripts are forbidden and cannot satisfy
-  this block.
-- Input: `data/fixtures/meeting_sample.m4a` (and variants under `data/processed/` if created).
-- Output per run: transcript text + segment timestamps under `results/asr/`.
-- Quality check:
-  1. Compute Russian word ratio (pymorphy3 or frequency lexicon) → need ≥ 0.9.
-  2. If pass: pick 3 random ~2-sentence fragments; judge sense. Nonsense → FAIL.
-  3. Emit OOV word list.
-- `faster-whisper`: at most 3 attempts **including the initial run** (initial +
-  at most 2 retries). Optional `whisper.cpp`: at most 1 run. Record each
-  attempt in the report.
-- See `AGENTS.md` **Hard budgets** for global caps (denoise ≤3 methods, chunking ≤2 models, LLM ≤1 local, API ≤3+≤3).
-- Each record must identify `execution_mode`, provider/model, input artifact,
-  and `failure_kind` when unsuccessful.
+If one speaker is clearly worse: extract that speaker’s intervals, denoise/re-ASR **only those**, merge back. **One** such pass.
 
-### 2. Denoise (separate track)
+## Report
 
-- Tools: DeepFilterNet, RNNoise, ffmpeg (highpass / afftdn / similar) — pick **at most 3**.
-- Take the worst quality material (quiet / echo / noise).
-- Run ASR **before and after** each denoise method (same ASR config). **One** A/B per method; no hyperparameter sweeps.
-- Decide: better / worse / robotic artifacts. Recommend use or skip.
+- `results/reports/research_report.json` — schema; put 1b runs in `asr_results` / `denoise_results`.
+- `chunking_results` / `llm_summary_results`: `skipped`, notes «1b: text+diarization only».
+- `notes.md` in Russian: stacks tried, meaning verdicts per speaker, denoise presets.
 
-### 3. Chunking
+## Stop
 
-- Hypothesis: fixed-time splits are weak; prefer semantic breaks.
-- Embeddings: sentence-transformers + BGE-M3 or E5-class — **≤ 2** model tries.
-- Split transcript → cosine similarity between neighbors → break when below ~0.7 (**one** threshold; one nudge max).
-- Spot-check breaks vs topic change. Optionally title contiguous regions with local LLM (counts toward LLM budget).
-
-### 4. LLM summary (local first)
-
-- Prefer Qwen2.5-7B-Instruct (or newer similar) via Ollama / llama.cpp / vLLM if GPU — **one** local try.
-- Prompt: short summary + decisions + action items (Russian).
-- Soft limit: generation should not exceed ~10 min for ~20 min audio equivalent.
-- If local is too slow/unusable and a **local Whisper transcript exists**:
-  **at most one** Gemini **or** NVIDIA call on text only (counts toward the ≤3
-  per-provider caps).
-- Flag hallucinations / empty fluff.
-
-## Report outputs
-
-Write:
-
-- `results/reports/research_report.json` — validate against `docs/schemas/research_report.schema.json`
-- `results/reports/notes.md` — narrative failures, hardware notes, surprises
-
-Minimal JSON shape:
-
-```json
-{
-  "asr_results": [],
-  "denoise_results": [],
-  "chunking_results": [],
-  "llm_summary_results": [],
-  "recommendations": "Итоговый стек для MVP"
-}
-```
-
-Field meanings: see schema. Status values: `success` | `fail` | `skipped`.
-
-## Scripts
-
-Prefer small scripts under `scripts/` (English filenames). Reuse if they already exist. Do not invent a Stage 2 pytest matrix.
-
-## Stop conditions
-
-- Cap from `AGENTS.md` Hard budgets hit for a block → mark fail/skip and move on; if ASR fully failed, skip dependents and finalize report.
-- Human says pause / Stage 2 only.
-- Disk or RAM exhaustion — document and stop cleanly with partial report.
-- Whisper family completely unusable after budgeted attempts — document; only then consider listing NeMo as next experiment (do not implement unless asked).
+Budget exhausted → write report with what exists. Do not invent a fourth ASR stack or a third denoise library.

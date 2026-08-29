@@ -6,8 +6,9 @@ Repo: `transcriber_test` (`docbrown1279-dev`).
 
 ## Status
 
-**Stage 1 — technology research and reports** (current).  
-**Stage 2 — systematic testing** — deferred; details later.
+**Stage 1b — coherent text + diarization** (current).  
+Stage 1a (medium / ffmpeg / chunking / summary) is recorded on `cursor/stage1-asr-research-dc41`.  
+**Stage 2 — systematic testing** — deferred.
 
 Plan: [`docs/research_plan.md`](docs/research_plan.md)  
 Agent entrypoint: [`AGENTS.md`](AGENTS.md)
@@ -19,14 +20,12 @@ Example meeting audio:
 - `docs/Голос 002.m4a`
 - `data/fixtures/meeting_sample.m4a` (symlink)
 
-## Launch cloud / Cursor agent (Stage 1)
+## Launch cloud / Cursor agent (Stage 1b)
 
-1. Open this repo in Cursor (Agents Window / Cloud Agent).
-2. Ensure the agent can read `AGENTS.md` and `.cursor/skills/asr-research/`.
-3. Paste the prompt from [`docs/prompts/stage1_cloud_agent.md`](docs/prompts/stage1_cloud_agent.md) (unattended / full green light).
-4. If an agent already paused for install approval, paste [`docs/prompts/stage1_overnight_reply.md`](docs/prompts/stage1_overnight_reply.md).
-5. Ensure secrets are set (`HF_TOKEN`, optional Gemini/NVIDIA).
-6. When finished, review the agent branch/PR: `results/reports/research_report.json` and `notes.md`.
+1. Set the Cloud Agent **base branch** to `cursor/stage1-asr-research-dc41` (do not start from empty `main` results).
+2. Paste [`docs/prompts/stage1b_cloud_agent.md`](docs/prompts/stage1b_cloud_agent.md).
+3. Secrets: **`HF_TOKEN` is required** (pyannote / WhisperX).
+4. Review the same branch: `results/reports/` plus new `results/asr/` artifacts.
 
 ## Local humans
 
