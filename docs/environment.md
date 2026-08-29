@@ -100,3 +100,62 @@ scripts/           # helper scripts created during research
 - Prefer writing scripts into the repo so the next agent can reuse them.
 - Large models may exceed default disk — check `df -h` first.
 - If network/model download is blocked, document blockers in `notes.md` and mark blocks `skipped`.
+
+### Cloud Agent network access
+
+Repository files cannot change the Cloud Agent egress policy. Before starting a
+new agent, configure **Cursor Dashboard → Cloud Agents → Security → Network
+access**. For this isolated research environment, prefer **Allow all** during
+Stage 1 if available. Otherwise use `Default + allowlist` with:
+
+```text
+# Hugging Face Hub, LFS and Xet
+huggingface.co
+*.huggingface.co
+hf.co
+*.hf.co
+*.xethub.hf.co
+
+# Python and PyTorch packages
+pypi.org
+files.pythonhosted.org
+download.pytorch.org
+
+# Official OpenAI Whisper checkpoints (non-HF fallback)
+openaipublic.azureedge.net
+
+# GitHub source/releases
+github.com
+api.github.com
+raw.githubusercontent.com
+codeload.github.com
+objects.githubusercontent.com
+github-releases.githubusercontent.com
+
+# Local LLM runtimes/models
+ollama.com
+*.ollama.com
+*.ollama.ai
+
+# Optional text-only API fallback
+generativelanguage.googleapis.com
+integrate.api.nvidia.com
+api.nvcf.nvidia.com
+
+# Ubuntu system packages
+archive.ubuntu.com
+security.ubuntu.com
+```
+
+Apply policy changes by creating a **new Cloud Agent run**. Secrets such as
+`HF_TOKEN` do not bypass DNS, TLS, or egress restrictions.
+
+### ASR download fallback order
+
+1. `faster-whisper medium` from the public Hugging Face repository.
+2. If Hugging Face fails at DNS/TLS before HTTP, do not try another model on the
+   same host. Use one local `openai-whisper medium` attempt; its official
+   checkpoint comes from `openaipublic.azureedge.net`.
+3. Do not use unofficial model mirrors and do not upload audio to an API.
+4. If both transports fail (or the official CPU run is impractical), report the
+   blocker and finish a partial report.

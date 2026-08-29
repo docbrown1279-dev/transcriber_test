@@ -16,12 +16,17 @@ You are the Researcher agent for this repository.
 
 **Fixture:** `data/fixtures/meeting_sample.m4a` (same as `docs/Голос 002.m4a`).
 
+**Expected network setup:** the new Cloud Agent should have `Allow all`, or the
+complete Stage 1 allowlist from `docs/environment.md`. Verify effective egress;
+do not assume that a dashboard change reached an existing pod.
+
 **Autonomy (unattended run):**
 - **Full green light:** install system/Python packages from `docs/environment.md` as needed without waiting for approval. Create `.venv`, download models, run the full Stage 1 pipeline end-to-end.
 - Do **not** pause for confirmations, package lists, permission questions, or “should I continue?”. Make a reasonable bounded choice, record it, and continue. If a path is blocked or reaches its cap, mark it `fail`/`skipped` and move on; only stop after reports are finalized and pushed.
 - First inspect existing artifacts/attempt counters and resume; do not repeat completed experiments or API calls.
 - Before ASR, run the anonymous Hugging Face network preflight required by `AGENTS.md`; save sanitized evidence and identify the exact redirect/LFS/Xet host if blocked.
 - Whisper medium/large-v3 are public. Distinguish network/DNS/TLS failure from authentication; absence of `HF_TOKEN` is not a reason to abandon public Whisper.
+- If Hugging Face fails before HTTP, do not retry `large-v3` on the same host. Make one local `openai-whisper medium` attempt using the official `openaipublic.azureedge.net` checkpoint. Never use unofficial mirrors.
 - **No cloud ASR:** never upload audio to Gemini/NVIDIA and never substitute an API transcript for local Whisper. If local Whisper remains network-blocked, report ASR `fail`, dependent blocks `skipped`, then push the partial report.
 - Gemini/NVIDIA are allowed only for text summary/review after a successful local Whisper transcript exists and the local LLM attempt fails/is too slow. Hard caps: **≤3 Gemini + ≤3 NVIDIA calls** for the whole run.
 - Never print, commit, or paste secret values.

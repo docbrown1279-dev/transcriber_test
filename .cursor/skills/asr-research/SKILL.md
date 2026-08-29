@@ -43,8 +43,20 @@ Before the first ASR attempt:
    Never save headers containing credentials.
 4. If anonymous access is blocked, one token-authenticated comparison is
    allowed. Identical DNS/TLS failure means `failure_kind: network`, not auth.
-5. If the network gate fails, do not call cloud ASR. Finalize a partial report
-   and mark transcript-dependent blocks skipped.
+5. If Hugging Face fails at DNS/TLS before HTTP, do not spend another attempt
+   on `large-v3` at the same host. Follow the fallback order below.
+
+### ASR transport fallback
+
+1. Try public `faster-whisper medium` from Hugging Face.
+2. If Hugging Face transport is blocked, try official `openai-whisper medium`
+   locally once. Its checkpoint is hosted at `openaipublic.azureedge.net`; this
+   is a transport/runtime fallback, not cloud ASR.
+3. Do not use unofficial mirrors. Do not retry `large-v3` when the shared Hub
+   endpoint itself failed.
+4. If the official OpenAI checkpoint/package transport is also blocked, or the
+   CPU run exceeds a documented reasonable wall, finalize a partial report and
+   mark transcript-dependent blocks skipped.
 
 ## Local first, API sparingly
 
@@ -77,8 +89,12 @@ Do blocks in order. If ASR fails all attempts, still write the report with FAIL 
 
 ### 1. ASR
 
-- Primary: `faster-whisper` models `medium`, then `large-v3` if needed.
-- Optional: `whisper.cpp` for CPU speed comparison.
+- Primary: `faster-whisper medium`; use `large-v3` only after a completed medium
+  run fails the quality gate—not after a shared network/TLS failure.
+- Transport fallback: official local `openai-whisper medium` via
+  `openaipublic.azureedge.net`.
+- Optional: `whisper.cpp` for CPU speed comparison when model weights are
+  already available locally.
 - ASR must execute locally. API transcripts are forbidden and cannot satisfy
   this block.
 - Input: `data/fixtures/meeting_sample.m4a` (and variants under `data/processed/` if created).

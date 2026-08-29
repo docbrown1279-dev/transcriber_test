@@ -65,7 +65,7 @@ record it, and continue.
 
 | Block | Cap |
 |---|---|
-| ASR | **≤ 3** attempts total for `faster-whisper` (e.g. medium → large-v3 → one config tweak). Optional **1** `whisper.cpp` run only if faster-whisper failed or for a quick CPU timing sample — not a second full sweep. |
+| ASR | **≤ 3** local attempts total. Start `faster-whisper medium`; use `large-v3` only after a completed quality failure. If HF transport fails, use one official `openai-whisper medium` attempt via Azure instead of retrying the same host. Optional **1** `whisper.cpp` timing run only with weights already available. |
 | Denoise | **≤ 3** methods (e.g. ffmpeg filter, DeepFilterNet, RNNoise). **1** A/B (before/after) per method. No re-tunes. |
 | Chunking | **≤ 2** embedding model tries. **1** threshold (default ~0.7); one optional nudge only if clearly broken. |
 | Local LLM summary | **≤ 1** model / runtime try. Soft wall: ~10 min gen; if exceeded → stop local, optionally one API call. |
@@ -86,6 +86,9 @@ These rules prevent a cloud result from being reported as a local-stack result:
    `results/asr/network_preflight.json`. Follow redirects and name the exact
    blocked host (including Xet/LFS hosts). A missing `HF_TOKEN` is not an auth
    failure for this public model.
+   If HF fails before HTTP, use the official `openai-whisper medium` Azure
+   checkpoint as the one permitted local transport fallback; do not try another
+   HF model at the same blocked endpoint.
 2. **No API ASR substitution:** Gemini, NVIDIA, or any other remote ASR must not
    replace or count as a Whisper attempt or ASR success. Do not send audio to an
    API during Stage 1.
@@ -94,8 +97,9 @@ These rules prevent a cloud result from being reported as a local-stack result:
    attempt fails or exceeds its time wall.
 4. **Local dependency gate:** denoise A/B, chunking, and summary require a
    transcript produced locally in this run (or an explicitly identified prior
-   local artifact). If local Whisper is network-blocked, mark ASR `fail` with
-   `failure_kind: network`; mark dependent blocks `skipped`; finish the report.
+   local artifact). If both permitted local Whisper transports are blocked,
+   mark ASR `fail` with `failure_kind: network`; mark dependent blocks
+   `skipped`; finish the report.
 5. **Provenance:** every result names `execution_mode` (`local` or `api`),
    provider/model, and input artifact. Never label API output as local.
 6. **Resume, do not repeat:** on a restarted agent, inspect existing artifacts
