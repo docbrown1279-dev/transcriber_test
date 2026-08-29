@@ -421,7 +421,9 @@ def transformer_pass(model_id: str, output_id: str) -> None:
                     "task": "transcribe",
                     "condition_on_prev_tokens": False,
                 },
-                return_timestamps=False,
+                # Required by Transformers for rows longer than 30 seconds.
+                # Model-relative timestamps are intentionally discarded.
+                return_timestamps=True,
             )
             recognized.append({**row, "text": result["text"]})
         write_json(
