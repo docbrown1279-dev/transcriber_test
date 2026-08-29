@@ -24,11 +24,17 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["lib", "status"],
+        "required": ["lib", "status", "execution_mode", "provider", "input_artifact"],
         "properties": {
           "lib": { "type": "string" },
           "model": { "type": "string" },
           "status": { "enum": ["success", "fail", "skipped"] },
+          "execution_mode": { "const": "local" },
+          "provider": { "type": "string", "description": "Local runtime/library; cloud ASR is prohibited" },
+          "input_artifact": { "type": "string" },
+          "failure_kind": {
+            "enum": ["none", "network", "auth", "install", "runtime", "quality", "resource", "unknown"]
+          },
           "rw_ratio": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
           "oo_words": { "type": "array", "items": { "type": "string" } },
           "sample_check": { "enum": ["ok", "bad", "n/a"] },
@@ -77,11 +83,14 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["runtime", "model", "status"],
+        "required": ["runtime", "model", "status", "execution_mode", "input_artifact"],
         "properties": {
           "runtime": { "type": "string", "description": "ollama | llama.cpp | vllm | other" },
           "model": { "type": "string" },
           "status": { "enum": ["success", "fail", "skipped"] },
+          "execution_mode": { "enum": ["local", "api"] },
+          "provider": { "type": "string" },
+          "input_artifact": { "type": "string", "description": "Must identify a locally produced transcript/chunk artifact" },
           "runtime_sec": { "type": ["number", "null"] },
           "hallucination_flag": { "type": ["boolean", "null"] },
           "artifact": { "type": "string" },

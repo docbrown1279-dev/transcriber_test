@@ -26,15 +26,35 @@ command -v nvidia-smi && nvidia-smi || echo "no GPU"
 
 3. Install packages from `docs/environment.md` (create `.venv`). On **unattended Stage 1**, do **not** wait for human approval — install and continue. Log versions in `notes.md`.
 4. Confirm credentials are available as env vars (do not print values): HF token for Hub downloads; Gemini + NVIDIA for API fallbacks. See `docs/environment.md` § Credentials. If a secret is missing, skip only the paths that need it and continue.
+5. Inspect `results/` and the current branch before running anything. Reuse
+   completed artifacts and attempt counts; do not repeat API calls from a prior
+   agent.
+
+## Network preflight
+
+Before the first ASR attempt:
+
+1. Fetch the public `Systran/faster-whisper-medium` `config.json`
+   **anonymously**. This model is not gated.
+2. Test an actual small model-file download or resolve its redirects so DNS,
+   TLS, LFS, and Xet endpoints are covered—not only the Hub API.
+3. Save sanitized evidence to `results/asr/network_preflight.json`: timestamp,
+   requested URL, redirect hosts, DNS/TLS/HTTP outcome, and exact blocked host.
+   Never save headers containing credentials.
+4. If anonymous access is blocked, one token-authenticated comparison is
+   allowed. Identical DNS/TLS failure means `failure_kind: network`, not auth.
+5. If the network gate fails, do not call cloud ASR. Finalize a partial report
+   and mark transcript-dependent blocks skipped.
 
 ## Local first, API sparingly
 
 - **Default:** local Whisper / embeddings / Qwen (or similar).
 - **Hugging Face:** use `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` when downloading models (`huggingface-cli` / `huggingface_hub`).
-- **Gemini + NVIDIA APIs:** allowed inside scripts, but **economical use only** — daily limits. Use when:
-  - local model fails quality/runtime gates, or
-  - local run would be unreasonably long (document estimate), or
-  - a one-shot judgment/summary needs a stronger model after a local attempt.
+- **Cloud ASR is prohibited:** do not upload audio to Gemini, NVIDIA, or another
+  API and do not use an API transcript as evidence for local Whisper.
+- **Gemini + NVIDIA APIs:** allowed only for text summary or secondary review
+  after a successful local transcript exists and the local LLM attempt failed
+  or exceeded its time wall.
 - Prefer short prompts, small context, one call per decision; cache outputs under `results/`.
 - Record every API call in `notes.md`: provider, model, why local was insufficient, approx tokens/time. Never log API keys.
 
@@ -59,6 +79,8 @@ Do blocks in order. If ASR fails all attempts, still write the report with FAIL 
 
 - Primary: `faster-whisper` models `medium`, then `large-v3` if needed.
 - Optional: `whisper.cpp` for CPU speed comparison.
+- ASR must execute locally. API transcripts are forbidden and cannot satisfy
+  this block.
 - Input: `data/fixtures/meeting_sample.m4a` (and variants under `data/processed/` if created).
 - Output per run: transcript text + segment timestamps under `results/asr/`.
 - Quality check:
@@ -67,6 +89,8 @@ Do blocks in order. If ASR fails all attempts, still write the report with FAIL 
   3. Emit OOV word list.
 - Max 3 attempts per library family. Record each attempt in the report.
 - See `AGENTS.md` **Hard budgets** for global caps (denoise ≤3 methods, chunking ≤2 models, LLM ≤1 local, API ≤3+≤3).
+- Each record must identify `execution_mode`, provider/model, input artifact,
+  and `failure_kind` when unsuccessful.
 
 ### 2. Denoise (separate track)
 
@@ -87,7 +111,9 @@ Do blocks in order. If ASR fails all attempts, still write the report with FAIL 
 - Prefer Qwen2.5-7B-Instruct (or newer similar) via Ollama / llama.cpp / vLLM if GPU — **one** local try.
 - Prompt: short summary + decisions + action items (Russian).
 - Soft limit: generation should not exceed ~10 min for ~20 min audio equivalent.
-- If local is too slow/unusable: **at most one** Gemini **or** NVIDIA call on chunked text (counts toward the ≤3 per provider caps).
+- If local is too slow/unusable and a **local Whisper transcript exists**:
+  **at most one** Gemini **or** NVIDIA call on text only (counts toward the ≤3
+  per-provider caps).
 - Flag hallucinations / empty fluff.
 
 ## Report outputs

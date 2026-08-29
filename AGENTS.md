@@ -71,6 +71,30 @@ Do **not** infinite-retry. On hitting a cap: mark `fail`/`skipped`, write what y
 
 Prefer finishing a **thin** complete report over exhausting budgets on one block.
 
+## Evidence and provenance gates
+
+These rules prevent a cloud result from being reported as a local-stack result:
+
+1. **Network preflight before ASR:** anonymously fetch the public
+   `Systran/faster-whisper-medium` config and record DNS/TLS/redirect results in
+   `results/asr/network_preflight.json`. Follow redirects and name the exact
+   blocked host (including Xet/LFS hosts). A missing `HF_TOKEN` is not an auth
+   failure for this public model.
+2. **No API ASR substitution:** Gemini, NVIDIA, or any other remote ASR must not
+   replace or count as a Whisper attempt or ASR success. Do not send audio to an
+   API during Stage 1.
+3. **API scope:** Gemini/NVIDIA may only summarize or secondarily review text
+   produced by a successful local Whisper run, and only after the local LLM
+   attempt fails or exceeds its time wall.
+4. **Local dependency gate:** denoise A/B, chunking, and summary require a
+   transcript produced locally in this run (or an explicitly identified prior
+   local artifact). If local Whisper is network-blocked, mark ASR `fail` with
+   `failure_kind: network`; mark dependent blocks `skipped`; finish the report.
+5. **Provenance:** every result names `execution_mode` (`local` or `api`),
+   provider/model, and input artifact. Never label API output as local.
+6. **Resume, do not repeat:** on a restarted agent, inspect existing artifacts
+   and attempt counters first. Do not repeat completed API calls or experiments.
+
 ## Deliverables (required)
 
 Write under `results/reports/`:
