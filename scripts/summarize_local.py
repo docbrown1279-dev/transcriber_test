@@ -53,8 +53,10 @@ def main() -> None:
     runtime_sec = round(time.monotonic() - started, 3)
     summary = response["choices"][0]["message"]["content"].strip()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.with_suffix(".md").write_text(summary + "\n", encoding="utf-8")
-    args.output.with_suffix(".json").write_text(
+    markdown_path = Path(f"{args.output}.md")
+    metadata_path = Path(f"{args.output}.json")
+    markdown_path.write_text(summary + "\n", encoding="utf-8")
+    metadata_path.write_text(
         json.dumps(
             {
                 "execution_mode": "local",
@@ -63,7 +65,7 @@ def main() -> None:
                 "input_artifact": str(args.transcript),
                 "runtime_sec": runtime_sec,
                 "usage": response.get("usage"),
-                "artifact": str(args.output.with_suffix(".md")),
+                "artifact": str(markdown_path),
             },
             ensure_ascii=False,
             indent=2,
