@@ -32,14 +32,13 @@ You are the Researcher agent. **Stage 1c only:** isolated re-ASR of three verifi
 
 ffmpeg example: `-ss (start-0.35) -to (end+0.35) -ac 1 -ar 16000`.
 
-**Stacks** (stop the third as soon as one of 3a/3b works):
+**Output format** (required): each stack × clip → JSON like `eval_example/hypothesis.example.json`: `audio`, `language`, `model`, `provider`, `execution_mode`, `segments: [{id, start, end, speaker, text}]`. Times in **seconds on that clip WAV** (0 = start of the wav). Copy `speaker` from the table. Do **not** invent gold. Do **not** read `eval/` if present.
+
+**Stacks** (all three; Gemini is the third, not a Qwen fallback):
 
 1. **WhisperX `large-v3`** — transcribe + **align**, language `ru`, CPU int8. **No pyannote.** If HF pyannote is gated, skip diarization.
 2. **faster-whisper `large-v3`** — **not** WhisperX. Same clips, `language=ru`, VAD on, `condition_on_previous_text=False`.
-3. **Audio LLM, one of:**
-   - **3a. Local Qwen audio** — 1b `Qwen3-8B` GGUF is **text-only**. Try **one** local audio Qwen (e.g. Qwen2-Audio-7B-Instruct) on CPU. ≤2 install/run attempts.
-   - **3b. Gemini, only if 3a fails** (install/OOM/empty/cannot load audio). Cloud Cursor **should** have `GEMINI_API_KEY` as a runtime secret. Send **only these three short WAVs**, never the full meeting. Model: `gemini-2.5-flash`. **≤3 audio calls** (one per clip). Prompt: транскрибируй русскую речь совещания как есть, не переводи, не добавляй английский, не саммари. Log `execution_mode: api`, provider Gemini, model name, clip id. If 401/403/451/location unsupported: record `failure_kind: auth` or `network`, do **not** retry NVIDIA, do **not** send audio elsewhere.
-   - If 3a succeeds, **do not** call Gemini.
+3. **Gemini `2.5-flash` audio** — do **not** run local Qwen-Omni / Qwen2-Audio. Cloud Cursor should have `GEMINI_API_KEY`. Send **only these three short WAVs**, never the full meeting. **≤3 audio calls** (one per clip). Prompt: транскрибируй русскую речь совещания как есть, не переводи, не добавляй английский, не саммари. Log `execution_mode: api`. If 401/403/451: `failure_kind: auth` or `network`, do **not** retry NVIDIA, do **not** substitute Qwen audio.
 
 Reuse 1b packages if importable after install. Unattended install from `docs/environment.md` (whisperx, faster-whisper). ≤2 install attempts per family. Never print secrets.
 
@@ -51,6 +50,6 @@ Reuse 1b packages if importable after install. Unattended install from `docs/env
 
 **Unattended:** install, run, reports in Russian, commit/push this working branch (no force-push `main`).
 
-**Start now:** extract three wavs → WhisperX large → faster-whisper large → Qwen audio, else Gemini on the three clips → `results/reports/1c/` → commit/push.
+**Start now:** extract three wavs → WhisperX large → faster-whisper large → Gemini on the three clips → hypothesis JSON per `eval_example/hypothesis.example.json` → `results/reports/1c/` → commit/push.
 
 ---

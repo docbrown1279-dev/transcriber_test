@@ -1,0 +1,440 @@
+{
+  "min_overlap_sec": 0.15,
+  "error_flag_gt": 2,
+  "notes": "Phrase texts live in gitignored eval/1e_wer_review.json (gold). Numeric scores only here.",
+  "clips": {
+    "test_voice": {
+      "gold_segments": 8,
+      "gold_words": 170
+    },
+    "test_apartments": {
+      "gold_segments": 16,
+      "gold_words": 176
+    },
+    "test_transformers": {
+      "gold_segments": 8,
+      "gold_words": 182
+    },
+    "test_ninth": {
+      "gold_segments": 16,
+      "gold_words": 174
+    }
+  },
+  "models": {
+    "gigaam_v3": {
+      "macro": {
+        "corpus_wer": 0.3823,
+        "corpus_cer": 0.3102,
+        "covered_wer": 0.2633,
+        "covered_cer": 0.8154
+      },
+      "micro": {
+        "corpus_wer": 0.3818,
+        "corpus_cer": 0.3104,
+        "gold_words": 702,
+        "errors": 268,
+        "latin_hyp_segments": 0,
+        "hyp_segments": 42
+      },
+      "per_clip": {
+        "test_voice": {
+          "gold_words": 170,
+          "gold_chars": 1106,
+          "hyp_words": 120,
+          "corpus_wer": 0.3706,
+          "corpus_cer": 0.3635,
+          "corpus_cer_edits": 402,
+          "covered_wer": 0.3097,
+          "covered_cer": 0.7741,
+          "S": 7,
+          "D": 53,
+          "I": 3,
+          "missed_gold_words": 15,
+          "missed_word_share": 0.0882
+        },
+        "test_apartments": {
+          "gold_words": 176,
+          "gold_chars": 1012,
+          "hyp_words": 177,
+          "corpus_wer": 0.483,
+          "corpus_cer": 0.3933,
+          "corpus_cer_edits": 398,
+          "covered_wer": 0.25,
+          "covered_cer": 0.9388,
+          "S": 26,
+          "D": 29,
+          "I": 30,
+          "missed_gold_words": 16,
+          "missed_word_share": 0.0909
+        },
+        "test_transformers": {
+          "gold_words": 182,
+          "gold_chars": 1056,
+          "hyp_words": 166,
+          "corpus_wer": 0.3022,
+          "corpus_cer": 0.2178,
+          "corpus_cer_edits": 230,
+          "covered_wer": 0.2637,
+          "covered_cer": 0.6568,
+          "S": 19,
+          "D": 26,
+          "I": 10,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        },
+        "test_ninth": {
+          "gold_words": 174,
+          "gold_chars": 1014,
+          "hyp_words": 198,
+          "corpus_wer": 0.3736,
+          "corpus_cer": 0.2663,
+          "corpus_cer_edits": 270,
+          "covered_wer": 0.2299,
+          "covered_cer": 0.8919,
+          "S": 19,
+          "D": 11,
+          "I": 35,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        }
+      },
+      "flagged_counts": {
+        "missed": 5,
+        "high_error": 20,
+        "latin": 0
+      }
+    },
+    "gigaam_v3_ungained": {
+      "macro": {
+        "corpus_wer": 0.3811,
+        "corpus_cer": 0.3133,
+        "covered_wer": 0.2733,
+        "covered_cer": 0.8242
+      },
+      "micro": {
+        "corpus_wer": 0.3803,
+        "corpus_cer": 0.314,
+        "gold_words": 702,
+        "errors": 267,
+        "latin_hyp_segments": 0,
+        "hyp_segments": 42
+      },
+      "per_clip": {
+        "test_voice": {
+          "gold_words": 170,
+          "gold_chars": 1106,
+          "hyp_words": 116,
+          "corpus_wer": 0.3941,
+          "corpus_cer": 0.3942,
+          "corpus_cer_edits": 436,
+          "covered_wer": 0.3355,
+          "covered_cer": 0.7692,
+          "S": 7,
+          "D": 57,
+          "I": 3,
+          "missed_gold_words": 15,
+          "missed_word_share": 0.0882
+        },
+        "test_apartments": {
+          "gold_words": 176,
+          "gold_chars": 1012,
+          "hyp_words": 178,
+          "corpus_wer": 0.4545,
+          "corpus_cer": 0.3814,
+          "corpus_cer_edits": 386,
+          "covered_wer": 0.2313,
+          "covered_cer": 0.9465,
+          "S": 24,
+          "D": 27,
+          "I": 29,
+          "missed_gold_words": 16,
+          "missed_word_share": 0.0909
+        },
+        "test_transformers": {
+          "gold_words": 182,
+          "gold_chars": 1056,
+          "hyp_words": 156,
+          "corpus_wer": 0.2967,
+          "corpus_cer": 0.2093,
+          "corpus_cer_edits": 221,
+          "covered_wer": 0.2967,
+          "covered_cer": 0.6444,
+          "S": 18,
+          "D": 31,
+          "I": 5,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        },
+        "test_ninth": {
+          "gold_words": 174,
+          "gold_chars": 1014,
+          "hyp_words": 200,
+          "corpus_wer": 0.3793,
+          "corpus_cer": 0.2682,
+          "corpus_cer_edits": 272,
+          "covered_wer": 0.2299,
+          "covered_cer": 0.9369,
+          "S": 22,
+          "D": 9,
+          "I": 35,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        }
+      },
+      "flagged_counts": {
+        "missed": 5,
+        "high_error": 21,
+        "latin": 0
+      }
+    },
+    "podlodka_turbo": {
+      "macro": {
+        "corpus_wer": 0.4504,
+        "corpus_cer": 0.3219,
+        "covered_wer": 0.3254,
+        "covered_cer": 1.0132
+      },
+      "micro": {
+        "corpus_wer": 0.4501,
+        "corpus_cer": 0.3216,
+        "gold_words": 702,
+        "errors": 316,
+        "latin_hyp_segments": 0,
+        "hyp_segments": 41
+      },
+      "per_clip": {
+        "test_voice": {
+          "gold_words": 170,
+          "gold_chars": 1106,
+          "hyp_words": 135,
+          "corpus_wer": 0.4235,
+          "corpus_cer": 0.3463,
+          "corpus_cer_edits": 383,
+          "covered_wer": 0.3613,
+          "covered_cer": 1.4647,
+          "S": 27,
+          "D": 40,
+          "I": 5,
+          "missed_gold_words": 15,
+          "missed_word_share": 0.0882
+        },
+        "test_apartments": {
+          "gold_words": 176,
+          "gold_chars": 1012,
+          "hyp_words": 181,
+          "corpus_wer": 0.5057,
+          "corpus_cer": 0.3824,
+          "corpus_cer_edits": 387,
+          "covered_wer": 0.3,
+          "covered_cer": 0.8998,
+          "S": 36,
+          "D": 24,
+          "I": 29,
+          "missed_gold_words": 16,
+          "missed_word_share": 0.0909
+        },
+        "test_transformers": {
+          "gold_words": 182,
+          "gold_chars": 1056,
+          "hyp_words": 196,
+          "corpus_wer": 0.4011,
+          "corpus_cer": 0.2424,
+          "corpus_cer_edits": 256,
+          "covered_wer": 0.3242,
+          "covered_cer": 0.6692,
+          "S": 41,
+          "D": 9,
+          "I": 23,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        },
+        "test_ninth": {
+          "gold_words": 174,
+          "gold_chars": 1014,
+          "hyp_words": 220,
+          "corpus_wer": 0.4713,
+          "corpus_cer": 0.3166,
+          "corpus_cer_edits": 321,
+          "covered_wer": 0.3161,
+          "covered_cer": 1.019,
+          "S": 32,
+          "D": 2,
+          "I": 48,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        }
+      },
+      "flagged_counts": {
+        "missed": 5,
+        "high_error": 22,
+        "latin": 0
+      }
+    },
+    "faster_whisper_large_v3": {
+      "macro": {
+        "corpus_wer": 0.5629,
+        "corpus_cer": 0.4799,
+        "covered_wer": 0.4821,
+        "covered_cer": 1.0354
+      },
+      "micro": {
+        "corpus_wer": 0.5655,
+        "corpus_cer": 0.4799,
+        "gold_words": 702,
+        "errors": 397,
+        "latin_hyp_segments": 21,
+        "hyp_segments": 41
+      },
+      "per_clip": {
+        "test_voice": {
+          "gold_words": 170,
+          "gold_chars": 1106,
+          "hyp_words": 138,
+          "corpus_wer": 0.4824,
+          "corpus_cer": 0.4014,
+          "corpus_cer_edits": 444,
+          "covered_wer": 0.4194,
+          "covered_cer": 1.608,
+          "S": 32,
+          "D": 41,
+          "I": 9,
+          "missed_gold_words": 15,
+          "missed_word_share": 0.0882
+        },
+        "test_apartments": {
+          "gold_words": 176,
+          "gold_chars": 1012,
+          "hyp_words": 147,
+          "corpus_wer": 0.5909,
+          "corpus_cer": 0.4881,
+          "corpus_cer_edits": 494,
+          "covered_wer": 0.4688,
+          "covered_cer": 0.961,
+          "S": 41,
+          "D": 46,
+          "I": 17,
+          "missed_gold_words": 16,
+          "missed_word_share": 0.0909
+        },
+        "test_transformers": {
+          "gold_words": 182,
+          "gold_chars": 1056,
+          "hyp_words": 84,
+          "corpus_wer": 0.7473,
+          "corpus_cer": 0.6534,
+          "corpus_cer_edits": 690,
+          "covered_wer": 0.7473,
+          "covered_cer": 0.7007,
+          "S": 36,
+          "D": 99,
+          "I": 1,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        },
+        "test_ninth": {
+          "gold_words": 174,
+          "gold_chars": 1014,
+          "hyp_words": 182,
+          "corpus_wer": 0.431,
+          "corpus_cer": 0.3767,
+          "corpus_cer_edits": 382,
+          "covered_wer": 0.2931,
+          "covered_cer": 0.8719,
+          "S": 23,
+          "D": 22,
+          "I": 30,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        }
+      },
+      "flagged_counts": {
+        "missed": 5,
+        "high_error": 28,
+        "latin": 29
+      }
+    },
+    "podlodka_large_v3_ru": {
+      "macro": {
+        "corpus_wer": 0.455,
+        "corpus_cer": 0.3352,
+        "covered_wer": 0.3067,
+        "covered_cer": 1.0289
+      },
+      "micro": {
+        "corpus_wer": 0.4544,
+        "corpus_cer": 0.335,
+        "gold_words": 702,
+        "errors": 319,
+        "latin_hyp_segments": 0,
+        "hyp_segments": 41
+      },
+      "per_clip": {
+        "test_voice": {
+          "gold_words": 170,
+          "gold_chars": 1106,
+          "hyp_words": 130,
+          "corpus_wer": 0.4353,
+          "corpus_cer": 0.3553,
+          "corpus_cer_edits": 393,
+          "covered_wer": 0.3742,
+          "covered_cer": 1.4726,
+          "S": 26,
+          "D": 44,
+          "I": 4,
+          "missed_gold_words": 15,
+          "missed_word_share": 0.0882
+        },
+        "test_apartments": {
+          "gold_words": 176,
+          "gold_chars": 1012,
+          "hyp_words": 182,
+          "corpus_wer": 0.5341,
+          "corpus_cer": 0.3972,
+          "corpus_cer_edits": 402,
+          "covered_wer": 0.2687,
+          "covered_cer": 0.9254,
+          "S": 72,
+          "D": 8,
+          "I": 14,
+          "missed_gold_words": 16,
+          "missed_word_share": 0.0909
+        },
+        "test_transformers": {
+          "gold_words": 182,
+          "gold_chars": 1056,
+          "hyp_words": 190,
+          "corpus_wer": 0.3791,
+          "corpus_cer": 0.268,
+          "corpus_cer_edits": 283,
+          "covered_wer": 0.3022,
+          "covered_cer": 0.6816,
+          "S": 35,
+          "D": 13,
+          "I": 21,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        },
+        "test_ninth": {
+          "gold_words": 174,
+          "gold_chars": 1014,
+          "hyp_words": 223,
+          "corpus_wer": 0.4713,
+          "corpus_cer": 0.3205,
+          "corpus_cer_edits": 325,
+          "covered_wer": 0.2816,
+          "covered_cer": 1.036,
+          "S": 27,
+          "D": 3,
+          "I": 52,
+          "missed_gold_words": 0,
+          "missed_word_share": 0.0
+        }
+      },
+      "flagged_counts": {
+        "missed": 5,
+        "high_error": 20,
+        "latin": 0
+      }
+    }
+  }
+}

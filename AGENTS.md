@@ -2,90 +2,75 @@
 
 ## Mission
 
-Stage **1b** (current): produce **coherent Russian meeting text with speaker labels** on CPU.  
-Do **not** run semantic chunking or meeting summary in this stage. Stage 2 tests remain deferred.
+Stage **2** (current): frozen **GigaAM v3_rnnt** → adjacent-embedding chunks (≤3 size/threshold tries) → titles if count is sane.  
+No denoise. No Whisper. No fourth chunk recipe. No full meeting summary.
 
 ## Role
 
 You are the **Researcher** agent. Read and follow:
 
-1. [`docs/research_plan.md`](docs/research_plan.md) — Stage 1b search tree and quality criterion
+1. [`docs/research_plan.md`](docs/research_plan.md) — Stage 2 pipeline
 2. [`.cursor/skills/asr-research/SKILL.md`](.cursor/skills/asr-research/SKILL.md) — workflow
-3. [`docs/schemas/research_report.schema.json`](docs/schemas/research_report.schema.json) — report schema
+3. [`docs/prompts/stage2_chunk_titles.md`](docs/prompts/stage2_chunk_titles.md) — unattended run
+4. [`docs/schemas/research_report.schema.json`](docs/schemas/research_report.schema.json) — report schema
 
-## Current stage (1b)
+## Current stage (2)
 
 | In scope | Out of scope |
 |---|---|
-| `large-v3` + loudnorm (no compressor) | ffmpeg afftdn/highpass (already rejected) |
-| Diarization: WhisperX, else Whisper + pyannote | Chunking / embeddings |
-| Meaning check with local **Qwen3-8B** | Full meeting summary |
-| Neural denoise (DeepFilterNet, RNNoise) only if meaning fails | Cloud ASR; NeMo |
-| Speaker-targeted reprocess if one speaker is clearly worse | Infinite param sweeps |
+| Full-file **GigaAM `v3_rnnt` + pyannote 3.1 + linear gain** | Denoise; loudnorm; any second ASR |
+| Pack **whole speaker turns** (~20–50 **words**) | Splitting a turn in the middle (unless &gt;~80 words) |
+| Adjacent cosine merge; start 20–50 words / 0.80 | Global clustering; e5; second embedder |
+| If count ∉ [5, 30]: **≤2 more tries** (size + threshold only) | Fourth recipe; ASR fallback; cascade on holes |
+| **Qwen3-8B** titles ≤10 words if some try is 5–30 | Full summary; inventing owners |
+| Log embed time, LLM time, save full texts | Audio to APIs |
 
 ## Fixtures
 
 | Path | Description |
 |---|---|
-| `data/fixtures/meeting_sample.m4a` | Example meeting |
+| `data/fixtures/meeting_sample.m4a` | Full meeting (~24.5 min) — Stage 2 input |
 | `docs/Голос 002.m4a` | Same file |
-
-Reuse existing Stage 1 artifacts as **baseline only**. Do not treat `faster-whisper medium` as the 1b success path. Do not repeat the completed ffmpeg denoise A/B.
+| `data/test_*.m4a` | Eval clips (Stage 1e only; do not chunk only these) |
 
 ## Credentials
 
 | Secret | Use |
 |---|---|
-| `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` | **Required** for pyannote / WhisperX. Probe gated files **before** ASR; **401/403 → stop the run** |
-| Gemini / NVIDIA | Do not use in 1b unless Qwen3-8B cannot run at all (then ≤1 short text-only meaning check) |
+| `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` | **Required** for pyannote. Probe gated files **before** ASR; **401/403 → stop** |
+| Gemini / NVIDIA | Do not use in Stage 2 |
 
-Never print or commit secrets.
+Never print or commit secrets. Never commit `eval/` gold.
 
 ## Success criterion
 
-A run is `success` only if **Qwen3-8B meaning check** says the sampled fragments are coherent meeting speech.  
-`rw_ratio ≥ 0.9` is optional telemetry, **not** a pass.
-
-Do not close a block as `success` with unusable text. Do not close as `fail` while a listed variant or error-retry remains.
+Chunks in **5–30** after at most 3 size/threshold tries, then titles. If none of the three is in range: **stop**, keep all attempt artifacts, do not start Qwen, do not add a fourth recipe.
 
 ## Hard budgets
 
-Error (crash, OOM, empty/truncated output): retry **same** config up to **2** extra times.  
-Quality fail: move to the **next listed** variant. No extra variants.
-
 | Block | Cap |
 |---|---|
-| ASR + diarization stacks | **3**: WhisperX large-v3 + loudnorm → faster-whisper large-v3 + pyannote → whisper.cpp large + pyannote |
-| Loudnorm | **1** ffmpeg `loudnorm` (no `acompressor` / `compand`) |
-| Meaning checker | **1** local model: Qwen3-8B. 2–3 random fragments; if diarized, 2–3 **per speaker** |
-| Neural denoise libraries | **≤ 2** (DeepFilterNet, RNNoise). ffmpeg skip. |
-| Presets per denoise library | default + **≤ 2** tweaks (3 total), then stop that library |
-| Speaker-only reprocess | **1** extra pass on the worst speaker if diarization exists and that speaker is clearly worse |
-| Package install | **≤ 2** attempts per tool family |
-| Agent loops | No full-pipeline restart. No medium-quality victory lap. |
+| ASR stack | **1**: GigaAM v3_rnnt + pyannote + linear gain (no ASR fallback) |
+| Embedding model | **1**: `cointegrated/rubert-tiny2` (≤2 install tries) |
+| Chunking | **≤ 3** tries: unit size + cosine threshold only (start 20–50 / 0.80) |
+| Title LLM | **1**: Qwen3-8B, and only if 5–30 chunks |
+| Package install | **≤ 2** attempts per family |
 
-Time wall: if `large-v3` has no usable transcript after **~90 min** or OOM, that stack failed on resources → next stack (whisper.cpp).
-
-## Provenance
-
-- Local Whisper/WhisperX only. No API ASR. No audio to Gemini/NVIDIA.
-- Each ASR row: `execution_mode: local`, provider, model, input artifact, diarization method, `meaning_check`, `failure_kind`.
-- Resume: inspect `results/` first; do not repeat completed 1a medium/ffmpeg experiments.
+Error (crash, OOM): retry **same** config up to **2** extra times. After 3 chunking tries still outside 5–30: stop and think — that is not another retry.
 
 ## Unattended
 
-Install from `docs/environment.md` without waiting. Commit/push the **working branch** (prefer continuing `cursor/stage1-asr-research-dc41`). No force-push to `main`. Reports in Russian.
+Install without waiting. Commit/push **`cursor/stage1e-four-asr-be20`**. No force-push to `main`. Reports in Russian.
 
 ## Launch checklist
 
 ```
-- [ ] Read docs/research_plan.md + this file + skill
-- [ ] Resume artifacts; skip completed ffmpeg/medium-as-goal
-- [ ] HF gated preflight; **stop** on 401/403
-- [ ] loudnorm WAV
-- [ ] WhisperX large-v3 + diarization (else fw+pyannote, else whisper.cpp)
-- [ ] Qwen3-8B meaning check (per speaker if labels exist)
-- [ ] If meaning bad: ≤2 neural denoisers, ≤3 presets each; optional worst-speaker pass
-- [ ] `results/reports/1a|1b|1c/` research_report.json + notes.md; chunking/summary skipped
-- [ ] Commit/push branch
+- [ ] Read docs/research_plan.md + this file + stage2 prompt
+- [ ] HF gated preflight; stop on 401/403
+- [ ] Full-file pyannote → merge table → linear gain extracts
+- [ ] GigaAM v3_rnnt (25 s splits); save json+txt
+- [ ] Pack whole speaker turns (~20–50 words); adjacent cosine 0.80; **≤3** size/threshold tries
+- [ ] If some try is 5–30 chunks: Qwen3-8B titles ≤10 words; else stop before LLM
+- [ ] Log embed_runtime_sec, llm_runtime_sec; results/reports/2/
+- [ ] Commit/push cursor/stage1e-four-asr-be20
 ```

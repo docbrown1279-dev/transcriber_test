@@ -1,15 +1,14 @@
 ---
-description: Stage 1b — coherent diarized transcript, bounded search
+description: Stage 2 — GigaAM v3 + pyannote + gain, one rubert-tiny2 adjacent chunk pass, Qwen3-8B titles if 5–30 chunks
 alwaysApply: true
 ---
 
-# Stage 1b — text + diarization
+# Stage 2 — chunks + timestamp titles
 
-- Source of truth: `docs/research_plan.md` and `AGENTS.md`.
-- Goal: coherent Russian meeting text **with speakers**. No chunking, no summary this stage.
-- Pass = Qwen3-8B meaning check on samples (per speaker if diarized), **not** rw_ratio ≥ 0.9.
-- Stacks (max 3): WhisperX large-v3 + loudnorm → faster-whisper large-v3 + pyannote → whisper.cpp large + pyannote.
-- Denoise only if meaning fails: ≤2 neural libs (DeepFilterNet, RNNoise); skip ffmpeg; ≤3 presets each; optional worst-speaker-only pass.
-- `HF_TOKEN` required for pyannote/WhisperX. Probe gated files before ASR; **401/403 → stop the run**. No cloud ASR. No audio to APIs.
-- Unattended: install and continue; commit/push working branch (prefer `cursor/stage1-asr-research-dc41`). Never log secrets.
-- Outputs: `results/reports/1a|1b|1c/` (`research_report.json` + `notes.md`). Index: `results/reports/notes.md`.
+- Source: `docs/research_plan.md`, `AGENTS.md`, `docs/prompts/stage2_chunk_titles.md`.
+- ASR: **GigaAM v3_rnnt + pyannote 3.1 + linear gain**. No denoise. No second ASR.
+- Input: full `data/fixtures/meeting_sample.m4a`.
+- Chunk: **whole speaker turns**, start ~20–50 words / cosine **0.80**, `rubert-tiny2`, adjacent only. If count ∉ [5, 30] → **≤2 more tries** (unit size + threshold only). After 3: stop.
+- Titles: **Qwen3-8B** ≤10 words, only if some try is 5–30 chunks.
+- `HF_TOKEN` for pyannote; **401/403 → stop**. No cloud ASR.
+- Branch: `cursor/stage1e-four-asr-be20`. Reports: `results/reports/2/`.
