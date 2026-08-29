@@ -1,0 +1,169 @@
+{
+  "execution_mode": "local",
+  "provider": "llama.cpp",
+  "model": "Qwen3-8B-Q5_K_M.gguf",
+  "input_artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+  "seed": 20260829,
+  "fragments_per_speaker": 3,
+  "samples": [
+    {
+      "id": "SPEAKER_00_1",
+      "speaker": "SPEAKER_00",
+      "start": 1199.884,
+      "end": 1202.645,
+      "text": "Чтобы выйти на более качественный продукт."
+    },
+    {
+      "id": "SPEAKER_00_2",
+      "speaker": "SPEAKER_00",
+      "start": 1267.29,
+      "end": 1269.351,
+      "text": "Она так же готова, как десятая."
+    },
+    {
+      "id": "SPEAKER_00_3",
+      "speaker": "SPEAKER_00",
+      "start": 1278.157,
+      "end": 1282.499,
+      "text": "В части, ну, больших трехкомнатных, есть отступление boosting."
+    },
+    {
+      "id": "SPEAKER_01_1",
+      "speaker": "SPEAKER_01",
+      "start": 63.157,
+      "end": 75.739,
+      "text": "cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально"
+    },
+    {
+      "id": "SPEAKER_01_2",
+      "speaker": "SPEAKER_01",
+      "start": 537.489,
+      "end": 549.1,
+      "text": "훨- Так airpl- АBeifall- У нас же получается количество呵 площади стало больше относительно АГК камня Там же Т noticeable запрашивались по- По АГК кам stirring, я так понимаю?"
+    },
+    {
+      "id": "SPEAKER_01_3",
+      "speaker": "SPEAKER_01",
+      "start": 1269.451,
+      "end": 1272.233,
+      "text": "Может, есть смысл uhhh все-таки направить?"
+    },
+    {
+      "id": "SPEAKER_02_1",
+      "speaker": "SPEAKER_02",
+      "start": 324.736,
+      "end": 327.418,
+      "text": "А по ТП вот там вопросик небольшой."
+    },
+    {
+      "id": "SPEAKER_02_2",
+      "speaker": "SPEAKER_02",
+      "start": 339.693,
+      "end": 344.895,
+      "text": "Подземная часть где-то под ком stinky, да?"
+    },
+    {
+      "id": "SPEAKER_02_3",
+      "speaker": "SPEAKER_02",
+      "start": 885.176,
+      "end": 890.598,
+      "text": "Если у нас мощность корпусу 9 совпадает с 8 или с каким-то,"
+    },
+    {
+      "id": "SPEAKER_03_1",
+      "speaker": "SPEAKER_03",
+      "start": 376.514,
+      "end": 383.538,
+      "text": "Нам платили 6-7, но с 0,4 не такого возвращения."
+    },
+    {
+      "id": "SPEAKER_03_2",
+      "speaker": "SPEAKER_03",
+      "start": 832.82,
+      "end": 860.675,
+      "text": "и arose саван вот здесь они должны дать chopsticks вот проще проще как только информация нас будет мы соответственно мы идем сразу что putting the door проведена предлагаю по 10 затягивать этот вопрос как-то будет понимание поставки почек помещение drain р"
+    },
+    {
+      "id": "SPEAKER_03_3",
+      "speaker": "SPEAKER_03",
+      "start": 1384.256,
+      "end": 1392.379,
+      "text": "Мы как бы не хотим вас, так сказать, закрочить сейчас, чтобы вы как бы нам вылезли и все, а maintain мы еще пол awhile будем ждать."
+    }
+  ],
+  "runtime_sec": 165.905,
+  "usage": {
+    "prompt_tokens": 894,
+    "completion_tokens": 607,
+    "total_tokens": 1501
+  },
+  "assessment": {
+    "assessments": [
+      {
+        "id": "SPEAKER_00_1",
+        "verdict": "coherent",
+        "reason": "Связная фраза, логичная."
+      },
+      {
+        "id": "SPEAKER_00_2",
+        "verdict": "coherent",
+        "reason": "Связная фраза, логичная."
+      },
+      {
+        "id": "SPEAKER_00_3",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, несвязная фраза."
+      },
+      {
+        "id": "SPEAKER_01_1",
+        "verdict": "incoherent",
+        "reason": "Иностранные слова, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_01_2",
+        "verdict": "incoherent",
+        "reason": "Иностранные слова, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_01_3",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_02_1",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_02_2",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_02_3",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_03_1",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_03_2",
+        "verdict": "incoherent",
+        "reason": "Иностранные слова, бессмысленные фразы."
+      },
+      {
+        "id": "SPEAKER_03_3",
+        "verdict": "incoherent",
+        "reason": "Непонятные термины, бессмысленные фразы."
+      }
+    ],
+    "coherent_count": 2,
+    "incoherent_count": 10,
+    "overall": "incoherent",
+    "rationale": "Большинство фрагментов содержат иностранные слова, бессмысленные фразы и непонятные термины, что указывает на несвязную речь."
+  },
+  "raw_response": "<think>\n\n</think>\n\n{\n  \"assessments\": [\n    {\"id\": \"SPEAKER_00_1\", \"verdict\": \"coherent\", \"reason\": \"Связная фраза, логичная.\"},\n    {\"id\": \"SPEAKER_00_2\", \"verdict\": \"coherent\", \"reason\": \"Связная фраза, логичная.\"},\n    {\"id\": \"SPEAKER_00_3\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, несвязная фраза.\"},\n    {\"id\": \"SPEAKER_01_1\", \"verdict\": \"incoherent\", \"reason\": \"Иностранные слова, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_01_2\", \"verdict\": \"incoherent\", \"reason\": \"Иностранные слова, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_01_3\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_02_1\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_02_2\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_02_3\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_03_1\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_03_2\", \"verdict\": \"incoherent\", \"reason\": \"Иностранные слова, бессмысленные фразы.\"},\n    {\"id\": \"SPEAKER_03_3\", \"verdict\": \"incoherent\", \"reason\": \"Непонятные термины, бессмысленные фразы.\"}\n  ],\n  \"coherent_count\": 2,\n  \"incoherent_count\": 10,\n  \"overall\": \"incoherent\",\n  \"rationale\": \"Большинство фрагментов содержат иностранные слова, бессмысленные фразы и непонятные термины, что указывает на несвязную речь.\"\n}"
+}

@@ -1,0 +1,31 @@
+{
+  "library": "pyrnnoise",
+  "version": "0.4.3",
+  "dependency": {
+    "name": "audiolab",
+    "version": "0.5.2"
+  },
+  "preset": "default",
+  "input_artifact": "data/processed/meeting_sample_loudnorm.wav",
+  "output_artifact": "data/processed/meeting_sample_loudnorm_rnnoise.wav",
+  "status": "fail",
+  "failure_kind": "runtime",
+  "attempts": [
+    {
+      "attempt": 1,
+      "entrypoint": "pyrnnoise CLI",
+      "error": "AttributeError: Info object has no attribute rate"
+    },
+    {
+      "attempt": 2,
+      "entrypoint": "scripts/denoise_rnnoise.py",
+      "error": "AttributeError: Reader object has no attribute rate"
+    },
+    {
+      "attempt": 3,
+      "entrypoint": "scripts/denoise_rnnoise.py with Reader compatibility alias",
+      "error": "TypeError: Graph.__init__() got an unexpected keyword argument rate"
+    }
+  ],
+  "notes": "Начальная попытка и два разрешённых повтора исчерпаны; выходной WAV не создан."
+}

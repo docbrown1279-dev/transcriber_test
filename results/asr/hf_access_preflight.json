@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-08-29T07:30:37.492598+00:00",
-  "token_present": false,
+  "checked_at": "2026-08-29T07:37:40.636859+00:00",
+  "token_present": true,
   "method": "GET",
   "follow_redirects": true,
   "probes": [
@@ -8,45 +8,51 @@
       "repository": "pyannote/speaker-diarization-3.1",
       "file": "config.yaml",
       "gated": true,
-      "initial_host": "huggingface.co",
-      "status": null,
-      "final_host": null,
+      "requested_host": "huggingface.co",
+      "status": 200,
+      "final_host": "huggingface.co",
       "redirects": [],
-      "result": "not_run",
-      "error_kind": "missing_token"
+      "result": "success",
+      "error_kind": null
     },
     {
       "repository": "pyannote/segmentation-3.0",
       "file": "config.yaml",
       "gated": true,
-      "initial_host": "huggingface.co",
-      "status": null,
-      "final_host": null,
+      "requested_host": "huggingface.co",
+      "status": 200,
+      "final_host": "huggingface.co",
       "redirects": [],
-      "result": "not_run",
-      "error_kind": "missing_token"
+      "result": "success",
+      "error_kind": null
     },
     {
       "repository": "pyannote/speaker-diarization-community-1",
       "file": "README.md",
       "gated": true,
-      "initial_host": "huggingface.co",
-      "status": null,
-      "final_host": null,
+      "requested_host": "huggingface.co",
+      "status": 200,
+      "final_host": "huggingface.co",
       "redirects": [],
-      "result": "not_run",
-      "error_kind": "missing_token"
+      "result": "success",
+      "error_kind": null
     },
     {
       "repository": "Systran/faster-whisper-large-v3",
       "file": "config.json",
       "gated": false,
-      "initial_host": "huggingface.co",
-      "status": null,
-      "final_host": null,
-      "redirects": [],
-      "result": "not_run",
-      "error_kind": "missing_token"
+      "requested_host": "huggingface.co",
+      "status": 200,
+      "final_host": "huggingface.co",
+      "redirects": [
+        {
+          "status": 307,
+          "from_host": "huggingface.co",
+          "to_host": "huggingface.co"
+        }
+      ],
+      "result": "success",
+      "error_kind": null
     }
   ]
 }
