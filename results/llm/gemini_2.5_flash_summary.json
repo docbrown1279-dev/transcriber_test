@@ -1,0 +1,21 @@
+{
+  "execution_mode": "api",
+  "provider": "Google Gemini",
+  "model": "gemini-2.5-flash",
+  "input_artifact": "results/asr/faster_whisper_medium_attempt1.txt",
+  "runtime_sec": 5.071,
+  "usage": {
+    "promptTokenCount": 2187,
+    "candidatesTokenCount": 39,
+    "totalTokenCount": 3207,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2187
+      }
+    ],
+    "thoughtsTokenCount": 981,
+    "serviceTier": "standard"
+  },
+  "artifact": "results/llm/gemini_2.5_flash_summary.md"
+}

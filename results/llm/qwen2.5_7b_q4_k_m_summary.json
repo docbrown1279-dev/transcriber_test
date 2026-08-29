@@ -1,0 +1,17 @@
+{
+  "execution_mode": "local",
+  "provider": "llama.cpp",
+  "model": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+  "input_artifact": "results/asr/faster_whisper_medium_attempt1.txt",
+  "runtime_sec": 126.4,
+  "usage": {
+    "prompt_tokens": 2569,
+    "completion_tokens": 549,
+    "total_tokens": 3118
+  },
+  "artifact": "results/llm/qwen2.5_7b_q4_k_m_summary.md",
+  "quality_review": {
+    "hallucination_flag": true,
+    "notes": "Саммари по темам в целом осмысленно, но модель без достаточного основания назначила «Разработчика» ответственным почти за все действия и тем самым нарушила явное ограничение промпта."
+  }
+}
