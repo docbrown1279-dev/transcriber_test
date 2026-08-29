@@ -1,0 +1,213 @@
+{
+  "audio": "data/test_transformers.m4a",
+  "duration_sec": 85.0,
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "runtime_sec": 37.941,
+  "raw_turns": [
+    {
+      "start": 0.030969,
+      "end": 2.022219,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 2.393469,
+      "end": 3.034719,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 3.034719,
+      "end": 20.027844,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 3.557844,
+      "end": 3.709719,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 20.044719,
+      "end": 21.141594,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 21.141594,
+      "end": 27.030969,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 30.675969,
+      "end": 31.283469,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 32.194719,
+      "end": 32.211594,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 32.245344,
+      "end": 32.616594,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 33.375969,
+      "end": 33.764094,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 34.050969,
+      "end": 54.267219,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 57.726594,
+      "end": 72.880344,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 74.804094,
+      "end": 81.149094,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 76.542219,
+      "end": 77.284719,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 78.752844,
+      "end": 78.989094,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 83.123469,
+      "end": 84.591594,
+      "speaker": "SPEAKER_01"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.030969,
+      "end": 3.034719,
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -37.144,
+      "peak_dbfs": -20.266,
+      "gain_db": 14.144,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_000_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_000_linear.wav"
+    },
+    {
+      "start": 3.034719,
+      "end": 21.141594,
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -29.265,
+      "peak_dbfs": -7.558,
+      "gain_db": 0.0,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_001_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_001_linear.wav"
+    },
+    {
+      "start": 21.141594,
+      "end": 27.030969,
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -36.442,
+      "peak_dbfs": -14.785,
+      "gain_db": 13.442,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_002_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_002_linear.wav"
+    },
+    {
+      "start": 30.675969,
+      "end": 32.616594,
+      "speaker": "SPEAKER_01",
+      "id": 3,
+      "rms_dbfs": -38.949,
+      "peak_dbfs": -20.018,
+      "gain_db": 15.949,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_003_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_003_linear.wav"
+    },
+    {
+      "start": 33.375969,
+      "end": 54.267219,
+      "speaker": "SPEAKER_01",
+      "id": 4,
+      "rms_dbfs": -40.11,
+      "peak_dbfs": -17.465,
+      "gain_db": 16.465,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_004_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_004_linear.wav"
+    },
+    {
+      "start": 57.726594,
+      "end": 72.880344,
+      "speaker": "SPEAKER_01",
+      "id": 5,
+      "rms_dbfs": -37.86,
+      "peak_dbfs": -14.871,
+      "gain_db": 13.871,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_005_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_005_linear.wav"
+    },
+    {
+      "start": 74.804094,
+      "end": 81.149094,
+      "speaker": "SPEAKER_01",
+      "id": 6,
+      "rms_dbfs": -40.691,
+      "peak_dbfs": -20.387,
+      "gain_db": 17.691,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_006_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_006_linear.wav"
+    },
+    {
+      "start": 76.542219,
+      "end": 78.989094,
+      "speaker": "SPEAKER_00",
+      "id": 7,
+      "rms_dbfs": -40.824,
+      "peak_dbfs": -23.101,
+      "gain_db": 17.824,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_007_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_007_linear.wav"
+    },
+    {
+      "start": 83.123469,
+      "end": 84.591594,
+      "speaker": "SPEAKER_01",
+      "id": 8,
+      "rms_dbfs": -35.08,
+      "peak_dbfs": -17.001,
+      "gain_db": 12.08,
+      "raw_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_008_raw.wav",
+      "gained_wav": "results/asr/eval_clips/_extracts/test_transformers/turn_008_linear.wav"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 27.030969,
+      "end": 30.675969
+    },
+    {
+      "start": 32.616594,
+      "end": 33.375969
+    },
+    {
+      "start": 54.267219,
+      "end": 57.726594
+    },
+    {
+      "start": 72.880344,
+      "end": 74.804094
+    },
+    {
+      "start": 81.149094,
+      "end": 83.123469
+    }
+  ]
+}
