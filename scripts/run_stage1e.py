@@ -155,37 +155,41 @@ def astats(path: Path) -> tuple[float, float]:
 
 def extract(source: Path, start: float, end: float, destination: Path, gain_db: float = 0.0) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    command = [
-        "ffmpeg",
-        "-hide_banner",
-        "-loglevel",
-        "error",
-        "-y",
-        "-ss",
-        f"{start:.9f}",
-        "-to",
-        f"{end:.9f}",
-        "-i",
-        str(source),
-        "-map",
-        "0:a:0",
-        "-ac",
-        "1",
-        "-ar",
-        str(SAMPLE_RATE),
-    ]
-    if gain_db > 0:
-        command += ["-af", f"volume={gain_db:.6f}dB"]
-    command += ["-c:a", "pcm_s16le", str(destination)]
-    run(command)
     import soundfile as sf
 
-    info = sf.info(destination)
     expected = round((end - start) * SAMPLE_RATE)
-    if abs(info.frames - expected) > 2:
-        raise RuntimeError(
-            f"Duration mismatch for {destination}: {info.frames} frames, expected {expected}"
-        )
+    adjusted_end = end
+    for _ in range(4):
+        command = [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-y",
+            "-ss",
+            f"{start:.9f}",
+            "-to",
+            f"{adjusted_end:.9f}",
+            "-i",
+            str(source),
+            "-map",
+            "0:a:0",
+            "-ac",
+            "1",
+            "-ar",
+            str(SAMPLE_RATE),
+        ]
+        if gain_db > 0:
+            command += ["-af", f"volume={gain_db:.6f}dB"]
+        command += ["-c:a", "pcm_s16le", str(destination)]
+        run(command)
+        frames = sf.info(destination).frames
+        if abs(frames - expected) <= 2:
+            return
+        adjusted_end -= (frames - expected) / SAMPLE_RATE
+    raise RuntimeError(
+        f"Duration mismatch for {destination}: {frames} frames, expected {expected}"
+    )
 
 
 def prepare() -> None:
@@ -209,20 +213,40 @@ def prepare() -> None:
     model_name = "pyannote/speaker-diarization-3.1"
     for clip_id, audio, duration in CLIPS:
         clip_started = time.monotonic()
-        result = pipeline(str(audio))
-        if isinstance(result, dict):
-            annotation = result.get("speaker_diarization", result)
+        checkpoint_path = OUT / "pyannote" / f"{clip_id}.json"
+        if checkpoint_path.exists():
+            checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+            raw = checkpoint["raw_turns"]
+            merged = checkpoint["merged_turns"]
         else:
-            annotation = getattr(result, "speaker_diarization", result)
-        raw = [
-            {
-                "start": round(float(segment.start), 6),
-                "end": round(float(segment.end), 6),
-                "speaker": str(speaker),
-            }
-            for segment, _, speaker in annotation.itertracks(yield_label=True)
-        ]
-        merged = merge_turns(raw)
+            result = pipeline(str(audio))
+            if isinstance(result, dict):
+                annotation = result.get("speaker_diarization", result)
+            else:
+                annotation = getattr(result, "speaker_diarization", result)
+            raw = [
+                {
+                    "start": round(float(segment.start), 6),
+                    "end": round(float(segment.end), 6),
+                    "speaker": str(speaker),
+                }
+                for segment, _, speaker in annotation.itertracks(yield_label=True)
+            ]
+            merged = merge_turns(raw)
+            write_json(
+                checkpoint_path,
+                {
+                    "audio": str(audio.relative_to(ROOT)),
+                    "duration_sec": duration,
+                    "model": model_name,
+                    "provider": "pyannote.audio",
+                    "execution_mode": "local",
+                    "runtime_sec": round(time.monotonic() - clip_started, 3),
+                    "raw_turns": raw,
+                    "merged_turns": merged,
+                    "holes_ge_0_5_sec": holes(merged, duration),
+                },
+            )
         clip_dir = EXTRACTS / clip_id
         for index, row in enumerate(merged):
             raw_wav = clip_dir / f"turn_{index:03d}_raw.wav"
@@ -255,7 +279,7 @@ def prepare() -> None:
             "merged_turns": merged,
             "holes_ge_0_5_sec": holes(merged, duration),
         }
-        write_json(OUT / "pyannote" / f"{clip_id}.json", payload)
+        write_json(checkpoint_path, payload)
     write_json(
         OUT / "pyannote" / "_run.json",
         {"model": model_name, "runtime_sec": round(time.monotonic() - started, 3)},
