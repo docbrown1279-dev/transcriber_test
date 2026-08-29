@@ -86,6 +86,6 @@ Install from `docs/environment.md` without waiting. Commit/push the **working br
 - [ ] WhisperX large-v3 + diarization (else fw+pyannote, else whisper.cpp)
 - [ ] Qwen3-8B meaning check (per speaker if labels exist)
 - [ ] If meaning bad: ≤2 neural denoisers, ≤3 presets each; optional worst-speaker pass
-- [ ] research_report.json + notes.md; chunking/summary skipped
+- [ ] `results/reports/1a|1b|1c/` research_report.json + notes.md; chunking/summary skipped
 - [ ] Commit/push branch
 ```

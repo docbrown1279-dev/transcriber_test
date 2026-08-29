@@ -85,7 +85,7 @@ If one speaker is clearly worse: extract that speaker’s intervals, denoise/re-
 
 ## Report
 
-- `results/reports/research_report.json` — schema; put 1b runs in `asr_results` / `denoise_results`.
+- `results/reports/1a|1b|1c/research_report.json` — schema; put 1b runs in `asr_results` / `denoise_results`. Index: `results/reports/notes.md`.
 - `chunking_results` / `llm_summary_results`: `skipped`, notes «1b: text+diarization only».
 - `notes.md` in Russian: stacks tried, meaning verdicts per speaker, denoise presets.
 

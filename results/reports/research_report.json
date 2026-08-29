@@ -1,65 +1,11 @@
 {
   "meta": {
     "stage": 1,
-    "substage": "1b",
-    "status": "partial",
-    "fixture": "data/fixtures/meeting_sample.m4a",
-    "created_at": "2026-08-29T07:30:37Z",
-    "execution_mode": "local",
-    "stop_reason": "auth"
-  },
-  "asr_results": [
-    {
-      "lib": "WhisperX + pyannote (проверка доступа до запуска)",
-      "model": "large-v3 + pyannote/speaker-diarization-3.1",
-      "status": "fail",
-      "execution_mode": "local",
-      "provider": "Hugging Face Hub, только preflight",
-      "input_artifact": "data/fixtures/meeting_sample.m4a",
-      "failure_kind": "auth",
-      "sample_check": "n/a",
-      "meaning_check": "n/a",
-      "diarization": "pyannote, не запускалась",
-      "speakers": null,
-      "runtime_sec": null,
-      "artifact": "results/asr/hf_access_preflight.json",
-      "notes": "Переменные HF_TOKEN и HUGGING_FACE_HUB_TOKEN отсутствуют. Аутентифицированные GET-пробы не запускались, поскольку без токена они не могут подтвердить gated-доступ. По обязательному правилу Stage 1b прогон остановлен до установки, loudnorm, ASR и диаризации. Предыдущий faster-whisper medium не считается успехом Stage 1b."
+    "note": "Отчёты разнесены по подэтапам. Этот файл — указатель, не полный прогон.",
+    "reports": {
+      "1a": "results/reports/1a/research_report.json",
+      "1b": "results/reports/1b/research_report.json",
+      "1c": "results/reports/1c/research_report.json"
     }
-  ],
-  "denoise_results": [
-    {
-      "method": "DeepFilterNet / RNNoise",
-      "status": "skipped",
-      "quality_delta": "unknown",
-      "recommend": false,
-      "notes": "Не запускались: обязательная проверка доступа HF завершилась с failure_kind=auth до ASR. Этап 1b допускает нейросетевой шумодав только после плохой проверки смысла."
-    }
-  ],
-  "chunking_results": [
-    {
-      "method": "не применимо",
-      "status": "skipped",
-      "spot_check": "n/a",
-      "notes": "Этап 1b: только текст и диаризация."
-    }
-  ],
-  "llm_summary_results": [
-    {
-      "runtime": "llama.cpp",
-      "model": "Qwen3-8B",
-      "status": "skipped",
-      "execution_mode": "local",
-      "provider": "локальный runtime",
-      "input_artifact": "локальная стенограмма Stage 1b не создана",
-      "runtime_sec": null,
-      "hallucination_flag": null,
-      "notes": "Полное саммари вне скоупа Stage 1b; проверка смысла также не запускалась, потому что локальная стенограмма не создана."
-    }
-  ],
-  "api_usage": {
-    "gemini_calls_stage1b": 0,
-    "nvidia_calls_stage1b": 0,
-    "audio_uploaded_stage1b": false
-  },
-  "recommendations": "Сначала настроить HF_TOKEN или HUGGING_FACE_HUB_TOKEN и принять условия доступа ко всем трём репозиториям pyannote. После этого повторить Stage 1b с самого HF preflight. До успешной аутентифицированной проверки нельзя устанавливать или запускать WhisperX/pyannote; существующий результат faster-whisper medium не подтверждает цель Stage 1b."
+  }
 }

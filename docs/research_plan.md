@@ -49,5 +49,5 @@ ffmpeg `afftdn` / highpass **не повторять** — уже провере
 
 ## Отчёт
 
-`results/reports/research_report.json` + `notes.md`.  
+`results/reports/1a|1b|1c/` (`research_report.json` + `notes.md`). Указатель: `results/reports/notes.md`.  
 `chunking_results` / `llm_summary_results` = `skipped` с причиной «этап 1b: только текст+диаризация».
