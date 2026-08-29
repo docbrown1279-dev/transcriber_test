@@ -24,7 +24,7 @@ ffmpeg -version | head -1
 command -v nvidia-smi && nvidia-smi || echo "no GPU"
 ```
 
-3. Install packages from `docs/environment.md` (create `.venv`). On **unattended Stage 1**, do **not** wait for human approval — install and continue. Log versions in `notes.md`.
+3. Install packages from `docs/environment.md` (create `.venv`). On **unattended Stage 1**, do **not** wait for human approval or ask permission questions — install and continue. Allow at most two install attempts per tool family, then skip that path and document it. Log versions in `notes.md`.
 4. Confirm credentials are available as env vars (do not print values): HF token for Hub downloads; Gemini + NVIDIA for API fallbacks. See `docs/environment.md` § Credentials. If a secret is missing, skip only the paths that need it and continue.
 5. Inspect `results/` and the current branch before running anything. Reuse
    completed artifacts and attempt counts; do not repeat API calls from a prior
@@ -87,7 +87,9 @@ Do blocks in order. If ASR fails all attempts, still write the report with FAIL 
   1. Compute Russian word ratio (pymorphy3 or frequency lexicon) → need ≥ 0.9.
   2. If pass: pick 3 random ~2-sentence fragments; judge sense. Nonsense → FAIL.
   3. Emit OOV word list.
-- Max 3 attempts per library family. Record each attempt in the report.
+- `faster-whisper`: at most 3 attempts **including the initial run** (initial +
+  at most 2 retries). Optional `whisper.cpp`: at most 1 run. Record each
+  attempt in the report.
 - See `AGENTS.md` **Hard budgets** for global caps (denoise ≤3 methods, chunking ≤2 models, LLM ≤1 local, API ≤3+≤3).
 - Each record must identify `execution_mode`, provider/model, input artifact,
   and `failure_kind` when unsuccessful.

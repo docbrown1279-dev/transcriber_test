@@ -57,7 +57,11 @@ Scripts may read keys from the environment and call APIs; do not hardcode secret
 
 ## Hard budgets (token / API / attempt caps)
 
-Do **not** infinite-retry. On hitting a cap: mark `fail`/`skipped`, write what you have, commit/push, stop that block.
+Do **not** infinite-retry. An attempt cap includes the initial run (so three
+attempts means initial + at most two retries). On hitting a cap: mark
+`fail`/`skipped`, write what you have, commit/push, stop that block. During an
+unattended run, do not ask for confirmations: make a bounded reasonable choice,
+record it, and continue.
 
 | Block | Cap |
 |---|---|
@@ -67,6 +71,8 @@ Do **not** infinite-retry. On hitting a cap: mark `fail`/`skipped`, write what y
 | Local LLM summary | **≤ 1** model / runtime try. Soft wall: ~10 min gen; if exceeded → stop local, optionally one API call. |
 | Gemini API | **≤ 3** calls for the whole Stage 1 run |
 | NVIDIA API | **≤ 3** calls for the whole Stage 1 run |
+| Network preflight | **1** anonymous probe + optional **1** token comparison |
+| Package installation | **≤ 2** attempts per tool family, then skip that path |
 | Agent loops | No “try again from scratch” of the whole pipeline. No package install churn — install once per tool family. |
 
 Prefer finishing a **thin** complete report over exhausting budgets on one block.
