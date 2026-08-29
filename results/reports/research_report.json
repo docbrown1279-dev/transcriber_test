@@ -1,12 +1,122 @@
 {
   "meta": {
     "stage": 1,
-    "status": "not_started",
-    "fixture": "data/fixtures/meeting_sample.m4a"
+    "status": "partial_network_blocked",
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "Linux x86_64, 4 CPU, 15 GiB RAM, без GPU",
+    "created_at": "2026-08-29T00:20:00Z"
   },
-  "asr_results": [],
-  "denoise_results": [],
-  "chunking_results": [],
-  "llm_summary_results": [],
-  "recommendations": ""
+  "asr_results": [
+    {
+      "lib": "faster-whisper",
+      "model": "medium",
+      "status": "fail",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": 0.034,
+      "artifact": "results/asr/attempt-1-medium.json",
+      "notes": "Публичная модель не загрузилась: TLS-соединение с huggingface.co завершилось UNEXPECTED_EOF до получения HTTP-ответа или перенаправления."
+    },
+    {
+      "lib": "faster-whisper",
+      "model": "large-v3",
+      "status": "fail",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 2,
+      "runtime_sec": 0.026,
+      "artifact": "results/asr/attempt-2-large-v3.json",
+      "notes": "Повтор с отключенным Xet дал тот же TLS UNEXPECTED_EOF на huggingface.co. Это сетевой/TLS-сбой до редиректа, а не ошибка аутентификации."
+    },
+    {
+      "lib": "whisper.cpp",
+      "model": "medium/large-v3",
+      "status": "skipped",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": null,
+      "artifact": "",
+      "notes": "Не запускался: веса Whisper отсутствуют локально, а обязательный путь получения публичных моделей заблокирован на исходном хосте Hugging Face."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "ffmpeg highpass+afftdn",
+      "status": "skipped",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "unknown",
+      "artifacts": "",
+      "recommend": false,
+      "notes": "A/B не выполнялся: нет успешного локального ASR-транскрипта и базовой метрики."
+    },
+    {
+      "method": "DeepFilterNet",
+      "status": "skipped",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "unknown",
+      "artifacts": "",
+      "recommend": false,
+      "notes": "A/B не выполнялся: нет успешного локального ASR-транскрипта и базовой метрики."
+    },
+    {
+      "method": "RNNoise",
+      "status": "skipped",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "unknown",
+      "artifacts": "",
+      "recommend": false,
+      "notes": "A/B не выполнялся: нет успешного локального ASR-транскрипта и базовой метрики."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "cosine neighbor similarity",
+      "embedding_model": "BAAI/bge-m3",
+      "status": "skipped",
+      "threshold": 0.7,
+      "num_chunks": null,
+      "spot_check": "n/a",
+      "artifact": "",
+      "notes": "Нет локального Whisper-транскрипта для разбиения."
+    },
+    {
+      "method": "cosine neighbor similarity",
+      "embedding_model": "intfloat/multilingual-e5-small",
+      "status": "skipped",
+      "threshold": 0.7,
+      "num_chunks": null,
+      "spot_check": "n/a",
+      "artifact": "",
+      "notes": "Нет локального Whisper-транскрипта для разбиения."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen2.5-7B-Instruct GGUF",
+      "status": "skipped",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "artifact": "",
+      "notes": "Локальная попытка не запускалась без транскрипта; модель также отсутствует локально."
+    },
+    {
+      "runtime": "API fallback",
+      "model": "Gemini/NVIDIA",
+      "status": "skipped",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "artifact": "",
+      "notes": "Вызовов API: 0. Текстовый fallback запрещено запускать без успешного локального Whisper-транскрипта; аудио не загружалось."
+    }
+  ],
+  "recommendations": "Рекомендацию по стеку MVP по этому прогону дать нельзя: качество ASR не измерено из-за TLS-блокировки публичных моделей на huggingface.co. Следующий ограниченный прогон следует выполнять после восстановления TLS-доступа к huggingface.co либо с заранее помещенными в локальный кэш весами Systran/faster-whisper-medium и Systran/faster-whisper-large-v3. После этого начать с faster-whisper medium/int8 на CPU; остальные блоки запускать только при прохождении порога русских слов ≥ 0,9 и смысловой проверки."
 }

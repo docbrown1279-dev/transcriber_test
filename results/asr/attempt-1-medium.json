@@ -1,0 +1,12 @@
+{
+  "created_at": "2026-08-29T00:19:12.237995+00:00",
+  "library": "faster-whisper",
+  "model": "medium",
+  "attempt": 1,
+  "input": "data/fixtures/meeting_sample.m4a",
+  "device": "cpu",
+  "compute_type": "int8",
+  "status": "fail",
+  "error": "LocalEntryNotFoundError: Got: ConnectError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)\nAn error happened while trying to locate the files on the Hub, and we cannot find the appropriate snapshot folder for the specified revision on the local disk. Please check your internet connection and try again.",
+  "runtime_sec": 0.034
+}
