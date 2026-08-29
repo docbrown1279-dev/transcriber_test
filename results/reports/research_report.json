@@ -62,7 +62,7 @@
       "execution_mode": "local",
       "provider": "faster-whisper",
       "input_artifact": "data/fixtures/meeting_sample.m4a",
-      "failure_kind": null,
+      "failure_kind": "none",
       "notes": "Порог 0,9 пройден. Четыре распределённых фрагмента осмысленны, но в стенограмме есть локальные ошибки и редкие вставки символов других письменностей. Повтор с large-v3 не выполнялся, потому что medium прошёл заданные ворота качества."
     }
   ],
