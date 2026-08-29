@@ -1,0 +1,187 @@
+{
+  "created_at": "2026-08-29T12:42:21.750773+00:00",
+  "audio_artifact": "data/fixtures/meeting_sample.m4a",
+  "audio_stage": "original_pre_loudnorm",
+  "meaning_check_artifact": "results/asr/qwen3_8b_meaning_check.json",
+  "sample_rate_hz": 16000,
+  "metric": "whole-fragment RMS dBFS after mono decode; no gating",
+  "fragments": [
+    {
+      "id": "SPEAKER_00_1",
+      "speaker": "SPEAKER_00",
+      "start": 1199.884,
+      "end": 1202.645,
+      "duration_sec": 2.761,
+      "rms_dbfs": -31.918,
+      "pcm_sample_count": 44176,
+      "meaning_verdict": "coherent"
+    },
+    {
+      "id": "SPEAKER_00_2",
+      "speaker": "SPEAKER_00",
+      "start": 1267.29,
+      "end": 1269.351,
+      "duration_sec": 2.061,
+      "rms_dbfs": -28.336,
+      "pcm_sample_count": 32976,
+      "meaning_verdict": "coherent"
+    },
+    {
+      "id": "SPEAKER_00_3",
+      "speaker": "SPEAKER_00",
+      "start": 1278.157,
+      "end": 1282.499,
+      "duration_sec": 4.342,
+      "rms_dbfs": -27.978,
+      "pcm_sample_count": 69472,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_01_1",
+      "speaker": "SPEAKER_01",
+      "start": 63.157,
+      "end": 75.739,
+      "duration_sec": 12.582,
+      "rms_dbfs": -27.533,
+      "pcm_sample_count": 201312,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_01_2",
+      "speaker": "SPEAKER_01",
+      "start": 537.489,
+      "end": 549.1,
+      "duration_sec": 11.611,
+      "rms_dbfs": -26.486,
+      "pcm_sample_count": 185776,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_01_3",
+      "speaker": "SPEAKER_01",
+      "start": 1269.451,
+      "end": 1272.233,
+      "duration_sec": 2.782,
+      "rms_dbfs": -29.348,
+      "pcm_sample_count": 44512,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_02_1",
+      "speaker": "SPEAKER_02",
+      "start": 324.736,
+      "end": 327.418,
+      "duration_sec": 2.682,
+      "rms_dbfs": -31.888,
+      "pcm_sample_count": 42912,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_02_2",
+      "speaker": "SPEAKER_02",
+      "start": 339.693,
+      "end": 344.895,
+      "duration_sec": 5.202,
+      "rms_dbfs": -29.968,
+      "pcm_sample_count": 83232,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_02_3",
+      "speaker": "SPEAKER_02",
+      "start": 885.176,
+      "end": 890.598,
+      "duration_sec": 5.422,
+      "rms_dbfs": -28.573,
+      "pcm_sample_count": 86752,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_03_1",
+      "speaker": "SPEAKER_03",
+      "start": 376.514,
+      "end": 383.538,
+      "duration_sec": 7.024,
+      "rms_dbfs": -45.366,
+      "pcm_sample_count": 112384,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_03_2",
+      "speaker": "SPEAKER_03",
+      "start": 832.82,
+      "end": 860.675,
+      "duration_sec": 27.855,
+      "rms_dbfs": -40.937,
+      "pcm_sample_count": 445680,
+      "meaning_verdict": "incoherent"
+    },
+    {
+      "id": "SPEAKER_03_3",
+      "speaker": "SPEAKER_03",
+      "start": 1384.256,
+      "end": 1392.379,
+      "duration_sec": 8.123,
+      "rms_dbfs": -39.701,
+      "pcm_sample_count": 129968,
+      "meaning_verdict": "incoherent"
+    }
+  ],
+  "speakers": [
+    {
+      "speaker": "SPEAKER_00",
+      "fragment_count": 3,
+      "rms_dbfs_mean": -29.411,
+      "rms_dbfs_median": -28.336,
+      "rms_dbfs_min": -31.918,
+      "rms_dbfs_max": -27.978,
+      "coherent_count": 2,
+      "coherent_ratio": 0.667
+    },
+    {
+      "speaker": "SPEAKER_01",
+      "fragment_count": 3,
+      "rms_dbfs_mean": -27.789,
+      "rms_dbfs_median": -27.533,
+      "rms_dbfs_min": -29.348,
+      "rms_dbfs_max": -26.486,
+      "coherent_count": 0,
+      "coherent_ratio": 0.0
+    },
+    {
+      "speaker": "SPEAKER_02",
+      "fragment_count": 3,
+      "rms_dbfs_mean": -30.143,
+      "rms_dbfs_median": -29.968,
+      "rms_dbfs_min": -31.888,
+      "rms_dbfs_max": -28.573,
+      "coherent_count": 0,
+      "coherent_ratio": 0.0
+    },
+    {
+      "speaker": "SPEAKER_03",
+      "fragment_count": 3,
+      "rms_dbfs_mean": -42.001,
+      "rms_dbfs_median": -40.937,
+      "rms_dbfs_min": -45.366,
+      "rms_dbfs_max": -39.701,
+      "coherent_count": 0,
+      "coherent_ratio": 0.0
+    }
+  ],
+  "comparison": {
+    "coherent_fragment_count": 2,
+    "incoherent_fragment_count": 10,
+    "coherent_rms_dbfs_mean": -30.127,
+    "incoherent_rms_dbfs_mean": -32.778,
+    "coherent_minus_incoherent_db": 2.651,
+    "fragment_point_biserial_correlation": 0.167,
+    "speaker_mean_rms_vs_coherent_ratio_correlation": 0.299
+  },
+  "limitations": [
+    "Только 12 фрагментов: 3 на спикера.",
+    "Связными признаны только 2 фрагмента, оба одного спикера.",
+    "RMS включает паузы и шум внутри границ ASR-сегмента.",
+    "Корреляция не доказывает причинность и не отделяет SNR от громкости."
+  ]
+}

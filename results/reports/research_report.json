@@ -5,7 +5,7 @@
     "status": "fail",
     "fixture": "data/fixtures/meeting_sample.m4a",
     "host": "Linux x86_64, 4 CPU, 15 GiB RAM, без GPU и swap",
-    "created_at": "2026-08-29T08:37:20Z",
+    "created_at": "2026-08-29T12:42:32Z",
     "execution_mode": "local",
     "stop_reason": "quality"
   },
@@ -90,6 +90,26 @@
       "artifact": "results/asr/qwen3_8b_deepfilter_default_meaning_check.json"
     }
   ],
+  "acoustic_analysis": {
+    "status": "success",
+    "input_artifact": "data/fixtures/meeting_sample.m4a",
+    "meaning_check_artifact": "results/asr/qwen3_8b_meaning_check.json",
+    "audio_stage": "до loudnorm",
+    "metric": "RMS dBFS по полному интервалу каждого из 12 исходных фрагментов, без gating",
+    "speaker_rms_dbfs_mean": {
+      "SPEAKER_00": -29.411,
+      "SPEAKER_01": -27.789,
+      "SPEAKER_02": -30.143,
+      "SPEAKER_03": -42.001
+    },
+    "coherent_fragment_rms_dbfs_mean": -30.127,
+    "incoherent_fragment_rms_dbfs_mean": -32.778,
+    "coherent_minus_incoherent_db": 2.651,
+    "fragment_point_biserial_correlation": 0.167,
+    "speaker_mean_rms_vs_coherent_ratio_correlation": 0.299,
+    "artifact": "results/asr/sampled_fragment_rms.json",
+    "conclusion": "Гипотеза подтверждается только частично. SPEAKER_03 действительно намного тише остальных и не имеет связных фрагментов. Однако самый громкий SPEAKER_01 также имеет 0/3 связных фрагментов, а лучше распознанный SPEAKER_00 не самый громкий. На 12 фрагментах связь RMS с качеством слабая; вероятны дополнительные факторы, прежде всего SNR, расстояние, реверберация и перекрытия речи."
+  },
   "denoise_results": [
     {
       "method": "DeepFilterNet3 0.5.6, default",
