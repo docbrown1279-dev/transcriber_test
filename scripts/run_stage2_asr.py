@@ -8,6 +8,7 @@ import gc
 import json
 import math
 import os
+import subprocess
 import sys
 import time
 import traceback
@@ -44,6 +45,59 @@ def load_token() -> str:
     return token
 
 
+def waveform_from_original(path: Path) -> dict[str, Any]:
+    """Decode the original file with ffmpeg only — no loudnorm, gain, or denoise."""
+    import numpy as np
+    import torch
+
+    probe = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-select_streams",
+            "a:0",
+            "-show_entries",
+            "stream=sample_rate,channels",
+            "-of",
+            "csv=p=0",
+            str(path),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    rate_s, channels_s = probe.stdout.strip().split(",")
+    sample_rate = int(rate_s)
+    channels = int(channels_s)
+    raw = subprocess.run(
+        [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            str(path),
+            "-map",
+            "0:a:0",
+            "-f",
+            "f32le",
+            "pipe:1",
+        ],
+        check=True,
+        stdout=subprocess.PIPE,
+    ).stdout
+    audio = np.frombuffer(raw, dtype=np.float32)
+    if channels > 1:
+        audio = audio.reshape(-1, channels).T
+    else:
+        audio = audio.reshape(1, -1)
+    return {
+        "waveform": torch.from_numpy(np.ascontiguousarray(audio.copy())),
+        "sample_rate": sample_rate,
+    }
+
+
 def diarize(source: Path) -> dict[str, Any]:
     from pyannote.audio import Pipeline
 
@@ -60,14 +114,11 @@ def diarize(source: Path) -> dict[str, Any]:
             use_auth_token=token,
         )
     import torch
-    import torchaudio
 
     pipeline.to(torch.device("cpu"))
-    # torchcodec is broken in this venv; feed the original file as a waveform.
-    waveform, sample_rate = torchaudio.load(str(source))
-    if waveform.ndim == 1:
-        waveform = waveform.unsqueeze(0)
-    result = pipeline({"waveform": waveform, "sample_rate": int(sample_rate)})
+    audio_in = waveform_from_original(source)
+    duration = float(audio_in["waveform"].shape[-1] / audio_in["sample_rate"])
+    result = pipeline(audio_in)
     if isinstance(result, dict):
         annotation = result.get("speaker_diarization", result)
     else:
@@ -83,14 +134,14 @@ def diarize(source: Path) -> dict[str, Any]:
     merged = merge_turns(raw)
     return {
         "audio": str(source.relative_to(ROOT)),
-        "duration_sec": DURATION_SEC,
+        "duration_sec": duration,
         "model": "pyannote/speaker-diarization-3.1",
         "provider": "pyannote.audio",
         "execution_mode": "local",
         "runtime_sec": round(time.monotonic() - started, 3),
         "raw_turns": raw,
         "merged_turns": merged,
-        "holes_ge_0_5_sec": holes(merged, DURATION_SEC),
+        "holes_ge_0_5_sec": holes(merged, duration),
     }
 
 
@@ -151,7 +202,7 @@ def prepare() -> dict[str, Any]:
                 "gained_wav": str(gained_wav.relative_to(ROOT)),
             }
         )
-    payload["holes_ge_0_5_sec"] = holes(payload["merged_turns"], DURATION_SEC)
+    payload["holes_ge_0_5_sec"] = holes(payload["merged_turns"], float(payload["duration_sec"]))
     write_json(checkpoint, payload)
     write_json(
         PYANNOTE_DIR / "_run.json",
