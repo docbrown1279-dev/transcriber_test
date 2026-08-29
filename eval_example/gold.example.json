@@ -1,0 +1,23 @@
+{
+  "audio": "data/test_voice.m4a",
+  "language": "ru",
+  "duration_sec": 83.0,
+  "collar_sec": 0.5,
+  "notes": "Example gold SCHEMA only. Copy this shape into eval/test_voice.json (local, gitignored). Text here is fake.",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.4,
+      "end": 3.1,
+      "speaker": "SPEAKER_A",
+      "text": "Пример эталонной фразы, не из записи."
+    },
+    {
+      "id": 1,
+      "start": 3.4,
+      "end": 6.8,
+      "speaker": "SPEAKER_B",
+      "text": "Вторая фраза другого спикера."
+    }
+  ]
+}

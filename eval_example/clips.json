@@ -1,0 +1,9 @@
+{
+  "note": "Transcribe each clip. Write JSON like eval_example/hypothesis.example.json. Times in seconds on that clip (0 = start). Do not read eval/.",
+  "clips": [
+    {"id": "test_voice", "audio": "data/test_voice.m4a", "duration_sec": 83},
+    {"id": "test_apartments", "audio": "data/test_apartments.m4a", "duration_sec": 85},
+    {"id": "test_transformers", "audio": "data/test_transformers.m4a", "duration_sec": 85},
+    {"id": "test_ninth", "audio": "data/test_ninth.m4a", "duration_sec": 85}
+  ]
+}

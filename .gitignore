@@ -30,9 +30,6 @@ results/chunking/*
 results/llm/*
 !results/llm/.gitkeep
 
-# Human gold transcript — local only, never push (cloud agents clone git)
-eval/gold.json
-eval/gold.jsonl
-eval/gold.txt
-eval/gold.rttm
+# Local human labels and notes — never push (keeps gold off agent clones)
+eval/
 

@@ -1,0 +1,25 @@
+{
+  "audio": "data/test_voice.m4a",
+  "language": "ru",
+  "duration_sec": 83.0,
+  "model": "example-model",
+  "provider": "example",
+  "execution_mode": "local",
+  "notes": "Example AGENT OUTPUT (hypothesis), not gold. Times in seconds on this clip (0 = start of the m4a). speaker optional. Do not read eval/ — that folder is local human labels.",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.4,
+      "end": 3.1,
+      "speaker": "SPEAKER_A",
+      "text": "Пример гипотезы, этой фразы нет в записи."
+    },
+    {
+      "id": 1,
+      "start": 3.4,
+      "end": 6.8,
+      "speaker": "SPEAKER_B",
+      "text": "Вторая выдуманная фраза другого спикера."
+    }
+  ]
+}
