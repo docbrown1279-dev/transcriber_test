@@ -1,0 +1,145 @@
+{
+  "fallback_model": "faster-whisper large-v3",
+  "compute_type": "int8",
+  "language": "ru",
+  "vad_filter": true,
+  "condition_on_previous_text": false,
+  "pad_sec": 0.35,
+  "retries": [
+    {
+      "id": 45,
+      "start": 193.115,
+      "end": 193.148,
+      "padded_start": 192.765,
+      "padded_end": 193.498,
+      "before": "Обължение",
+      "after": "Субтитры сделал DimaTorzok"
+    },
+    {
+      "id": 46,
+      "start": 193.148,
+      "end": 193.165,
+      "padded_start": 192.798,
+      "padded_end": 193.515,
+      "before": "Извание",
+      "after": "Субтитры создавал DimaTorzok"
+    },
+    {
+      "id": 67,
+      "start": 278.165,
+      "end": 278.553,
+      "padded_start": 277.815,
+      "padded_end": 278.903,
+      "before": "негал",
+      "after": "приняли договор."
+    },
+    {
+      "id": 81,
+      "start": 350.39,
+      "end": 351.402,
+      "padded_start": 350.04,
+      "padded_end": 351.752,
+      "before": "кармала",
+      "after": "До новых встреч!"
+    },
+    {
+      "id": 83,
+      "start": 353.782,
+      "end": 354.389,
+      "padded_start": 353.432,
+      "padded_end": 354.739,
+      "before": "мороды",
+      "after": "Субтитры создавал DimaTorzok"
+    },
+    {
+      "id": 110,
+      "start": 430.782,
+      "end": 430.968,
+      "padded_start": 430.432,
+      "padded_end": 431.318,
+      "before": "балал",
+      "after": "Сначала."
+    },
+    {
+      "id": 124,
+      "start": 495.869,
+      "end": 496.308,
+      "padded_start": 495.519,
+      "padded_end": 496.658,
+      "before": "уга",
+      "after": "Угу. То есть, где-то там."
+    },
+    {
+      "id": 129,
+      "start": 512.086,
+      "end": 512.103,
+      "padded_start": 511.736,
+      "padded_end": 512.453,
+      "before": "Извание",
+      "after": "Субтитры сделал DimaTorzok"
+    },
+    {
+      "id": 130,
+      "start": 512.103,
+      "end": 512.137,
+      "padded_start": 511.753,
+      "padded_end": 512.487,
+      "before": "Извание",
+      "after": "Субтитры сделал DimaTorzok"
+    },
+    {
+      "id": 136,
+      "start": 513.706,
+      "end": 513.723,
+      "padded_start": 513.356,
+      "padded_end": 514.073,
+      "before": "Извание",
+      "after": "Субтитры сделал DimaTorzok"
+    },
+    {
+      "id": 140,
+      "start": 520.253,
+      "end": 520.54,
+      "padded_start": 519.903,
+      "padded_end": 520.89,
+      "before": "возь",
+      "after": "Субтитры создавал DimaTorzok"
+    },
+    {
+      "id": 142,
+      "start": 527.442,
+      "end": 528.235,
+      "padded_start": 527.092,
+      "padded_end": 528.585,
+      "before": "каратка",
+      "after": "Кам dried. Кам?"
+    },
+    {
+      "id": 164,
+      "start": 594.892,
+      "end": 594.925,
+      "padded_start": 594.542,
+      "padded_end": 595.275,
+      "before": "Извание",
+      "after": "Поехали."
+    },
+    {
+      "id": 186,
+      "start": 702.74,
+      "end": 702.757,
+      "padded_start": 702.39,
+      "padded_end": 703.107,
+      "before": "Обължение",
+      "after": "Да."
+    },
+    {
+      "id": 199,
+      "start": 734.853,
+      "end": 735.038,
+      "padded_start": 734.503,
+      "padded_end": 735.388,
+      "before": "нап",
+      "after": "что-то с нами really"
+    }
+  ]
+}

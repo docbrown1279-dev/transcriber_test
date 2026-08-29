@@ -1,0 +1,145 @@
+{
+  "fallback_model": "faster-whisper large-v3",
+  "compute_type": "int8",
+  "language": "ru",
+  "vad_filter": true,
+  "condition_on_previous_text": false,
+  "pad_sec": 0.35,
+  "retries": [
+    {
+      "id": 5,
+      "start": 40.801,
+      "end": 41.071,
+      "padded_start": 40.451,
+      "padded_end": 41.421,
+      "before": "",
+      "after": "Продолжение следует..."
+    },
+    {
+      "id": 7,
+      "start": 43.585,
+      "end": 44.378,
+      "padded_start": 43.235,
+      "padded_end": 44.728,
+      "before": "",
+      "after": "Субтитры подогнал"
+    },
+    {
+      "id": 15,
+      "start": 99.728,
+      "end": 99.779,
+      "padded_start": 99.378,
+      "padded_end": 100.129,
+      "before": "",
+      "after": "Продолж strive."
+    },
+    {
+      "id": 16,
+      "start": 99.779,
+      "end": 99.88,
+      "padded_start": 99.429,
+      "padded_end": 100.23,
+      "before": "",
+      "after": "Продолжение следует..."
+    },
+    {
+      "id": 17,
+      "start": 99.88,
+      "end": 99.914,
+      "padded_start": 99.53,
+      "padded_end": 100.264,
+      "before": "",
+      "after": "в принципе..."
+    },
+    {
+      "id": 23,
+      "start": 146.084,
+      "end": 146.152,
+      "padded_start": 145.734,
+      "padded_end": 146.502,
+      "before": "",
+      "after": "Субтитры сделал DimaTorzok"
+    },
+    {
+      "id": 28,
+      "start": 169.962,
+      "end": 170.047,
+      "padded_start": 169.612,
+      "padded_end": 170.397,
+      "before": "",
+      "after": "Субтитры создавал DimaTorzok"
+    },
+    {
+      "id": 31,
+      "start": 173.388,
+      "end": 174.029,
+      "padded_start": 173.038,
+      "padded_end": 174.379,
+      "before": "",
+      "after": "Субтитры подогнал «Симон»"
+    },
+    {
+      "id": 32,
+      "start": 174.721,
+      "end": 175.025,
+      "padded_start": 174.371,
+      "padded_end": 175.375,
+      "before": "",
+      "after": "Субтитры сделал DimaTorzok"
+    },
+    {
+      "id": 33,
+      "start": 175.463,
+      "end": 176.122,
+      "padded_start": 175.113,
+      "padded_end": 176.472,
+      "before": "",
+      "after": "30 процентов"
+    },
+    {
+      "id": 34,
+      "start": 176.442,
+      "end": 177.252,
+      "padded_start": 176.092,
+      "padded_end": 177.602,
+      "before": "отвечение",
+      "after": "Это извинения."
+    },
+    {
+      "id": 35,
+      "start": 177.792,
+      "end": 178.028,
+      "padded_start": 177.442,
+      "padded_end": 178.378,
+      "before": "",
+      "after": "Продолжение следует."
+    },
+    {
+      "id": 36,
+      "start": 179.277,
+      "end": 179.294,
+      "padded_start": 178.927,
+      "padded_end": 179.644,
+      "before": "",
+      "after": "короче, застройки."
+    },
+    {
+      "id": 37,
+      "start": 179.429,
+      "end": 179.48,
+      "padded_start": 179.079,
+      "padded_end": 179.83,
+      "before": "",
+      "after": "Субтитры создавал DimaTorzok"
+    },
+    {
+      "id": 40,
+      "start": 181.876,
+      "end": 182.095,
+      "padded_start": 181.526,
+      "padded_end": 182.445,
+      "before": "",
+      "after": "Простите."
+    }
+  ]
+}
