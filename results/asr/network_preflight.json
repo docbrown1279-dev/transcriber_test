@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-08-29T00:28:09Z",
+  "execution_mode": "anonymous",
+  "requested_urls": [
+    "https://huggingface.co/Systran/faster-whisper-medium/resolve/main/model.bin"
+  ],
+  "redirect_hosts": [
+    "us.aws.cdn.hf.co"
+  ],
+  "redirect_path": "/xet-bridge-us/655f20aef4be8787c8e44ca2/4f4fbde9ef3dc7957f5a4474dd7399bf1d4f87ff951e6e4ce5c366d2ad91f427",
+  "dns": {
+    "status": "success",
+    "resolved_ip": "3.216.102.62"
+  },
+  "tls": {
+    "status": "success",
+    "verify_result": 0
+  },
+  "http": {
+    "status": "success",
+    "final_status": 200
+  },
+  "blocked_host": null,
+  "token_comparison": "not_needed",
+  "notes": "Публичные веса доступны анонимно; редирект CDN/Xet, DNS и TLS успешно проверены."
+}
