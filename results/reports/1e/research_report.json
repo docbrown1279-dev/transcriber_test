@@ -15,6 +15,60 @@
     },
     "gigaam_ungained_skipped_clips": []
   },
+  "speed_benchmark": {
+    "artifact": "results/asr/eval_clips/speed_benchmark_25s.json",
+    "source_audio": "data/test_transformers.m4a",
+    "source_interval_sec": [
+      0.0,
+      25.0
+    ],
+    "duration_sec": 25.0,
+    "sample_rate_hz": 16000,
+    "samples": 400000,
+    "processing": "none",
+    "execution_mode": "local",
+    "device": "cpu",
+    "cache_state": "model files cached by the preceding Stage 1e run",
+    "measurement": "single sequential run; separate process per model; load and inference measured separately",
+    "results": [
+      {
+        "model": "v3_rnnt",
+        "provider": "gigaam",
+        "load_sec": 2.321,
+        "inference_sec": 0.864,
+        "total_model_sec": 3.185,
+        "process_wall_sec": 5.234,
+        "real_time_factor": 0.035
+      },
+      {
+        "model": "bond005/whisper-podlodka-turbo",
+        "provider": "transformers",
+        "load_sec": 1.871,
+        "inference_sec": 12.363,
+        "total_model_sec": 14.234,
+        "process_wall_sec": 19.037,
+        "real_time_factor": 0.495
+      },
+      {
+        "model": "large-v3",
+        "provider": "faster-whisper",
+        "load_sec": 7.919,
+        "inference_sec": 6.153,
+        "total_model_sec": 14.072,
+        "process_wall_sec": 16.738,
+        "real_time_factor": 0.246
+      },
+      {
+        "model": "bond005/whisper-large-v3-ru-podlodka",
+        "provider": "transformers",
+        "load_sec": 4.469,
+        "inference_sec": 93.288,
+        "total_model_sec": 97.757,
+        "process_wall_sec": 102.895,
+        "real_time_factor": 3.732
+      }
+    ]
+  },
   "asr_results": [
     {
       "lib": "gigaam",

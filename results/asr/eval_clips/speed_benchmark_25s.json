@@ -1,0 +1,92 @@
+{
+  "audio": "results/asr/eval_clips/_extracts/speed_benchmark/test_transformers_0_25.wav",
+  "source_audio": "data/test_transformers.m4a",
+  "source_interval_sec": [
+    0.0,
+    25.0
+  ],
+  "duration_sec": 25.0,
+  "sample_rate_hz": 16000,
+  "samples": 400000,
+  "processing": "none",
+  "execution_mode": "local",
+  "device": "cpu",
+  "cache_state": "model files cached by the preceding Stage 1e run",
+  "created_at": "2026-08-29T22:04:39.498256+00:00",
+  "results": [
+    {
+      "id": "gigaam_v3",
+      "model": "v3_rnnt",
+      "provider": "gigaam",
+      "execution_mode": "local",
+      "load_sec": 2.321,
+      "inference_sec": 0.864,
+      "real_time_factor": 0.035,
+      "output_chars": 315,
+      "settings": {
+        "device": "cpu",
+        "gain": "none"
+      },
+      "process_wall_sec": 5.234,
+      "total_model_sec": 3.185
+    },
+    {
+      "id": "podlodka_turbo",
+      "model": "bond005/whisper-podlodka-turbo",
+      "provider": "transformers",
+      "execution_mode": "local",
+      "load_sec": 1.871,
+      "inference_sec": 12.363,
+      "real_time_factor": 0.495,
+      "output_chars": 226,
+      "settings": {
+        "device": "cpu",
+        "dtype": "float32",
+        "language": "ru",
+        "condition_on_prev_tokens": false,
+        "gain": "none"
+      },
+      "process_wall_sec": 19.037,
+      "total_model_sec": 14.234
+    },
+    {
+      "id": "faster_whisper_large_v3",
+      "model": "large-v3",
+      "provider": "faster-whisper",
+      "execution_mode": "local",
+      "load_sec": 7.919,
+      "inference_sec": 6.153,
+      "real_time_factor": 0.246,
+      "output_chars": 198,
+      "settings": {
+        "device": "cpu",
+        "compute_type": "int8",
+        "language": "ru",
+        "vad_filter": false,
+        "condition_on_previous_text": false,
+        "gain": "none"
+      },
+      "process_wall_sec": 16.738,
+      "total_model_sec": 14.072
+    },
+    {
+      "id": "podlodka_large_v3_ru",
+      "model": "bond005/whisper-large-v3-ru-podlodka",
+      "provider": "transformers",
+      "execution_mode": "local",
+      "load_sec": 4.469,
+      "inference_sec": 93.288,
+      "real_time_factor": 3.732,
+      "output_chars": 302,
+      "settings": {
+        "device": "cpu",
+        "dtype": "float32",
+        "language": "ru",
+        "condition_on_prev_tokens": false,
+        "gain": "none"
+      },
+      "process_wall_sec": 102.895,
+      "total_model_sec": 97.757
+    }
+  ]
+}
