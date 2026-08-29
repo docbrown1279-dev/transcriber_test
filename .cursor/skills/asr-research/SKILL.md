@@ -13,11 +13,21 @@ Coherent diarized transcript on CPU. No chunking, no summary.
 
 Inspect `results/` and branch `cursor/stage1-asr-research-dc41`. Keep 1a artifacts. Do **not** rerun ffmpeg afftdn. Do **not** stop after medium `rw_ratio`.
 
+## HF access gate (hard stop)
+
+Before pip/WhisperX:
+
+1. `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` must exist. Do not print it.
+2. GET with the token: `pyannote/speaker-diarization-3.1` `config.yaml`, `pyannote/segmentation-3.0` `config.yaml`, and `pyannote/speaker-diarization-community-1`. Also GET public `Systran/faster-whisper-large-v3` `config.json`.
+3. Write `results/asr/hf_access_preflight.json` (HTTP codes, redirect hosts, `token_present`). Never store the token.
+4. On missing token or pyannote **401/403**: stop the run. Partial report + `notes.md` (`failure_kind: auth`), commit/push. Do not continue. Human will fix licenses/token.
+
 ## Checklist
 
 ```
 Stage 1b:
-- [ ] 0. Inventory + .venv + HF_TOKEN present (need for pyannote)
+- [ ] 0. Inventory + HF access preflight (stop on 401/403)
+- [ ] 0b. .venv only if HF gate passed
 - [ ] 1. loudnorm (no compressor) → data/processed/
 - [ ] 2. WhisperX large-v3 + diarization
 - [ ] 2b. If WhisperX fails: faster-whisper large-v3 + pyannote

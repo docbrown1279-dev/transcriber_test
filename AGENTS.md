@@ -36,7 +36,7 @@ Reuse existing Stage 1 artifacts as **baseline only**. Do not treat `faster-whis
 
 | Secret | Use |
 |---|---|
-| `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` | **Required** for pyannote / WhisperX diarization models |
+| `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` | **Required** for pyannote / WhisperX. Probe gated files **before** ASR; **401/403 → stop the run** |
 | Gemini / NVIDIA | Do not use in 1b unless Qwen3-8B cannot run at all (then ≤1 short text-only meaning check) |
 
 Never print or commit secrets.
@@ -81,6 +81,7 @@ Install from `docs/environment.md` without waiting. Commit/push the **working br
 ```
 - [ ] Read docs/research_plan.md + this file + skill
 - [ ] Resume artifacts; skip completed ffmpeg/medium-as-goal
+- [ ] HF gated preflight; **stop** on 401/403
 - [ ] loudnorm WAV
 - [ ] WhisperX large-v3 + diarization (else fw+pyannote, else whisper.cpp)
 - [ ] Qwen3-8B meaning check (per speaker if labels exist)

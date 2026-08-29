@@ -14,6 +14,16 @@ You are the Researcher agent for this repository.
 
 **Fixture:** `data/fixtures/meeting_sample.m4a`.
 
+**HF access gate (do this first, before installs/ASR):**
+- Confirm `HF_TOKEN` or `HUGGING_FACE_HUB_TOKEN` is set. Never print the value.
+- Authenticated download probe (HTTP GET `/resolve/main/...`, follow redirects) for at least:
+  - `pyannote/speaker-diarization-3.1` `config.yaml`
+  - `pyannote/segmentation-3.0` `config.yaml`
+  - `pyannote/speaker-diarization-community-1` (README or config — 401/403 still counts as fail)
+  - public Whisper `Systran/faster-whisper-large-v3` `config.json` (network, not gated)
+- Save sanitized evidence to `results/asr/hf_access_preflight.json` (status codes, hosts, `token_present: true/false`). No Authorization headers, no token.
+- **If token missing or any pyannote probe is 401/403/GatedRepo: STOP.** Write `notes.md` + partial `research_report.json` with `failure_kind: auth`, commit/push, do not install WhisperX/pyannote and do not transcribe. The human will fix access. This is the one allowed pause.
+
 **Success:** Qwen3-8B says sampled fragments are coherent meeting speech. Dictionary `rw_ratio` is not a pass.
 
 **Closed search tree (do not add variants):**
@@ -28,6 +38,6 @@ You are the Researcher agent for this repository.
 **Errors** (crash, empty output): retry the **same** config up to twice, then next listed item.  
 **Unattended:** install, run, do not ask permission. No cloud ASR. No audio to APIs. Reports in Russian. Commit/push this working branch (no force-push `main`).
 
-**Start now:** resume artifacts → loudnorm → WhisperX large-v3 + diarization → meaning check → denoise only if needed → report.
+**Start now:** resume artifacts → HF access gate (stop if gated fail) → loudnorm → WhisperX large-v3 + diarization → meaning check → denoise only if needed → report.
 
 ---

@@ -10,6 +10,6 @@ alwaysApply: true
 - Pass = Qwen3-8B meaning check on samples (per speaker if diarized), **not** rw_ratio ≥ 0.9.
 - Stacks (max 3): WhisperX large-v3 + loudnorm → faster-whisper large-v3 + pyannote → whisper.cpp large + pyannote.
 - Denoise only if meaning fails: ≤2 neural libs (DeepFilterNet, RNNoise); skip ffmpeg; ≤3 presets each; optional worst-speaker-only pass.
-- `HF_TOKEN` required for pyannote/WhisperX. No cloud ASR. No audio to APIs.
+- `HF_TOKEN` required for pyannote/WhisperX. Probe gated files before ASR; **401/403 → stop the run**. No cloud ASR. No audio to APIs.
 - Unattended: install and continue; commit/push working branch (prefer `cursor/stage1-asr-research-dc41`). Never log secrets.
 - Outputs: `results/reports/research_report.json` + `notes.md`.
