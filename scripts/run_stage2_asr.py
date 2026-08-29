@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from run_stage1e import SAMPLE_RATE, astats, extract, holes, merge_turns, write_json
+from run_stage1e import SAMPLE_RATE, astats, holes, merge_turns, run, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
 AUDIO = ROOT / "data" / "fixtures" / "meeting_sample.m4a"
@@ -36,6 +36,73 @@ def audio_path() -> Path:
     if FALLBACK_AUDIO.exists():
         return FALLBACK_AUDIO
     raise FileNotFoundError("meeting audio missing")
+
+
+def clamp_turns(rows: list[dict[str, Any]], duration: float) -> list[dict[str, Any]]:
+    clamped = []
+    for row in rows:
+        start = min(max(0.0, float(row["start"])), duration)
+        end = min(max(start, float(row["end"])), duration)
+        if end - start < 1e-3:
+            continue
+        item = dict(row)
+        item["start"] = round(start, 6)
+        item["end"] = round(end, 6)
+        clamped.append(item)
+    return clamped
+
+
+def extract_stage2(
+    source: Path,
+    start: float,
+    end: float,
+    destination: Path,
+    gain_db: float = 0.0,
+    file_duration: float | None = None,
+) -> None:
+    """Cut from the original file. Clamp to file end; pad/trim ffmpeg rounding only."""
+    import numpy as np
+    import soundfile as sf
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if file_duration is not None:
+        end = min(end, file_duration)
+        start = min(max(0.0, start), end)
+    if end - start < 1e-3:
+        raise RuntimeError(f"Empty extract window for {destination}")
+    expected = max(1, round((end - start) * SAMPLE_RATE))
+    duration = end - start
+
+    def ffmpeg_cut(input_seek: bool) -> int:
+        command = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
+        if input_seek:
+            command += ["-ss", f"{start:.9f}", "-to", f"{end:.9f}", "-i", str(source)]
+        else:
+            command += ["-i", str(source), "-ss", f"{start:.9f}", "-t", f"{duration:.9f}"]
+        command += ["-map", "0:a:0", "-ac", "1", "-ar", str(SAMPLE_RATE)]
+        if gain_db > 0:
+            command += ["-af", f"volume={gain_db:.6f}dB"]
+        command += ["-c:a", "pcm_s16le", str(destination)]
+        run(command)
+        return sf.info(destination).frames
+
+    frames = ffmpeg_cut(True)
+    if abs(frames - expected) > 2:
+        frames = ffmpeg_cut(False)
+    if abs(frames - expected) > 2:
+        data, rate = sf.read(str(destination), dtype="float32")
+        if data.ndim > 1:
+            data = data[:, 0]
+        if len(data) > expected:
+            data = data[:expected]
+        elif len(data) < expected:
+            data = np.pad(data, (0, expected - len(data)))
+        sf.write(str(destination), data, rate, subtype="PCM_16")
+        frames = sf.info(destination).frames
+    if abs(frames - expected) > 2:
+        raise RuntimeError(
+            f"Duration mismatch for {destination}: {frames} frames, expected {expected}"
+        )
 
 
 def load_token() -> str:
@@ -131,7 +198,7 @@ def diarize(source: Path) -> dict[str, Any]:
         }
         for segment, _, speaker in annotation.itertracks(yield_label=True)
     ]
-    merged = merge_turns(raw)
+    merged = clamp_turns(merge_turns(raw), duration)
     return {
         "audio": str(source.relative_to(ROOT)),
         "duration_sec": duration,
@@ -182,16 +249,18 @@ def prepare() -> dict[str, Any]:
         if last_error:
             raise last_error
 
+    duration = float(payload["duration_sec"])
+    payload["merged_turns"] = clamp_turns(payload["merged_turns"], duration)
     for index, row in enumerate(payload["merged_turns"]):
         raw_wav = EXTRACTS / f"turn_{index:03d}_raw.wav"
         gained_wav = EXTRACTS / f"turn_{index:03d}_linear.wav"
-        extract(source, row["start"], row["end"], raw_wav)
+        extract_stage2(source, row["start"], row["end"], raw_wav, file_duration=duration)
         rms, peak = astats(raw_wav)
         gain = 0.0
         if rms < -30.0 and peak < 0.0 and math.isfinite(rms):
             gain = min(-23.0 - rms, 18.0, -1.0 - peak)
             gain = max(0.0, gain)
-        extract(source, row["start"], row["end"], gained_wav, gain)
+        extract_stage2(source, row["start"], row["end"], gained_wav, gain, file_duration=duration)
         row.update(
             {
                 "id": index,
@@ -228,14 +297,23 @@ def prepare() -> dict[str, Any]:
     return payload
 
 
-def pieces_for_row(source: Path, row: dict[str, Any]) -> list[dict[str, Any]]:
+def pieces_for_row(
+    source: Path, row: dict[str, Any], file_duration: float
+) -> list[dict[str, Any]]:
     pieces = []
     piece_start = float(row["start"])
     piece_number = 0
     while piece_start < float(row["end"]) - 1e-9:
         piece_end = min(piece_start + MODEL_LIMIT_SEC, float(row["end"]))
         path = EXTRACTS / f"turn_{row['id']:03d}_piece_{piece_number:02d}_linear.wav"
-        extract(source, piece_start, piece_end, path, float(row.get("gain_db") or 0.0))
+        extract_stage2(
+            source,
+            piece_start,
+            piece_end,
+            path,
+            float(row.get("gain_db") or 0.0),
+            file_duration=file_duration,
+        )
         pieces.append(
             {
                 "turn_id": row["id"],
@@ -281,7 +359,7 @@ def gigaam() -> dict[str, Any]:
             model = gigaam.load_model("v3_rnnt", fp16_encoder=False, device="cpu")
             recognized: list[dict[str, Any]] = []
             for row in prepared["merged_turns"]:
-                for piece in pieces_for_row(source, row):
+                for piece in pieces_for_row(source, row, float(prepared["duration_sec"])):
                     raw_text = model.transcribe(str(piece["path"]))
                     text = "" if raw_text is None else str(raw_text)
                     recognized.append(
