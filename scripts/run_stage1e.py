@@ -195,16 +195,25 @@ def prepare() -> None:
     if not token:
         raise RuntimeError("HF token is missing")
     started = time.monotonic()
-    pipeline = Pipeline.from_pretrained(
-        "pyannote/speaker-diarization-3.1",
-        use_auth_token=token,
-    )
+    try:
+        pipeline = Pipeline.from_pretrained(
+            "pyannote/speaker-diarization-3.1",
+            token=token,
+        )
+    except TypeError:
+        pipeline = Pipeline.from_pretrained(
+            "pyannote/speaker-diarization-3.1",
+            use_auth_token=token,
+        )
     pipeline.to(__import__("torch").device("cpu"))
     model_name = "pyannote/speaker-diarization-3.1"
     for clip_id, audio, duration in CLIPS:
         clip_started = time.monotonic()
         result = pipeline(str(audio))
-        annotation = result.get("speaker_diarization", result) if isinstance(result, dict) else result
+        if isinstance(result, dict):
+            annotation = result.get("speaker_diarization", result)
+        else:
+            annotation = getattr(result, "speaker_diarization", result)
         raw = [
             {
                 "start": round(float(segment.start), 6),
