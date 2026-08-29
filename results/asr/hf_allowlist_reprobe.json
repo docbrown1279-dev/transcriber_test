@@ -1,0 +1,78 @@
+{
+  "created_at": "2026-08-29T00:07:35.691694+00:00",
+  "conclusion": "NETWORK_TLS failure — not missing HF_TOKEN. Anonymous and tokenized Hub calls fail identically with SSL EOF. DNS for huggingface.co OK; cdn-lfs.huggingface.co DNS fail. Effective egress allowlist on this pod still does not include huggingface.co (verified via environment-info).",
+  "token_presence": {
+    "HF_TOKEN": false,
+    "HUGGING_FACE_HUB_TOKEN": false,
+    "hugging_face_alias": true
+  },
+  "dns": [
+    {
+      "host": "huggingface.co",
+      "ipv4": [
+        "3.167.112.25",
+        "3.167.112.38",
+        "3.167.112.45",
+        "3.167.112.96"
+      ],
+      "dns": "ok",
+      "ipv6": [
+        "2600:9000:27d1:4e00:17:b174:6d00:93a1",
+        "2600:9000:27d1:5800:17:b174:6d00:93a1",
+        "2600:9000:27d1:5a00:17:b174:6d00:93a1",
+        "2600:9000:27d1:b400:17:b174:6d00:93a1"
+      ]
+    },
+    {
+      "host": "hf.co",
+      "ipv4": [
+        "18.213.84.241",
+        "3.210.66.237",
+        "34.198.14.237",
+        "34.202.8.246",
+        "34.204.155.59",
+        "44.212.132.255"
+      ],
+      "dns": "ok",
+      "ipv6_error": "gaierror: [Errno -5] No address associated with hostname"
+    },
+    {
+      "host": "cdn-lfs.huggingface.co",
+      "dns": "fail",
+      "dns_error": "gaierror: [Errno -5] No address associated with hostname",
+      "ipv6_error": "gaierror: [Errno -5] No address associated with hostname"
+    },
+    {
+      "host": "cas-bridge.xethub.hf.co",
+      "ipv4": [
+        "3.171.85.108",
+        "3.171.85.119",
+        "3.171.85.51",
+        "3.171.85.58"
+      ],
+      "dns": "ok",
+      "ipv6_error": "gaierror: [Errno -5] No address associated with hostname"
+    }
+  ],
+  "http": {
+    "anon_api": {
+      "ok": false,
+      "kind": "NETWORK_TLS",
+      "error": "URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>",
+      "sec": 0.018
+    },
+    "token_api": {
+      "ok": false,
+      "kind": "NETWORK_TLS",
+      "error": "URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>",
+      "sec": 0.001
+    },
+    "anon_config": {
+      "ok": false,
+      "kind": "NETWORK_TLS",
+      "error": "URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>",
+      "sec": 0.001
+    }
+  },
+  "whisper_attempt": "skipped — Hub unreachable; not falling back to Gemini ASR for this retry"
+}

@@ -4,7 +4,9 @@
     "fixture": "data/fixtures/meeting_sample.m4a",
     "host": "cpu-only Intel Xeon 4c / 16GB RAM / no GPU / Ubuntu",
     "created_at": "2026-08-28T23:45:00Z",
-    "status": "completed_with_api_fallback"
+    "status": "completed_with_api_fallback",
+    "hf_reprobe_at": "2026-08-29T00:07:46.132696+00:00",
+    "hf_reprobe_conclusion": "NETWORK_TLS — not AUTH; Whisper not run; no Gemini fallback on this retry"
   },
   "asr_results": [
     {
@@ -67,6 +69,18 @@
       "runtime_sec": 159.28,
       "artifact": "results/asr/gemini_transcribe.json",
       "notes": "Локальный Whisper недоступен из-за сети. По политике Stage 1 использован Gemini ASR (чанки 8 мин). Quality: results/asr/gemini_transcribe_quality.json (rw_ratio=0.9397, sample_check=ok, oov_count=12)."
+    },
+    {
+      "lib": "faster-whisper",
+      "model": "medium",
+      "status": "fail",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": 0.02,
+      "artifact": "results/asr/hf_allowlist_reprobe.json",
+      "notes": "Повтор после заявленного allowlist HF: DNS huggingface.co OK; TLS SSL EOF и с token=False, и с токеном — это NETWORK, не отсутствие HF_TOKEN. cdn-lfs.huggingface.co: DNS fail. Effective egress allowlist пода всё ещё без huggingface.co. Gemini ASR на этом ретрае не запускался."
     }
   ],
   "denoise_results": [

@@ -97,3 +97,20 @@ ASR для A/B — тот же Gemini (локальный Whisper недосту
 2. Повторить ASR на `faster-whisper medium` int8 CPU на той же фикстуре.
 3. Сравнить WER/качество Gemini vs Whisper на одних фрагментах.
 4. Подтянуть Qwen2.5-7B GGUF и закрыть LLM-блок локально.
+
+
+## Reprobe Hugging Face allowlist (2026-08-29)
+
+Пользователь сообщил, что HF добавлен в allowlist. Повторная проверка **в этом же поде**:
+
+| Проверка | Результат |
+|---|---|
+| DNS `huggingface.co` | OK (IPv4 CloudFront) |
+| DNS `cdn-lfs.huggingface.co` | **FAIL** (no address) |
+| HTTP anon `api/models/.../faster-whisper-medium` | **NETWORK_TLS** SSL EOF |
+| HTTP с токеном (тот же URL) | **NETWORK_TLS** SSL EOF (идентично) |
+| `environment-info` egress list | **`huggingface.co` отсутствует** |
+
+**Вывод:** это не проблема `HF_TOKEN`. Публичные репозитории Whisper недоступны из‑за сетевого TLS/egress. На этом ретрае Gemini ASR **не** вызывался.
+
+Нужно: чтобы allowlist реально применился к агенту (часто нужен **новый** cloud agent / rebuild после изменения egress), плюс CDN: `cdn-lfs.huggingface.co` / `*.huggingface.co`.
