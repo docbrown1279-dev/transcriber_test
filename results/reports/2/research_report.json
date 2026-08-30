@@ -79,16 +79,41 @@
   ],
   "llm_summary_results": [
     {
-      "runtime": "none",
-      "model": "Qwen3-8B",
-      "status": "skipped",
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
       "execution_mode": "local",
       "provider": "llama.cpp",
-      "input_artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
-      "runtime_sec": null,
-      "hallucination_flag": null,
-      "notes": "Qwen не запускался: ни одна из трёх попыток чанкинга не дала 5–30 чанков. Четвёртую схему не изобретали."
+      "input_artifact": "results/chunking/2/attempt_2_chunks.json",
+      "runtime_sec": 416.159,
+      "hallucination_flag": false,
+      "artifact": "results/llm/2/titles.json",
+      "notes": "Дозапрос: 63 заголовка попытки 2, все ≤10 слов. CPU 4 потока."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/llm/2/titles.json",
+      "runtime_sec": 116.615,
+      "hallucination_flag": false,
+      "artifact": "results/llm/2/title_merge.json",
+      "notes": "Склейка соседних названий дала 4 главы (нужно 5–30). Хвост 44 исходных чанка склеен в одну главу."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/llm/2/title_merge.json",
+      "runtime_sec": 415.977,
+      "hallucination_flag": false,
+      "artifact": "results/llm/2/title_merge_refined.json",
+      "notes": "Одна правка широких групп: 49 глав, снова вне 5–30. Третий промпт не запускали."
     }
   ],
-  "recommendations": "ASR для MVP: GigaAM v3_rnnt + pyannote 3.1 + табличный merge (0.3 с / <1 с) + linear volume при RMS < −30 dBFS. На полном совещании стек локально отработал. Соседний чанкинг rubert-tiny2 с целыми репликами одного спикера за 3 попытки (20–50/0.80 → 40–80/0.70 → 60–120/0.65) дал 95/63/48 чанков — вне 5–30, заголовки не строили. Дальше (не этот прогон): либо разрешить набор единиц через смену спикера, либо другой порог/окно в новом этапе — не четвёртая схема здесь."
+  "recommendations": "ASR для MVP без изменений: GigaAM v3_rnnt + pyannote 3.1 + linear gain. На попытке 2 (63 чанка) Qwen3-8B даёт короткие уместные заголовки (~6.6 с/чанк на CPU). Склейка только названий пока не попадает в 5–30: один проход даёт 4 грубые главы (хвост слишком большой), правка раздувает до 49. Имеет смысл в следующем этапе дать модели явный потолок размера группы (например не больше 6–8 соседних пунктов) или склеивать скользящим окном, а не одним списком из 63 строк."
 }
