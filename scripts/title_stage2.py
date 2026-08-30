@@ -24,6 +24,7 @@ SYSTEM = (
     "Не пиши саммари встречи."
 )
 USER = (
+    "/no_think\n"
     "Дай заголовок не больше 10 русских слов для этого фрагмента. "
     "Только заголовок, без кавычек и без точки в конце.\n\nТЕКСТ:\n{text}"
 )
@@ -65,6 +66,12 @@ def main() -> None:
 
     source = json.loads(args.chunks.read_text(encoding="utf-8"))
     chunks = source["chunks"]
+    done: dict[int, dict[str, Any]] = {}
+    if args.out.exists():
+        previous = json.loads(args.out.read_text(encoding="utf-8"))
+        for row in previous.get("per_chunk", []):
+            if row.get("title"):
+                done[int(row["id"])] = row
     started = time.monotonic()
     llm = Llama(
         model_path=str(args.model),
@@ -76,31 +83,47 @@ def main() -> None:
     )
     rows = []
     for chunk in chunks:
+        existing = done.get(int(chunk["id"]))
+        if existing:
+            rows.append(existing)
+            chunk["title"] = existing["title"]
+            continue
         item_started = time.monotonic()
         response = llm.create_chat_completion(
             messages=[
                 {"role": "system", "content": SYSTEM},
                 {"role": "user", "content": USER.format(text=chunk["text"])},
             ],
-            max_tokens=32,
+            max_tokens=48,
             temperature=0.2,
             top_p=0.9,
         )
-        raw = response["choices"][0]["message"]["content"].strip()
+        raw = (response["choices"][0]["message"]["content"] or "").strip()
         title = clip_title(raw)
         item_runtime = round(time.monotonic() - item_started, 3)
-        rows.append(
-            {
-                "id": chunk["id"],
-                "start": chunk["start"],
-                "end": chunk["end"],
-                "title": title,
-                "raw_title": raw,
-                "title_words": len(WORD_RE.findall(title)),
-                "llm_runtime_sec": item_runtime,
-            }
-        )
+        row = {
+            "id": chunk["id"],
+            "start": chunk["start"],
+            "end": chunk["end"],
+            "title": title,
+            "raw_title": raw,
+            "title_words": len(WORD_RE.findall(title)),
+            "llm_runtime_sec": item_runtime,
+        }
+        rows.append(row)
         chunk["title"] = title
+        payload = {
+            "execution_mode": "local",
+            "provider": "llama.cpp",
+            "model": args.model.name,
+            "input_artifact": str(args.chunks.relative_to(ROOT))
+            if args.chunks.is_relative_to(ROOT)
+            else str(args.chunks),
+            "llm_runtime_sec": round(time.monotonic() - started, 3),
+            "per_chunk": rows,
+        }
+        write_json(args.out, payload)
+        print(json.dumps({"done": chunk["id"], "title": title, "sec": item_runtime}, ensure_ascii=False), flush=True)
     runtime_sec = round(time.monotonic() - started, 3)
     payload = {
         "execution_mode": "local",
