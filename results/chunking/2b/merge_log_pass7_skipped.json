@@ -1,0 +1,7 @@
+{
+  "pass": 7,
+  "method": "title_embed_adjacent",
+  "skipped": true,
+  "reason": "Опыт C уже дал 14 глав (≤20), внутренний title-embed проход не запускался.",
+  "timing_method": "source_boundaries"
+}

@@ -1,0 +1,28 @@
+{
+  "experiment": "D",
+  "status": "skipped",
+  "failure_kind": "install",
+  "model": "jinaai/jina-embeddings-v3",
+  "error": "missing dependency for jinaai/jina-embeddings-v3: This modeling file requires the following packages that were not found in your environment: einops. Run `pip install einops`",
+  "alternatives_not_executed": [
+    {
+      "model": "Alibaba-NLP/gte-multilingual-base",
+      "params": "305M",
+      "ctx": 8192,
+      "executed": false
+    },
+    {
+      "model": "BAAI/bge-m3",
+      "params": "568M",
+      "ctx": 8192,
+      "executed": false
+    },
+    {
+      "model": "Qwen/Qwen3-Embedding-0.6B",
+      "params": "0.6B",
+      "ctx": 32000,
+      "executed": false,
+      "note": "long-context capable; token-span pooling is less canonical for late chunking"
+    }
+  ]
+}

@@ -1,0 +1,391 @@
+{
+  "calls": [
+    {
+      "pass": 1,
+      "presented_ids": [
+        0,
+        1
+      ],
+      "left_title": "Все понятно и нужно что-то разъяснять",
+      "right_title": "Обсуждение направления вопросов",
+      "left_source_ids": [
+        0
+      ],
+      "right_source_ids": [
+        1
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[0,1],\"same_topic\":false,\"title\":}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 18.332,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        1,
+        2
+      ],
+      "left_title": "Обсуждение направления вопросов",
+      "right_title": "Определение точки подключения канализации",
+      "left_source_ids": [
+        1
+      ],
+      "right_source_ids": [
+        2
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[1,2],\"same_topic\":false,\"title\":null}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          1,
+          2
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 13.591,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        2,
+        3
+      ],
+      "left_title": "Определение точки подключения канализации",
+      "right_title": "Подключение к сети УДС в технических условиях",
+      "left_source_ids": [
+        2
+      ],
+      "right_source_ids": [
+        3
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[2,3],\"same_topic\":true,\"title\":\"Определение и подключение к сети УДС\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Определение и подключение к сети УДС",
+        "ids_ok": true,
+        "returned_ids": [
+          2,
+          3
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 16.244,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        2,
+        3
+      ],
+      "left_title": "Определение и подключение к сети УДС",
+      "right_title": "Письмо о согласовании стоков",
+      "left_source_ids": [
+        2,
+        3
+      ],
+      "right_source_ids": [
+        4
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[2,3],\"same_topic\":false,\"title\":}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 11.952,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        3,
+        4
+      ],
+      "left_title": "Письмо о согласовании стоков",
+      "right_title": "Обсуждение учета расходов и проектных решений",
+      "left_source_ids": [
+        4
+      ],
+      "right_source_ids": [
+        5
+      ],
+      "raw": "",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          3,
+          4
+        ],
+        "reason": "cap_duration"
+      },
+      "llm_runtime_sec": 0.0,
+      "caps_allowed": false
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        4,
+        5
+      ],
+      "left_title": "Обсуждение учета расходов и проектных решений",
+      "right_title": "Формирование заявки",
+      "left_source_ids": [
+        5
+      ],
+      "right_source_ids": [
+        6
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[4,5],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          4,
+          5
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 12.816,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        5,
+        6
+      ],
+      "left_title": "Формирование заявки",
+      "right_title": "ландшафтная концепция и магистральные сети",
+      "left_source_ids": [
+        6
+      ],
+      "right_source_ids": [
+        7
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[5,6],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          5,
+          6
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 12.847,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        6,
+        7
+      ],
+      "left_title": "ландшафтная концепция и магистральные сети",
+      "right_title": "Уточнение расположения элементов",
+      "left_source_ids": [
+        7
+      ],
+      "right_source_ids": [
+        8
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[6,7],\"same_topic\":true,\"title\":\"ландшафтная концепция и расположение элементов\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "ландшафтная концепция и расположение элементов",
+        "ids_ok": true,
+        "returned_ids": [
+          6,
+          7
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 15.954,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        6,
+        7
+      ],
+      "left_title": "ландшафтная концепция и расположение элементов",
+      "right_title": "Подземная часть где-то под коммерцией",
+      "left_source_ids": [
+        7,
+        8
+      ],
+      "right_source_ids": [
+        9
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[6,7],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          6,
+          7
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 12.521,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        7,
+        8
+      ],
+      "left_title": "Подземная часть где-то под коммерцией",
+      "right_title": "Обсуждение маршрута кабеля через улицу и паркинг",
+      "left_source_ids": [
+        9
+      ],
+      "right_source_ids": [
+        10
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[7,8],\"same_topic\":true,\"title\":\"Подземная часть и маршрут кабеля\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Подземная часть и маршрут кабеля",
+        "ids_ok": true,
+        "returned_ids": [
+          7,
+          8
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 16.064,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        7,
+        8
+      ],
+      "left_title": "Подземная часть и маршрут кабеля",
+      "right_title": "Обсуждение незаконных действий и теплового прохода",
+      "left_source_ids": [
+        9,
+        10
+      ],
+      "right_source_ids": [
+        11
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[7,8],\"same_topic\":false,\"title\":null}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          7,
+          8
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 12.606,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        8,
+        9
+      ],
+      "left_title": "Обсуждение незаконных действий и теплового прохода",
+      "right_title": "Обсуждение опыта работы с оборонэнерго",
+      "left_source_ids": [
+        11
+      ],
+      "right_source_ids": [
+        12
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[8,9],\"same_topic\":false,\"title\":null}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          8,
+          9
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.065,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        9,
+        10
+      ],
+      "left_title": "Обсуждение опыта работы с оборонэнерго",
+      "right_title": "Обсуждение контекста с ПЭСом",
+      "left_source_ids": [
+        12
+      ],
+      "right_source_ids": [
+        13
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[9,10],\"same_topic\":true,\"title\":\"Обсуждение опыта работы с оборонэнерго и контекста с ПЭСом\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Обсуждение опыта работы с оборонэнерго и контекста с ПЭСом",
+        "ids_ok": true,
+        "returned_ids": [
+          9,
+          10
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 19.835,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        9,
+        10
+      ],
+      "left_title": "Обсуждение опыта работы с оборонэнерго и контекста с ПЭСом",
+      "right_title": "Уточнение количества корпусов в вопросах",
+      "left_source_ids": [
+        12,
+        13
+      ],
+      "right_source_ids": [
+        14
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[9,10],\"same_topic\":false,\"title\":}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 12.816,
+      "caps_allowed": true
+    }
+  ]
+}

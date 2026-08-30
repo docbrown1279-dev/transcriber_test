@@ -1,0 +1,2892 @@
+{
+  "execution_mode": "local",
+  "provider": "llama.cpp",
+  "model": "Qwen3-8B-Q5_K_M.gguf",
+  "input_artifact": "results/chunking/2/attempt_2_chunks_titled.json",
+  "n_calls": 106,
+  "calls": [
+    {
+      "pass": 1,
+      "presented_ids": [
+        0,
+        1
+      ],
+      "left_title": "Все понятно и нужно что-то разъяснять",
+      "right_title": "Обсуждение направления вопросов",
+      "left_source_ids": [
+        0
+      ],
+      "right_source_ids": [
+        1
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[0,1],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 20.696,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        1,
+        2
+      ],
+      "left_title": "Обсуждение направления вопросов",
+      "right_title": "Определение точки подключения канализации",
+      "left_source_ids": [
+        1
+      ],
+      "right_source_ids": [
+        2
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[1,2],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.413,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        2,
+        3
+      ],
+      "left_title": "Определение точки подключения канализации",
+      "right_title": "Подключение к сети УДС в технических условиях",
+      "left_source_ids": [
+        2
+      ],
+      "right_source_ids": [
+        3
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[2,3],\"same_topic\":true,\"title\":\"Определение точки подключения и подключение к сети УДС\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Определение точки подключения и подключение к сети УДС",
+        "ids_ok": true,
+        "returned_ids": [
+          2,
+          3
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.869,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        2,
+        3
+      ],
+      "left_title": "Определение точки подключения и подключение к сети УДС",
+      "right_title": "Письмо о согласовании стоков",
+      "left_source_ids": [
+        2,
+        3
+      ],
+      "right_source_ids": [
+        4
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[2,3],\"same_topic\":false,\"title\":\"Определение точки подключения и подключение к сети УДС Письмо о согласовании стоков\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "Определение точки подключения и подключение к сети УДС Письмо о",
+        "ids_ok": true,
+        "returned_ids": [
+          2,
+          3
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 19.693,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        3,
+        4
+      ],
+      "left_title": "Письмо о согласовании стоков",
+      "right_title": "Обсуждение учета расходов и проектных решений",
+      "left_source_ids": [
+        4
+      ],
+      "right_source_ids": [
+        5
+      ],
+      "raw": "",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          3,
+          4
+        ],
+        "reason": "cap_duration"
+      },
+      "llm_runtime_sec": 0.0,
+      "caps_allowed": false
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        4,
+        5
+      ],
+      "left_title": "Обсуждение учета расходов и проектных решений",
+      "right_title": "Формирование заявки",
+      "left_source_ids": [
+        5
+      ],
+      "right_source_ids": [
+        6
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[4,5],\"same_topic\":true,\"title\":\"Учет расходов и формирование заявки\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Учет расходов и формирование заявки",
+        "ids_ok": true,
+        "returned_ids": [
+          4,
+          5
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 16.264,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        4,
+        5
+      ],
+      "left_title": "Учет расходов и формирование заявки",
+      "right_title": "ландшафтная концепция и магистральные сети",
+      "left_source_ids": [
+        5,
+        6
+      ],
+      "right_source_ids": [
+        7
+      ],
+      "raw": "",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          4,
+          5
+        ],
+        "reason": "cap_duration"
+      },
+      "llm_runtime_sec": 0.0,
+      "caps_allowed": false
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        5,
+        6
+      ],
+      "left_title": "ландшафтная концепция и магистральные сети",
+      "right_title": "Уточнение расположения элементов",
+      "left_source_ids": [
+        7
+      ],
+      "right_source_ids": [
+        8
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[5,6],\"same_topic\":true,\"title\":\"ландшафтная концепция и расположение элементов\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "ландшафтная концепция и расположение элементов",
+        "ids_ok": true,
+        "returned_ids": [
+          5,
+          6
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.354,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        5,
+        6
+      ],
+      "left_title": "ландшафтная концепция и расположение элементов",
+      "right_title": "Подземная часть где-то под коммерцией",
+      "left_source_ids": [
+        7,
+        8
+      ],
+      "right_source_ids": [
+        9
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[5,6],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 13.385,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        6,
+        7
+      ],
+      "left_title": "Подземная часть где-то под коммерцией",
+      "right_title": "Обсуждение маршрута кабеля через улицу и паркинг",
+      "left_source_ids": [
+        9
+      ],
+      "right_source_ids": [
+        10
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[6,7],\"same_topic\":true,\"title\":\"Подземная часть и маршрут кабеля\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Подземная часть и маршрут кабеля",
+        "ids_ok": true,
+        "returned_ids": [
+          6,
+          7
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.168,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        6,
+        7
+      ],
+      "left_title": "Подземная часть и маршрут кабеля",
+      "right_title": "Обсуждение незаконных действий и теплового прохода",
+      "left_source_ids": [
+        9,
+        10
+      ],
+      "right_source_ids": [
+        11
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[6,7],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          6,
+          7
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 13.626,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        7,
+        8
+      ],
+      "left_title": "Обсуждение незаконных действий и теплового прохода",
+      "right_title": "Обсуждение опыта работы с оборонэнерго",
+      "left_source_ids": [
+        11
+      ],
+      "right_source_ids": [
+        12
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[7,8],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.193,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        8,
+        9
+      ],
+      "left_title": "Обсуждение опыта работы с оборонэнерго",
+      "right_title": "Обсуждение контекста с ПЭСом",
+      "left_source_ids": [
+        12
+      ],
+      "right_source_ids": [
+        13
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[8,9],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.896,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        9,
+        10
+      ],
+      "left_title": "Обсуждение контекста с ПЭСом",
+      "right_title": "Уточнение количества корпусов в вопросах",
+      "left_source_ids": [
+        13
+      ],
+      "right_source_ids": [
+        14
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[9,10],\"same_topic\":true,\"title\":\"Обсуждение контекста и уточнение корпусов\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Обсуждение контекста и уточнение корпусов",
+        "ids_ok": true,
+        "returned_ids": [
+          9,
+          10
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 19.253,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        9,
+        10
+      ],
+      "left_title": "Обсуждение контекста и уточнение корпусов",
+      "right_title": "Обращение к ресурснику для подписания договора",
+      "left_source_ids": [
+        13,
+        14
+      ],
+      "right_source_ids": [
+        15
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[9,10],\"same_topic\":false,\"title\":}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          9,
+          10
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 13.813,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        10,
+        11
+      ],
+      "left_title": "Обращение к ресурснику для подписания договора",
+      "right_title": "Ориентировочный срок для экспертизы",
+      "left_source_ids": [
+        15
+      ],
+      "right_source_ids": [
+        16
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[10,11],\"same_topic\":false,\"title\":\\\"\\\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.767,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        11,
+        12
+      ],
+      "left_title": "Ориентировочный срок для экспертизы",
+      "right_title": "экспертиза будет проведена",
+      "left_source_ids": [
+        16
+      ],
+      "right_source_ids": [
+        17
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[11,12],\"same_topic\":true,\"title\":\"ориентировочный срок и проведение экспертизы\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "ориентировочный срок и проведение экспертизы",
+        "ids_ok": true,
+        "returned_ids": [
+          11,
+          12
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 18.091,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        11,
+        12
+      ],
+      "left_title": "ориентировочный срок и проведение экспертизы",
+      "right_title": "Обсуждение продолжается два-три месяца",
+      "left_source_ids": [
+        16,
+        17
+      ],
+      "right_source_ids": [
+        18
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[11,12],\"same_topic\":true,\"title\":\"Срок и продолжительность обсуждения\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Срок и продолжительность обсуждения",
+        "ids_ok": true,
+        "returned_ids": [
+          11,
+          12
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 16.713,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        11,
+        12
+      ],
+      "left_title": "Срок и продолжительность обсуждения",
+      "right_title": "Перераспределение нагрузки без изменения максимальной",
+      "left_source_ids": [
+        16,
+        17,
+        18
+      ],
+      "right_source_ids": [
+        19
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[11,12],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.264,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        12,
+        13
+      ],
+      "left_title": "Перераспределение нагрузки без изменения максимальной",
+      "right_title": "Живая площадь увеличивается желаем",
+      "left_source_ids": [
+        19
+      ],
+      "right_source_ids": [
+        20
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[12,13],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.965,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        13,
+        14
+      ],
+      "left_title": "Живая площадь увеличивается желаем",
+      "right_title": "Обсуждение изменения количества квартир",
+      "left_source_ids": [
+        20
+      ],
+      "right_source_ids": [
+        21
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[13,14],\"same_topic\":true,\"title\":\"Живая площадь и количество квартир\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Живая площадь и количество квартир",
+        "ids_ok": true,
+        "returned_ids": [
+          13,
+          14
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.198,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        13,
+        14
+      ],
+      "left_title": "Живая площадь и количество квартир",
+      "right_title": "Нагрузки не меняют снова",
+      "left_source_ids": [
+        20,
+        21
+      ],
+      "right_source_ids": [
+        22
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[13,14],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          13,
+          14
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 13.3,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        14,
+        15
+      ],
+      "left_title": "Нагрузки не меняют снова",
+      "right_title": "Эмоциональное состояние участников встречи",
+      "left_source_ids": [
+        22
+      ],
+      "right_source_ids": [
+        23
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[14,15],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.911,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        15,
+        16
+      ],
+      "left_title": "Эмоциональное состояние участников встречи",
+      "right_title": "Обсуждение результатов и дальнейшего мониторинга",
+      "left_source_ids": [
+        23
+      ],
+      "right_source_ids": [
+        24
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[15,16],\"same_topic\":false,\"title\":\\\"\\\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.737,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        16,
+        17
+      ],
+      "left_title": "Обсуждение результатов и дальнейшего мониторинга",
+      "right_title": "Количество жилплощадей увеличилось относительно АГК камня",
+      "left_source_ids": [
+        24
+      ],
+      "right_source_ids": [
+        25
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[16,17],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 16.03,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        17,
+        18
+      ],
+      "left_title": "Количество жилплощадей увеличилось относительно АГК камня",
+      "right_title": "Расчет проекта и мощность на квартиру",
+      "left_source_ids": [
+        25
+      ],
+      "right_source_ids": [
+        26
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[17,18],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.694,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        18,
+        19
+      ],
+      "left_title": "Расчет проекта и мощность на квартиру",
+      "right_title": "Обсуждение нагрузок и стандартов",
+      "left_source_ids": [
+        26
+      ],
+      "right_source_ids": [
+        27
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[18,19],\"same_topic\":true,\"title\":\"Расчет проекта, нагрузки и мощность\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Расчет проекта, нагрузки и мощность",
+        "ids_ok": true,
+        "returned_ids": [
+          18,
+          19
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.535,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        18,
+        19
+      ],
+      "left_title": "Расчет проекта, нагрузки и мощность",
+      "right_title": "Количество квартир на сегодня не определено",
+      "left_source_ids": [
+        26,
+        27
+      ],
+      "right_source_ids": [
+        28
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[18,19],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          18,
+          19
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 13.562,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        19,
+        20
+      ],
+      "left_title": "Количество квартир на сегодня не определено",
+      "right_title": "Согласование изменений в работе",
+      "left_source_ids": [
+        28
+      ],
+      "right_source_ids": [
+        29
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[19,20],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.856,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        20,
+        21
+      ],
+      "left_title": "Согласование изменений в работе",
+      "right_title": "Согласование квартирой и инженерные вопросы",
+      "left_source_ids": [
+        29
+      ],
+      "right_source_ids": [
+        30
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[20,21],\"same_topic\":true,\"title\":\"Согласование изменений и инженерные вопросы\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Согласование изменений и инженерные вопросы",
+        "ids_ok": true,
+        "returned_ids": [
+          20,
+          21
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 18.249,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        20,
+        21
+      ],
+      "left_title": "Согласование изменений и инженерные вопросы",
+      "right_title": "Обсуждение завершения мощности и схемы сетей связи",
+      "left_source_ids": [
+        29,
+        30
+      ],
+      "right_source_ids": [
+        31
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[20,21],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          20,
+          21
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.275,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        21,
+        22
+      ],
+      "left_title": "Обсуждение завершения мощности и схемы сетей связи",
+      "right_title": "Обсуждение изменений за последние годы",
+      "left_source_ids": [
+        31
+      ],
+      "right_source_ids": [
+        32
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[21,22],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          21,
+          22
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.32,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        22,
+        23
+      ],
+      "left_title": "Обсуждение изменений за последние годы",
+      "right_title": "Предусматривали помещение для провайдера",
+      "left_source_ids": [
+        32
+      ],
+      "right_source_ids": [
+        33
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[22,23],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.271,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        23,
+        24
+      ],
+      "left_title": "Предусматривали помещение для провайдера",
+      "right_title": "Обсуждение расположения корпусов и диспетчерской",
+      "left_source_ids": [
+        33
+      ],
+      "right_source_ids": [
+        34
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[23,24],\"same_topic\":true,\"title\":\"Помещение для провайдера и расположение корпусов\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Помещение для провайдера и расположение корпусов",
+        "ids_ok": true,
+        "returned_ids": [
+          23,
+          24
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 19.155,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        23,
+        24
+      ],
+      "left_title": "Помещение для провайдера и расположение корпусов",
+      "right_title": "Совещание по сетям и числам",
+      "left_source_ids": [
+        33,
+        34
+      ],
+      "right_source_ids": [
+        35
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[23,24],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.284,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        24,
+        25
+      ],
+      "left_title": "Совещание по сетям и числам",
+      "right_title": "Обсуждение анализа и консультации с коллегой",
+      "left_source_ids": [
+        35
+      ],
+      "right_source_ids": [
+        36
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[24,25],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          24,
+          25
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.115,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        25,
+        26
+      ],
+      "left_title": "Обсуждение анализа и консультации с коллегой",
+      "right_title": "Обсуждение роли конструктора в проекте",
+      "left_source_ids": [
+        36
+      ],
+      "right_source_ids": [
+        37
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[25,26],\"same_topic\":true,\"title\":\"Анализ, консультация и роль конструктора\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Анализ, консультация и роль конструктора",
+        "ids_ok": true,
+        "returned_ids": [
+          25,
+          26
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 18.451,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        25,
+        26
+      ],
+      "left_title": "Анализ, консультация и роль конструктора",
+      "right_title": "Обсуждение необходимости изучения вопросов на начальном этапе",
+      "left_source_ids": [
+        36,
+        37
+      ],
+      "right_source_ids": [
+        38
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[25,26],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          25,
+          26
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.375,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        26,
+        27
+      ],
+      "left_title": "Обсуждение необходимости изучения вопросов на начальном этапе",
+      "right_title": "Обсуждение сроков и согласования решения",
+      "left_source_ids": [
+        38
+      ],
+      "right_source_ids": [
+        39
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[26,27],\"same_topic\":true,\"title\":\"Обсуждение вопросов и сроков\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Обсуждение вопросов и сроков",
+        "ids_ok": true,
+        "returned_ids": [
+          26,
+          27
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.639,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        26,
+        27
+      ],
+      "left_title": "Обсуждение вопросов и сроков",
+      "right_title": "Планы разрезы для",
+      "left_source_ids": [
+        38,
+        39
+      ],
+      "right_source_ids": [
+        40
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[26,27],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 13.802,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        27,
+        28
+      ],
+      "left_title": "Планы разрезы для",
+      "right_title": "Сравнение мощности и габаритов корпусов",
+      "left_source_ids": [
+        40
+      ],
+      "right_source_ids": [
+        41
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[27,28],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          27,
+          28
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.367,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        28,
+        29
+      ],
+      "left_title": "Сравнение мощности и габаритов корпусов",
+      "right_title": "Нет альтернативы из-за неясных требований",
+      "left_source_ids": [
+        41
+      ],
+      "right_source_ids": [
+        42
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[28,29],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          28,
+          29
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 16.368,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        29,
+        30
+      ],
+      "left_title": "Нет альтернативы из-за неясных требований",
+      "right_title": "Вариативность квартир и пробелы в площадях",
+      "left_source_ids": [
+        42
+      ],
+      "right_source_ids": [
+        43
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[29,30],\"same_topic\":true,\"title\":\"Неясные требования и пробелы в площадях\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Неясные требования и пробелы в площадях",
+        "ids_ok": true,
+        "returned_ids": [
+          29,
+          30
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 18.775,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        29,
+        30
+      ],
+      "left_title": "Неясные требования и пробелы в площадях",
+      "right_title": "Обсуждение учета помещений в проекте",
+      "left_source_ids": [
+        42,
+        43
+      ],
+      "right_source_ids": [
+        44
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[29,30],\"same_topic\":true,\"title\":\"Пробелы в площадях и учет помещений\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Пробелы в площадях и учет помещений",
+        "ids_ok": true,
+        "returned_ids": [
+          29,
+          30
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.068,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        29,
+        30
+      ],
+      "left_title": "Пробелы в площадях и учет помещений",
+      "right_title": "Присланные файлы с квартирами и стенами",
+      "left_source_ids": [
+        42,
+        43,
+        44
+      ],
+      "right_source_ids": [
+        45
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[29,30],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          29,
+          30
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.831,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        30,
+        31
+      ],
+      "left_title": "Присланные файлы с квартирами и стенами",
+      "right_title": "Да это было а да это я да да да",
+      "left_source_ids": [
+        45
+      ],
+      "right_source_ids": [
+        46
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[30,31],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          30,
+          31
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.33,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        31,
+        32
+      ],
+      "left_title": "Да это было а да это я да да да",
+      "right_title": "Фрагмент обсуждения дальневосточной ипотеки и квартирографии",
+      "left_source_ids": [
+        46
+      ],
+      "right_source_ids": [
+        47
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[31,32],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          31,
+          32
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 16.944,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        32,
+        33
+      ],
+      "left_title": "Фрагмент обсуждения дальневосточной ипотеки и квартирографии",
+      "right_title": "Обсуждение изменений в квартирографии и инсталляции",
+      "left_source_ids": [
+        47
+      ],
+      "right_source_ids": [
+        48
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[32,33],\"same_topic\":true,\"title\":\"Фрагмент обсуждения квартирографии и инсталляции\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Фрагмент обсуждения квартирографии и инсталляции",
+        "ids_ok": true,
+        "returned_ids": [
+          32,
+          33
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 21.654,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        32,
+        33
+      ],
+      "left_title": "Фрагмент обсуждения квартирографии и инсталляции",
+      "right_title": "Девятый момент выдача на завтра",
+      "left_source_ids": [
+        47,
+        48
+      ],
+      "right_source_ids": [
+        49
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[32,33],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          32,
+          33
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.026,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        33,
+        34
+      ],
+      "left_title": "Девятый момент выдача на завтра",
+      "right_title": "Там будет тоже самое что пятьдесят не стоит",
+      "left_source_ids": [
+        49
+      ],
+      "right_source_ids": [
+        50
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[33,34],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          33,
+          34
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.59,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        34,
+        35
+      ],
+      "left_title": "Там будет тоже самое что пятьдесят не стоит",
+      "right_title": "Обратная связь перед направлением",
+      "left_source_ids": [
+        50
+      ],
+      "right_source_ids": [
+        51
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[34,35],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          34,
+          35
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 16.274,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        35,
+        36
+      ],
+      "left_title": "Обратная связь перед направлением",
+      "right_title": "Готовность к работе",
+      "left_source_ids": [
+        51
+      ],
+      "right_source_ids": [
+        52
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[35,36],\"same_topic\":false,\"title\":}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          35,
+          36
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.126,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        36,
+        37
+      ],
+      "left_title": "Готовность к работе",
+      "right_title": "Готова как десятая может может есть",
+      "left_source_ids": [
+        52
+      ],
+      "right_source_ids": [
+        53
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[36,37],\"same_topic\":true,\"title\":\"Готовность и готова как десятая\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Готовность и готова как десятая",
+        "ids_ok": true,
+        "returned_ids": [
+          36,
+          37
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 17.654,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        36,
+        37
+      ],
+      "left_title": "Готовность и готова как десятая",
+      "right_title": "Рассмотреть возможность направления",
+      "left_source_ids": [
+        52,
+        53
+      ],
+      "right_source_ids": [
+        54
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[36,37],\"same_topic\":true,\"title\":\"Готовность рассмотреть возможность\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Готовность рассмотреть возможность",
+        "ids_ok": true,
+        "returned_ids": [
+          36,
+          37
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 16.007,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        36,
+        37
+      ],
+      "left_title": "Готовность рассмотреть возможность",
+      "right_title": "замечания о повторяющихся проблемах",
+      "left_source_ids": [
+        52,
+        53,
+        54
+      ],
+      "right_source_ids": [
+        55
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[36,37],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.843,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        37,
+        38
+      ],
+      "left_title": "замечания о повторяющихся проблемах",
+      "right_title": "Отступление от квартирографии в трехкомнатных квартирах",
+      "left_source_ids": [
+        55
+      ],
+      "right_source_ids": [
+        56
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[37,38],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.771,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        38,
+        39
+      ],
+      "left_title": "Отступление от квартирографии в трехкомнатных квартирах",
+      "right_title": "Обсуждение отправки материалов на доработку",
+      "left_source_ids": [
+        56
+      ],
+      "right_source_ids": [
+        57
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[38,39],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.624,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        39,
+        40
+      ],
+      "left_title": "Обсуждение отправки материалов на доработку",
+      "right_title": "Изменения в касторографии и влияние на рынок",
+      "left_source_ids": [
+        57
+      ],
+      "right_source_ids": [
+        58
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[39,40],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.623,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        40,
+        41
+      ],
+      "left_title": "Изменения в касторографии и влияние на рынок",
+      "right_title": "Завершение обсуждения вопросов",
+      "left_source_ids": [
+        58
+      ],
+      "right_source_ids": [
+        59
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[40,41],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 16.263,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        41,
+        42
+      ],
+      "left_title": "Завершение обсуждения вопросов",
+      "right_title": "Обратная связь по архитекторам и замечания",
+      "left_source_ids": [
+        59
+      ],
+      "right_source_ids": [
+        60
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[41,42],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.985,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        42,
+        43
+      ],
+      "left_title": "Обратная связь по архитекторам и замечания",
+      "right_title": "Продажи и завершение работы",
+      "left_source_ids": [
+        60
+      ],
+      "right_source_ids": [
+        61
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[42,43],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.413,
+      "caps_allowed": true
+    },
+    {
+      "pass": 1,
+      "presented_ids": [
+        43,
+        44
+      ],
+      "left_title": "Продажи и завершение работы",
+      "right_title": "Обсуждение итогов встречи",
+      "left_source_ids": [
+        61
+      ],
+      "right_source_ids": [
+        62
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[43,44],\"same_topic\":false,\"title\":\\\"\\\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.841,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        0,
+        1
+      ],
+      "left_title": "Все понятно и нужно что-то разъяснять",
+      "right_title": "Обсуждение направления вопросов",
+      "left_source_ids": [
+        0
+      ],
+      "right_source_ids": [
+        1
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[0,1],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.269,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        1,
+        2
+      ],
+      "left_title": "Обсуждение направления вопросов",
+      "right_title": "Определение точки подключения и подключение к сети УДС",
+      "left_source_ids": [
+        1
+      ],
+      "right_source_ids": [
+        2,
+        3
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[1,2],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.293,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        2,
+        3
+      ],
+      "left_title": "Определение точки подключения и подключение к сети УДС",
+      "right_title": "Письмо о согласовании стоков",
+      "left_source_ids": [
+        2,
+        3
+      ],
+      "right_source_ids": [
+        4
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[2,3],\"same_topic\":false,\"title\":\"Определение точки подключения и подключение к сети УДС Письмо о согласовании стоков\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "Определение точки подключения и подключение к сети УДС Письмо о",
+        "ids_ok": true,
+        "returned_ids": [
+          2,
+          3
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 21.968,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        3,
+        4
+      ],
+      "left_title": "Письмо о согласовании стоков",
+      "right_title": "Учет расходов и формирование заявки",
+      "left_source_ids": [
+        4
+      ],
+      "right_source_ids": [
+        5,
+        6
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[3,4],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.826,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        4,
+        5
+      ],
+      "left_title": "Учет расходов и формирование заявки",
+      "right_title": "ландшафтная концепция и расположение элементов",
+      "left_source_ids": [
+        5,
+        6
+      ],
+      "right_source_ids": [
+        7,
+        8
+      ],
+      "raw": "",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          4,
+          5
+        ],
+        "reason": "cap_duration"
+      },
+      "llm_runtime_sec": 0.0,
+      "caps_allowed": false
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        5,
+        6
+      ],
+      "left_title": "ландшафтная концепция и расположение элементов",
+      "right_title": "Подземная часть и маршрут кабеля",
+      "left_source_ids": [
+        7,
+        8
+      ],
+      "right_source_ids": [
+        9,
+        10
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[5,6],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.417,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        6,
+        7
+      ],
+      "left_title": "Подземная часть и маршрут кабеля",
+      "right_title": "Обсуждение незаконных действий и теплового прохода",
+      "left_source_ids": [
+        9,
+        10
+      ],
+      "right_source_ids": [
+        11
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[6,7],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          6,
+          7
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.206,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        7,
+        8
+      ],
+      "left_title": "Обсуждение незаконных действий и теплового прохода",
+      "right_title": "Обсуждение опыта работы с оборонэнерго",
+      "left_source_ids": [
+        11
+      ],
+      "right_source_ids": [
+        12
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[7,8],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.748,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        8,
+        9
+      ],
+      "left_title": "Обсуждение опыта работы с оборонэнерго",
+      "right_title": "Обсуждение контекста и уточнение корпусов",
+      "left_source_ids": [
+        12
+      ],
+      "right_source_ids": [
+        13,
+        14
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[8,9],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.994,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        9,
+        10
+      ],
+      "left_title": "Обсуждение контекста и уточнение корпусов",
+      "right_title": "Обращение к ресурснику для подписания договора",
+      "left_source_ids": [
+        13,
+        14
+      ],
+      "right_source_ids": [
+        15
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[9,10],\"same_topic\":false,\"title\":}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          9,
+          10
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.029,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        10,
+        11
+      ],
+      "left_title": "Обращение к ресурснику для подписания договора",
+      "right_title": "Срок и продолжительность обсуждения",
+      "left_source_ids": [
+        15
+      ],
+      "right_source_ids": [
+        16,
+        17,
+        18
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[10,11],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.907,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        11,
+        12
+      ],
+      "left_title": "Срок и продолжительность обсуждения",
+      "right_title": "Перераспределение нагрузки без изменения максимальной",
+      "left_source_ids": [
+        16,
+        17,
+        18
+      ],
+      "right_source_ids": [
+        19
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[11,12],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.827,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        12,
+        13
+      ],
+      "left_title": "Перераспределение нагрузки без изменения максимальной",
+      "right_title": "Живая площадь и количество квартир",
+      "left_source_ids": [
+        19
+      ],
+      "right_source_ids": [
+        20,
+        21
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[12,13],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.711,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        13,
+        14
+      ],
+      "left_title": "Живая площадь и количество квартир",
+      "right_title": "Нагрузки не меняют снова",
+      "left_source_ids": [
+        20,
+        21
+      ],
+      "right_source_ids": [
+        22
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[13,14],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.564,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        14,
+        15
+      ],
+      "left_title": "Нагрузки не меняют снова",
+      "right_title": "Эмоциональное состояние участников встречи",
+      "left_source_ids": [
+        22
+      ],
+      "right_source_ids": [
+        23
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[14,15],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.432,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        15,
+        16
+      ],
+      "left_title": "Эмоциональное состояние участников встречи",
+      "right_title": "Обсуждение результатов и дальнейшего мониторинга",
+      "left_source_ids": [
+        23
+      ],
+      "right_source_ids": [
+        24
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[15,16],\"same_topic\":false,\"title\":\\\"\\\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.133,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        16,
+        17
+      ],
+      "left_title": "Обсуждение результатов и дальнейшего мониторинга",
+      "right_title": "Количество жилплощадей увеличилось относительно АГК камня",
+      "left_source_ids": [
+        24
+      ],
+      "right_source_ids": [
+        25
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[16,17],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.434,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        17,
+        18
+      ],
+      "left_title": "Количество жилплощадей увеличилось относительно АГК камня",
+      "right_title": "Расчет проекта, нагрузки и мощность",
+      "left_source_ids": [
+        25
+      ],
+      "right_source_ids": [
+        26,
+        27
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[17,18],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.187,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        18,
+        19
+      ],
+      "left_title": "Расчет проекта, нагрузки и мощность",
+      "right_title": "Количество квартир на сегодня не определено",
+      "left_source_ids": [
+        26,
+        27
+      ],
+      "right_source_ids": [
+        28
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[18,19],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          18,
+          19
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.605,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        19,
+        20
+      ],
+      "left_title": "Количество квартир на сегодня не определено",
+      "right_title": "Согласование изменений и инженерные вопросы",
+      "left_source_ids": [
+        28
+      ],
+      "right_source_ids": [
+        29,
+        30
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[19,20],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          19,
+          20
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.396,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        20,
+        21
+      ],
+      "left_title": "Согласование изменений и инженерные вопросы",
+      "right_title": "Обсуждение завершения мощности и схемы сетей связи",
+      "left_source_ids": [
+        29,
+        30
+      ],
+      "right_source_ids": [
+        31
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[20,21],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          20,
+          21
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.972,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        21,
+        22
+      ],
+      "left_title": "Обсуждение завершения мощности и схемы сетей связи",
+      "right_title": "Обсуждение изменений за последние годы",
+      "left_source_ids": [
+        31
+      ],
+      "right_source_ids": [
+        32
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[21,22],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          21,
+          22
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.561,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        22,
+        23
+      ],
+      "left_title": "Обсуждение изменений за последние годы",
+      "right_title": "Помещение для провайдера и расположение корпусов",
+      "left_source_ids": [
+        32
+      ],
+      "right_source_ids": [
+        33,
+        34
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[22,23],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.608,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        23,
+        24
+      ],
+      "left_title": "Помещение для провайдера и расположение корпусов",
+      "right_title": "Совещание по сетям и числам",
+      "left_source_ids": [
+        33,
+        34
+      ],
+      "right_source_ids": [
+        35
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[23,24],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.576,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        24,
+        25
+      ],
+      "left_title": "Совещание по сетям и числам",
+      "right_title": "Анализ, консультация и роль конструктора",
+      "left_source_ids": [
+        35
+      ],
+      "right_source_ids": [
+        36,
+        37
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[24,25],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 14.877,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        25,
+        26
+      ],
+      "left_title": "Анализ, консультация и роль конструктора",
+      "right_title": "Обсуждение вопросов и сроков",
+      "left_source_ids": [
+        36,
+        37
+      ],
+      "right_source_ids": [
+        38,
+        39
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[25,26],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 16.0,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        26,
+        27
+      ],
+      "left_title": "Обсуждение вопросов и сроков",
+      "right_title": "Планы разрезы для",
+      "left_source_ids": [
+        38,
+        39
+      ],
+      "right_source_ids": [
+        40
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[26,27],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.082,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        27,
+        28
+      ],
+      "left_title": "Планы разрезы для",
+      "right_title": "Сравнение мощности и габаритов корпусов",
+      "left_source_ids": [
+        40
+      ],
+      "right_source_ids": [
+        41
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[27,28],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.245,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        28,
+        29
+      ],
+      "left_title": "Сравнение мощности и габаритов корпусов",
+      "right_title": "Пробелы в площадях и учет помещений",
+      "left_source_ids": [
+        41
+      ],
+      "right_source_ids": [
+        42,
+        43,
+        44
+      ],
+      "raw": "",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          28,
+          29
+        ],
+        "reason": "cap_duration"
+      },
+      "llm_runtime_sec": 0.0,
+      "caps_allowed": false
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        29,
+        30
+      ],
+      "left_title": "Пробелы в площадях и учет помещений",
+      "right_title": "Присланные файлы с квартирами и стенами",
+      "left_source_ids": [
+        42,
+        43,
+        44
+      ],
+      "right_source_ids": [
+        45
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[29,30],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          29,
+          30
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.173,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        30,
+        31
+      ],
+      "left_title": "Присланные файлы с квартирами и стенами",
+      "right_title": "Да это было а да это я да да да",
+      "left_source_ids": [
+        45
+      ],
+      "right_source_ids": [
+        46
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[30,31],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          30,
+          31
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 15.173,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        31,
+        32
+      ],
+      "left_title": "Да это было а да это я да да да",
+      "right_title": "Фрагмент обсуждения квартирографии и инсталляции",
+      "left_source_ids": [
+        46
+      ],
+      "right_source_ids": [
+        47,
+        48
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[31,32],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          31,
+          32
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.945,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        32,
+        33
+      ],
+      "left_title": "Фрагмент обсуждения квартирографии и инсталляции",
+      "right_title": "Девятый момент выдача на завтра",
+      "left_source_ids": [
+        47,
+        48
+      ],
+      "right_source_ids": [
+        49
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[32,33],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.099,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        33,
+        34
+      ],
+      "left_title": "Девятый момент выдача на завтра",
+      "right_title": "Там будет тоже самое что пятьдесят не стоит",
+      "left_source_ids": [
+        49
+      ],
+      "right_source_ids": [
+        50
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[33,34],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          33,
+          34
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.522,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        34,
+        35
+      ],
+      "left_title": "Там будет тоже самое что пятьдесят не стоит",
+      "right_title": "Обратная связь перед направлением",
+      "left_source_ids": [
+        50
+      ],
+      "right_source_ids": [
+        51
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[34,35],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          34,
+          35
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.911,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        35,
+        36
+      ],
+      "left_title": "Обратная связь перед направлением",
+      "right_title": "Готовность рассмотреть возможность",
+      "left_source_ids": [
+        51
+      ],
+      "right_source_ids": [
+        52,
+        53,
+        54
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[35,36],\"same_topic\":true,\"title\":\"Обратная связь и готовность рассмотреть\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Обратная связь и готовность рассмотреть",
+        "ids_ok": true,
+        "returned_ids": [
+          35,
+          36
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 18.296,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        35,
+        36
+      ],
+      "left_title": "Обратная связь и готовность рассмотреть",
+      "right_title": "замечания о повторяющихся проблемах",
+      "left_source_ids": [
+        51,
+        52,
+        53,
+        54
+      ],
+      "right_source_ids": [
+        55
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[35,36],\"same_topic\":true,\"title\":\"Обратная связь и замечания о проблемах\"}",
+      "decision": {
+        "same_topic": true,
+        "title": "Обратная связь и замечания о проблемах",
+        "ids_ok": true,
+        "returned_ids": [
+          35,
+          36
+        ],
+        "reason": "same_topic"
+      },
+      "llm_runtime_sec": 16.603,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        35,
+        36
+      ],
+      "left_title": "Обратная связь и замечания о проблемах",
+      "right_title": "Отступление от квартирографии в трехкомнатных квартирах",
+      "left_source_ids": [
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "right_source_ids": [
+        56
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[35,36],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          35,
+          36
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 13.914,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        36,
+        37
+      ],
+      "left_title": "Отступление от квартирографии в трехкомнатных квартирах",
+      "right_title": "Обсуждение отправки материалов на доработку",
+      "left_source_ids": [
+        56
+      ],
+      "right_source_ids": [
+        57
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[36,37],\"same_topic\":false,\"title\":(\"\")}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 16.481,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        37,
+        38
+      ],
+      "left_title": "Обсуждение отправки материалов на доработку",
+      "right_title": "Изменения в касторографии и влияние на рынок",
+      "left_source_ids": [
+        57
+      ],
+      "right_source_ids": [
+        58
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[37,38],\"same_topic\":false,\"title\": \"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          37,
+          38
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 16.206,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        38,
+        39
+      ],
+      "left_title": "Изменения в касторографии и влияние на рынок",
+      "right_title": "Завершение обсуждения вопросов",
+      "left_source_ids": [
+        58
+      ],
+      "right_source_ids": [
+        59
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[38,39],\"same_topic\":false,\"title\":\\\"\\\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.784,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        39,
+        40
+      ],
+      "left_title": "Завершение обсуждения вопросов",
+      "right_title": "Обратная связь по архитекторам и замечания",
+      "left_source_ids": [
+        59
+      ],
+      "right_source_ids": [
+        60
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[39,40],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.169,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        40,
+        41
+      ],
+      "left_title": "Обратная связь по архитекторам и замечания",
+      "right_title": "Продажи и завершение работы",
+      "left_source_ids": [
+        60
+      ],
+      "right_source_ids": [
+        61
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[40,41],\"same_topic\":false,\"title\":\\\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": false,
+        "returned_ids": null,
+        "reason": "unparseable"
+      },
+      "llm_runtime_sec": 15.06,
+      "caps_allowed": true
+    },
+    {
+      "pass": 2,
+      "presented_ids": [
+        41,
+        42
+      ],
+      "left_title": "Продажи и завершение работы",
+      "right_title": "Обсуждение итогов встречи",
+      "left_source_ids": [
+        61
+      ],
+      "right_source_ids": [
+        62
+      ],
+      "raw": "<think>\n\n</think>\n\n{\"ids\":[41,42],\"same_topic\":false,\"title\":\"\"}",
+      "decision": {
+        "same_topic": false,
+        "title": "",
+        "ids_ok": true,
+        "returned_ids": [
+          41,
+          42
+        ],
+        "reason": "different_topic"
+      },
+      "llm_runtime_sec": 14.577,
+      "caps_allowed": true
+    }
+  ]
+}

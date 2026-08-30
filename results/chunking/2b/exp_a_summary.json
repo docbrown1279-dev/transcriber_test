@@ -1,0 +1,22 @@
+{
+  "experiment": "A",
+  "embedding_model": "cointegrated/rubert-tiny2",
+  "model_load_and_embed_sec": 3.835,
+  "thresholds": [
+    {
+      "threshold": 0.85,
+      "num_chapters": 63
+    },
+    {
+      "threshold": 0.8,
+      "num_chapters": 63
+    },
+    {
+      "threshold": 0.75,
+      "num_chapters": 62
+    }
+  ],
+  "selected_threshold": 0.75,
+  "selected_num_chapters": 62,
+  "titles_pending": false
+}

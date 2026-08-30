@@ -1,0 +1,750 @@
+{
+  "experiment": "A",
+  "rows": [
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 0,
+      "start": 9.970344,
+      "end": 13.800969,
+      "title": "Все понятно и нужно что-то разъяснять",
+      "source_ids": [
+        0
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 1,
+      "start": 14.340969,
+      "end": 20.787219,
+      "title": "Обсуждение направления вопросов",
+      "source_ids": [
+        1
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 2,
+      "start": 21.765969,
+      "end": 65.455344,
+      "title": "Определение точки подключения канализации",
+      "source_ids": [
+        2
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 3,
+      "start": 65.944719,
+      "end": 73.825344,
+      "title": "Подключение к сети УДС в технических условиях",
+      "source_ids": [
+        3
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 4,
+      "start": 83.309094,
+      "end": 145.172844,
+      "title": "Письмо о согласовании стоков",
+      "source_ids": [
+        4
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 5,
+      "start": 145.172844,
+      "end": 273.540969,
+      "title": "Обсуждение учета расходов и проектных решений",
+      "source_ids": [
+        5
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 6,
+      "start": 261.525969,
+      "end": 262.673469,
+      "title": "Формирование заявки",
+      "source_ids": [
+        6
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 7,
+      "start": 281.117844,
+      "end": 337.463469,
+      "title": "ландшафтная концепция и магистральные сети",
+      "source_ids": [
+        7
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 8,
+      "start": 329.430969,
+      "end": 340.214094,
+      "title": "Уточнение расположения элементов",
+      "source_ids": [
+        8
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 9,
+      "start": 340.264719,
+      "end": 342.795969,
+      "title": "Подземная часть где-то под коммерцией",
+      "source_ids": [
+        9
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 10,
+      "start": 344.702844,
+      "end": 373.744719,
+      "title": "Обсуждение маршрута кабеля через улицу и паркинг",
+      "source_ids": [
+        10
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 11,
+      "start": 374.605344,
+      "end": 399.597219,
+      "title": "Обсуждение незаконных действий и теплового прохода",
+      "source_ids": [
+        11
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 12,
+      "start": 399.765969,
+      "end": 408.962844,
+      "title": "Обсуждение опыта работы с оборонэнерго",
+      "source_ids": [
+        12
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 13,
+      "start": 408.962844,
+      "end": 417.012219,
+      "title": "Обсуждение контекста с ПЭСом",
+      "source_ids": [
+        13
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 14,
+      "start": 417.012219,
+      "end": 430.697844,
+      "title": "Уточнение количества корпусов в вопросах",
+      "source_ids": [
+        14
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 15,
+      "start": 430.697844,
+      "end": 453.394719,
+      "title": "Обращение к ресурснику для подписания договора",
+      "source_ids": [
+        15
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 16,
+      "start": 453.394719,
+      "end": 461.967219,
+      "title": "Ориентировочный срок для экспертизы",
+      "source_ids": [
+        16
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 17,
+      "start": 463.772844,
+      "end": 465.966594,
+      "title": "экспертиза будет проведена",
+      "source_ids": [
+        17
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 18,
+      "start": 475.298469,
+      "end": 476.648469,
+      "title": "Обсуждение продолжается два-три месяца",
+      "source_ids": [
+        18
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 19,
+      "start": 477.458469,
+      "end": 509.217219,
+      "title": "Перераспределение нагрузки без изменения максимальной",
+      "source_ids": [
+        19
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 20,
+      "start": 508.829094,
+      "end": 512.153469,
+      "title": "Живая площадь увеличивается желаем",
+      "source_ids": [
+        20
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 21,
+      "start": 512.153469,
+      "end": 524.067219,
+      "title": "Обсуждение изменения количества квартир",
+      "source_ids": [
+        21
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 22,
+      "start": 524.067219,
+      "end": 530.024094,
+      "title": "Нагрузки не меняют снова",
+      "source_ids": [
+        22
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 23,
+      "start": 528.032844,
+      "end": 529.889094,
+      "title": "Эмоциональное состояние участников встречи",
+      "source_ids": [
+        23
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 24,
+      "start": 531.458469,
+      "end": 537.060969,
+      "title": "Обсуждение результатов и дальнейшего мониторинга",
+      "source_ids": [
+        24
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 25,
+      "start": 537.449094,
+      "end": 547.540344,
+      "title": "Количество жилплощадей увеличилось относительно АГК камня",
+      "source_ids": [
+        25
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 26,
+      "start": 548.974719,
+      "end": 564.735969,
+      "title": "Расчет проекта и мощность на квартиру",
+      "source_ids": [
+        26
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 27,
+      "start": 564.297219,
+      "end": 575.569719,
+      "title": "Обсуждение нагрузок и стандартов",
+      "source_ids": [
+        27
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 28,
+      "start": 575.569719,
+      "end": 584.344719,
+      "title": "Количество квартир на сегодня не определено",
+      "source_ids": [
+        28
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 29,
+      "start": 581.492844,
+      "end": 587.129094,
+      "title": "Согласование изменений в работе",
+      "source_ids": [
+        29
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 30,
+      "start": 586.977219,
+      "end": 630.244719,
+      "title": "Согласование квартирой и схемы сетей связи",
+      "source_ids": [
+        30,
+        31
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 31,
+      "start": 631.442844,
+      "end": 635.560344,
+      "title": "Обсуждение изменений за последние годы",
+      "source_ids": [
+        32
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 32,
+      "start": 635.560344,
+      "end": 640.184094,
+      "title": "Предусматривали помещение для провайдера",
+      "source_ids": [
+        33
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 33,
+      "start": 641.449719,
+      "end": 689.594094,
+      "title": "Обсуждение расположения корпусов и диспетчерской",
+      "source_ids": [
+        34
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 34,
+      "start": 693.053469,
+      "end": 702.891594,
+      "title": "Совещание по сетям и числам",
+      "source_ids": [
+        35
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 35,
+      "start": 702.891594,
+      "end": 720.846594,
+      "title": "Обсуждение анализа и консультации с коллегой",
+      "source_ids": [
+        36
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 36,
+      "start": 721.605969,
+      "end": 723.462219,
+      "title": "Обсуждение роли конструктора в проекте",
+      "source_ids": [
+        37
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 37,
+      "start": 723.884094,
+      "end": 797.104719,
+      "title": "Обсуждение необходимости изучения вопросов на начальном этапе",
+      "source_ids": [
+        38
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 38,
+      "start": 796.564719,
+      "end": 874.004094,
+      "title": "Обсуждение сроков и согласования решения",
+      "source_ids": [
+        39
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 39,
+      "start": 874.982844,
+      "end": 878.796594,
+      "title": "Планы разрезы для",
+      "source_ids": [
+        40
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 40,
+      "start": 878.577219,
+      "end": 929.303469,
+      "title": "Сравнение мощности и габаритов корпусов",
+      "source_ids": [
+        41
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 41,
+      "start": 932.745969,
+      "end": 1012.142844,
+      "title": "Нет альтернативы из-за неясных требований",
+      "source_ids": [
+        42
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 42,
+      "start": 1013.003469,
+      "end": 1079.372844,
+      "title": "Вариативность квартир и пробелы в площадях",
+      "source_ids": [
+        43
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 43,
+      "start": 1079.828469,
+      "end": 1104.162219,
+      "title": "Обсуждение учета помещений в проекте",
+      "source_ids": [
+        44
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 44,
+      "start": 1104.162219,
+      "end": 1109.899719,
+      "title": "Присланные файлы с квартирами и стенами",
+      "source_ids": [
+        45
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 45,
+      "start": 1109.444094,
+      "end": 1125.137844,
+      "title": "Да это было а да это я да да да",
+      "source_ids": [
+        46
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 46,
+      "start": 1125.137844,
+      "end": 1181.955969,
+      "title": "Фрагмент обсуждения дальневосточной ипотеки и квартирографии",
+      "source_ids": [
+        47
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 47,
+      "start": 1168.692219,
+      "end": 1248.544719,
+      "title": "Обсуждение изменений в квартирографии и инсталляции",
+      "source_ids": [
+        48
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 48,
+      "start": 1248.544719,
+      "end": 1256.864094,
+      "title": "Девятый момент выдача на завтра",
+      "source_ids": [
+        49
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 49,
+      "start": 1256.408469,
+      "end": 1259.530344,
+      "title": "Там будет тоже самое что пятьдесят не стоит",
+      "source_ids": [
+        50
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 50,
+      "start": 1259.749719,
+      "end": 1265.419719,
+      "title": "Обратная связь перед направлением",
+      "source_ids": [
+        51
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 51,
+      "start": 1265.250969,
+      "end": 1266.533469,
+      "title": "Готовность к работе",
+      "source_ids": [
+        52
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 52,
+      "start": 1267.157844,
+      "end": 1270.296594,
+      "title": "Готова как десятая может может есть",
+      "source_ids": [
+        53
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 53,
+      "start": 1269.300969,
+      "end": 1271.933469,
+      "title": "Рассмотреть возможность направления",
+      "source_ids": [
+        54
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 54,
+      "start": 1272.119094,
+      "end": 1275.730344,
+      "title": "замечания о повторяющихся проблемах",
+      "source_ids": [
+        55
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 55,
+      "start": 1275.730344,
+      "end": 1284.015969,
+      "title": "Отступление от квартирографии в трехкомнатных квартирах",
+      "source_ids": [
+        56
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 56,
+      "start": 1285.703469,
+      "end": 1298.579094,
+      "title": "Обсуждение отправки материалов на доработку",
+      "source_ids": [
+        57
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 57,
+      "start": 1296.840969,
+      "end": 1329.072219,
+      "title": "Изменения в касторографии и влияние на рынок",
+      "source_ids": [
+        58
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 58,
+      "start": 1331.603469,
+      "end": 1334.792844,
+      "title": "Завершение обсуждения вопросов",
+      "source_ids": [
+        59
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 59,
+      "start": 1336.429719,
+      "end": 1418.880969,
+      "title": "Обратная связь по архитекторам и замечания",
+      "source_ids": [
+        60
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 60,
+      "start": 1419.555969,
+      "end": 1454.672844,
+      "title": "Продажи и завершение работы",
+      "source_ids": [
+        61
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    },
+    {
+      "method": "title_embed_adjacent",
+      "chapter_id": 61,
+      "start": 1455.010344,
+      "end": 1468.662132,
+      "title": "Обсуждение итогов встречи",
+      "source_ids": [
+        62
+      ],
+      "timing_source": "results/chunking/2/attempt_2_chunks_titled.json",
+      "timing_method": "source_boundaries"
+    }
+  ]
+}

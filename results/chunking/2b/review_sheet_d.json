@@ -1,0 +1,6 @@
+{
+  "experiment": "D",
+  "status": "skipped",
+  "reason": "jinaai/jina-embeddings-v3 требует пакет einops, которого нет в текущем окружении. Новый пакет не устанавливался.",
+  "rows": []
+}

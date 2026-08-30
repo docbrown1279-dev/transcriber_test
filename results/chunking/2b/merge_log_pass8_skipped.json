@@ -1,0 +1,7 @@
+{
+  "pass": 8,
+  "method": "late_chunking",
+  "skipped": true,
+  "reason": "jinaai/jina-embeddings-v3 требует пакет einops; новый пакет не устанавливался.",
+  "timing_method": "source_boundaries"
+}
