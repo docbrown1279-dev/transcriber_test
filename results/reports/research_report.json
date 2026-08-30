@@ -5,7 +5,10 @@
     "reports": {
       "1a": "results/reports/1a/research_report.json",
       "1b": "results/reports/1b/research_report.json",
-      "1c": "results/reports/1c/research_report.json"
+      "1c": "results/reports/1c/research_report.json",
+      "1d": "results/reports/1d/research_report.json",
+      "1e": "results/reports/1e/research_report.json",
+      "2": "results/reports/2/research_report.json"
     }
   }
 }

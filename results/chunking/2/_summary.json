@@ -1,0 +1,62 @@
+{
+  "execution_mode": "local",
+  "embedding_model": "cointegrated/rubert-tiny2",
+  "model_load_sec": 6.559,
+  "speaker_turns": 177,
+  "attempts": [
+    {
+      "attempt": 1,
+      "unit_size": {
+        "min_words": 20,
+        "max_words": 50
+      },
+      "threshold": 0.8,
+      "num_chunks": 95,
+      "embed_runtime_sec": 0.267,
+      "accepted_merge_cosine": {
+        "min": 0.81052,
+        "median": 0.832711,
+        "max": 0.939079,
+        "n_accepted": 6
+      },
+      "in_target_range": false
+    },
+    {
+      "attempt": 2,
+      "unit_size": {
+        "min_words": 40,
+        "max_words": 80
+      },
+      "threshold": 0.7,
+      "num_chunks": 63,
+      "embed_runtime_sec": 0.297,
+      "accepted_merge_cosine": {
+        "min": 0.707573,
+        "median": 0.754432,
+        "max": 0.939079,
+        "n_accepted": 24
+      },
+      "in_target_range": false
+    },
+    {
+      "attempt": 3,
+      "unit_size": {
+        "min_words": 60,
+        "max_words": 120
+      },
+      "threshold": 0.65,
+      "num_chunks": 48,
+      "embed_runtime_sec": 0.337,
+      "accepted_merge_cosine": {
+        "min": 0.654125,
+        "median": 0.755381,
+        "max": 0.939079,
+        "n_accepted": 31
+      },
+      "in_target_range": false
+    }
+  ],
+  "selected_attempt": null,
+  "selected_num_chunks": null,
+  "titles_allowed": false
+}

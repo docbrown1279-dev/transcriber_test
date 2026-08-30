@@ -1,0 +1,9 @@
+{
+  "model": "v3_rnnt",
+  "provider": "gigaam",
+  "execution_mode": "local",
+  "attempt": 1,
+  "runtime_sec": 160.91,
+  "segments": 183,
+  "empty_segments": 4
+}

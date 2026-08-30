@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "stage": 2,
+    "substage": "2",
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "CPU 4 vCPU, RAM 15 GiB, без GPU",
+    "created_at": "2026-08-30T00:05:00Z",
+    "diarization_model": "pyannote/speaker-diarization-3.1",
+    "diarization_runtime_sec": 769.26,
+    "audio_duration_sec": 1468.6621315192745,
+    "merge_stats": {
+      "raw_turns": 368,
+      "merged_rows": 177,
+      "gained_rows": 138,
+      "untouched_rows": 39,
+      "holes_ge_0_5_sec": 99,
+      "rows_over_25s": 5
+    }
+  },
+  "asr_results": [
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "gigaam",
+      "input_artifact": "data/fixtures/meeting_sample.m4a",
+      "failure_kind": "none",
+      "sample_check": "ok",
+      "meaning_check": "n/a",
+      "diarization": "pyannote/speaker-diarization-3.1",
+      "speakers": 4,
+      "attempt": 1,
+      "runtime_sec": 160.91,
+      "artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "notes": "Полный файл; linear gain; куски >25 с только по времени; 183 сегмента, 4 пустых оставлены пустыми. Латиницы нет."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Этап 2: denoise запрещён и не выполнялся."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "adjacent-cosine whole-speaker-turns",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "fail",
+      "threshold": 0.8,
+      "num_chunks": 95,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2/attempt_1.json",
+      "notes": "Попытка 1: unit 20–50 слов, порог 0.80, embed 0.267 с, accepted cosine min/med/max 0.811/0.833/0.939 (n=6)."
+    },
+    {
+      "method": "adjacent-cosine whole-speaker-turns",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "fail",
+      "threshold": 0.7,
+      "num_chunks": 63,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2/attempt_2.json",
+      "notes": "Попытка 2: unit 40–80 слов, порог 0.70, embed 0.297 с, accepted cosine min/med/max 0.708/0.754/0.939 (n=24)."
+    },
+    {
+      "method": "adjacent-cosine whole-speaker-turns",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "fail",
+      "threshold": 0.65,
+      "num_chunks": 48,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2/attempt_3.json",
+      "notes": "Попытка 3: unit 60–120 слов, порог 0.65, embed 0.337 с, accepted cosine min/med/max 0.654/0.755/0.939 (n=31). Ближе всех к 5–30, всё ещё 48."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "none",
+      "model": "Qwen3-8B",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "notes": "Qwen не запускался: ни одна из трёх попыток чанкинга не дала 5–30 чанков. Четвёртую схему не изобретали."
+    }
+  ],
+  "recommendations": "ASR для MVP: GigaAM v3_rnnt + pyannote 3.1 + табличный merge (0.3 с / <1 с) + linear volume при RMS < −30 dBFS. На полном совещании стек локально отработал. Соседний чанкинг rubert-tiny2 с целыми репликами одного спикера за 3 попытки (20–50/0.80 → 40–80/0.70 → 60–120/0.65) дал 95/63/48 чанков — вне 5–30, заголовки не строили. Дальше (не этот прогон): либо разрешить набор единиц через смену спикера, либо другой порог/окно в новом этапе — не четвёртая схема здесь."
+}
