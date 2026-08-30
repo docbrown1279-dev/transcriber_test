@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CHUNKS = ROOT / "results" / "chunking" / "2" / "chunks.json"
 OUT = ROOT / "results" / "llm" / "2" / "titles.json"
 WORD_RE = re.compile(r"[А-Яа-яЁёA-Za-z0-9]+")
+THINK_RE = re.compile(r"<think>.*?</think>", re.S | re.I)
 
 SYSTEM = (
     "Ты даёшь короткие заголовки глав совещания только по данному тексту. "
@@ -34,7 +35,7 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def clip_title(text: str) -> str:
-    cleaned = text.strip().strip("\"'«»").strip()
+    cleaned = THINK_RE.sub("", text).strip().strip("\"'«»").strip()
     cleaned = cleaned.splitlines()[0].strip()
     tokens = WORD_RE.findall(cleaned)
     if len(tokens) <= 10:
@@ -57,6 +58,7 @@ def clip_title(text: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--chunks", type=Path, default=CHUNKS)
+    parser.add_argument("--out", type=Path, default=OUT)
     parser.add_argument("--model", type=Path, required=True)
     parser.add_argument("--threads", type=int, default=4)
     args = parser.parse_args()
@@ -110,8 +112,9 @@ def main() -> None:
         "llm_runtime_sec": runtime_sec,
         "per_chunk": rows,
     }
-    write_json(OUT, payload)
-    args.chunks.write_text(
+    write_json(args.out, payload)
+    titled_path = args.chunks.with_name(args.chunks.stem + "_titled.json")
+    titled_path.write_text(
         json.dumps(source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(
