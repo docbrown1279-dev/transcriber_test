@@ -78,12 +78,24 @@ def apply_titles(
             "start_source_id": chapter.get("start_source_id"),
             "end_source_id": chapter.get("end_source_id"),
         }
+        source_ids = list(chapter.get("source_ids") or chapter["leaf_ids"])
+        existing = (chapter.get("title") or "").strip()
+        if mode == "a" and len(source_ids) == 1 and existing and " | " not in existing:
+            rows.append(
+                {
+                    "id": chapter["id"],
+                    "title": existing,
+                    "raw_title": existing,
+                    "llm_runtime_sec": 0.0,
+                    "start": locked["start"],
+                    "end": locked["end"],
+                    "source_ids": locked["source_ids"],
+                    "reused_existing": True,
+                }
+            )
+            continue
         if mode == "a":
-            titles = chapter.get("title") or ""
-            if " | " in titles:
-                member_titles = titles
-            else:
-                member_titles = titles
+            member_titles = existing
             first, last = first_last_words(chapter.get("text") or "", 40)
             prompt = USER_A.format(titles=member_titles, first=first, last=last)
         else:

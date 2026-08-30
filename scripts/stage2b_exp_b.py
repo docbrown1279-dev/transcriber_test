@@ -50,7 +50,8 @@ USER = (
     "right_id={right_id} title={right_title}\n\n"
     "Ответь только JSON одной строки вида "
     '{{"ids":[{left_id},{right_id}],"same_topic":true,"title":"..."}} '
-    "или same_topic false и пустой title. "
+    "или same_topic false и title пустая строка \"\". "
+    "Поле title всегда строка, не null и не без значения. "
     "Если same_topic true, title — новый заголовок не больше 10 русских слов "
     "только из двух старых названий. Другие id запрещены."
 )
@@ -60,6 +61,8 @@ ID_RE = re.compile(r"-?\d+")
 def parse_decision(raw: str, left_id: int, right_id: int) -> dict[str, Any]:
     text = raw.strip()
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text, flags=re.I).strip()
+    text = re.sub(r'"title"\s*:\s*(?=[,}])', '"title":""', text)
+    text = text.replace(":}", ':""}').replace(":,", ':"",')
     start = text.find("{")
     end = text.rfind("}")
     parsed: dict[str, Any] | None = None
