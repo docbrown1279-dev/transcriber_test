@@ -1,13 +1,12 @@
 ---
-description: Этап 3 — LLM на готовых главах C и D; ASR и чанкинг 2b заморожены
+description: Этап 3 — инсайты затем название; Qwen3-8B; нарезка C/D заморожена
 alwaysApply: true
 ---
 
-# Этап 3 — LLM
+# Этап 3 — инсайты, не пересказ
 
-- Источник: `docs/research_plan.md`, `results/reports/2b/conclusions.md`, `docs/prompts/stage3_llm.md`.
-- ASR: **не трогать**. Текст только `results/asr/2/gigaam_v3_rnnt/meeting_sample.json`.
-- Каркас TOC: тестировать **оба** рабочих варианта — C (`exp_c_chapters.json`, 14) и D (`exp_d_chapters.json`, 12, `jinaai/jina-embeddings-v3-hf`). Победителя не выбирать.
-- LLM не создаёт таймкоды. Копировать `start`/`end`/`source_ids`.
-- Шумодавы **пропуск**. Словарь терминов — потом. Гибрид C→D — только по явной просьбе.
-- Отчёты: `results/reports/3/`.
+- План: `docs/research_plan.md`, промпт: `docs/prompts/stage3_llm.md`.
+- Сначала ключевые моменты и actions, **потом** title отдельным вызовом (гипотеза P2). P1 one-shot — только контроль на D.
+- Запрещены штампы «обсудили / совещание по». Цифры и поручения только из текста главы.
+- Таймкоды копировать. ASR и чанкинг не трогать. `eval/` не читать.
+- Отчёты: `results/reports/3/`. Ветка: `cursor/stage1e-four-asr-be20`.
