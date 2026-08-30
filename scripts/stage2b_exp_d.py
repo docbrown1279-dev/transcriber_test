@@ -78,6 +78,8 @@ def load_jina(device: str) -> tuple[Any, Any, str, str]:
             tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=trust)
             model = AutoModel.from_pretrained(repo, trust_remote_code=trust)
             model.eval()
+            if device == "cpu":
+                model = model.float()
             model.to(device)
             note = (
                 "official custom-code checkpoint"
@@ -154,7 +156,7 @@ def mean_pool(hidden: torch.Tensor, span: tuple[int, int] | None) -> np.ndarray 
     if end <= start:
         return None
     vec = hidden[start:end].mean(dim=0)
-    vec = torch.nn.functional.normalize(vec, dim=0)
+    vec = torch.nn.functional.normalize(vec.float(), dim=0)
     return vec.detach().cpu().numpy()
 
 
