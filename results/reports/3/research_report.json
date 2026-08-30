@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "stage": 3,
+    "substage": "3",
+    "fixture": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+    "host": "CPU 4 vCPU, RAM 15 GiB, без GPU",
+    "created_at": "2026-08-30T22:29:17Z",
+    "audio_duration_sec": 1468.6621315192745,
+    "winner_prompt": "P1",
+    "winner_chunking": null
+  },
+  "asr_results": [
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "frozen-stage2",
+      "input_artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "failure_kind": "none",
+      "sample_check": "n/a",
+      "meaning_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": null,
+      "artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "notes": "Этап 3: ASR заморожен. Использован локальный артефакт этапа 2."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Этап 3: denoise запрещён и не выполнялся."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "late_chunking",
+      "embedding_model": "jinaai/jina-embeddings-v3-hf",
+      "status": "skipped",
+      "threshold": null,
+      "num_chunks": 12,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_d_chapters.json",
+      "notes": "Замороженный каркас D (12 глав). Новая нарезка не запускалась."
+    },
+    {
+      "method": "pack_across_speakers",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "skipped",
+      "threshold": 0.7,
+      "num_chunks": 14,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_c_chapters.json",
+      "notes": "Замороженный каркас C (14 глав). Победителя C/D не выбирали."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_d_chapters.json",
+      "runtime_sec": 541.831,
+      "hallucination_flag": true,
+      "artifact": "results/llm/3/p1_d.json",
+      "notes": "P1 one-shot на 12 главах D. 12/12 parse_ok после отключения json_object grammar. 67 пунктов. Флаг галлюцинации: в D0 «налоги», в D5 «300 МВт» как факт; 10 vs 12 кВт на D4 модель не извлекла."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_d_chapters.json",
+      "runtime_sec": 608.563,
+      "hallucination_flag": true,
+      "artifact": "results/llm/3/p2_d.json",
+      "notes": "P2 two-pass на тех же 12 главах D. 24 вызова, 68 пунктов. Больше дословности (30% озеленения на D1), но title часто обрывок фразы; D3 title — мусор ASR; D11 «два архитектора» вместо двух пулов замечаний."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_c_chapters.json",
+      "runtime_sec": 593.788,
+      "hallucination_flag": false,
+      "artifact": "results/llm/3/p_winner_c.json",
+      "notes": "На C только победивший P1. 14/14 parse_ok; C6 восстановлен из raw (asr_notes с '->'). winner_from_d=P1. Победителя нарезки нет."
+    }
+  ],
+  "recommendations": "Для коротких глав C/D оставляем один локальный Qwen3-8B Q5_K_M и one-shot P1 (сначала JSON фактов+title в одном вызове). Two-pass P2 на этой модели не оправдал гипотезу: пункты ближе к сырому ASR, заголовки хуже. Не объявлять C или D истинной нарезкой. ASR MVP без изменений: GigaAM v3_rnnt + pyannote 3.1 + linear gain. Словарь терминов — следующим этапом как предложения замены, не молча. Вторую LLM не запускать, пока 8B не начнёт стабильно штамповать «обсудили тему» или выдумывать поручения; текущий потолок — пропуск цифр (10/12 кВт) и редкая нормализация ASR-мусора в «факт»."
+}

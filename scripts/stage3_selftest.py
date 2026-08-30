@@ -45,6 +45,13 @@ def main() -> None:
 
     assert extract_json_object("not json") is None
     assert parse_oneshot("не JSON") is None
+    repaired = parse_oneshot(
+        '{"title":"Сети","key_points":["Ждём схему"],"actions":[],'
+        '"open_questions":[],"asr_notes":["не ошибо" -> "не ошиблось"]}'
+    )
+    assert repaired is not None
+    assert repaired["title"] == "Сети"
+    assert repaired["asr_notes"] == ["не ошибо -> не ошиблось"]
 
     chapter = {
         "id": 0,

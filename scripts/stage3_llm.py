@@ -109,17 +109,26 @@ def strip_think(text: str) -> str:
     return cleaned.strip()
 
 
+def _repair_json_text(text: str) -> str:
+    # Model sometimes writes asr_notes as "typo" -> "guess" instead of one string.
+    return re.sub(r'"([^"\\]*)"\s*->\s*"([^"\\]*)"', r'"\1 -> \2"', text)
+
+
 def extract_json_object(raw: str) -> dict[str, Any] | None:
     text = strip_think(raw)
     start = text.find("{")
     end = text.rfind("}")
     if start < 0 or end <= start:
         return None
-    try:
-        value = json.loads(text[start : end + 1])
-    except json.JSONDecodeError:
-        return None
-    return value if isinstance(value, dict) else None
+    blob = text[start : end + 1]
+    for candidate in (blob, _repair_json_text(blob)):
+        try:
+            value = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict):
+            return value
+    return None
 
 
 def as_str_list(value: Any) -> list[str]:
