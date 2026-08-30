@@ -215,7 +215,6 @@ def chat(
         max_tokens=max_tokens,
         temperature=0.1,
         top_p=0.9,
-        response_format={"type": "json_object"},
     )
     raw = (response["choices"][0]["message"]["content"] or "").strip()
     return raw, round(time.monotonic() - started, 3)
@@ -242,18 +241,23 @@ def load_chapters(path: Path) -> list[dict[str, Any]]:
     return chapters
 
 
-def resume_done(out_path: Path) -> dict[int, dict[str, Any]]:
+def resume_done(out_path: Path, *, retry_failed: bool = False) -> dict[int, dict[str, Any]]:
     if not out_path.exists():
         return {}
     previous = json.loads(out_path.read_text(encoding="utf-8"))
     done: dict[int, dict[str, Any]] = {}
     for row in previous.get("chapters") or []:
         cid = int(row["id"])
-        if row.get("parse_ok") or row.get("key_points") or row.get("title"):
-            done[cid] = row
-        elif row.get("retries", 0) >= 1 and row.get("parse_ok") is False:
+        parse_ok = bool(row.get("parse_ok"))
+        if retry_failed and not parse_ok:
+            continue
+        if parse_ok or row.get("key_points") or row.get("title"):
             done[cid] = row
     return done
+
+
+def ordered_rows(source_chapters: list[dict[str, Any]], by_id: dict[int, dict[str, Any]]) -> list[dict[str, Any]]:
+    return [by_id[int(chapter["id"])] for chapter in source_chapters if int(chapter["id"]) in by_id]
 
 
 def write_run(
@@ -265,20 +269,22 @@ def write_run(
     chapters: list[dict[str, Any]],
     calls: list[dict[str, Any]],
     started: float,
+    extra: dict[str, Any] | None = None,
 ) -> None:
-    write_json(
-        out_path,
-        {
-            "execution_mode": "local",
-            "provider": "llama.cpp",
-            "model": model_name,
-            "prompt_id": prompt_id,
-            "input_artifact": input_artifact,
-            "llm_runtime_sec": round(time.monotonic() - started, 3),
-            "chapters": chapters,
-            "calls": calls,
-        },
-    )
+    payload = {
+        "execution_mode": "local",
+        "provider": "llama.cpp",
+        "model": model_name,
+        "prompt_id": prompt_id,
+        "input_artifact": input_artifact,
+        "llm_runtime_sec": round(sum(float(row.get("llm_runtime_sec") or 0) for row in chapters), 3),
+        "this_run_sec": round(time.monotonic() - started, 3),
+        "chapters": chapters,
+        "calls": calls,
+    }
+    if extra:
+        payload.update(extra)
+    write_json(out_path, payload)
 
 
 def run_p1(
@@ -287,25 +293,28 @@ def run_p1(
     out_path: Path,
     model_name: str,
     input_artifact: str,
+    *,
+    retry_failed: bool = False,
 ) -> dict[str, Any]:
     started = time.monotonic()
-    done = resume_done(out_path)
-    rows: list[dict[str, Any]] = []
+    by_id: dict[int, dict[str, Any]] = {}
     calls: list[dict[str, Any]] = []
     if out_path.exists():
         prev = json.loads(out_path.read_text(encoding="utf-8"))
+        for row in prev.get("chapters") or []:
+            by_id[int(row["id"])] = row
         calls = list(prev.get("calls") or [])
+    done = resume_done(out_path, retry_failed=retry_failed)
     for chapter in chapters:
-        existing = done.get(int(chapter["id"]))
-        if existing:
-            rows.append(existing)
+        cid = int(chapter["id"])
+        if cid in done:
             continue
         raw = ""
         runtime = 0.0
         parsed = None
         retries = 0
         for attempt in range(2):
-            raw, runtime = chat(llm, P1_USER.format(text=chapter.get("text") or ""), max_tokens=512)
+            raw, runtime = chat(llm, P1_USER.format(text=chapter.get("text") or ""), max_tokens=640)
             parsed = parse_oneshot(raw)
             retries = attempt
             if parsed is not None:
@@ -315,7 +324,8 @@ def run_p1(
         row["llm_runtime_sec"] = runtime
         row["parse_ok"] = parsed is not None
         row["retries"] = retries
-        rows.append(row)
+        by_id[cid] = row
+        calls = [item for item in calls if int(item.get("id")) != cid]
         calls.append(
             {
                 "id": chapter["id"],
@@ -331,7 +341,7 @@ def run_p1(
             prompt_id="P1",
             input_artifact=input_artifact,
             model_name=model_name,
-            chapters=rows,
+            chapters=ordered_rows(chapters, by_id),
             calls=calls,
             started=started,
         )
@@ -348,6 +358,7 @@ def run_p1(
             ),
             flush=True,
         )
+    rows = ordered_rows(chapters, by_id)
     write_run(
         out_path,
         prompt_id="P1",
@@ -357,7 +368,7 @@ def run_p1(
         calls=calls,
         started=started,
     )
-    return {"n": len(rows), "llm_runtime_sec": round(time.monotonic() - started, 3)}
+    return {"n": len(rows), "llm_runtime_sec": round(sum(float(r.get("llm_runtime_sec") or 0) for r in rows), 3)}
 
 
 def run_p2(
@@ -366,18 +377,21 @@ def run_p2(
     out_path: Path,
     model_name: str,
     input_artifact: str,
+    *,
+    retry_failed: bool = False,
 ) -> dict[str, Any]:
     started = time.monotonic()
-    done = resume_done(out_path)
-    rows: list[dict[str, Any]] = []
+    by_id: dict[int, dict[str, Any]] = {}
     calls: list[dict[str, Any]] = []
     if out_path.exists():
         prev = json.loads(out_path.read_text(encoding="utf-8"))
+        for row in prev.get("chapters") or []:
+            by_id[int(row["id"])] = row
         calls = list(prev.get("calls") or [])
+    done = resume_done(out_path, retry_failed=retry_failed)
     for chapter in chapters:
-        existing = done.get(int(chapter["id"]))
-        if existing:
-            rows.append(existing)
+        cid = int(chapter["id"])
+        if cid in done:
             continue
         raw_points = ""
         runtime_points = 0.0
@@ -387,7 +401,7 @@ def run_p2(
             raw_points, runtime_points = chat(
                 llm,
                 P2_POINTS_USER.format(text=chapter.get("text") or ""),
-                max_tokens=448,
+                max_tokens=640,
             )
             parsed = parse_points(raw_points)
             retries = attempt
@@ -424,7 +438,8 @@ def run_p2(
         row["parse_ok"] = parsed is not None
         row["retries"] = retries
         row["title_skipped"] = title_skipped
-        rows.append(row)
+        by_id[cid] = row
+        calls = [item for item in calls if int(item.get("id")) != cid]
         calls.append(
             {
                 "id": chapter["id"],
@@ -451,7 +466,7 @@ def run_p2(
             prompt_id="P2",
             input_artifact=input_artifact,
             model_name=model_name,
-            chapters=rows,
+            chapters=ordered_rows(chapters, by_id),
             calls=calls,
             started=started,
         )
@@ -468,6 +483,7 @@ def run_p2(
             ),
             flush=True,
         )
+    rows = ordered_rows(chapters, by_id)
     write_run(
         out_path,
         prompt_id="P2",
@@ -477,7 +493,7 @@ def run_p2(
         calls=calls,
         started=started,
     )
-    return {"n": len(rows), "llm_runtime_sec": round(time.monotonic() - started, 3)}
+    return {"n": len(rows), "llm_runtime_sec": round(sum(float(r.get("llm_runtime_sec") or 0) for r in rows), 3)}
 
 
 def main() -> None:
@@ -486,6 +502,7 @@ def main() -> None:
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--phase", required=True, choices=["p1_d", "p2_d", "p_winner_c"])
     parser.add_argument("--winner", choices=["p1", "p2"], default=None)
+    parser.add_argument("--retry-failed", action="store_true")
     args = parser.parse_args()
 
     if args.phase == "p_winner_c" and args.winner is None:
@@ -503,6 +520,7 @@ def main() -> None:
             OUT_DIR / "p1_d.json",
             model_name,
             "results/chunking/2b/exp_d_chapters.json",
+            retry_failed=args.retry_failed,
         )
     elif args.phase == "p2_d":
         if not CHAPTERS_D.exists():
@@ -513,6 +531,7 @@ def main() -> None:
             OUT_DIR / "p2_d.json",
             model_name,
             "results/chunking/2b/exp_d_chapters.json",
+            retry_failed=args.retry_failed,
         )
     elif args.winner == "p1":
         result = run_p1(
@@ -521,6 +540,7 @@ def main() -> None:
             OUT_DIR / "p_winner_c.json",
             model_name,
             "results/chunking/2b/exp_c_chapters.json",
+            retry_failed=args.retry_failed,
         )
         payload = json.loads((OUT_DIR / "p_winner_c.json").read_text(encoding="utf-8"))
         payload["prompt_id"] = "P1"
@@ -533,6 +553,7 @@ def main() -> None:
             OUT_DIR / "p_winner_c.json",
             model_name,
             "results/chunking/2b/exp_c_chapters.json",
+            retry_failed=args.retry_failed,
         )
         payload = json.loads((OUT_DIR / "p_winner_c.json").read_text(encoding="utf-8"))
         payload["prompt_id"] = "P2"
