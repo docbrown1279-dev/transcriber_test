@@ -1,16 +1,13 @@
 ---
-description: Этап 2b — чанкинг на готовой стенограмме GigaAM; без нового ASR, без шумодавов, без bakeoff LLM
+description: Этап 3 — LLM на готовых главах C и D; ASR и чанкинг 2b заморожены
 alwaysApply: true
 ---
 
-# Этап 2b — чанкинг
+# Этап 3 — LLM
 
-- Источник: `docs/research_plan.md`, `AGENTS.md`, `docs/prompts/stage2b_chunking.md`.
-- ASR: **не трогать вообще**. Читать неизменный `results/asr/2/gigaam_v3_rnnt/meeting_sample.json`. Нет файла → стоп, не восстанавливать новым прогоном.
-- Вход глав: `results/chunking/2/attempt_2_chunks_titled.json`.
-- Путь последнего агента не повторять: не запускать скрипты ASR, три старых прохода tiny2, повторную генерацию 63 заголовков и склейки 63→4→49. Пути `results/**/2/` не перезаписывать.
-- Четыре независимых опыта: A эмбеддинг названий; B попарный Qwen3-8B; C packing разных спикеров; D late chunking (`jina-embeddings-v3`, окно 240 с, overlap 60 с). Не смешивать. Цель **8–20** глав.
-- Каждая склейка в логе: `source_ids`, `old_titles`, `new_title`, покрытие листьев. Не one-shot на 63 id.
-- LLM не создаёт таймкоды. Для A/B `start/end` копировать из baseline-чанков, для C/D — из ASR-сегментов; деление исходного листа запрещено.
-- Шумодавы **пропуск**. Разные LLM и полное саммари — **этап 3**, не 2b.
-- Ветка: `cursor/stage1e-four-asr-be20`. Отчёты: `results/reports/2b/`.
+- Источник: `docs/research_plan.md`, `results/reports/2b/conclusions.md`, `docs/prompts/stage3_llm.md`.
+- ASR: **не трогать**. Текст только `results/asr/2/gigaam_v3_rnnt/meeting_sample.json`.
+- Каркас TOC: тестировать **оба** рабочих варианта — C (`exp_c_chapters.json`, 14) и D (`exp_d_chapters.json`, 12, `jinaai/jina-embeddings-v3-hf`). Победителя не выбирать.
+- LLM не создаёт таймкоды. Копировать `start`/`end`/`source_ids`.
+- Шумодавы **пропуск**. Словарь терминов — потом. Гибрид C→D — только по явной просьбе.
+- Отчёты: `results/reports/3/`.
