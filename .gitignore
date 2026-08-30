@@ -38,6 +38,8 @@ results/llm/*
 !results/llm/2/**
 !results/llm/2b/
 !results/llm/2b/**
+!results/llm/3/
+!results/llm/3/**
 
 # Local human labels and notes — never push (keeps gold off agent clones)
 eval/
