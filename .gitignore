@@ -27,8 +27,16 @@ results/denoise/*
 !results/denoise/.gitkeep
 results/chunking/*
 !results/chunking/.gitkeep
+!results/chunking/2/
+!results/chunking/2/**
+!results/chunking/2b/
+!results/chunking/2b/**
 results/llm/*
 !results/llm/.gitkeep
+!results/llm/2/
+!results/llm/2/**
+!results/llm/2b/
+!results/llm/2b/**
 
 # Local human labels and notes — never push (keeps gold off agent clones)
 eval/
