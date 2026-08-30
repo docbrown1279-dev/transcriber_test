@@ -2,6 +2,8 @@
 
 Победителя нет: оценку границ и названий делает человек в локальном `eval/2b_chapter_review.json`. Каталог `eval/` не читался.
 
+Сверка C и D (таймкоды + заголовки): [`toc_c_vs_d.md`](toc_c_vs_d.md).
+
 Рабочие ветки: `cursor/stage2b-four-hypotheses-4305` (этот прогон) и `cursor/stage1e-four-asr-be20` (те же коммиты). База плана: `cursor/stage2b-chunking`.
 
 ## Среда
