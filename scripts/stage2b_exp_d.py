@@ -36,6 +36,7 @@ from stage2b_common import (
 )
 
 MODEL_ID = "jinaai/jina-embeddings-v3"
+NATIVE_MODEL_ID = "jinaai/jina-embeddings-v3-hf"
 WINDOW_SEC = 240.0
 OVERLAP_SEC = 60.0
 HOP_SEC = WINDOW_SEC - OVERLAP_SEC
@@ -66,22 +67,32 @@ ALTERNATIVES = [
 ]
 
 
-def load_jina(device: str) -> tuple[Any, Any]:
+def load_jina(device: str) -> tuple[Any, Any, str, str]:
     try:
         from transformers import AutoModel, AutoTokenizer
     except ImportError as exc:
         raise RuntimeError(f"missing dependency: {exc}") from exc
-    try:
-        tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, trust_remote_code=True)
-        model = AutoModel.from_pretrained(MODEL_ID, trust_remote_code=True)
-    except Exception as exc:
-        name = type(exc).__name__
-        if "einops" in str(exc).lower() or name == "ModuleNotFoundError":
-            raise RuntimeError(f"missing dependency for {MODEL_ID}: {exc}") from exc
-        raise
-    model.eval()
-    model.to(device)
-    return tokenizer, model
+    errors: list[str] = []
+    for repo, trust in ((MODEL_ID, True), (NATIVE_MODEL_ID, False)):
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=trust)
+            model = AutoModel.from_pretrained(repo, trust_remote_code=trust)
+            model.eval()
+            model.to(device)
+            note = (
+                "official custom-code checkpoint"
+                if repo == MODEL_ID
+                else (
+                    "native Transformers port of the same Jina XLM-RoBERTa 570M / 8192-token model; "
+                    f"{MODEL_ID} failed on transformers 5.16.1 "
+                    "(custom flash code: all_tied_weights_keys)"
+                )
+            )
+            return tokenizer, model, repo, note
+        except Exception as exc:
+            errors.append(f"{repo}: {type(exc).__name__}: {exc}")
+            continue
+    raise RuntimeError(" ; ".join(errors))
 
 
 def window_starts(t0: float, t1: float) -> list[float]:
@@ -346,7 +357,7 @@ def main() -> None:
     expected = expected_ids(leaves)
     started = time.monotonic()
     try:
-        tokenizer, model = load_jina(args.device)
+        tokenizer, model, loaded_model, load_note = load_jina(args.device)
     except RuntimeError as exc:
         payload = {
             "experiment": "D",
@@ -381,7 +392,9 @@ def main() -> None:
         max_ids_per_group=None,
         extra={
             "experiment": "D",
-            "embedding_model": MODEL_ID,
+            "embedding_model": loaded_model,
+            "requested_model": MODEL_ID,
+            "load_note": load_note,
             "window_sec": WINDOW_SEC,
             "overlap_sec": OVERLAP_SEC,
             "min_chapter_sec": MIN_CHAPTER_SEC,
@@ -394,7 +407,8 @@ def main() -> None:
         OUT_DIR / "exp_d_boundary_scores.json",
         {
             "experiment": "D",
-            "embedding_model": MODEL_ID,
+            "embedding_model": loaded_model,
+            "requested_model": MODEL_ID,
             "scores": [round(score, 6) for score in scores],
             "windows": window_meta,
         },
@@ -405,7 +419,9 @@ def main() -> None:
             "experiment": "D",
             "execution_mode": "local",
             "provider": "transformers",
-            "embedding_model": MODEL_ID,
+            "embedding_model": loaded_model,
+            "requested_model": MODEL_ID,
+            "load_note": load_note,
             "input_artifact": TIMING_SOURCE_CD,
             "timing_source": TIMING_SOURCE_CD,
             "timing_method": "source_boundaries",
