@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://speech-rec-test.local/schemas/chunk_merge_log.schema.json",
+  "title": "Лог склейки чанков",
+  "description": "Каждая операция группировки временных листьев. Листовые id и исходные таймкоды должны восстанавливаться. LLM не создаёт время; запрещён one-shot список из 60+ id.",
+  "type": "object",
+  "required": [
+    "pass",
+    "method",
+    "input_artifact",
+    "timing_source",
+    "timing_method",
+    "num_source",
+    "num_after",
+    "leaf_ids_expected",
+    "ops"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "pass": { "type": "integer", "minimum": 1 },
+    "method": {
+      "type": "string",
+      "enum": ["pairwise_llm", "title_embed_adjacent", "late_chunking", "pack_across_speakers"]
+    },
+    "input_artifact": { "type": "string" },
+    "timing_source": {
+      "type": "string",
+      "description": "JSON, из которого без изменений скопированы start/end листьев."
+    },
+    "timing_method": {
+      "type": "string",
+      "const": "source_boundaries"
+    },
+    "num_source": { "type": "integer", "minimum": 1 },
+    "num_after": { "type": "integer", "minimum": 1 },
+    "max_ids_per_group": { "type": "integer", "minimum": 1 },
+    "max_duration_sec": { "type": "number", "minimum": 0 },
+    "leaf_ids_expected": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "leaf_ids_covered": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0 }
+    },
+    "coverage_ok": { "type": "boolean" },
+    "ops": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/op" }
+    }
+  },
+  "$defs": {
+    "op": {
+      "type": "object",
+      "required": [
+        "op",
+        "source_ids",
+        "start_source_id",
+        "end_source_id",
+        "start",
+        "end"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "op": { "type": "string", "enum": ["merge", "keep", "reject"] },
+        "source_ids": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 },
+          "minItems": 1,
+          "description": "Подряд идущие листовые или предыдущие id. Без дыр и перестановки."
+        },
+        "start": { "type": "number" },
+        "end": { "type": "number" },
+        "start_source_id": { "type": "integer", "minimum": 0 },
+        "end_source_id": { "type": "integer", "minimum": 0 },
+        "old_titles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "new_title": { "type": "string" },
+        "reason": { "type": "string" }
+      }
+    }
+  }
+}

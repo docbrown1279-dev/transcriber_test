@@ -1,49 +1,51 @@
 ---
 name: asr-research
-description: Stage 2 — GigaAM v3_rnnt + pyannote + linear gain on the full meeting, one rubert-tiny2 adjacent chunk pass, Qwen3-8B titles if 5–30 chunks. Use when continuing ASR, chunking, meeting chapters, or Stage 2 reports.
+description: Этап 2b — четыре независимые гипотезы чанкинга на готовой стенограмме, включая late chunking. Таймкоды только из границ исходных листьев. ASR не трогать. Сравнение LLM и полное саммари — этап 3.
 ---
 
-# ASR Research — Stage 2
+# Исследование ASR — этап 2b
 
-## Goal
+## Цель
 
-Full-meeting diarized transcript (GigaAM v3), then adjacent chunks (≤3 size/threshold tries), then short titles if some try is 5–30. No denoise. No ASR fallback. No fourth chunk recipe.
+Нарезать готовый текст совещания на **8–20 глав** с таймкодами. Стенограмма неизменна. Не гонять ASR, не обрабатывать аудио, не делать полное саммари. Сравнение LLM и саммари — этап 3.
 
-## Resume
+## Продолжение
 
-Inspect `results/` and branch `cursor/stage1e-four-asr-be20`. 1e is the ASR choice. Do **not** rerun afftdn, WhisperX, or the four-model bakeoff.
+Смотреть `results/` и ветку `cursor/stage1e-four-asr-be20`. Этап 2 уже дал полный текст, три прохода tiny2, 63 заголовка и склейки 4/49. Использовать их как baseline и **не повторять**.
 
-## HF access gate (hard stop)
+Нет `results/asr/2/` или `results/chunking/2/attempt_2_chunks_titled.json` → стоп, не пересчитывать ASR.
 
-Before pyannote: token present; GET `pyannote/speaker-diarization-3.1` and `pyannote/segmentation-3.0` `config.yaml`. Missing token or **401/403** → stop, `results/reports/2/`, `failure_kind: auth`.
-
-## Checklist
+## Чеклист
 
 ```
-Stage 2:
-- [ ] 0. Inventory + HF preflight (stop on 401/403)
-- [ ] 1. Full-file pyannote → table merge → linear gain extracts
-- [ ] 2. GigaAM v3_rnnt only (≤25 s time splits); save json+txt
-- [ ] 3. Whole speaker turns (~20–50 words); adjacent cosine 0.80; ≤3 size/threshold tries
-- [ ] 4. If some try is 5–30 chunks: Qwen3-8B titles ≤10 words; else stop
-- [ ] 5. Log embed/LLM seconds; results/reports/2/; commit/push
+Этап 2b:
+- [ ] 0. Инвентарь артефактов этапа 2
+- [ ] 1. Опыт A: эмбеддинг 63 названий, соседний cosine, ≤3 порога, капы 8 листьев / 180 с
+- [ ] 2. Опыт B: попарный Qwen3-8B, независимо от A
+- [ ] 3. Опыт C: packing разных спикеров, независимо от A/B
+- [ ] 4. Опыт D: jina-embeddings-v3 late chunking, контекст 240 с / overlap 60 с
+- [ ] 5. Для A–D: source ids, точное время из JSON, review_sheet
+- [ ] 6. merge_log с полным покрытием листьев; results/reports/2b/; коммит/push
 ```
+
+Каждая склейка — `docs/schemas/chunk_merge_log.schema.json`. One-shot на 63 id запрещён.
 
 ## ASR
 
-1e cut rules. Empty GigaAM stays empty. No Whisper/Podlodka.
+Не трогать ни модель, ни аудио, ни готовый текст. Пустой GigaAM остаётся пустым. Скрипты этапа 2 не запускать.
 
-## Chunking
+## Чанкинг
 
-- `cointegrated/rubert-tiny2` only.
-- Do not split a speaker turn unless it is &gt;~80 words.
-- Adjacent merge only. New chunk if gap &gt; 90 s.
-- Cosine start **0.80**, unit start **20–50** words. Up to 3 tries: only unit size and threshold. After 3 still outside 5–30 → stop, no Qwen, no fourth recipe.
+- `cointegrated/rubert-tiny2` — A/C; одна long-context модель `jinaai/jina-embeddings-v3` — D.
+- Не опускать порог tiny2 ниже 0,70 на сыром тексте.
+- Не четвёртый перебор packing «один спикер».
+- Late chunking: атомы = неделимые исходные ASR-сегменты; окно 240 с, overlap 60 с; главы 45–180 с.
+- LLM не создаёт время. `start/end` только из первого/последнего source id; проверять отдельным валидатором.
 
-## Titles
+## Заголовки
 
-Qwen3-8B GGUF, text-only, only if some chunking try landed in 5–30.
+Только Qwen3-8B, текст, ≤10 слов или проверка одной пары, и только если опыт породил новые группы. Другие LLM и полное саммари — этап 3.
 
-## Stop
+## Стоп
 
-Crash/OOM: retry same config ≤2 times. Do not add a second ASR or a second chunk recipe in this run.
+Crash/OOM: тот же конфиг ≤2 раза. Не добавлять второй ASR, шумодав или bakeoff LLM в этом прогоне.

@@ -1,5 +1,8 @@
 # Этап 2 — полное совещание, соседний чанкинг, таймназвания
 
+Оглавление попытки 2 (63 строки + две склейки Qwen): [`toc_attempt2.md`](toc_attempt2.md).
+Дальше — этап **2b** (чанкинг): `docs/research_plan.md`, `docs/prompts/stage2b_chunking.md`. Сравнение LLM — этап 3. Шумодавы пропускаем.
+
 ## Среда
 
 - CPU: 4 vCPU, RAM: 15 GiB, GPU нет.
