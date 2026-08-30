@@ -7,7 +7,7 @@
 ## Среда
 
 - CPU: 4 vCPU, RAM: 15 GiB, GPU нет.
-- Python `.venv`: `torch 2.13.0+cpu`, `sentence-transformers 6.0.0`, `transformers 5.16.1`, `llama-cpp-python 0.3.35` (как на этапе 2).
+- Python `.venv`: `torch 2.13.0+cpu`, `sentence-transformers 6.0.0`, `transformers 5.16.1`, `llama-cpp-python 0.3.35` (как на этапе 2); для D доустановлен `einops 0.8.2` после явного запроса.
 - Эмбеддер A/C: `cointegrated/rubert-tiny2`.
 - LLM: локальный `Qwen3-8B-Q5_K_M.gguf` (`Qwen/Qwen3-8B-GGUF`), `llama.cpp`, 4 потока. Аудио в модель не подавалось.
 - Gemini / NVIDIA: 0 вызовов.
@@ -81,11 +81,15 @@ Pack: соседний другой спикер при gap ≤2 с; ориен�
 
 ## Опыт D — late chunking
 
-Первичная модель `jinaai/jina-embeddings-v3`. Загрузка оборвалась: custom code требует пакет `einops`, которого нет в окружении. Новый пакет не ставился (запрет промпта). Опыт остановлен, `skipped` / `failure_kind: install`.
+После апрува в этой сессии поставлен `einops 0.8.2`. Официальный `jinaai/jina-embeddings-v3` (custom flash code) не загружается на `transformers 5.16.1` (`all_tied_weights_keys`). Использован нативный порт **той же** модели `jinaai/jina-embeddings-v3-hf` (XLM-RoBERTa ~570M, контекст 8192). Bakeoff других эмбеддеров не делался.
 
-Не запускались (только задокументированы): `Alibaba-NLP/gte-multilingual-base`, `BAAI/bge-m3`, `Qwen/Qwen3-Embedding-0.6B`.
+Алгоритм: атом = ASR-сегмент; окна 240 с / overlap 60 с (9 окон); mean-pool token span; cosine соседей, усреднение по окнам; локальные минимумы, главы 45–180 с (цель 75–150).
 
-Артефакты: `exp_d_skipped.json`, `review_sheet_d.json` (пустые rows).
+**12 глав**, все 80,9–144,3 с — в предпочтительном 75–150 и в целевых 8–20. Покрытие 183/183, timing ok. Wall эмбеддинга 13,7 с. Затем 12 заголовков Qwen (~179 с) после валидации.
+
+Не запускались: `Alibaba-NLP/gte-multilingual-base`, `BAAI/bge-m3`, `Qwen/Qwen3-Embedding-0.6B`.
+
+Артефакты: `exp_d_chapters.json`, `exp_d_boundary_scores.json`, `review_sheet_d.json`, `merge_log_pass8.json`, `results/llm/2b/exp_d_titles.json`. Первый отказ: `exp_d_skipped.json`.
 
 ## Сводка кандидатов
 
@@ -94,7 +98,7 @@ Pack: соседний другой спикер при gap ≤2 с; ориен�
 | A title-embed 0,75 | 62 | нет | ok |
 | B pairwise Qwen | 43 | нет | ok |
 | C cross-speaker + tiny2 | 14 | да | ok |
-| D late chunking | — | — | skipped |
+| D late chunking (jina-v3-hf) | 12 | да | ok |
 
 `results/chunking/2b/chapters.json` — все кандидаты, `winner_selected: false`. Полный текст в отчёт не копировался.
 
