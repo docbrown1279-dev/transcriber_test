@@ -1,0 +1,270 @@
+{
+  "audio": "data/test_ninth.m4a",
+  "duration_sec": 85.0,
+  "diarizer_id": "sherpa_onnx",
+  "model": "pyannote-segmentation-3.0-onnx + 3dspeaker-eres2net-base-zh-cn",
+  "provider": "sherpa-onnx",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 9.913,
+  "peak_rss_mb": 382.2,
+  "n_speakers": 8,
+  "n_turns": 19,
+  "raw_turns": [
+    {
+      "start": 1.026594,
+      "end": 3.439719,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 3.439719,
+      "end": 11.809719,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.354095,
+      "end": 14.475969,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 14.695344,
+      "end": 20.432846,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 20.196596,
+      "end": 21.479095,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 22.086596,
+      "end": 25.225346,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 24.26347,
+      "end": 26.862221,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 27.06472,
+      "end": 28.85347,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 27.722845,
+      "end": 30.625345,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 29.646595,
+      "end": 30.692846,
+      "speaker": "SPEAKER_05"
+    },
+    {
+      "start": 30.692846,
+      "end": 38.961594,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 40.632221,
+      "end": 45.964718,
+      "speaker": "SPEAKER_07"
+    },
+    {
+      "start": 44.04097,
+      "end": 44.597843,
+      "speaker": "SPEAKER_08"
+    },
+    {
+      "start": 45.964718,
+      "end": 49.761593,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 47.78722,
+      "end": 48.192219,
+      "speaker": "SPEAKER_07"
+    },
+    {
+      "start": 47.820969,
+      "end": 48.124722,
+      "speaker": "SPEAKER_12"
+    },
+    {
+      "start": 49.94722,
+      "end": 53.541595,
+      "speaker": "SPEAKER_12"
+    },
+    {
+      "start": 51.803471,
+      "end": 52.647221,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 55.212219,
+      "end": 64.020973,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 64.628471,
+      "end": 66.349724,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 67.260971,
+      "end": 73.420349,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 75.124718,
+      "end": 77.335342,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 79.292847,
+      "end": 81.722847,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 83.359718,
+      "end": 84.102219,
+      "speaker": "SPEAKER_10"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 1.026594,
+      "end": 3.439719,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 3.439719,
+      "end": 11.809719,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.354095,
+      "end": 14.475969,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 14.695344,
+      "end": 20.432846,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 20.196596,
+      "end": 21.479095,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 22.086596,
+      "end": 25.225346,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 24.26347,
+      "end": 26.862221,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 27.06472,
+      "end": 28.85347,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 27.722845,
+      "end": 30.625345,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 29.646595,
+      "end": 30.692846,
+      "speaker": "SPEAKER_05"
+    },
+    {
+      "start": 30.692846,
+      "end": 38.961594,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 40.632221,
+      "end": 45.964718,
+      "speaker": "SPEAKER_07"
+    },
+    {
+      "start": 45.964718,
+      "end": 49.761593,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 47.820969,
+      "end": 53.541595,
+      "speaker": "SPEAKER_12"
+    },
+    {
+      "start": 51.803471,
+      "end": 64.020973,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 64.628471,
+      "end": 66.349724,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 67.260971,
+      "end": 73.420349,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 75.124718,
+      "end": 77.335342,
+      "speaker": "SPEAKER_10"
+    },
+    {
+      "start": 79.292847,
+      "end": 84.102219,
+      "speaker": "SPEAKER_10"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 1.026594
+    },
+    {
+      "start": 21.479095,
+      "end": 22.086596
+    },
+    {
+      "start": 38.961594,
+      "end": 40.632221
+    },
+    {
+      "start": 64.020973,
+      "end": 64.628471
+    },
+    {
+      "start": 66.349724,
+      "end": 67.260971
+    },
+    {
+      "start": 73.420349,
+      "end": 75.124718
+    },
+    {
+      "start": 77.335342,
+      "end": 79.292847
+    },
+    {
+      "start": 84.102219,
+      "end": 85.0
+    }
+  ],
+  "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+  "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+  "num_threads": 2,
+  "cluster_threshold": 0.5
+}

@@ -1,0 +1,8 @@
+{
+  "diarizer_id": "sherpa_onnx",
+  "status": "success",
+  "torch": false,
+  "runtime_sec": 39.117,
+  "peak_rss_mb": 382.2,
+  "sherpa_onnx": "1.13.6"
+}

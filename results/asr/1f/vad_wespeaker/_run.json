@@ -1,0 +1,7 @@
+{
+  "diarizer_id": "vad_wespeaker",
+  "status": "success",
+  "torch": false,
+  "runtime_sec": 8.253,
+  "peak_rss_mb": 242.1
+}

@@ -1,0 +1,109 @@
+{
+  "audio": "data/test_voice.m4a",
+  "duration_sec": 83.0,
+  "diarizer_id": "sherpa_onnx",
+  "model": "pyannote-segmentation-3.0-onnx + 3dspeaker-eres2net-base-zh-cn",
+  "provider": "sherpa-onnx",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 9.821,
+  "peak_rss_mb": 369.5,
+  "n_speakers": 5,
+  "n_turns": 6,
+  "raw_turns": [
+    {
+      "start": 9.025344,
+      "end": 13.969719,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 14.340969,
+      "end": 20.78722,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 21.749096,
+      "end": 25.967846,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 25.967846,
+      "end": 65.438469,
+      "speaker": "SPEAKER_07"
+    },
+    {
+      "start": 65.944717,
+      "end": 73.352844,
+      "speaker": "SPEAKER_05"
+    },
+    {
+      "start": 72.964722,
+      "end": 73.825348,
+      "speaker": "SPEAKER_13"
+    },
+    {
+      "start": 74.331596,
+      "end": 74.989723,
+      "speaker": "SPEAKER_11"
+    },
+    {
+      "start": 81.975967,
+      "end": 82.988472,
+      "speaker": "SPEAKER_04"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 9.025344,
+      "end": 13.969719,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 14.340969,
+      "end": 20.78722,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 21.749096,
+      "end": 25.967846,
+      "speaker": "SPEAKER_04"
+    },
+    {
+      "start": 25.967846,
+      "end": 65.438469,
+      "speaker": "SPEAKER_07"
+    },
+    {
+      "start": 65.944717,
+      "end": 74.989723,
+      "speaker": "SPEAKER_05"
+    },
+    {
+      "start": 81.975967,
+      "end": 82.988472,
+      "speaker": "SPEAKER_04"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 9.025344
+    },
+    {
+      "start": 20.78722,
+      "end": 21.749096
+    },
+    {
+      "start": 65.438469,
+      "end": 65.944717
+    },
+    {
+      "start": 74.989723,
+      "end": 81.975967
+    }
+  ],
+  "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+  "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+  "num_threads": 2,
+  "cluster_threshold": 0.5
+}

@@ -1,0 +1,187 @@
+{
+  "audio": "data/test_apartments.m4a",
+  "duration_sec": 85.0,
+  "diarizer_id": "sherpa_onnx",
+  "model": "pyannote-segmentation-3.0-onnx + 3dspeaker-eres2net-base-zh-cn",
+  "provider": "sherpa-onnx",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 8.976,
+  "peak_rss_mb": 379.9,
+  "n_speakers": 6,
+  "n_turns": 12,
+  "raw_turns": [
+    {
+      "start": 0.030969,
+      "end": 5.549094,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 5.549094,
+      "end": 14.290344,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.505969,
+      "end": 12.450969,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 13.919094,
+      "end": 17.091595,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 16.956594,
+      "end": 23.385971,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 24.887846,
+      "end": 25.630346,
+      "speaker": "SPEAKER_07"
+    },
+    {
+      "start": 24.921597,
+      "end": 30.962847,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 29.96722,
+      "end": 30.524096,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 34.38847,
+      "end": 35.97472,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 36.649719,
+      "end": 37.105343,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 40.885345,
+      "end": 46.268471,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 47.112221,
+      "end": 53.42347,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 53.389721,
+      "end": 60.207222,
+      "speaker": "SPEAKER_11"
+    },
+    {
+      "start": 61.422218,
+      "end": 65.556595,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 65.556595,
+      "end": 70.146599,
+      "speaker": "SPEAKER_12"
+    },
+    {
+      "start": 71.378471,
+      "end": 75.968468,
+      "speaker": "SPEAKER_02"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.030969,
+      "end": 5.549094,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 5.549094,
+      "end": 14.290344,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 13.919094,
+      "end": 17.091595,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 16.956594,
+      "end": 23.385971,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 24.887846,
+      "end": 30.962847,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 29.96722,
+      "end": 37.105343,
+      "speaker": "SPEAKER_03"
+    },
+    {
+      "start": 40.885345,
+      "end": 46.268471,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 47.112221,
+      "end": 53.42347,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 53.389721,
+      "end": 60.207222,
+      "speaker": "SPEAKER_11"
+    },
+    {
+      "start": 61.422218,
+      "end": 65.556595,
+      "speaker": "SPEAKER_02"
+    },
+    {
+      "start": 65.556595,
+      "end": 70.146599,
+      "speaker": "SPEAKER_12"
+    },
+    {
+      "start": 71.378471,
+      "end": 75.968468,
+      "speaker": "SPEAKER_02"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 23.385971,
+      "end": 24.887846
+    },
+    {
+      "start": 37.105343,
+      "end": 40.885345
+    },
+    {
+      "start": 46.268471,
+      "end": 47.112221
+    },
+    {
+      "start": 60.207222,
+      "end": 61.422218
+    },
+    {
+      "start": 70.146599,
+      "end": 71.378471
+    },
+    {
+      "start": 75.968468,
+      "end": 85.0
+    }
+  ],
+  "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
+  "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+  "num_threads": 2,
+  "cluster_threshold": 0.5
+}
