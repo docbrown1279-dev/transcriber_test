@@ -1,0 +1,11 @@
+{
+  "embedder_id": "titanet_small",
+  "status": "success",
+  "failure_kind": "none",
+  "torch": false,
+  "runtime_sec": 4.017,
+  "peak_rss_mb": 368.1,
+  "model": "models/nemo_en_titanet_small.onnx",
+  "provider": "sherpa-onnx",
+  "speech_source": "results/asr/1f2/silero (this run)"
+}

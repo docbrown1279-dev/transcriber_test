@@ -1,0 +1,10 @@
+{
+  "vad_id": "fsmn_vad",
+  "status": "success",
+  "failure_kind": "none",
+  "torch": false,
+  "runtime_sec": 1.109,
+  "peak_rss_mb": 231.6,
+  "model": "funasr/fsmn-vad-onnx via funasr_onnx 0.4.2",
+  "note": "ONNX path only; torch was not installed or imported."
+}

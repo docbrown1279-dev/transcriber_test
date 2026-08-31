@@ -1,0 +1,245 @@
+{
+  "audio": "data/test_ninth.m4a",
+  "duration_sec": 85.0,
+  "embedder_id": "wespeaker",
+  "model": "Wespeaker/wespeaker-voxceleb-resnet34-LM (speakeronnx wespeaker-resnet34)",
+  "provider": "speakeronnx",
+  "execution_mode": "local",
+  "torch": false,
+  "speech_source": "results/asr/1f2/silero (this run)",
+  "embed_runtime_sec": 1.249,
+  "cluster_runtime_sec": 0.195,
+  "runtime_sec": 1.444,
+  "peak_rss_mb": 284.9,
+  "n_speakers": 2,
+  "n_turns": 15,
+  "n_vad_segments": 17,
+  "n_embeddings": 105,
+  "raw_turns": [
+    {
+      "start": 1.292,
+      "end": 3.692,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 3.092,
+      "end": 12.092,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.492,
+      "end": 13.588,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 14.732,
+      "end": 19.412,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 19.884,
+      "end": 21.556,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 22.124,
+      "end": 29.716,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 30.316,
+      "end": 32.852,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 33.164,
+      "end": 39.028,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 38.564,
+      "end": 39.028,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 40.716,
+      "end": 50.612,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 51.372,
+      "end": 53.684,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 53.172,
+      "end": 53.684,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 55.244,
+      "end": 64.052,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 64.716,
+      "end": 66.388,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 67.34,
+      "end": 67.988,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 68.524,
+      "end": 72.212,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 72.78,
+      "end": 73.332,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 75.212,
+      "end": 76.212,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 76.876,
+      "end": 77.3,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 79.404,
+      "end": 81.716,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 83.724,
+      "end": 84.084,
+      "speaker": "SPEAKER_01"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 1.292,
+      "end": 3.692,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 3.092,
+      "end": 12.092,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.492,
+      "end": 13.588,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 14.732,
+      "end": 19.412,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 19.884,
+      "end": 21.556,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 22.124,
+      "end": 29.716,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 30.316,
+      "end": 32.852,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 33.164,
+      "end": 39.028,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 38.564,
+      "end": 50.612,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 51.372,
+      "end": 53.684,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 53.172,
+      "end": 64.052,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 64.716,
+      "end": 66.388,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 67.34,
+      "end": 73.332,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 75.212,
+      "end": 77.3,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 79.404,
+      "end": 84.084,
+      "speaker": "SPEAKER_01"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 1.292
+    },
+    {
+      "start": 13.588,
+      "end": 14.732
+    },
+    {
+      "start": 21.556,
+      "end": 22.124
+    },
+    {
+      "start": 29.716,
+      "end": 30.316
+    },
+    {
+      "start": 50.612,
+      "end": 51.372
+    },
+    {
+      "start": 64.052,
+      "end": 64.716
+    },
+    {
+      "start": 66.388,
+      "end": 67.34
+    },
+    {
+      "start": 73.332,
+      "end": 75.212
+    },
+    {
+      "start": 77.3,
+      "end": 79.404
+    },
+    {
+      "start": 84.084,
+      "end": 85.0
+    }
+  ],
+  "num_threads": 2
+}

@@ -1,0 +1,9 @@
+{
+  "vad_id": "silero",
+  "status": "success",
+  "failure_kind": "none",
+  "torch": false,
+  "runtime_sec": 0.785,
+  "peak_rss_mb": 112.1,
+  "model": "models/silero_vad.onnx"
+}

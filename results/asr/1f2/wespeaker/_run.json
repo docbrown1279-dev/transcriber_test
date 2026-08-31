@@ -1,0 +1,11 @@
+{
+  "embedder_id": "wespeaker",
+  "status": "success",
+  "failure_kind": "none",
+  "torch": false,
+  "runtime_sec": 6.439,
+  "peak_rss_mb": 284.9,
+  "model": "Wespeaker/wespeaker-voxceleb-resnet34-LM (speakeronnx wespeaker-resnet34)",
+  "provider": "speakeronnx",
+  "speech_source": "results/asr/1f2/silero (this run)"
+}

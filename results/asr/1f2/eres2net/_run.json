@@ -1,0 +1,11 @@
+{
+  "embedder_id": "eres2net",
+  "status": "success",
+  "failure_kind": "none",
+  "torch": false,
+  "runtime_sec": 7.752,
+  "peak_rss_mb": 358.9,
+  "model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+  "provider": "sherpa-onnx",
+  "speech_source": "results/asr/1f2/silero (this run)"
+}

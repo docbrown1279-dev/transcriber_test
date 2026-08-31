@@ -1,0 +1,201 @@
+{
+  "audio": "data/test_transformers.m4a",
+  "duration_sec": 85.0,
+  "vad_id": "fsmn_vad",
+  "model": "funasr/fsmn-vad-onnx",
+  "provider": "funasr_onnx",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 0.252,
+  "peak_rss_mb": 231.6,
+  "n_speech_regions": 11,
+  "speech_regions": [
+    {
+      "start": 0.0,
+      "end": 9.33
+    },
+    {
+      "start": 9.76,
+      "end": 19.66
+    },
+    {
+      "start": 20.08,
+      "end": 27.91
+    },
+    {
+      "start": 28.23,
+      "end": 30.18
+    },
+    {
+      "start": 30.53,
+      "end": 50.27
+    },
+    {
+      "start": 50.8,
+      "end": 53.83
+    },
+    {
+      "start": 57.52,
+      "end": 59.86
+    },
+    {
+      "start": 60.89,
+      "end": 66.95
+    },
+    {
+      "start": 67.48,
+      "end": 71.85
+    },
+    {
+      "start": 74.72,
+      "end": 80.2
+    },
+    {
+      "start": 82.92,
+      "end": 84.99
+    }
+  ],
+  "raw_turns": [
+    {
+      "start": 0.0,
+      "end": 9.33,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 9.76,
+      "end": 19.66,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 20.08,
+      "end": 27.91,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 28.23,
+      "end": 30.18,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 30.53,
+      "end": 50.27,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 50.8,
+      "end": 53.83,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 57.52,
+      "end": 59.86,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 60.89,
+      "end": 66.95,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 67.48,
+      "end": 71.85,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.72,
+      "end": 80.2,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 82.92,
+      "end": 84.99,
+      "speaker": "SPEECH"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.0,
+      "end": 9.33,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 9.76,
+      "end": 19.66,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 20.08,
+      "end": 27.91,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 28.23,
+      "end": 30.18,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 30.53,
+      "end": 50.27,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 50.8,
+      "end": 53.83,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 57.52,
+      "end": 59.86,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 60.89,
+      "end": 66.95,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 67.48,
+      "end": 71.85,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.72,
+      "end": 80.2,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 82.92,
+      "end": 84.99,
+      "speaker": "SPEECH"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 50.27,
+      "end": 50.8
+    },
+    {
+      "start": 53.83,
+      "end": 57.52
+    },
+    {
+      "start": 59.86,
+      "end": 60.89
+    },
+    {
+      "start": 66.95,
+      "end": 67.48
+    },
+    {
+      "start": 71.85,
+      "end": 74.72
+    },
+    {
+      "start": 80.2,
+      "end": 82.92
+    }
+  ],
+  "num_threads": 2,
+  "vad_model": "models/fsmn-vad-onnx-funasr",
+  "torch_pulled": false
+}

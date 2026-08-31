@@ -1,0 +1,271 @@
+{
+  "audio": "data/test_ninth.m4a",
+  "duration_sec": 85.0,
+  "vad_id": "fsmn_vad",
+  "model": "funasr/fsmn-vad-onnx",
+  "provider": "funasr_onnx",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 0.26,
+  "peak_rss_mb": 231.6,
+  "n_speech_regions": 14,
+  "speech_regions": [
+    {
+      "start": 0.92,
+      "end": 2.76
+    },
+    {
+      "start": 3.33,
+      "end": 12.76
+    },
+    {
+      "start": 13.42,
+      "end": 39.15
+    },
+    {
+      "start": 40.7,
+      "end": 44.81
+    },
+    {
+      "start": 45.74,
+      "end": 50.74
+    },
+    {
+      "start": 51.15,
+      "end": 53.11
+    },
+    {
+      "start": 54.97,
+      "end": 64.24
+    },
+    {
+      "start": 64.6,
+      "end": 66.28
+    },
+    {
+      "start": 67.02,
+      "end": 67.92
+    },
+    {
+      "start": 68.42,
+      "end": 73.33
+    },
+    {
+      "start": 74.92,
+      "end": 75.93
+    },
+    {
+      "start": 76.71,
+      "end": 77.58
+    },
+    {
+      "start": 79.12,
+      "end": 81.4
+    },
+    {
+      "start": 83.32,
+      "end": 84.17
+    }
+  ],
+  "raw_turns": [
+    {
+      "start": 0.92,
+      "end": 2.76,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 3.33,
+      "end": 12.76,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 13.42,
+      "end": 39.15,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 40.7,
+      "end": 44.81,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 45.74,
+      "end": 50.74,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 51.15,
+      "end": 53.11,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 54.97,
+      "end": 64.24,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 64.6,
+      "end": 66.28,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 67.02,
+      "end": 67.92,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 68.42,
+      "end": 73.33,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.92,
+      "end": 75.93,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 76.71,
+      "end": 77.58,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 79.12,
+      "end": 81.4,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 83.32,
+      "end": 84.17,
+      "speaker": "SPEECH"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.92,
+      "end": 2.76,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 3.33,
+      "end": 12.76,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 13.42,
+      "end": 39.15,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 40.7,
+      "end": 44.81,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 45.74,
+      "end": 50.74,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 51.15,
+      "end": 53.11,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 54.97,
+      "end": 64.24,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 64.6,
+      "end": 66.28,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 67.02,
+      "end": 67.92,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 68.42,
+      "end": 73.33,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.92,
+      "end": 75.93,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 76.71,
+      "end": 77.58,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 79.12,
+      "end": 81.4,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 83.32,
+      "end": 84.17,
+      "speaker": "SPEECH"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 0.92
+    },
+    {
+      "start": 2.76,
+      "end": 3.33
+    },
+    {
+      "start": 12.76,
+      "end": 13.42
+    },
+    {
+      "start": 39.15,
+      "end": 40.7
+    },
+    {
+      "start": 44.81,
+      "end": 45.74
+    },
+    {
+      "start": 53.11,
+      "end": 54.97
+    },
+    {
+      "start": 66.28,
+      "end": 67.02
+    },
+    {
+      "start": 67.92,
+      "end": 68.42
+    },
+    {
+      "start": 73.33,
+      "end": 74.92
+    },
+    {
+      "start": 75.93,
+      "end": 76.71
+    },
+    {
+      "start": 77.58,
+      "end": 79.12
+    },
+    {
+      "start": 81.4,
+      "end": 83.32
+    },
+    {
+      "start": 84.17,
+      "end": 85.0
+    }
+  ],
+  "num_threads": 2,
+  "vad_model": "models/fsmn-vad-onnx-funasr",
+  "torch_pulled": false
+}

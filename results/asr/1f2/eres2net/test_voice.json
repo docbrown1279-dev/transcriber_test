@@ -1,0 +1,203 @@
+{
+  "audio": "data/test_voice.m4a",
+  "duration_sec": 83.0,
+  "embedder_id": "eres2net",
+  "model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
+  "provider": "sherpa-onnx",
+  "execution_mode": "local",
+  "torch": false,
+  "speech_source": "results/asr/1f2/silero (this run)",
+  "embed_runtime_sec": 1.714,
+  "cluster_runtime_sec": 0.197,
+  "runtime_sec": 1.911,
+  "peak_rss_mb": 358.7,
+  "n_speakers": 2,
+  "n_turns": 14,
+  "n_vad_segments": 16,
+  "n_embeddings": 102,
+  "raw_turns": [
+    {
+      "start": 0.876,
+      "end": 3.828,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 4.588,
+      "end": 10.74,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.084,
+      "end": 13.972,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 14.38,
+      "end": 20.852,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 21.836,
+      "end": 22.388,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 23.116,
+      "end": 24.5,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 26.284,
+      "end": 27.284,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 28.62,
+      "end": 29.94,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 30.316,
+      "end": 35.444,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 35.756,
+      "end": 50.644,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 51.212,
+      "end": 53.108,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 53.58,
+      "end": 54.996,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 55.468,
+      "end": 61.908,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 62.348,
+      "end": 65.492,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 65.964,
+      "end": 73.908,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 74.316,
+      "end": 75.092,
+      "speaker": "SPEAKER_00"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.876,
+      "end": 3.828,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 4.588,
+      "end": 10.74,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 11.084,
+      "end": 13.972,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 14.38,
+      "end": 20.852,
+      "speaker": "SPEAKER_01"
+    },
+    {
+      "start": 21.836,
+      "end": 24.5,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 26.284,
+      "end": 27.284,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 28.62,
+      "end": 29.94,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 30.316,
+      "end": 35.444,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 35.756,
+      "end": 50.644,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 51.212,
+      "end": 53.108,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 53.58,
+      "end": 54.996,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 55.468,
+      "end": 61.908,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 62.348,
+      "end": 65.492,
+      "speaker": "SPEAKER_00"
+    },
+    {
+      "start": 65.964,
+      "end": 75.092,
+      "speaker": "SPEAKER_01"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 0.876
+    },
+    {
+      "start": 3.828,
+      "end": 4.588
+    },
+    {
+      "start": 20.852,
+      "end": 21.836
+    },
+    {
+      "start": 24.5,
+      "end": 26.284
+    },
+    {
+      "start": 27.284,
+      "end": 28.62
+    },
+    {
+      "start": 50.644,
+      "end": 51.212
+    },
+    {
+      "start": 75.092,
+      "end": 83.0
+    }
+  ],
+  "num_threads": 2
+}

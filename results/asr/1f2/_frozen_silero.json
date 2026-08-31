@@ -1,0 +1,22 @@
+{
+  "source": "results/asr/1f2/silero (this run)",
+  "note": "Phase B always uses Silero from this run, not the max-IoU VAD vs pyannote.",
+  "clips": {
+    "test_voice": {
+      "n_regions": 16,
+      "speech_sec": 64.352
+    },
+    "test_apartments": {
+      "n_regions": 17,
+      "speech_sec": 65.636
+    },
+    "test_transformers": {
+      "n_regions": 18,
+      "speech_sec": 67.664
+    },
+    "test_ninth": {
+      "n_regions": 17,
+      "speech_sec": 66.312
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "audio": "data/test_transformers.m4a",
+  "duration_sec": 85.0,
+  "vad_id": "silero",
+  "model": "silero-vad-onnx",
+  "provider": "onnxruntime",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 0.196,
+  "peak_rss_mb": 112.1,
+  "n_speech_regions": 18,
+  "speech_regions": [
+    {
+      "start": 0.972,
+      "end": 2.1
+    },
+    {
+      "start": 2.412,
+      "end": 9.236
+    },
+    {
+      "start": 10.06,
+      "end": 15.892
+    },
+    {
+      "start": 16.62,
+      "end": 17.876
+    },
+    {
+      "start": 18.444,
+      "end": 19.796
+    },
+    {
+      "start": 20.364,
+      "end": 27.604
+    },
+    {
+      "start": 28.524,
+      "end": 31.636
+    },
+    {
+      "start": 32.204,
+      "end": 32.884
+    },
+    {
+      "start": 33.356,
+      "end": 41.844
+    },
+    {
+      "start": 42.252,
+      "end": 47.22
+    },
+    {
+      "start": 47.564,
+      "end": 50.612
+    },
+    {
+      "start": 51.02,
+      "end": 54.228
+    },
+    {
+      "start": 57.772,
+      "end": 62.452
+    },
+    {
+      "start": 63.244,
+      "end": 65.268
+    },
+    {
+      "start": 65.9,
+      "end": 67.028
+    },
+    {
+      "start": 67.564,
+      "end": 73.012
+    },
+    {
+      "start": 74.86,
+      "end": 80.628
+    },
+    {
+      "start": 83.18,
+      "end": 84.66
+    }
+  ],
+  "raw_turns": [
+    {
+      "start": 0.972,
+      "end": 2.1,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 2.412,
+      "end": 9.236,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 10.06,
+      "end": 15.892,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 16.62,
+      "end": 17.876,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 18.444,
+      "end": 19.796,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 20.364,
+      "end": 27.604,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 28.524,
+      "end": 31.636,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 32.204,
+      "end": 32.884,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 33.356,
+      "end": 41.844,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 42.252,
+      "end": 47.22,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 47.564,
+      "end": 50.612,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 51.02,
+      "end": 54.228,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 57.772,
+      "end": 62.452,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 63.244,
+      "end": 65.268,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 65.9,
+      "end": 67.028,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 67.564,
+      "end": 73.012,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.86,
+      "end": 80.628,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 83.18,
+      "end": 84.66,
+      "speaker": "SPEECH"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.972,
+      "end": 2.1,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 2.412,
+      "end": 9.236,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 10.06,
+      "end": 15.892,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 16.62,
+      "end": 17.876,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 18.444,
+      "end": 19.796,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 20.364,
+      "end": 27.604,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 28.524,
+      "end": 31.636,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 32.204,
+      "end": 32.884,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 33.356,
+      "end": 41.844,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 42.252,
+      "end": 47.22,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 47.564,
+      "end": 50.612,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 51.02,
+      "end": 54.228,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 57.772,
+      "end": 62.452,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 63.244,
+      "end": 65.268,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 65.9,
+      "end": 67.028,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 67.564,
+      "end": 73.012,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.86,
+      "end": 80.628,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 83.18,
+      "end": 84.66,
+      "speaker": "SPEECH"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 0.972
+    },
+    {
+      "start": 9.236,
+      "end": 10.06
+    },
+    {
+      "start": 15.892,
+      "end": 16.62
+    },
+    {
+      "start": 17.876,
+      "end": 18.444
+    },
+    {
+      "start": 19.796,
+      "end": 20.364
+    },
+    {
+      "start": 27.604,
+      "end": 28.524
+    },
+    {
+      "start": 31.636,
+      "end": 32.204
+    },
+    {
+      "start": 54.228,
+      "end": 57.772
+    },
+    {
+      "start": 62.452,
+      "end": 63.244
+    },
+    {
+      "start": 65.268,
+      "end": 65.9
+    },
+    {
+      "start": 67.028,
+      "end": 67.564
+    },
+    {
+      "start": 73.012,
+      "end": 74.86
+    },
+    {
+      "start": 80.628,
+      "end": 83.18
+    }
+  ],
+  "num_threads": 2,
+  "vad_model": "models/silero_vad.onnx"
+}

@@ -1,0 +1,321 @@
+{
+  "audio": "data/test_voice.m4a",
+  "duration_sec": 83.0,
+  "vad_id": "ten_vad",
+  "model": "ten-vad 1.0.6.8",
+  "provider": "ten-vad",
+  "execution_mode": "local",
+  "torch": false,
+  "runtime_sec": 0.395,
+  "peak_rss_mb": 79.4,
+  "n_speech_regions": 19,
+  "speech_regions": [
+    {
+      "start": 0.064,
+      "end": 0.08
+    },
+    {
+      "start": 0.896,
+      "end": 3.632
+    },
+    {
+      "start": 4.544,
+      "end": 9.52
+    },
+    {
+      "start": 9.936,
+      "end": 13.072
+    },
+    {
+      "start": 13.44,
+      "end": 13.92
+    },
+    {
+      "start": 14.4,
+      "end": 16.544
+    },
+    {
+      "start": 17.024,
+      "end": 21.024
+    },
+    {
+      "start": 21.824,
+      "end": 22.432
+    },
+    {
+      "start": 22.864,
+      "end": 35.36
+    },
+    {
+      "start": 35.792,
+      "end": 50.576
+    },
+    {
+      "start": 51.248,
+      "end": 53.024
+    },
+    {
+      "start": 53.6,
+      "end": 54.96
+    },
+    {
+      "start": 55.472,
+      "end": 61.856
+    },
+    {
+      "start": 62.352,
+      "end": 65.424
+    },
+    {
+      "start": 66.0,
+      "end": 73.888
+    },
+    {
+      "start": 74.336,
+      "end": 75.488
+    },
+    {
+      "start": 76.768,
+      "end": 77.168
+    },
+    {
+      "start": 77.488,
+      "end": 78.032
+    },
+    {
+      "start": 78.528,
+      "end": 83.0
+    }
+  ],
+  "raw_turns": [
+    {
+      "start": 0.064,
+      "end": 0.08,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 0.896,
+      "end": 3.632,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 4.544,
+      "end": 9.52,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 9.936,
+      "end": 13.072,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 13.44,
+      "end": 13.92,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 14.4,
+      "end": 16.544,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 17.024,
+      "end": 21.024,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 21.824,
+      "end": 22.432,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 22.864,
+      "end": 35.36,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 35.792,
+      "end": 50.576,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 51.248,
+      "end": 53.024,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 53.6,
+      "end": 54.96,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 55.472,
+      "end": 61.856,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 62.352,
+      "end": 65.424,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 66.0,
+      "end": 73.888,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.336,
+      "end": 75.488,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 76.768,
+      "end": 77.168,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 77.488,
+      "end": 78.032,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 78.528,
+      "end": 83.0,
+      "speaker": "SPEECH"
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.064,
+      "end": 0.08,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 0.896,
+      "end": 3.632,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 4.544,
+      "end": 9.52,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 9.936,
+      "end": 13.072,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 13.44,
+      "end": 13.92,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 14.4,
+      "end": 16.544,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 17.024,
+      "end": 21.024,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 21.824,
+      "end": 22.432,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 22.864,
+      "end": 35.36,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 35.792,
+      "end": 50.576,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 51.248,
+      "end": 53.024,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 53.6,
+      "end": 54.96,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 55.472,
+      "end": 61.856,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 62.352,
+      "end": 65.424,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 66.0,
+      "end": 73.888,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 74.336,
+      "end": 75.488,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 76.768,
+      "end": 77.168,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 77.488,
+      "end": 78.032,
+      "speaker": "SPEECH"
+    },
+    {
+      "start": 78.528,
+      "end": 83.0,
+      "speaker": "SPEECH"
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.08,
+      "end": 0.896
+    },
+    {
+      "start": 3.632,
+      "end": 4.544
+    },
+    {
+      "start": 21.024,
+      "end": 21.824
+    },
+    {
+      "start": 50.576,
+      "end": 51.248
+    },
+    {
+      "start": 53.024,
+      "end": 53.6
+    },
+    {
+      "start": 54.96,
+      "end": 55.472
+    },
+    {
+      "start": 65.424,
+      "end": 66.0
+    },
+    {
+      "start": 75.488,
+      "end": 76.768
+    }
+  ],
+  "num_threads": 2,
+  "hop_size": 256,
+  "threshold": 0.5
+}

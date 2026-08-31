@@ -1,0 +1,9 @@
+{
+  "vad_id": "ten_vad",
+  "status": "success",
+  "failure_kind": "none",
+  "torch": false,
+  "runtime_sec": 1.6,
+  "peak_rss_mb": 84.6,
+  "license_note": "Apache-2.0 with Agora non-compete (TEN-framework/ten-vad LICENSE)."
+}
