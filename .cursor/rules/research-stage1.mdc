@@ -1,14 +1,13 @@
 ---
-description: Этап 1f2 — 3 VAD + 3 эмбеддера на 4 eval-клипах; 1f закрыт
+description: Этап 1f2b — GigaAM на масках TEN/FSMN; разметка 1f2 закрыта
 alwaysApply: true
 ---
 
-# Этап 1f2 — VAD и эмбеддеры, один прогон
+# Этап 1f2b — текст на готовых VAD
 
-- План: `docs/research_plan.md`, промпт: `docs/prompts/stage1f2_vad.md`.
-- Ветка: `cursor/stage1f2-vad-embed`.
-- VAD: Silero, TEN, FSMN. Эмбеддеры: WeSpeaker, ERes2Net-base, TitaNet-small. Не ECAPA, не sherpa full, не GigaAM, не pyannote 3.1.
-- Фаза B всегда на Silero этого прогона. Не выбирать маску по max speech IoU vs pyannote.
-- Кластер только `cluster_embeddings` из `scripts/run_stage1f.py`.
+- План: `docs/research_plan.md`, промпт: `docs/prompts/stage1f2_asr.md`.
+- Ветка: `cursor/stage1f2-gigaam`.
+- Только GigaAM v3 на `results/asr/1f2/{ten_vad,fsmn_vad}/`. Не пересчитывать VAD/эмбеддеры.
+- Silero не транскрибировать: текст в `results/asr/1f/vad_wespeaker/`.
 - Не читать `eval/`. Не переписывать `results/**/2/` и `results/asr/1f/`.
-- Отчёты: `results/reports/1f2/`.
+- Новые JSON: `results/asr/1f2/{gigaam_ten,gigaam_fsmn}/`. Отчёт: `results/reports/1f2/asr_notes.md`.

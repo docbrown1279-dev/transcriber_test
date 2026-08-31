@@ -1,22 +1,21 @@
 ---
 name: asr-research
-description: Этап 1f2 — 3 VAD (Silero, TEN, FSMN) + 3 эмбеддера (WeSpeaker, ERes2Net-base, TitaNet-small) на 4 eval-клипах. Без GigaAM. 1f закрыт.
+description: Этап 1f2b — GigaAM v3 на готовых масках TEN и FSMN. Разметка 1f2 закрыта. Не читать eval/.
 ---
 
-# Исследование — этап 1f2
+# Исследование — этап 1f2b
 
 ## Цель
 
-Одним прогоном: кто ловит речь в дырах pyannote, и какой ONNX-эмбеддер лучше клеит спикеров на **тех же** Silero-кусках. Кластеризацию 1f не крутить.
+Получить текст с нарезки TEN/FSMN (особенно `test_voice` 75–83 с). VAD и эмбеддеры не пересчитывать. Silero+GigaAM уже есть в 1f `vad_wespeaker`.
 
 ## Чеклист
 
 ```
-- [ ] silero / ten_vad / fsmn_vad; speech_iou.json
-- [ ] нарезка B = Silero этого прогона (не max IoU vs pyannote)
-- [ ] wespeaker / eres2net / titanet_small; тот же cluster_embeddings из run_stage1f.py
-- [ ] turn_compare.json vs pyannote 3.1
-- [ ] notes.md + research_report.json в results/reports/1f2/
+- [ ] .venv-gigaam (не .venv-1f2)
+- [ ] gigaam_ten / gigaam_fsmn из speech_regions
+- [ ] asr_notes.md: окна 0–10 с и 75–83 с
+- [ ] не трогать results/asr/1f/ и JSON VAD 1f2
 ```
 
-Не читать `eval/`. Не перезаписывать `results/asr/1f/` и `results/**/2/`. Не гонять GigaAM / этап 3. Не подставлять ECAPA.
+Не читать `eval/`. Не гонять этап 3. Не ставить GigaAM в ONNX-venv.
