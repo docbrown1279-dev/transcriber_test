@@ -1,23 +1,22 @@
 ---
 name: asr-research
-description: Этап 1f — ONNX-диаризация vs pyannote 3.1 на 4 eval-клипах, затем GigaAM v3. Полный ASR и чанкинг заморожены.
+description: Этап 1f2 — 3 VAD (Silero, TEN, FSMN) + 3 эмбеддера (WeSpeaker, ERes2Net-base, TitaNet-small) на 4 eval-клипах. Без GigaAM. 1f закрыт.
 ---
 
-# Исследование — этап 1f
+# Исследование — этап 1f2
 
 ## Цель
 
-Заменить тяжёлый pyannote.audio+torch на CPU-ONNX для демки 2c/8 ГБ, не ломая нарезку спикеров.
+Одним прогоном: кто ловит речь в дырах pyannote, и какой ONNX-эмбеддер лучше клеит спикеров на **тех же** Silero-кусках. Кластеризацию 1f не крутить.
 
 ## Чеклист
 
 ```
-- [ ] Не пересчитывать pyannote 3.1; эталон в results/reports/1f/baseline/pyannote31/
-- [ ] sherpa_onnx на 4 клипах
-- [ ] vad_wespeaker на 4 клипах
-- [ ] scripts/stage1f_compare_turns.py → results/reports/1f/turn_compare.json
-- [ ] GigaAM v3 на новых turns; pyannote+GigaAM только копия baseline
-- [ ] notes.md + research_report.json
+- [ ] silero / ten_vad / fsmn_vad; speech_iou.json
+- [ ] нарезка B = Silero этого прогона (не max IoU vs pyannote)
+- [ ] wespeaker / eres2net / titanet_small; тот же cluster_embeddings из run_stage1f.py
+- [ ] turn_compare.json vs pyannote 3.1
+- [ ] notes.md + research_report.json в results/reports/1f2/
 ```
 
-Не читать `eval/`. Не трогать `results/**/2/`. Не гонять этап 3.
+Не читать `eval/`. Не перезаписывать `results/asr/1f/` и `results/**/2/`. Не гонять GigaAM / этап 3. Не подставлять ECAPA.

@@ -1,12 +1,14 @@
 ---
-description: Этап 1f — ONNX диаризация на 4 eval-клипах; эталон pyannote 1e; ASR полного файла заморожен
+description: Этап 1f2 — 3 VAD + 3 эмбеддера на 4 eval-клипах; 1f закрыт
 alwaysApply: true
 ---
 
-# Этап 1f — лёгкие аннотаторы
+# Этап 1f2 — VAD и эмбеддеры, один прогон
 
-- План: `docs/research_plan.md`, промпт: `docs/prompts/stage1f_diarization.md`.
-- Сначала метки vs `results/reports/1f/baseline/pyannote31/` (`scripts/stage1f_compare_turns.py`). Потом GigaAM v3 на тех же turns.
-- Не запускать pyannote 3.1 заново. Не читать `eval/`. Не переписывать `results/**/2/`.
-- Два ONNX: `sherpa_onnx`, `vad_wespeaker`. VAD без спикеров — не кандидат.
-- Отчёты: `results/reports/1f/`. Ветка: `cursor/stage1f-onnx-diarization`.
+- План: `docs/research_plan.md`, промпт: `docs/prompts/stage1f2_vad.md`.
+- Ветка: `cursor/stage1f2-vad-embed`.
+- VAD: Silero, TEN, FSMN. Эмбеддеры: WeSpeaker, ERes2Net-base, TitaNet-small. Не ECAPA, не sherpa full, не GigaAM, не pyannote 3.1.
+- Фаза B всегда на Silero этого прогона. Не выбирать маску по max speech IoU vs pyannote.
+- Кластер только `cluster_embeddings` из `scripts/run_stage1f.py`.
+- Не читать `eval/`. Не переписывать `results/**/2/` и `results/asr/1f/`.
+- Отчёты: `results/reports/1f2/`.

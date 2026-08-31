@@ -1,10 +1,11 @@
-# Текущий этап — 1f: лёгкая диаризация
+# Текущий этап — 1f2: 3 VAD + 3 эмбеддера
 
 Указатель отчётов: [`results/reports/notes.md`](../results/reports/notes.md).  
 Итог этапов 2+2b: [`results/reports/2b/conclusions.md`](../results/reports/2b/conclusions.md).  
 Итог этапа 3: [`results/reports/3/notes.md`](../results/reports/3/notes.md).
 
-Рабочая ветка 1f: `cursor/stage1f-onnx-diarization` (база — `cursor/stage1e-four-asr-be20` после этапа 3).
+Рабочая ветка 1f (закрыта): `cursor/stage1f-onnx-diarization`.  
+Рабочая ветка 1f2: `cursor/stage1f2-vad-embed` (от `add757f`).
 
 **Eval-клипы:** [`docs/eval_clips.md`](eval_clips.md). Золото `eval/` агентам не отдавать.
 
@@ -16,11 +17,13 @@
 | 2 | закрыт | полный файл GigaAM v3 + pyannote + linear gain; tiny2 «один спикер» не дал 8–20 глав |
 | 2b | закрыт | четыре гипотезы чанкинга; **рабочие C и D** |
 | 3 | закрыт | Qwen3-8B: P1 one-shot vs P2 two-pass на D; на C ушёл P1 (лучше title, не эталон инсайтов) |
-| **1f** | **сейчас** | ONNX-диаризация vs pyannote 3.1 на 4 eval-клипах; затем GigaAM v3 |
+| **1f** | закрыт | ONNX-диаризация: vad_wespeaker (Silero+WeSpeaker) vs sherpa; эталон pyannote 3.1 |
+| **1f2** | **сейчас** | 3 VAD (Silero / TEN / FSMN) + 3 эмбеддера (WeSpeaker / ERes2Net-base / TitaNet-small) на Silero-кусках |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
 | словарь | потом | после ASR предлагать замены терминов, не молча править |
 
-Промпт 1f: [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  
+Промпт 1f (закрыт): [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  
+Промпт 1f2: [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md).  
 Эталон меток 1e (в git): [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/).
 
 ---
@@ -117,9 +120,35 @@
 | `sherpa_onnx` | сегментация pyannote 3.0 ONNX + эмбеддинг + кластер, без torch | тот же класс, другой рантайм |
 | `vad_wespeaker` | Silero VAD ONNX + WeSpeaker (`diarize` или руками) | другая нарезка речи |
 
-VAD без спикеров — не кандидат. Третий ONNX не добавлять, пока эти два не встанут.
+VAD без спикеров в **1f** не кандидат (нужны id для packing C). Итог 1f: [`results/reports/1f/notes.md`](../results/reports/1f/notes.md) — для демки из коробки **vad_wespeaker**; sherpa дробит спикеров (5–8 id), зато IoU речи ~0,94. Wall на 4×85 с: vad_wespeaker **8,3 с** (Silero+WeSpeaker **вместе**, раздельно не логировали), sherpa **39 с**, pyannote 1e **~154 с**.
 
-Агент WER не считает. Для демки, если спикеры стоят, каркас **C** достаточен.
+---
+
+## Этап 1f2 — 3 VAD + 3 эмбеддера, один прогон (сейчас)
+
+«Дыры» в 1f считались относительно pyannote. Второй VAD нужен, чтобы увидеть, кто кого пропускает (начало/хвост `test_voice`). 1f не разделил wall Silero и WeSpeaker.
+
+Те же 4 клипа. Один агент, без паузы. Промпт: [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md). Победителя после смотрим глазами.
+
+**A — речь/тишина**
+
+| id | Что |
+|---|---|
+| `silero` | тот же ONNX, **без** WeSpeaker; свой `runtime_sec` |
+| `ten_vad` | TEN-framework |
+| `fsmn_vad` | FunASR FSMN ONNX |
+
+Попарный speech IoU и уникальные секунды. **Не** выбирать маску по max IoU vs pyannote. Нарезка для B всегда = Silero этого прогона.
+
+**B — спикеры, одни куски, тот же кластер 1f**
+
+| id | Что |
+|---|---|
+| `wespeaker` | ResNet34-LM, как в 1f, только embed+cluster |
+| `eres2net` | 3D-Speaker ERes2Net-base ONNX (~38 МБ); не large, не ECAPA |
+| `titanet_small` | NeMo TitaNet-small ONNX (~38 МБ); не Large |
+
+Кластер: `cluster_embeddings` из [`scripts/run_stage1f.py`](../scripts/run_stage1f.py), пороги не крутить. Не гонять sherpa-full / GigaAM / pyannote 3.1.
 
 ---
 
