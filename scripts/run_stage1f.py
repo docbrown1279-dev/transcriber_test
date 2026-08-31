@@ -641,21 +641,56 @@ def compare_turns() -> None:
     )
 
 
-def prepare_gain_rows(clip_id: str, audio: Path, merged: list[dict[str, Any]], extract_dir: Path) -> list[dict[str, Any]]:
+def clamp_interval(start: float, end: float, duration: float) -> tuple[float, float]:
+    start = min(max(0.0, float(start)), duration)
+    end = min(max(start, float(end)), duration)
+    return start, end
+
+
+def extract_clip(
+    source: Path,
+    start: float,
+    end: float,
+    destination: Path,
+    duration: float,
+    gain_db: float = 0.0,
+) -> None:
+    import soundfile as sf
+
+    start, end = clamp_interval(start, end, duration)
+    try:
+        extract(source, start, end, destination, gain_db)
+        return
+    except RuntimeError:
+        if destination.is_file() and sf.info(destination).frames > 0:
+            return
+        raise
+
+
+def prepare_gain_rows(
+    clip_id: str,
+    audio: Path,
+    merged: list[dict[str, Any]],
+    extract_dir: Path,
+    duration: float,
+) -> list[dict[str, Any]]:
     rows = []
     for index, row in enumerate(merged):
+        start, end = clamp_interval(row["start"], row["end"], duration)
         raw_wav = extract_dir / f"turn_{index:03d}_raw.wav"
         gained_wav = extract_dir / f"turn_{index:03d}_linear.wav"
-        extract(audio, row["start"], row["end"], raw_wav)
+        extract_clip(audio, start, end, raw_wav, duration)
         rms, peak = astats(raw_wav)
         gain = 0.0
         if rms < -30.0 and peak < 0.0 and math.isfinite(rms):
             gain = min(-23.0 - rms, 18.0, -1.0 - peak)
             gain = max(0.0, gain)
-        extract(audio, row["start"], row["end"], gained_wav, gain)
+        extract_clip(audio, start, end, gained_wav, duration, gain)
         item = dict(row)
         item.update(
             {
+                "start": round(start, 6),
+                "end": round(end, 6),
                 "id": index,
                 "rms_dbfs": round(rms, 3) if math.isfinite(rms) else None,
                 "peak_dbfs": round(peak, 3) if math.isfinite(peak) else None,
@@ -682,16 +717,25 @@ def asr_gigaam(diarizer_id: str) -> None:
             continue
         clip_started = time.monotonic()
         extract_dir = EXTRACTS / diarizer_id / clip_id
-        rows = prepare_gain_rows(clip_id, audio, payload["merged_turns"], extract_dir)
+        duration = float(payload["duration_sec"])
+        rows = prepare_gain_rows(clip_id, audio, payload["merged_turns"], extract_dir, duration)
         payload["merged_turns"] = rows
+        payload["n_turns"] = len(rows)
+        payload["n_speakers"] = len({row["speaker"] for row in rows})
         pieces: list[dict[str, Any]] = []
+        import soundfile as sf
+
+        max_samples = 25 * SAMPLE_RATE
         for row in rows:
             piece_start = row["start"]
             piece_number = 0
             while piece_start < row["end"] - 1e-9:
                 piece_end = min(piece_start + 25.0, row["end"])
                 wav = extract_dir / f"turn_{row['id']:03d}_piece_{piece_number:02d}_linear.wav"
-                extract(audio, piece_start, piece_end, wav, row["gain_db"])
+                extract_clip(audio, piece_start, piece_end, wav, duration, row["gain_db"])
+                data, rate = sf.read(wav)
+                if len(data) > max_samples:
+                    sf.write(wav, data[:max_samples], rate)
                 text = str(model.transcribe(str(wav)))
                 pieces.append(
                     {

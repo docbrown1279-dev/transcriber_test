@@ -12,7 +12,7 @@
 | [`2/`](2/notes.md) | этап 2: полное совещание, tiny2, заголовки Qwen, оглавление |
 | [`2b/`](2b/conclusions.md) | этап 2b **закрыт**: рабочие C (14) и D (12); победителя нет |
 | [`3/`](3/notes.md) | этап 3 **закрыт**: P1/P2 на D, P1 на C; победитель промпта P1 (по title) |
-| [`1f/`](1f/) | этап 1f: ONNX vs pyannote 3.1 на 4 eval-клипах |
+| [`1f/`](1f/notes.md) | этап 1f: ONNX vs pyannote 3.1 на 4 eval-клипах; демка 2c/8ГБ → `vad_wespeaker` |
 
 Канонические JSON: `results/reports/1a/` … `1e/`, `2/`. Прогон 2b: ветка `cursor/stage2b-four-hypotheses-4305`.
 План: [`docs/research_plan.md`](../../docs/research_plan.md), итог 2b: [`2b/conclusions.md`](2b/conclusions.md), итог 3: [`3/notes.md`](3/notes.md), промпт 1f: [`docs/prompts/stage1f_diarization.md`](../../docs/prompts/stage1f_diarization.md).

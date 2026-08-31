@@ -56,32 +56,56 @@
     {
       "start": 9.025344,
       "end": 13.969719,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 0,
+      "rms_dbfs": -38.443,
+      "peak_dbfs": -7.832,
+      "gain_db": 6.832
     },
     {
       "start": 14.340969,
       "end": 20.78722,
-      "speaker": "SPEAKER_03"
+      "speaker": "SPEAKER_03",
+      "id": 1,
+      "rms_dbfs": -24.518,
+      "peak_dbfs": -2.668,
+      "gain_db": 0.0
     },
     {
       "start": 21.749096,
       "end": 25.967846,
-      "speaker": "SPEAKER_04"
+      "speaker": "SPEAKER_04",
+      "id": 2,
+      "rms_dbfs": -37.051,
+      "peak_dbfs": -17.698,
+      "gain_db": 14.051
     },
     {
       "start": 25.967846,
       "end": 65.438469,
-      "speaker": "SPEAKER_07"
+      "speaker": "SPEAKER_07",
+      "id": 3,
+      "rms_dbfs": -40.24,
+      "peak_dbfs": -18.847,
+      "gain_db": 17.24
     },
     {
       "start": 65.944717,
       "end": 74.989723,
-      "speaker": "SPEAKER_05"
+      "speaker": "SPEAKER_05",
+      "id": 4,
+      "rms_dbfs": -26.175,
+      "peak_dbfs": -8.001,
+      "gain_db": 0.0
     },
     {
       "start": 81.975967,
       "end": 82.988472,
-      "speaker": "SPEAKER_04"
+      "speaker": "SPEAKER_04",
+      "id": 5,
+      "rms_dbfs": -44.31,
+      "peak_dbfs": -30.179,
+      "gain_db": 18.0
     }
   ],
   "holes_ge_0_5_sec": [
@@ -105,5 +129,61 @@
   "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
   "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
   "num_threads": 2,
-  "cluster_threshold": 0.5
+  "cluster_threshold": 0.5,
+  "language": "ru",
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 5.436,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 9.025344,
+      "end": 13.969719,
+      "speaker": "SPEAKER_02",
+      "text": "связь все понятно и нужно что то разъяснять"
+    },
+    {
+      "id": 1,
+      "start": 14.340969,
+      "end": 20.78722,
+      "speaker": "SPEAKER_03",
+      "text": "ну направим пару вопросов есть попросим уточнить направим да"
+    },
+    {
+      "id": 2,
+      "start": 21.749096,
+      "end": 25.967846,
+      "speaker": "SPEAKER_04",
+      "text": "хорошо дополнительно вы задавали вопрос по"
+    },
+    {
+      "id": 3,
+      "start": 25.967846,
+      "end": 50.967846,
+      "speaker": "SPEAKER_07",
+      "text": "как я и написал что сейчас этот проект там ну в ближайшее время заходит в экспертизу то есть плюс останется на том же месте мы в дальнейшем будем ссылаться на их проект"
+    },
+    {
+      "id": 4,
+      "start": 50.967846,
+      "end": 65.438469,
+      "speaker": "SPEAKER_07",
+      "text": "то есть проект у вас уже есть как появится положительное заключение я думаю к этому времени как раз просто нашнемся на заключение экспертизы и соответственно таким образом вопрос"
+    },
+    {
+      "id": 5,
+      "start": 65.944717,
+      "end": 74.989723,
+      "speaker": "SPEAKER_05",
+      "text": "а скажи пожалуйста извини что а в технических условиях на ливневку там будет прописано что можно подключаться к сети удс да"
+    },
+    {
+      "id": 6,
+      "start": 81.975967,
+      "end": 82.988472,
+      "speaker": "SPEAKER_04",
+      "text": "проектируем таком то"
+    }
+  ]
 }

@@ -96,62 +96,110 @@
     {
       "start": 0.030969,
       "end": 5.549094,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -39.553,
+      "peak_dbfs": -19.113,
+      "gain_db": 16.553
     },
     {
       "start": 5.549094,
       "end": 14.290344,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -28.24,
+      "peak_dbfs": -8.565,
+      "gain_db": 0.0
     },
     {
       "start": 13.919094,
       "end": 17.091595,
-      "speaker": "SPEAKER_03"
+      "speaker": "SPEAKER_03",
+      "id": 2,
+      "rms_dbfs": -36.984,
+      "peak_dbfs": -12.204,
+      "gain_db": 11.204
     },
     {
       "start": 16.956594,
       "end": 23.385971,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 3,
+      "rms_dbfs": -30.643,
+      "peak_dbfs": -8.794,
+      "gain_db": 7.643
     },
     {
       "start": 24.887846,
       "end": 30.962847,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 4,
+      "rms_dbfs": -36.429,
+      "peak_dbfs": -13.019,
+      "gain_db": 12.019
     },
     {
       "start": 29.96722,
       "end": 37.105343,
-      "speaker": "SPEAKER_03"
+      "speaker": "SPEAKER_03",
+      "id": 5,
+      "rms_dbfs": -39.995,
+      "peak_dbfs": -17.471,
+      "gain_db": 16.471
     },
     {
       "start": 40.885345,
       "end": 46.268471,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 6,
+      "rms_dbfs": -37.487,
+      "peak_dbfs": -14.692,
+      "gain_db": 13.692
     },
     {
       "start": 47.112221,
       "end": 53.42347,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 7,
+      "rms_dbfs": -35.431,
+      "peak_dbfs": -14.509,
+      "gain_db": 12.431
     },
     {
       "start": 53.389721,
       "end": 60.207222,
-      "speaker": "SPEAKER_11"
+      "speaker": "SPEAKER_11",
+      "id": 8,
+      "rms_dbfs": -23.7,
+      "peak_dbfs": -6.495,
+      "gain_db": 0.0
     },
     {
       "start": 61.422218,
       "end": 65.556595,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 9,
+      "rms_dbfs": -36.218,
+      "peak_dbfs": -14.143,
+      "gain_db": 13.143
     },
     {
       "start": 65.556595,
       "end": 70.146599,
-      "speaker": "SPEAKER_12"
+      "speaker": "SPEAKER_12",
+      "id": 10,
+      "rms_dbfs": -22.251,
+      "peak_dbfs": -5.726,
+      "gain_db": 0.0
     },
     {
       "start": 71.378471,
       "end": 75.968468,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 11,
+      "rms_dbfs": -39.941,
+      "peak_dbfs": -17.827,
+      "gain_db": 16.827
     }
   ],
   "holes_ge_0_5_sec": [
@@ -183,5 +231,96 @@
   "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
   "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
   "num_threads": 2,
-  "cluster_threshold": 0.5
+  "cluster_threshold": 0.5,
+  "language": "ru",
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 7.514,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.030969,
+      "end": 5.549094,
+      "speaker": "SPEAKER_01",
+      "text": "поэтому вы почитайте угу покажите будем уже обсуждать"
+    },
+    {
+      "id": 1,
+      "start": 5.549094,
+      "end": 14.290344,
+      "speaker": "SPEAKER_00",
+      "text": "количество квартир на сегодня уже будет ну как бы точно известно или оно еще может поменяться только наш вопрос"
+    },
+    {
+      "id": 2,
+      "start": 13.919094,
+      "end": 17.091595,
+      "speaker": "SPEAKER_03",
+      "text": "конечно можешь поменять согласовал"
+    },
+    {
+      "id": 3,
+      "start": 16.956594,
+      "end": 23.385971,
+      "speaker": "SPEAKER_00",
+      "text": "ну вот все значит мы тогда с точки зрения инженерии ждем согласования квартиры и тогда уже"
+    },
+    {
+      "id": 4,
+      "start": 24.887846,
+      "end": 30.962847,
+      "speaker": "SPEAKER_02",
+      "text": "понятное дело да действие но опять же говорю вот есть у нас там триста мегаватта или сколько я сейчас не помню"
+    },
+    {
+      "id": 5,
+      "start": 29.96722,
+      "end": 37.105343,
+      "speaker": "SPEAKER_03",
+      "text": "сколько я сейчас не помню не суть вот больше не меньше можете сделать больше"
+    },
+    {
+      "id": 6,
+      "start": 40.885345,
+      "end": 46.268471,
+      "speaker": "SPEAKER_02",
+      "text": "предлагаю это закончить мы каждый раз на каждом корпусе одно и тоже обсуждаем поэтому ничего нового здесь нет"
+    },
+    {
+      "id": 7,
+      "start": 47.112221,
+      "end": 53.42347,
+      "speaker": "SPEAKER_02",
+      "text": "далее по всем сетям я так понимаю вопрос у вас закрыт"
+    },
+    {
+      "id": 8,
+      "start": 53.389721,
+      "end": 60.207222,
+      "speaker": "SPEAKER_11",
+      "text": "хотел уточнить по сетям связи вот ты сказал что там все понятно а вот по моему по сетям связи я не видел никакую схему"
+    },
+    {
+      "id": 9,
+      "start": 61.422218,
+      "end": 65.556595,
+      "speaker": "SPEAKER_02",
+      "text": "а вы как делали до этого шестой что то поменялось"
+    },
+    {
+      "id": 10,
+      "start": 65.556595,
+      "end": 70.146599,
+      "speaker": "SPEAKER_12",
+      "text": "ну мы просто мы просто помещение предусматривали для провайдера"
+    },
+    {
+      "id": 11,
+      "start": 71.378471,
+      "end": 75.968468,
+      "speaker": "SPEAKER_02",
+      "text": "никаких помещений насколько я помню мы особо не предусматривали там маленькое"
+    }
+  ]
 }

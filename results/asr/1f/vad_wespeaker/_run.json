@@ -3,5 +3,8 @@
   "status": "success",
   "torch": false,
   "runtime_sec": 8.253,
-  "peak_rss_mb": 242.1
+  "peak_rss_mb": 242.1,
+  "asr_model": "v3_rnnt",
+  "asr_runtime_sec": 33.692,
+  "asr_runtime_sec_note": "Sum of per-clip asr_runtime_sec (voice was transcribed in an earlier process)."
 }

@@ -136,97 +136,173 @@
     {
       "start": 1.026594,
       "end": 3.439719,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -41.879,
+      "peak_dbfs": -22.458,
+      "gain_db": 18.0
     },
     {
       "start": 3.439719,
       "end": 11.809719,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -27.354,
+      "peak_dbfs": -9.105,
+      "gain_db": 0.0
     },
     {
       "start": 11.354095,
       "end": 14.475969,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 2,
+      "rms_dbfs": -33.585,
+      "peak_dbfs": -13.124,
+      "gain_db": 10.585
     },
     {
       "start": 14.695344,
       "end": 20.432846,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 3,
+      "rms_dbfs": -26.936,
+      "peak_dbfs": -9.158,
+      "gain_db": 0.0
     },
     {
       "start": 20.196596,
       "end": 21.479095,
-      "speaker": "SPEAKER_04"
+      "speaker": "SPEAKER_04",
+      "id": 4,
+      "rms_dbfs": -28.932,
+      "peak_dbfs": -10.399,
+      "gain_db": 0.0
     },
     {
       "start": 22.086596,
       "end": 25.225346,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 5,
+      "rms_dbfs": -28.108,
+      "peak_dbfs": -9.245,
+      "gain_db": 0.0
     },
     {
       "start": 24.26347,
       "end": 26.862221,
-      "speaker": "SPEAKER_04"
+      "speaker": "SPEAKER_04",
+      "id": 6,
+      "rms_dbfs": -28.995,
+      "peak_dbfs": -13.014,
+      "gain_db": 0.0
     },
     {
       "start": 27.06472,
       "end": 28.85347,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 7,
+      "rms_dbfs": -26.512,
+      "peak_dbfs": -10.875,
+      "gain_db": 0.0
     },
     {
       "start": 27.722845,
       "end": 30.625345,
-      "speaker": "SPEAKER_04"
+      "speaker": "SPEAKER_04",
+      "id": 8,
+      "rms_dbfs": -30.358,
+      "peak_dbfs": -10.988,
+      "gain_db": 7.358
     },
     {
       "start": 29.646595,
       "end": 30.692846,
-      "speaker": "SPEAKER_05"
+      "speaker": "SPEAKER_05",
+      "id": 9,
+      "rms_dbfs": -41.091,
+      "peak_dbfs": -26.232,
+      "gain_db": 18.0
     },
     {
       "start": 30.692846,
       "end": 38.961594,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 10,
+      "rms_dbfs": -27.796,
+      "peak_dbfs": -9.041,
+      "gain_db": 0.0
     },
     {
       "start": 40.632221,
       "end": 45.964718,
-      "speaker": "SPEAKER_07"
+      "speaker": "SPEAKER_07",
+      "id": 11,
+      "rms_dbfs": -37.356,
+      "peak_dbfs": -16.893,
+      "gain_db": 14.356
     },
     {
       "start": 45.964718,
       "end": 49.761593,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 12,
+      "rms_dbfs": -39.413,
+      "peak_dbfs": -19.965,
+      "gain_db": 16.413
     },
     {
       "start": 47.820969,
       "end": 53.541595,
-      "speaker": "SPEAKER_12"
+      "speaker": "SPEAKER_12",
+      "id": 13,
+      "rms_dbfs": -31.566,
+      "peak_dbfs": -10.719,
+      "gain_db": 8.566
     },
     {
       "start": 51.803471,
       "end": 64.020973,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 14,
+      "rms_dbfs": -34.775,
+      "peak_dbfs": -10.645,
+      "gain_db": 9.645
     },
     {
       "start": 64.628471,
       "end": 66.349724,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 15,
+      "rms_dbfs": -41.482,
+      "peak_dbfs": -24.419,
+      "gain_db": 18.0
     },
     {
       "start": 67.260971,
       "end": 73.420349,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 16,
+      "rms_dbfs": -42.197,
+      "peak_dbfs": -21.372,
+      "gain_db": 18.0
     },
     {
       "start": 75.124718,
       "end": 77.335342,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 17,
+      "rms_dbfs": -44.22,
+      "peak_dbfs": -24.375,
+      "gain_db": 18.0
     },
     {
       "start": 79.292847,
       "end": 84.102219,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 18,
+      "rms_dbfs": -39.96,
+      "peak_dbfs": -19.447,
+      "gain_db": 16.96
     }
   ],
   "holes_ge_0_5_sec": [
@@ -266,5 +342,145 @@
   "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
   "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
   "num_threads": 2,
-  "cluster_threshold": 0.5
+  "cluster_threshold": 0.5,
+  "language": "ru",
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 9.65,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 1.026594,
+      "end": 3.439719,
+      "speaker": "SPEAKER_01",
+      "text": "посмотрите завтра может быть че то обсудим"
+    },
+    {
+      "id": 1,
+      "start": 3.439719,
+      "end": 11.809719,
+      "speaker": "SPEAKER_00",
+      "text": "еще момент по девятому мы же на завтра готовили тоже выдачу стоит ее присылать или уже получить замечание все вместе отработать"
+    },
+    {
+      "id": 2,
+      "start": 11.354095,
+      "end": 14.475969,
+      "speaker": "SPEAKER_02",
+      "text": "если там будет тоже самое что пятьдесят не стоит"
+    },
+    {
+      "id": 3,
+      "start": 14.695344,
+      "end": 20.432846,
+      "speaker": "SPEAKER_00",
+      "text": "хорошо тогда мы наверное направлять сейчас не будем получим от вас обратную связь"
+    },
+    {
+      "id": 4,
+      "start": 20.196596,
+      "end": 21.479095,
+      "speaker": "SPEAKER_04",
+      "text": "а на сколько у тебя готово"
+    },
+    {
+      "id": 5,
+      "start": 22.086596,
+      "end": 25.225346,
+      "speaker": "SPEAKER_00",
+      "text": "ну она также готова как десятая может может есть"
+    },
+    {
+      "id": 6,
+      "start": 24.26347,
+      "end": 26.862221,
+      "speaker": "SPEAKER_04",
+      "text": "может может есть смысл все таки направить"
+    },
+    {
+      "id": 7,
+      "start": 27.06472,
+      "end": 28.85347,
+      "speaker": "SPEAKER_00",
+      "text": "если там те же самые замечания"
+    },
+    {
+      "id": 8,
+      "start": 27.722845,
+      "end": 30.625345,
+      "speaker": "SPEAKER_04",
+      "text": "те же самые замечания если нет то"
+    },
+    {
+      "id": 9,
+      "start": 29.646595,
+      "end": 30.692846,
+      "speaker": "SPEAKER_05",
+      "text": "если нет то"
+    },
+    {
+      "id": 10,
+      "start": 30.692846,
+      "end": 38.961594,
+      "speaker": "SPEAKER_00",
+      "text": "там тоже есть отступление от нее в части ну трех больших трехкомнатных квартир есть отступление от квартирографии тоже я так понимаю это критично"
+    },
+    {
+      "id": 11,
+      "start": 40.632221,
+      "end": 45.964718,
+      "speaker": "SPEAKER_07",
+      "text": "ну да ну давайте я сейчас отправлю вы посмотрите хорошо"
+    },
+    {
+      "id": 12,
+      "start": 45.964718,
+      "end": 49.761593,
+      "speaker": "SPEAKER_10",
+      "text": "стороны ценники стоит вообще отправлять может это в корзину"
+    },
+    {
+      "id": 13,
+      "start": 47.820969,
+      "end": 53.541595,
+      "speaker": "SPEAKER_12",
+      "text": "да что то в корзину хорошо ну не в корзину на доработку точно да"
+    },
+    {
+      "id": 14,
+      "start": 51.803471,
+      "end": 64.020973,
+      "speaker": "SPEAKER_10",
+      "text": "на доработку точно да ну да у нас в касторографии подход поменялся я помню когда был на основании которого мы работали сейчас он там поменялся"
+    },
+    {
+      "id": 15,
+      "start": 64.628471,
+      "end": 66.349724,
+      "speaker": "SPEAKER_10",
+      "text": "потому что к сожалению"
+    },
+    {
+      "id": 16,
+      "start": 67.260971,
+      "end": 73.420349,
+      "speaker": "SPEAKER_10",
+      "text": "все эти вот изменения ключевых ставках суммы повлияло сильно на рынок и сейчас"
+    },
+    {
+      "id": 17,
+      "start": 75.124718,
+      "end": 77.335342,
+      "speaker": "SPEAKER_10",
+      "text": "мало чему может там"
+    },
+    {
+      "id": 18,
+      "start": 79.292847,
+      "end": 84.102219,
+      "speaker": "SPEAKER_10",
+      "text": "так что еще можно по девять есть обсудить как считаете"
+    }
+  ]
 }

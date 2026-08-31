@@ -81,57 +81,101 @@
     {
       "start": 0.030969,
       "end": 2.832219,
-      "speaker": "SPEAKER_02"
+      "speaker": "SPEAKER_02",
+      "id": 0,
+      "rms_dbfs": -37.064,
+      "peak_dbfs": -20.266,
+      "gain_db": 14.064
     },
     {
       "start": 2.376594,
       "end": 3.726594,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -31.661,
+      "peak_dbfs": -11.347,
+      "gain_db": 8.661
     },
     {
       "start": 3.540969,
       "end": 15.977844,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -28.295,
+      "peak_dbfs": -7.4,
+      "gain_db": 0.0
     },
     {
       "start": 16.534719,
       "end": 21.107845,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 3,
+      "rms_dbfs": -32.057,
+      "peak_dbfs": -9.361,
+      "gain_db": 8.361
     },
     {
       "start": 21.107845,
       "end": 29.96722,
-      "speaker": "SPEAKER_03"
+      "speaker": "SPEAKER_03",
+      "id": 4,
+      "rms_dbfs": -37.436,
+      "peak_dbfs": -14.783,
+      "gain_db": 13.783
     },
     {
       "start": 30.591597,
       "end": 32.785343,
-      "speaker": "SPEAKER_05"
+      "speaker": "SPEAKER_05",
+      "id": 5,
+      "rms_dbfs": -39.151,
+      "peak_dbfs": -20.01,
+      "gain_db": 16.151
     },
     {
       "start": 33.308468,
       "end": 54.300968,
-      "speaker": "SPEAKER_05"
+      "speaker": "SPEAKER_05",
+      "id": 6,
+      "rms_dbfs": -40.13,
+      "peak_dbfs": -17.442,
+      "gain_db": 16.442
     },
     {
       "start": 57.709721,
       "end": 66.974098,
-      "speaker": "SPEAKER_05"
+      "speaker": "SPEAKER_05",
+      "id": 7,
+      "rms_dbfs": -36.783,
+      "peak_dbfs": -14.889,
+      "gain_db": 13.783
     },
     {
       "start": 66.974098,
       "end": 72.964722,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 8,
+      "rms_dbfs": -40.467,
+      "peak_dbfs": -20.538,
+      "gain_db": 17.467
     },
     {
       "start": 74.787224,
       "end": 81.132217,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 9,
+      "rms_dbfs": -40.691,
+      "peak_dbfs": -20.442,
+      "gain_db": 17.691
     },
     {
       "start": 83.123474,
       "end": 84.962845,
-      "speaker": "SPEAKER_10"
+      "speaker": "SPEAKER_10",
+      "id": 10,
+      "rms_dbfs": -36.056,
+      "peak_dbfs": -17.001,
+      "gain_db": 13.056
     }
   ],
   "holes_ge_0_5_sec": [
@@ -163,5 +207,89 @@
   "segmentation_model": "models/sherpa-onnx-pyannote-segmentation-3-0/model.onnx",
   "embedding_model": "models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx",
   "num_threads": 2,
-  "cluster_threshold": 0.5
+  "cluster_threshold": 0.5,
+  "language": "ru",
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 7.329,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.030969,
+      "end": 2.832219,
+      "speaker": "SPEAKER_02",
+      "text": "давайте так поступим"
+    },
+    {
+      "id": 1,
+      "start": 2.376594,
+      "end": 3.726594,
+      "speaker": "SPEAKER_00",
+      "text": "планы разрезы для"
+    },
+    {
+      "id": 2,
+      "start": 3.540969,
+      "end": 15.977844,
+      "speaker": "SPEAKER_01",
+      "text": "игорь то есть смотрите мы смотрим по предыдущим корпусам да сравниваем мощность если у нас мощность условно там корпуса там девятого совпадает там с восьмым или с каким то да"
+    },
+    {
+      "id": 3,
+      "start": 16.534719,
+      "end": 21.107845,
+      "speaker": "SPEAKER_01",
+      "text": "мы говорим что у нас все тоже самое если"
+    },
+    {
+      "id": 4,
+      "start": 21.107845,
+      "end": 29.96722,
+      "speaker": "SPEAKER_03",
+      "text": "да если нет трансформаторы могут отличаться по мощности по массовом габаритным характеристикам они будут одинаковые примерно просто там катушек"
+    },
+    {
+      "id": 5,
+      "start": 30.591597,
+      "end": 32.785343,
+      "speaker": "SPEAKER_05",
+      "text": ""
+    },
+    {
+      "id": 6,
+      "start": 33.308468,
+      "end": 54.300968,
+      "speaker": "SPEAKER_05",
+      "text": "вот если это так вы смотрите да действительно такое же все по высоте по габаритам прошло расстояние там от стены там от входа и прочее вот ничего нового не делаем сейчас на данном этапе надо заложить это пятно разрисовать это помещение и максимально быстро ресурсы чтобы у вас было понимание что не надо где нибудь"
+    },
+    {
+      "id": 7,
+      "start": 57.709721,
+      "end": 66.974098,
+      "speaker": "SPEAKER_05",
+      "text": "другого варианта нету потому что ну это не москва четких требований у них нету все идет"
+    },
+    {
+      "id": 8,
+      "start": 66.974098,
+      "end": 72.964722,
+      "speaker": "SPEAKER_10",
+      "text": "оббициозы и прочее направить получить согласование потом этими бумажками махать все"
+    },
+    {
+      "id": 9,
+      "start": 74.787224,
+      "end": 81.132217,
+      "speaker": "SPEAKER_10",
+      "text": "другого варианта у нас работать с ними к сожалению нет потому что они потом от своих слов могут просто отказаться"
+    },
+    {
+      "id": 10,
+      "start": 83.123474,
+      "end": 84.962845,
+      "speaker": "SPEAKER_10",
+      "text": "бумага все"
+    }
+  ]
 }

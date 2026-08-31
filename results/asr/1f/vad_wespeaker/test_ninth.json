@@ -181,82 +181,146 @@
     {
       "start": 1.292,
       "end": 3.692,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 0,
+      "rms_dbfs": -41.532,
+      "peak_dbfs": -22.803,
+      "gain_db": 18.0
     },
     {
       "start": 3.092,
       "end": 11.924,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 1,
+      "rms_dbfs": -27.543,
+      "peak_dbfs": -9.124,
+      "gain_db": 0.0
     },
     {
       "start": 11.324,
       "end": 13.588,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 2,
+      "rms_dbfs": -32.073,
+      "peak_dbfs": -13.101,
+      "gain_db": 9.073
     },
     {
       "start": 14.732,
       "end": 19.412,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 3,
+      "rms_dbfs": -26.299,
+      "peak_dbfs": -9.146,
+      "gain_db": 0.0
     },
     {
       "start": 19.884,
       "end": 21.556,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 4,
+      "rms_dbfs": -29.633,
+      "peak_dbfs": -10.393,
+      "gain_db": 0.0
     },
     {
       "start": 22.124,
       "end": 28.916,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 5,
+      "rms_dbfs": -28.168,
+      "peak_dbfs": -9.32,
+      "gain_db": 0.0
     },
     {
       "start": 28.316,
       "end": 29.716,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 6,
+      "rms_dbfs": -33.496,
+      "peak_dbfs": -14.0,
+      "gain_db": 10.496
     },
     {
       "start": 30.316,
       "end": 32.852,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 7,
+      "rms_dbfs": -26.005,
+      "peak_dbfs": -9.008,
+      "gain_db": 0.0
     },
     {
       "start": 33.164,
       "end": 39.028,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 8,
+      "rms_dbfs": -28.97,
+      "peak_dbfs": -9.38,
+      "gain_db": 0.0
     },
     {
       "start": 38.564,
       "end": 50.612,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 9,
+      "rms_dbfs": -38.799,
+      "peak_dbfs": -16.895,
+      "gain_db": 15.799
     },
     {
       "start": 51.372,
       "end": 53.684,
-      "speaker": "SPEAKER_01"
+      "speaker": "SPEAKER_01",
+      "id": 10,
+      "rms_dbfs": -28.069,
+      "peak_dbfs": -10.65,
+      "gain_db": 0.0
     },
     {
       "start": 53.172,
       "end": 64.052,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 11,
+      "rms_dbfs": -40.743,
+      "peak_dbfs": -20.233,
+      "gain_db": 17.743
     },
     {
       "start": 64.716,
       "end": 66.388,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 12,
+      "rms_dbfs": -41.369,
+      "peak_dbfs": -24.271,
+      "gain_db": 18.0
     },
     {
       "start": 67.34,
       "end": 73.332,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 13,
+      "rms_dbfs": -42.082,
+      "peak_dbfs": -21.573,
+      "gain_db": 18.0
     },
     {
       "start": 75.212,
       "end": 77.3,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 14,
+      "rms_dbfs": -43.995,
+      "peak_dbfs": -24.464,
+      "gain_db": 18.0
     },
     {
       "start": 79.404,
       "end": 84.084,
-      "speaker": "SPEAKER_00"
+      "speaker": "SPEAKER_00",
+      "id": 15,
+      "rms_dbfs": -39.844,
+      "peak_dbfs": -19.44,
+      "gain_db": 16.844
     }
   ],
   "holes_ge_0_5_sec": [
@@ -305,5 +369,124 @@
   "embedding_model": "wespeaker-resnet34",
   "n_vad_segments": 28,
   "n_embeddings": 98,
-  "num_threads": 2
+  "num_threads": 2,
+  "language": "ru",
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 8.507,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 1.292,
+      "end": 3.692,
+      "speaker": "SPEAKER_00",
+      "text": "смотрите завтра может быть че обсудим"
+    },
+    {
+      "id": 1,
+      "start": 3.092,
+      "end": 11.924,
+      "speaker": "SPEAKER_01",
+      "text": "еще момент по девятому мы же на завтра готовили тоже выдачу стоит ее присылать или уже получить замечание все вместе отработать"
+    },
+    {
+      "id": 2,
+      "start": 11.324,
+      "end": 13.588,
+      "speaker": "SPEAKER_00",
+      "text": "работает там тоже самое что пятьдесят"
+    },
+    {
+      "id": 3,
+      "start": 14.732,
+      "end": 19.412,
+      "speaker": "SPEAKER_01",
+      "text": "хорошо тогда мы наверное направлять сейчас не будем получим от вас обратную связь"
+    },
+    {
+      "id": 4,
+      "start": 19.884,
+      "end": 21.556,
+      "speaker": "SPEAKER_01",
+      "text": "а на сколько ты готова"
+    },
+    {
+      "id": 5,
+      "start": 22.124,
+      "end": 28.916,
+      "speaker": "SPEAKER_01",
+      "text": "ну она также готова как десятое может может есть смысл все таки направить если там те же самые замечания"
+    },
+    {
+      "id": 6,
+      "start": 28.316,
+      "end": 29.716,
+      "speaker": "SPEAKER_00",
+      "text": "дорогая"
+    },
+    {
+      "id": 7,
+      "start": 30.316,
+      "end": 32.852,
+      "speaker": "SPEAKER_01",
+      "text": "там тоже есть отступление от нее"
+    },
+    {
+      "id": 8,
+      "start": 33.164,
+      "end": 39.028,
+      "speaker": "SPEAKER_01",
+      "text": "части ну трех больших трехкомнатных квартир есть отступление от квартирографии тоже я так понимаю это критично"
+    },
+    {
+      "id": 9,
+      "start": 38.564,
+      "end": 50.612,
+      "speaker": "SPEAKER_00",
+      "text": "ну трешки да ну давайте я сейчас отправлю вы посмотрите хорошо со своей стороны оцените стоит вообще сейчас отправлять может это в корзину хорошо"
+    },
+    {
+      "id": 10,
+      "start": 51.372,
+      "end": 53.684,
+      "speaker": "SPEAKER_01",
+      "text": "ну не в козину на доработку точно да"
+    },
+    {
+      "id": 11,
+      "start": 53.172,
+      "end": 64.052,
+      "speaker": "SPEAKER_00",
+      "text": "ну да у нас в кампирографии подход поменялся я помню когда файлик был на основании которого мы работали сейчас он там поменялся"
+    },
+    {
+      "id": 12,
+      "start": 64.716,
+      "end": 66.388,
+      "speaker": "SPEAKER_00",
+      "text": "потому что к сожалению"
+    },
+    {
+      "id": 13,
+      "start": 67.34,
+      "end": 73.332,
+      "speaker": "SPEAKER_00",
+      "text": "все эти вот изменения ключевых ставках суммы повлияло сильно на рынок и сейчас"
+    },
+    {
+      "id": 14,
+      "start": 75.212,
+      "end": 77.3,
+      "speaker": "SPEAKER_00",
+      "text": "мало чем может приставать"
+    },
+    {
+      "id": 15,
+      "start": 79.404,
+      "end": 84.084,
+      "speaker": "SPEAKER_00",
+      "text": "так что еще можно по девять десяти обсудить как считаете"
+    }
+  ]
 }
