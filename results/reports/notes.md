@@ -11,9 +11,10 @@
 | [`1e/`](1e/notes.md) | четыре ASR на eval-клипах, pyannote 3.1, бенч 25 с, WER/CER, гипотезы на каскад |
 | [`2/`](2/notes.md) | этап 2: полное совещание, tiny2, заголовки Qwen, оглавление |
 | [`2b/`](2b/conclusions.md) | этап 2b **закрыт**: рабочие C (14) и D (12); победителя нет |
-| [`3/`](3/notes.md) | этап 3: P1/P2 на D, P1 на C; победитель промпта P1 |
+| [`3/`](3/notes.md) | этап 3 **закрыт**: P1/P2 на D, P1 на C; победитель промпта P1 (по title) |
+| [`1f/`](1f/) | этап 1f: ONNX vs pyannote 3.1 на 4 eval-клипах |
 
 Канонические JSON: `results/reports/1a/` … `1e/`, `2/`. Прогон 2b: ветка `cursor/stage2b-four-hypotheses-4305`.
-План: [`docs/research_plan.md`](../../docs/research_plan.md), итог 2b: [`2b/conclusions.md`](2b/conclusions.md), промпт 3: [`docs/prompts/stage3_llm.md`](../../docs/prompts/stage3_llm.md).
+План: [`docs/research_plan.md`](../../docs/research_plan.md), итог 2b: [`2b/conclusions.md`](2b/conclusions.md), итог 3: [`3/notes.md`](3/notes.md), промпт 1f: [`docs/prompts/stage1f_diarization.md`](../../docs/prompts/stage1f_diarization.md).
 ASR-дампы: `results/asr/1a|1b|1c|1d|1e/` (gitignored).  
 Eval-клипы: [`docs/eval_clips.md`](../../docs/eval_clips.md).

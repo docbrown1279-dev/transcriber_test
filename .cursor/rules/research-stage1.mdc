@@ -1,12 +1,12 @@
 ---
-description: Этап 3 — инсайты затем название; Qwen3-8B; нарезка C/D заморожена
+description: Этап 1f — ONNX диаризация на 4 eval-клипах; эталон pyannote 1e; ASR полного файла заморожен
 alwaysApply: true
 ---
 
-# Этап 3 — инсайты, не пересказ
+# Этап 1f — лёгкие аннотаторы
 
-- План: `docs/research_plan.md`, промпт: `docs/prompts/stage3_llm.md`.
-- Сначала ключевые моменты и actions, **потом** title отдельным вызовом (гипотеза P2). P1 one-shot — только контроль на D.
-- Запрещены штампы «обсудили / совещание по». Цифры и поручения только из текста главы.
-- Таймкоды копировать. ASR и чанкинг не трогать. `eval/` не читать.
-- Отчёты: `results/reports/3/`. Ветка: `cursor/stage1e-four-asr-be20`.
+- План: `docs/research_plan.md`, промпт: `docs/prompts/stage1f_diarization.md`.
+- Сначала метки vs `results/reports/1f/baseline/pyannote31/` (`scripts/stage1f_compare_turns.py`). Потом GigaAM v3 на тех же turns.
+- Не запускать pyannote 3.1 заново. Не читать `eval/`. Не переписывать `results/**/2/`.
+- Два ONNX: `sherpa_onnx`, `vad_wespeaker`. VAD без спикеров — не кандидат.
+- Отчёты: `results/reports/1f/`. Ветка: `cursor/stage1f-onnx-diarization`.

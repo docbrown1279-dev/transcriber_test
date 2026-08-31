@@ -1,0 +1,115 @@
+{
+  "audio": "data/test_transformers.m4a",
+  "duration_sec": 85.0,
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "runtime_sec": 37.941,
+  "merged_turns": [
+    {
+      "start": 0.030969,
+      "end": 3.034719,
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -37.144,
+      "peak_dbfs": -20.266,
+      "gain_db": 14.144
+    },
+    {
+      "start": 3.034719,
+      "end": 21.141594,
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -29.265,
+      "peak_dbfs": -7.558,
+      "gain_db": 0.0
+    },
+    {
+      "start": 21.141594,
+      "end": 27.030969,
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -36.442,
+      "peak_dbfs": -14.785,
+      "gain_db": 13.442
+    },
+    {
+      "start": 30.675969,
+      "end": 32.616594,
+      "speaker": "SPEAKER_01",
+      "id": 3,
+      "rms_dbfs": -38.949,
+      "peak_dbfs": -20.018,
+      "gain_db": 15.949
+    },
+    {
+      "start": 33.375969,
+      "end": 54.267219,
+      "speaker": "SPEAKER_01",
+      "id": 4,
+      "rms_dbfs": -40.11,
+      "peak_dbfs": -17.465,
+      "gain_db": 16.465
+    },
+    {
+      "start": 57.726594,
+      "end": 72.880344,
+      "speaker": "SPEAKER_01",
+      "id": 5,
+      "rms_dbfs": -37.86,
+      "peak_dbfs": -14.871,
+      "gain_db": 13.871
+    },
+    {
+      "start": 74.804094,
+      "end": 81.149094,
+      "speaker": "SPEAKER_01",
+      "id": 6,
+      "rms_dbfs": -40.691,
+      "peak_dbfs": -20.387,
+      "gain_db": 17.691
+    },
+    {
+      "start": 76.542219,
+      "end": 78.989094,
+      "speaker": "SPEAKER_00",
+      "id": 7,
+      "rms_dbfs": -40.824,
+      "peak_dbfs": -23.101,
+      "gain_db": 17.824
+    },
+    {
+      "start": 83.123469,
+      "end": 84.591594,
+      "speaker": "SPEAKER_01",
+      "id": 8,
+      "rms_dbfs": -35.08,
+      "peak_dbfs": -17.001,
+      "gain_db": 12.08
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 27.030969,
+      "end": 30.675969
+    },
+    {
+      "start": 32.616594,
+      "end": 33.375969
+    },
+    {
+      "start": 54.267219,
+      "end": 57.726594
+    },
+    {
+      "start": 72.880344,
+      "end": 74.804094
+    },
+    {
+      "start": 81.149094,
+      "end": 83.123469
+    }
+  ],
+  "copied_from": "results/asr/eval_clips/pyannote/test_transformers.json",
+  "note": "Stage 1e pyannote 3.1 etalon for 1f label compare. Not human gold."
+}

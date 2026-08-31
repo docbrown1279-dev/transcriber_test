@@ -37,11 +37,10 @@ ffmpeg -i "docs/Голос 002.m4a" -ss 1245 -t 85 -ac 1 -ar 44100 -c:a aac -b:a
 
 Retry `large-v3` из 1d **не** подмешивался: на коротких срезах он писал «Субтитры сделал DimaTorzok».
 
-## Следующий прогон (облако, только эти 4 файла)
+## Следующий аудио-прогон — 1f (облако)
 
-Промпт: [`docs/prompts/stage1e_eval_clips.md`](prompts/stage1e_eval_clips.md). Кандидаты (черновик, 2 лёгкие + 2 тяжёлые):
+Ветка: `cursor/stage1f-onnx-diarization`. Промпт: [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md). Те же 4 файла. Эталон меток (в git): [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/). Сначала сравнение turns скриптом, потом GigaAM v3 на новых стыках.
 
-- лёгкие: **GigaAM v3**, **Podlodka-turbo**
-- тяжёлые: **faster-whisper large-v3**, **bond005/whisper-large-v3-ru-podlodka**
+1e закрыт: [`docs/prompts/stage1e_eval_clips.md`](prompts/stage1e_eval_clips.md).
 
 GigaAM v2 на полном файле: **81 с на 415 срезах** (~24.5 мин аудио, RTF ≈ 0.055) — только ASR, без 13 мин pyannote. На коротких клипах это правдоподобно и для v3.

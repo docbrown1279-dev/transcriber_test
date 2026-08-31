@@ -1,21 +1,23 @@
 ---
 name: asr-research
-description: Этап 3 — ключевые моменты и затем название на готовых главах D/C. Один Qwen3-8B, два промпта. ASR и чанкинг заморожены.
+description: Этап 1f — ONNX-диаризация vs pyannote 3.1 на 4 eval-клипах, затем GigaAM v3. Полный ASR и чанкинг заморожены.
 ---
 
-# Исследование — этап 3
+# Исследование — этап 1f
 
 ## Цель
 
-Не «тут обсуждали сети», а проверяемые тезисы, действия и вопросы. Название — из этих тезисов вторым вызовом.
+Заменить тяжёлый pyannote.audio+torch на CPU-ONNX для демки 2c/8 ГБ, не ломая нарезку спикеров.
 
 ## Чеклист
 
 ```
-- [ ] D: P1 one-shot (title+points вместе)
-- [ ] D: P2 two-pass (сначала points, потом title без сырого текста)
-- [ ] В notes сравнить 2–3 главы; победивший промпт прогнать на C
-- [ ] start/end/source_ids без изменений
+- [ ] Не пересчитывать pyannote 3.1; эталон в results/reports/1f/baseline/pyannote31/
+- [ ] sherpa_onnx на 4 клипах
+- [ ] vad_wespeaker на 4 клипах
+- [ ] scripts/stage1f_compare_turns.py → results/reports/1f/turn_compare.json
+- [ ] GigaAM v3 на новых turns; pyannote+GigaAM только копия baseline
+- [ ] notes.md + research_report.json
 ```
 
-Не читать `eval/`. Не выбирать победителя C/D. Не начинать вторую LLM, если 8B просто пишет штампы — сначала смотреть, не виноват ли one-shot.
+Не читать `eval/`. Не трогать `results/**/2/`. Не гонять этап 3.

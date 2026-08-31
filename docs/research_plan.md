@@ -1,9 +1,10 @@
-# Текущий этап — 3: LLM на готовых главах
+# Текущий этап — 1f: лёгкая диаризация
 
 Указатель отчётов: [`results/reports/notes.md`](../results/reports/notes.md).  
-Итог этапов 2+2b: [`results/reports/2b/conclusions.md`](../results/reports/2b/conclusions.md).
+Итог этапов 2+2b: [`results/reports/2b/conclusions.md`](../results/reports/2b/conclusions.md).  
+Итог этапа 3: [`results/reports/3/notes.md`](../results/reports/3/notes.md).
 
-Рабочие ветки с прогоном 2b: `cursor/stage2b-four-hypotheses-4305` и тот же tip у `cursor/stage1e-four-asr-be20`. План 2b: `cursor/stage2b-chunking`.
+Рабочая ветка 1f: `cursor/stage1f-onnx-diarization` (база — `cursor/stage1e-four-asr-be20` после этапа 3).
 
 **Eval-клипы:** [`docs/eval_clips.md`](eval_clips.md). Золото `eval/` агентам не отдавать.
 
@@ -14,11 +15,13 @@
 | 1e | закрыт | выбор ASR на 4 eval-клипах |
 | 2 | закрыт | полный файл GigaAM v3 + pyannote + linear gain; tiny2 «один спикер» не дал 8–20 глав |
 | 2b | закрыт | четыре гипотезы чанкинга; **рабочие C и D** |
-| **3** | **сейчас** | LLM: **ключевые моменты** и уже потом название главы; не пересказ «обсуждали то-то» |
+| 3 | закрыт | Qwen3-8B: P1 one-shot vs P2 two-pass на D; на C ушёл P1 (лучше title, не эталон инсайтов) |
+| **1f** | **сейчас** | ONNX-диаризация vs pyannote 3.1 на 4 eval-клипах; затем GigaAM v3 |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
 | словарь | потом | после ASR предлагать замены терминов, не молча править |
 
-Промпт 3: [`docs/prompts/stage3_llm.md`](prompts/stage3_llm.md).
+Промпт 1f: [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  
+Эталон меток 1e (в git): [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/).
 
 ---
 
@@ -90,6 +93,33 @@
 Критерий на глаз: меньше штампов «обсуждение», больше проверяемых фактов, actions не выдуманы. 8B не судья самой себе.
 
 Не делать в 3: новый ASR, шумодавы, новая нарезка, гибрид C→D, объявлять C или D истинными.
+
+**Итог 3 (закрыт).** На D выбрали P1 для title (P2 копирует первую фразу и ASR-мусор в заголовок). Инсайты у обоих слабые (пропуск 10/12 кВт). Не эталон для SFT. Подробно: [`results/reports/3/notes.md`](../results/reports/3/notes.md).
+
+---
+
+## Этап 1f — лёгкая диаризация (сейчас)
+
+Диаризация **обязательна** (C packing, метки спикеров). pyannote 3.1 + torch на 4 vCPU ~13 мин на 25 мин — главный тормоз, не GigaAM. Демка: **2 vCPU / 8 ГБ**, файл 20–30 мин, шаг «кто когда говорил» без `torch`. На жирной машине pyannote 3.1 остаётся потолком.
+
+Не пересчитывать полный `results/asr/2/…` и не выбирать заново ASR. Полный `docs/Голос 002.m4a` не диаризовать в этом прогоне — только 4 уже вырезанных клипа.
+
+Вход: [`docs/eval_clips.md`](eval_clips.md). Эталон меток **в git**: [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/) (копия 1e). Человеческое золото в `eval/` агентам не читать.
+
+Порядок:
+
+1. Два ONNX-аннотатора → таблица turns. Скрипт [`scripts/stage1f_compare_turns.py`](../scripts/stage1f_compare_turns.py) против pyannote 1e (DER с воротником 0,25 с, speech IoU).
+2. Тот же GigaAM v3 на новых стыках. Текст pyannote+GigaAM не пересчитывать: [`results/reports/1f/baseline/gigaam_v3_on_pyannote/`](../results/reports/1f/baseline/gigaam_v3_on_pyannote/).
+
+| id | Стек | Зачем |
+|---|---|---|
+| `pyannote31` | копия 1e, torch тогда | потолок; не запускать заново |
+| `sherpa_onnx` | сегментация pyannote 3.0 ONNX + эмбеддинг + кластер, без torch | тот же класс, другой рантайм |
+| `vad_wespeaker` | Silero VAD ONNX + WeSpeaker (`diarize` или руками) | другая нарезка речи |
+
+VAD без спикеров — не кандидат. Третий ONNX не добавлять, пока эти два не встанут.
+
+Агент WER не считает. Для демки, если спикеры стоят, каркас **C** достаточен.
 
 ---
 
