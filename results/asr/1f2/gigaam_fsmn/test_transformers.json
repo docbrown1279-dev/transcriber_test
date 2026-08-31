@@ -1,0 +1,274 @@
+{
+  "audio": "data/test_transformers.m4a",
+  "language": "ru",
+  "duration_sec": 85.0,
+  "asr_id": "gigaam_fsmn",
+  "vad_id": "fsmn_vad",
+  "source_regions": "results/asr/1f2/fsmn_vad/test_transformers.json",
+  "model": "gigaam-v3-rnnt",
+  "provider": "gigaam",
+  "execution_mode": "local",
+  "torch": true,
+  "n_speakers": 1,
+  "n_turns": 11,
+  "speech_regions": [
+    {
+      "start": 0.0,
+      "end": 9.33
+    },
+    {
+      "start": 9.76,
+      "end": 19.66
+    },
+    {
+      "start": 20.08,
+      "end": 27.91
+    },
+    {
+      "start": 28.23,
+      "end": 30.18
+    },
+    {
+      "start": 30.53,
+      "end": 50.27
+    },
+    {
+      "start": 50.8,
+      "end": 53.83
+    },
+    {
+      "start": 57.52,
+      "end": 59.86
+    },
+    {
+      "start": 60.89,
+      "end": 66.95
+    },
+    {
+      "start": 67.48,
+      "end": 71.85
+    },
+    {
+      "start": 74.72,
+      "end": 80.2
+    },
+    {
+      "start": 82.92,
+      "end": 84.99
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.0,
+      "end": 9.33,
+      "speaker": "SPEECH",
+      "id": 0,
+      "rms_dbfs": -29.086,
+      "peak_dbfs": -9.92,
+      "gain_db": 0.0
+    },
+    {
+      "start": 9.76,
+      "end": 19.66,
+      "speaker": "SPEECH",
+      "id": 1,
+      "rms_dbfs": -29.895,
+      "peak_dbfs": -7.531,
+      "gain_db": 0.0
+    },
+    {
+      "start": 20.08,
+      "end": 27.91,
+      "speaker": "SPEECH",
+      "id": 2,
+      "rms_dbfs": -36.466,
+      "peak_dbfs": -14.795,
+      "gain_db": 13.466
+    },
+    {
+      "start": 28.23,
+      "end": 30.18,
+      "speaker": "SPEECH",
+      "id": 3,
+      "rms_dbfs": -39.922,
+      "peak_dbfs": -19.659,
+      "gain_db": 16.922
+    },
+    {
+      "start": 30.53,
+      "end": 50.27,
+      "speaker": "SPEECH",
+      "id": 4,
+      "rms_dbfs": -39.742,
+      "peak_dbfs": -17.43,
+      "gain_db": 16.43
+    },
+    {
+      "start": 50.8,
+      "end": 53.83,
+      "speaker": "SPEECH",
+      "id": 5,
+      "rms_dbfs": -41.79,
+      "peak_dbfs": -23.604,
+      "gain_db": 18.0
+    },
+    {
+      "start": 57.52,
+      "end": 59.86,
+      "speaker": "SPEECH",
+      "id": 6,
+      "rms_dbfs": -33.019,
+      "peak_dbfs": -14.856,
+      "gain_db": 10.019
+    },
+    {
+      "start": 60.89,
+      "end": 66.95,
+      "speaker": "SPEECH",
+      "id": 7,
+      "rms_dbfs": -39.219,
+      "peak_dbfs": -16.79,
+      "gain_db": 15.79
+    },
+    {
+      "start": 67.48,
+      "end": 71.85,
+      "speaker": "SPEECH",
+      "id": 8,
+      "rms_dbfs": -39.221,
+      "peak_dbfs": -20.66,
+      "gain_db": 16.221
+    },
+    {
+      "start": 74.72,
+      "end": 80.2,
+      "speaker": "SPEECH",
+      "id": 9,
+      "rms_dbfs": -40.149,
+      "peak_dbfs": -20.555,
+      "gain_db": 17.149
+    },
+    {
+      "start": 82.92,
+      "end": 84.99,
+      "speaker": "SPEECH",
+      "id": 10,
+      "rms_dbfs": -36.558,
+      "peak_dbfs": -16.872,
+      "gain_db": 13.558
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 50.27,
+      "end": 50.8
+    },
+    {
+      "start": 53.83,
+      "end": 57.52
+    },
+    {
+      "start": 59.86,
+      "end": 60.89
+    },
+    {
+      "start": 66.95,
+      "end": 67.48
+    },
+    {
+      "start": 71.85,
+      "end": 74.72
+    },
+    {
+      "start": 80.2,
+      "end": 82.92
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 7.154,
+  "peak_rss_mb": 1608.8,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 9.33,
+      "speaker": "SPEECH",
+      "text": "планы разрезы для а игорь то есть смотрите мы смотрим по предыдущим корпусам да сравниваем мощность"
+    },
+    {
+      "id": 1,
+      "start": 9.76,
+      "end": 19.66,
+      "speaker": "SPEECH",
+      "text": "если у нас мощность условно там корпуса там девятого совпадает там с восьмым или с каким то да мы говорим что у нас все тоже самое"
+    },
+    {
+      "id": 2,
+      "start": 20.08,
+      "end": 27.91,
+      "speaker": "SPEECH",
+      "text": "если ну да если нет трансформаторы могут отличаться по мощности по массово габаритным характеристикам они будут одинаковы"
+    },
+    {
+      "id": 3,
+      "start": 28.23,
+      "end": 30.18,
+      "speaker": "SPEECH",
+      "text": "вопрос там как как"
+    },
+    {
+      "id": 4,
+      "start": 30.53,
+      "end": 50.27,
+      "speaker": "SPEECH",
+      "text": "габариты вот если это так вы смотрите да действительно с такой же все по высоте по габаритам прошло расстояние там от стены там от входа и прочее вот ничего нового не делаем сейчас на данном этапе надо заложить это пятно разрисовать это помещение и максимально быстро"
+    },
+    {
+      "id": 5,
+      "start": 50.8,
+      "end": 53.83,
+      "speaker": "SPEECH",
+      "text": "у вас было понимание что не надо к ней че приколывать"
+    },
+    {
+      "id": 6,
+      "start": 57.52,
+      "end": 59.86,
+      "speaker": "SPEECH",
+      "text": "другого варианта нету потому что"
+    },
+    {
+      "id": 7,
+      "start": 60.89,
+      "end": 66.95,
+      "speaker": "SPEECH",
+      "text": "это не москва четких требований у них нету все идет"
+    },
+    {
+      "id": 8,
+      "start": 67.48,
+      "end": 71.85,
+      "speaker": "SPEECH",
+      "text": "и прочее направить получить согласование потом эти бумажками"
+    },
+    {
+      "id": 9,
+      "start": 74.72,
+      "end": 80.2,
+      "speaker": "SPEECH",
+      "text": "другого варианта у нас работать с ними к сожалению нет потому что они потом"
+    },
+    {
+      "id": 10,
+      "start": 82.92,
+      "end": 84.99,
+      "speaker": "SPEECH",
+      "text": "бумага все"
+    }
+  ],
+  "empty_segment_count": 0,
+  "num_threads": 2,
+  "note": "ASR on frozen VAD speech_regions; start/end copied; speaker=SPEECH."
+}

@@ -1,0 +1,23 @@
+{
+  "asr_id": "gigaam_fsmn",
+  "vad_id": "fsmn_vad",
+  "status": "success",
+  "failure_kind": "none",
+  "execution_mode": "local",
+  "provider": "gigaam",
+  "asr_model": "v3_rnnt",
+  "torch": true,
+  "torch_version": "2.13.0+cpu",
+  "gigaam_version": "0.2.0",
+  "num_threads": 2,
+  "asr_runtime_sec": 29.615,
+  "asr_runtime_sec_per_clip": {
+    "test_voice": 6.826,
+    "test_apartments": 7.949,
+    "test_transformers": 7.154,
+    "test_ninth": 7.682
+  },
+  "peak_rss_mb": 1616.7,
+  "empty_segment_count": 0,
+  "source_dir": "results/asr/1f2/fsmn_vad"
+}

@@ -9,7 +9,9 @@
     "reference_note": "Stage 1e pyannote 3.1 merged turns, not human gold",
     "speech_iou": "results/reports/1f2/speech_iou.json",
     "turn_compare": "results/reports/1f2/turn_compare.json",
-    "frozen_speech": "results/asr/1f2/silero (this run); not max-IoU vs pyannote"
+    "frozen_speech": "results/asr/1f2/silero (this run); not max-IoU vs pyannote",
+    "asr_notes": "results/reports/1f2/asr_notes.md",
+    "substage_1f2b": "GigaAM v3 on frozen ten_vad/fsmn_vad speech_regions; VAD/embedder tables unchanged"
   },
   "asr_results": [
     {
@@ -113,6 +115,40 @@
       "runtime_sec": 4.017,
       "artifact": "results/asr/1f2/titanet_small/",
       "notes": "torch: no. Peak RSS 368 MiB. Full NeMo/torch not pulled; sherpa SpeakerEmbeddingExtractor on the ~38 MB ONNX. embed_runtime_sec sum=3.273, cluster=0.735. Speakers 2/3/2/2. mean DER@0.25=0.2714, speech IoU=0.8175."
+    },
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "gigaam",
+      "input_artifact": "results/asr/1f2/ten_vad speech_regions + data/test_*.m4a",
+      "failure_kind": "none",
+      "sample_check": "ok",
+      "meaning_check": "ok",
+      "diarization": "gigaam_ten",
+      "speakers": null,
+      "attempt": 1,
+      "runtime_sec": 35.543,
+      "artifact": "results/asr/1f2/gigaam_ten/",
+      "notes": "torch: yes (2.13.0+cpu). Peak RSS 1612 MiB. empty_segment_count=9. Speaker=SPEECH. test_voice 0-10s matches Silero protocol/feedback; 75-83s has text (Silero hole). See asr_notes.md."
+    },
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "gigaam",
+      "input_artifact": "results/asr/1f2/fsmn_vad speech_regions + data/test_*.m4a",
+      "failure_kind": "none",
+      "sample_check": "ok",
+      "meaning_check": "ok",
+      "diarization": "gigaam_fsmn",
+      "speakers": null,
+      "attempt": 1,
+      "runtime_sec": 29.615,
+      "artifact": "results/asr/1f2/gigaam_fsmn/",
+      "notes": "torch: yes (2.13.0+cpu). Peak RSS 1617 MiB. empty_segment_count=0. Speaker=SPEECH. Model unloaded after TEN (separate process). test_voice 75-83s has text; 0-10s start matches Silero, mid-window fragments. See asr_notes.md."
     }
   ],
   "denoise_results": [
@@ -147,5 +183,5 @@
       "notes": "Этап 1f2: summary запрещён и не выполнялся."
     }
   ],
-  "recommendations": "Таблицы в results/reports/1f2/notes.md; победитель продукта не выбирался. Phase B заморожена на Silero этого прогона, не на max IoU vs pyannote. На test_voice 0–10 с речь кроют silero/ten_vad/fsmn_vad (pyannote почти молчит); на 75–83 с pyannote=0 с, ten_vad≈5,9 с, fsmn≈3,9 с, silero≈0,09 с. Все три эмбеддера на этих Silero-срезах дали счётчик спикеров 2/3/2/2 (эталон pyannote; без over-split sherpa 1f 5/6/6/8). mean DER@0.25: eres2net 0,264 / titanet_small 0,271 / wespeaker 0,276. Speech IoU эмбеддеров совпадает на трёх клипах; на ninth ±0,01 из-за assemble/merge. Torch в процессе нет. Wall VAD <2 с / 4 клипа; embed без VAD ≈3–7 с. Демка 2 vCPU/8 ГиБ: RSS эмбеддеров 285–368 МиБ."
+  "recommendations": "Таблицы в results/reports/1f2/notes.md; победитель продукта не выбирался. Phase B заморожена на Silero этого прогона, не на max IoU vs pyannote. На test_voice 0–10 с речь кроют silero/ten_vad/fsmn_vad (pyannote почти молчит); на 75–83 с pyannote=0 с, ten_vad≈5,9 с, fsmn≈3,9 с, silero≈0,09 с. Все три эмбеддера на этих Silero-срезах дали счётчик спикеров 2/3/2/2 (эталон pyannote; без over-split sherpa 1f 5/6/6/8). mean DER@0.25: eres2net 0,264 / titanet_small 0,271 / wespeaker 0,276. Speech IoU эмбеддеров совпадает на трёх клипах; на ninth ±0,01 из-за assemble/merge. Torch в процессе нет. Wall VAD <2 с / 4 клипа; embed без VAD ≈3–7 с. Демка 2 vCPU/8 ГиБ: RSS эмбеддеров 285–368 МиБ. 1f2b: текст GigaAM v3 на TEN/FSMN — results/reports/1f2/asr_notes.md (VAD-таблицы не переписывались); на хвосте test_voice 75–83 с у Silero нет слов, у TEN/FSMN есть."
 }

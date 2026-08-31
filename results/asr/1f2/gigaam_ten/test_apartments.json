@@ -1,0 +1,434 @@
+{
+  "audio": "data/test_apartments.m4a",
+  "language": "ru",
+  "duration_sec": 85.0,
+  "asr_id": "gigaam_ten",
+  "vad_id": "ten_vad",
+  "source_regions": "results/asr/1f2/ten_vad/test_apartments.json",
+  "model": "gigaam-v3-rnnt",
+  "provider": "gigaam",
+  "execution_mode": "local",
+  "torch": true,
+  "n_speakers": 1,
+  "n_turns": 18,
+  "speech_regions": [
+    {
+      "start": 0.0,
+      "end": 7.28
+    },
+    {
+      "start": 7.616,
+      "end": 8.96
+    },
+    {
+      "start": 9.616,
+      "end": 21.664
+    },
+    {
+      "start": 21.984,
+      "end": 23.216
+    },
+    {
+      "start": 24.96,
+      "end": 31.072
+    },
+    {
+      "start": 32.96,
+      "end": 37.008
+    },
+    {
+      "start": 39.184,
+      "end": 39.424
+    },
+    {
+      "start": 40.096,
+      "end": 46.16
+    },
+    {
+      "start": 47.232,
+      "end": 48.24
+    },
+    {
+      "start": 48.56,
+      "end": 51.088
+    },
+    {
+      "start": 51.392,
+      "end": 60.192
+    },
+    {
+      "start": 61.504,
+      "end": 63.488
+    },
+    {
+      "start": 63.792,
+      "end": 70.112
+    },
+    {
+      "start": 71.712,
+      "end": 76.048
+    },
+    {
+      "start": 76.752,
+      "end": 77.248
+    },
+    {
+      "start": 77.808,
+      "end": 78.592
+    },
+    {
+      "start": 78.944,
+      "end": 79.056
+    },
+    {
+      "start": 79.664,
+      "end": 85.0
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.0,
+      "end": 7.28,
+      "speaker": "SPEECH",
+      "id": 0,
+      "rms_dbfs": -32.024,
+      "peak_dbfs": -8.591,
+      "gain_db": 7.591
+    },
+    {
+      "start": 7.616,
+      "end": 8.96,
+      "speaker": "SPEECH",
+      "id": 1,
+      "rms_dbfs": -26.776,
+      "peak_dbfs": -10.106,
+      "gain_db": 0.0
+    },
+    {
+      "start": 9.616,
+      "end": 21.664,
+      "speaker": "SPEECH",
+      "id": 2,
+      "rms_dbfs": -30.067,
+      "peak_dbfs": -8.789,
+      "gain_db": 7.067
+    },
+    {
+      "start": 21.984,
+      "end": 23.216,
+      "speaker": "SPEECH",
+      "id": 3,
+      "rms_dbfs": -35.086,
+      "peak_dbfs": -17.381,
+      "gain_db": 12.086
+    },
+    {
+      "start": 24.96,
+      "end": 31.072,
+      "speaker": "SPEECH",
+      "id": 4,
+      "rms_dbfs": -36.456,
+      "peak_dbfs": -12.54,
+      "gain_db": 11.54
+    },
+    {
+      "start": 32.96,
+      "end": 37.008,
+      "speaker": "SPEECH",
+      "id": 5,
+      "rms_dbfs": -38.015,
+      "peak_dbfs": -17.583,
+      "gain_db": 15.015
+    },
+    {
+      "start": 39.184,
+      "end": 39.424,
+      "speaker": "SPEECH",
+      "id": 6,
+      "rms_dbfs": -49.955,
+      "peak_dbfs": -37.361,
+      "gain_db": 18.0
+    },
+    {
+      "start": 40.096,
+      "end": 46.16,
+      "speaker": "SPEECH",
+      "id": 7,
+      "rms_dbfs": -37.682,
+      "peak_dbfs": -14.675,
+      "gain_db": 13.675
+    },
+    {
+      "start": 47.232,
+      "end": 48.24,
+      "speaker": "SPEECH",
+      "id": 8,
+      "rms_dbfs": -30.43,
+      "peak_dbfs": -14.511,
+      "gain_db": 7.43
+    },
+    {
+      "start": 48.56,
+      "end": 51.088,
+      "speaker": "SPEECH",
+      "id": 9,
+      "rms_dbfs": -37.567,
+      "peak_dbfs": -19.378,
+      "gain_db": 14.567
+    },
+    {
+      "start": 51.392,
+      "end": 60.192,
+      "speaker": "SPEECH",
+      "id": 10,
+      "rms_dbfs": -24.743,
+      "peak_dbfs": -6.466,
+      "gain_db": 0.0
+    },
+    {
+      "start": 61.504,
+      "end": 63.488,
+      "speaker": "SPEECH",
+      "id": 11,
+      "rms_dbfs": -36.236,
+      "peak_dbfs": -15.714,
+      "gain_db": 13.236
+    },
+    {
+      "start": 63.792,
+      "end": 70.112,
+      "speaker": "SPEECH",
+      "id": 12,
+      "rms_dbfs": -23.56,
+      "peak_dbfs": -5.695,
+      "gain_db": 0.0
+    },
+    {
+      "start": 71.712,
+      "end": 76.048,
+      "speaker": "SPEECH",
+      "id": 13,
+      "rms_dbfs": -39.773,
+      "peak_dbfs": -18.168,
+      "gain_db": 16.773
+    },
+    {
+      "start": 76.752,
+      "end": 77.248,
+      "speaker": "SPEECH",
+      "id": 14,
+      "rms_dbfs": -40.456,
+      "peak_dbfs": -26.007,
+      "gain_db": 17.456
+    },
+    {
+      "start": 77.808,
+      "end": 78.592,
+      "speaker": "SPEECH",
+      "id": 15,
+      "rms_dbfs": -45.698,
+      "peak_dbfs": -28.233,
+      "gain_db": 18.0
+    },
+    {
+      "start": 78.944,
+      "end": 79.056,
+      "speaker": "SPEECH",
+      "id": 16,
+      "rms_dbfs": -44.487,
+      "peak_dbfs": -34.377,
+      "gain_db": 18.0
+    },
+    {
+      "start": 79.664,
+      "end": 85.0,
+      "speaker": "SPEECH",
+      "id": 17,
+      "rms_dbfs": -34.321,
+      "peak_dbfs": -14.684,
+      "gain_db": 11.321
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 8.96,
+      "end": 9.616
+    },
+    {
+      "start": 23.216,
+      "end": 24.96
+    },
+    {
+      "start": 31.072,
+      "end": 32.96
+    },
+    {
+      "start": 37.008,
+      "end": 39.184
+    },
+    {
+      "start": 39.424,
+      "end": 40.096
+    },
+    {
+      "start": 46.16,
+      "end": 47.232
+    },
+    {
+      "start": 60.192,
+      "end": 61.504
+    },
+    {
+      "start": 70.112,
+      "end": 71.712
+    },
+    {
+      "start": 76.048,
+      "end": 76.752
+    },
+    {
+      "start": 77.248,
+      "end": 77.808
+    },
+    {
+      "start": 79.056,
+      "end": 79.664
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 8.71,
+  "peak_rss_mb": 1588.9,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 7.28,
+      "speaker": "SPEECH",
+      "text": "поэтому вы посчитайте угу скажите будем обсуждать количество квартир"
+    },
+    {
+      "id": 1,
+      "start": 7.616,
+      "end": 8.96,
+      "speaker": "SPEECH",
+      "text": "на сегодня уже"
+    },
+    {
+      "id": 2,
+      "start": 9.616,
+      "end": 21.664,
+      "speaker": "SPEECH",
+      "text": "будет ну как бы точно известно или оно еще может поменяться только наш конечно может поменяться еще не согласовал ну вот все значит мы тогда с точки зрения инженерии ждем согласования"
+    },
+    {
+      "id": 3,
+      "start": 21.984,
+      "end": 23.216,
+      "speaker": "SPEECH",
+      "text": "квартиры и тогда уже"
+    },
+    {
+      "id": 4,
+      "start": 24.96,
+      "end": 31.072,
+      "speaker": "SPEECH",
+      "text": "понятное дело но опять же говорю вот есть у вас там триста мегавайт или сколько я сейчас не помню"
+    },
+    {
+      "id": 5,
+      "start": 32.96,
+      "end": 37.008,
+      "speaker": "SPEECH",
+      "text": "если сколько вот больше не меньше можете сделать больше"
+    },
+    {
+      "id": 6,
+      "start": 39.184,
+      "end": 39.424,
+      "speaker": "SPEECH",
+      "text": ""
+    },
+    {
+      "id": 7,
+      "start": 40.096,
+      "end": 46.16,
+      "speaker": "SPEECH",
+      "text": "все предлагаю этот закончить мы каждый раз на каждом корпусе одно и тоже обсуждаем поэтому ничего нового здесь нет"
+    },
+    {
+      "id": 8,
+      "start": 47.232,
+      "end": 48.24,
+      "speaker": "SPEECH",
+      "text": "далее"
+    },
+    {
+      "id": 9,
+      "start": 48.56,
+      "end": 51.088,
+      "speaker": "SPEECH",
+      "text": "по всем сетям"
+    },
+    {
+      "id": 10,
+      "start": 51.392,
+      "end": 60.192,
+      "speaker": "SPEECH",
+      "text": "я так понимаю вопрос у вас закрыт хотел уточнить по сетям связи вот ты сказал что там все понятно а вот по моему по сетям связи я не видел никакую схему"
+    },
+    {
+      "id": 11,
+      "start": 61.504,
+      "end": 63.488,
+      "speaker": "SPEECH",
+      "text": "а вы как делает это уже столько"
+    },
+    {
+      "id": 12,
+      "start": 63.792,
+      "end": 70.112,
+      "speaker": "SPEECH",
+      "text": "что то поменялось ну мы просто мы просто помещение предусматривали для провайдера"
+    },
+    {
+      "id": 13,
+      "start": 71.712,
+      "end": 76.048,
+      "speaker": "SPEECH",
+      "text": "никаких помещений насколько я помню мы особо не предусматривали там есть маленькое такое"
+    },
+    {
+      "id": 14,
+      "start": 76.752,
+      "end": 77.248,
+      "speaker": "SPEECH",
+      "text": "я"
+    },
+    {
+      "id": 15,
+      "start": 77.808,
+      "end": 78.592,
+      "speaker": "SPEECH",
+      "text": "транслятом"
+    },
+    {
+      "id": 16,
+      "start": 78.944,
+      "end": 79.056,
+      "speaker": "SPEECH",
+      "text": ""
+    },
+    {
+      "id": 17,
+      "start": 79.664,
+      "end": 85.0,
+      "speaker": "SPEECH",
+      "text": "ну самодиспетчер так сказать ну части"
+    }
+  ],
+  "empty_segment_count": 2,
+  "num_threads": 2,
+  "note": "ASR on frozen VAD speech_regions; start/end copied; speaker=SPEECH."
+}

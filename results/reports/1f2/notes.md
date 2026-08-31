@@ -100,6 +100,10 @@ Confusion на `test_voice` = 0 у всех трёх (2 спикера). DER н�
 - `results/reports/1f2/turn_compare.json`
 - WAV 16 kHz: `results/asr/1f2/_extracts/` (gitignored)
 
-## Вне скоупа
+## Вне скоупа (1f2, маски)
 
-Этап 3 LLM, словарь, шумодавы, новый чанкинг, полная запись, GigaAM, WER, объявление победителя стека.
+Этап 3 LLM, словарь, шумодавы, новый чанкинг, полная запись, WER, объявление победителя стека. GigaAM на масках TEN/FSMN — отдельный подэтап 1f2b, таблицы выше не пересчитывались.
+
+## Указатель 1f2b — текст GigaAM на TEN / FSMN
+
+Таблицы VAD и эмбеддеров **не** менялись. Распознавание замороженных `speech_regions`: [`asr_notes.md`](asr_notes.md). JSON: `results/asr/1f2/gigaam_ten/`, `results/asr/1f2/gigaam_fsmn/`. Silero-текст не гонялся повторно — `results/asr/1f/vad_wespeaker/`. На `test_voice` 75–83 с у Silero текста нет; TEN/FSMN дали фразы про техусловия / проектирование.

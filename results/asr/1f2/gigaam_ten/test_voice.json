@@ -1,0 +1,442 @@
+{
+  "audio": "data/test_voice.m4a",
+  "language": "ru",
+  "duration_sec": 83.0,
+  "asr_id": "gigaam_ten",
+  "vad_id": "ten_vad",
+  "source_regions": "results/asr/1f2/ten_vad/test_voice.json",
+  "model": "gigaam-v3-rnnt",
+  "provider": "gigaam",
+  "execution_mode": "local",
+  "torch": true,
+  "n_speakers": 1,
+  "n_turns": 19,
+  "speech_regions": [
+    {
+      "start": 0.064,
+      "end": 0.08
+    },
+    {
+      "start": 0.896,
+      "end": 3.632
+    },
+    {
+      "start": 4.544,
+      "end": 9.52
+    },
+    {
+      "start": 9.936,
+      "end": 13.072
+    },
+    {
+      "start": 13.44,
+      "end": 13.92
+    },
+    {
+      "start": 14.4,
+      "end": 16.544
+    },
+    {
+      "start": 17.024,
+      "end": 21.024
+    },
+    {
+      "start": 21.824,
+      "end": 22.432
+    },
+    {
+      "start": 22.864,
+      "end": 35.36
+    },
+    {
+      "start": 35.792,
+      "end": 50.576
+    },
+    {
+      "start": 51.248,
+      "end": 53.024
+    },
+    {
+      "start": 53.6,
+      "end": 54.96
+    },
+    {
+      "start": 55.472,
+      "end": 61.856
+    },
+    {
+      "start": 62.352,
+      "end": 65.424
+    },
+    {
+      "start": 66.0,
+      "end": 73.888
+    },
+    {
+      "start": 74.336,
+      "end": 75.488
+    },
+    {
+      "start": 76.768,
+      "end": 77.168
+    },
+    {
+      "start": 77.488,
+      "end": 78.032
+    },
+    {
+      "start": 78.528,
+      "end": 83.0
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.064,
+      "end": 0.08,
+      "speaker": "SPEECH",
+      "id": 0,
+      "rms_dbfs": -54.962,
+      "peak_dbfs": -43.823,
+      "gain_db": 18.0
+    },
+    {
+      "start": 0.896,
+      "end": 3.632,
+      "speaker": "SPEECH",
+      "id": 1,
+      "rms_dbfs": -38.638,
+      "peak_dbfs": -14.499,
+      "gain_db": 13.499
+    },
+    {
+      "start": 4.544,
+      "end": 9.52,
+      "speaker": "SPEECH",
+      "id": 2,
+      "rms_dbfs": -37.767,
+      "peak_dbfs": -19.447,
+      "gain_db": 14.767
+    },
+    {
+      "start": 9.936,
+      "end": 13.072,
+      "speaker": "SPEECH",
+      "id": 3,
+      "rms_dbfs": -36.931,
+      "peak_dbfs": -8.616,
+      "gain_db": 7.616
+    },
+    {
+      "start": 13.44,
+      "end": 13.92,
+      "speaker": "SPEECH",
+      "id": 4,
+      "rms_dbfs": -44.685,
+      "peak_dbfs": -29.163,
+      "gain_db": 18.0
+    },
+    {
+      "start": 14.4,
+      "end": 16.544,
+      "speaker": "SPEECH",
+      "id": 5,
+      "rms_dbfs": -23.565,
+      "peak_dbfs": -7.792,
+      "gain_db": 0.0
+    },
+    {
+      "start": 17.024,
+      "end": 21.024,
+      "speaker": "SPEECH",
+      "id": 6,
+      "rms_dbfs": -24.78,
+      "peak_dbfs": -2.646,
+      "gain_db": 0.0
+    },
+    {
+      "start": 21.824,
+      "end": 22.432,
+      "speaker": "SPEECH",
+      "id": 7,
+      "rms_dbfs": -35.36,
+      "peak_dbfs": -21.35,
+      "gain_db": 12.36
+    },
+    {
+      "start": 22.864,
+      "end": 35.36,
+      "speaker": "SPEECH",
+      "id": 8,
+      "rms_dbfs": -39.512,
+      "peak_dbfs": -17.745,
+      "gain_db": 16.512
+    },
+    {
+      "start": 35.792,
+      "end": 50.576,
+      "speaker": "SPEECH",
+      "id": 9,
+      "rms_dbfs": -39.428,
+      "peak_dbfs": -20.203,
+      "gain_db": 16.428
+    },
+    {
+      "start": 51.248,
+      "end": 53.024,
+      "speaker": "SPEECH",
+      "id": 10,
+      "rms_dbfs": -41.812,
+      "peak_dbfs": -24.319,
+      "gain_db": 18.0
+    },
+    {
+      "start": 53.6,
+      "end": 54.96,
+      "speaker": "SPEECH",
+      "id": 11,
+      "rms_dbfs": -39.796,
+      "peak_dbfs": -26.033,
+      "gain_db": 16.796
+    },
+    {
+      "start": 55.472,
+      "end": 61.856,
+      "speaker": "SPEECH",
+      "id": 12,
+      "rms_dbfs": -38.719,
+      "peak_dbfs": -18.87,
+      "gain_db": 15.719
+    },
+    {
+      "start": 62.352,
+      "end": 65.424,
+      "speaker": "SPEECH",
+      "id": 13,
+      "rms_dbfs": -42.296,
+      "peak_dbfs": -25.886,
+      "gain_db": 18.0
+    },
+    {
+      "start": 66.0,
+      "end": 73.888,
+      "speaker": "SPEECH",
+      "id": 14,
+      "rms_dbfs": -25.661,
+      "peak_dbfs": -8.044,
+      "gain_db": 0.0
+    },
+    {
+      "start": 74.336,
+      "end": 75.488,
+      "speaker": "SPEECH",
+      "id": 15,
+      "rms_dbfs": -34.201,
+      "peak_dbfs": -19.361,
+      "gain_db": 11.201
+    },
+    {
+      "start": 76.768,
+      "end": 77.168,
+      "speaker": "SPEECH",
+      "id": 16,
+      "rms_dbfs": -39.689,
+      "peak_dbfs": -26.424,
+      "gain_db": 16.689
+    },
+    {
+      "start": 77.488,
+      "end": 78.032,
+      "speaker": "SPEECH",
+      "id": 17,
+      "rms_dbfs": -38.348,
+      "peak_dbfs": -22.043,
+      "gain_db": 15.348
+    },
+    {
+      "start": 78.528,
+      "end": 83.0,
+      "speaker": "SPEECH",
+      "id": 18,
+      "rms_dbfs": -40.949,
+      "peak_dbfs": -22.755,
+      "gain_db": 17.949
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.08,
+      "end": 0.896
+    },
+    {
+      "start": 3.632,
+      "end": 4.544
+    },
+    {
+      "start": 21.024,
+      "end": 21.824
+    },
+    {
+      "start": 50.576,
+      "end": 51.248
+    },
+    {
+      "start": 53.024,
+      "end": 53.6
+    },
+    {
+      "start": 54.96,
+      "end": 55.472
+    },
+    {
+      "start": 65.424,
+      "end": 66.0
+    },
+    {
+      "start": 75.488,
+      "end": 76.768
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 9.003,
+  "peak_rss_mb": 1584.7,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.064,
+      "end": 0.08,
+      "speaker": "SPEECH",
+      "text": ""
+    },
+    {
+      "id": 1,
+      "start": 0.896,
+      "end": 3.632,
+      "speaker": "SPEECH",
+      "text": "давайте по протоколу есть"
+    },
+    {
+      "id": 2,
+      "start": 4.544,
+      "end": 9.52,
+      "speaker": "SPEECH",
+      "text": "данным вы обратную связь направили мы дали свою обратную связь"
+    },
+    {
+      "id": 3,
+      "start": 9.936,
+      "end": 13.072,
+      "speaker": "SPEECH",
+      "text": "все понятно и нужно"
+    },
+    {
+      "id": 4,
+      "start": 13.44,
+      "end": 13.92,
+      "speaker": "SPEECH",
+      "text": "снять"
+    },
+    {
+      "id": 5,
+      "start": 14.4,
+      "end": 16.544,
+      "speaker": "SPEECH",
+      "text": "ну направим"
+    },
+    {
+      "id": 6,
+      "start": 17.024,
+      "end": 21.024,
+      "speaker": "SPEECH",
+      "text": "пару вопросов есть попросим уточнить направим да"
+    },
+    {
+      "id": 7,
+      "start": 21.824,
+      "end": 22.432,
+      "speaker": "SPEECH",
+      "text": "хорошо"
+    },
+    {
+      "id": 8,
+      "start": 22.864,
+      "end": 35.36,
+      "speaker": "SPEECH",
+      "text": "а дополнительно вы задавали вопрос по канализации по да надо через паркинг потому что это определено точками подключения"
+    },
+    {
+      "id": 9,
+      "start": 35.792,
+      "end": 50.576,
+      "speaker": "SPEECH",
+      "text": "ориентируется на проект как я и написал что сейчас этот проект там ну в ближайшее время заходит в экспертизу то есть плюс минус останется на том же месте мы в дальнейшем будем ссылаться на их проект"
+    },
+    {
+      "id": 10,
+      "start": 51.248,
+      "end": 53.024,
+      "speaker": "SPEECH",
+      "text": "то есть"
+    },
+    {
+      "id": 11,
+      "start": 53.6,
+      "end": 54.96,
+      "speaker": "SPEECH",
+      "text": ""
+    },
+    {
+      "id": 12,
+      "start": 55.472,
+      "end": 61.856,
+      "speaker": "SPEECH",
+      "text": "как появится положительное заключение я думаю к этому времени как раз просто на заключение экспертизы"
+    },
+    {
+      "id": 13,
+      "start": 62.352,
+      "end": 65.424,
+      "speaker": "SPEECH",
+      "text": "и соответственно таким образом вопрос закроет"
+    },
+    {
+      "id": 14,
+      "start": 66.0,
+      "end": 73.888,
+      "speaker": "SPEECH",
+      "text": "а скажи пожалуйста извини что в технических условиях на ливневку там будет прописано что можно подключаться к сети удс да"
+    },
+    {
+      "id": 15,
+      "start": 74.336,
+      "end": 75.488,
+      "speaker": "SPEECH",
+      "text": "и будем получать"
+    },
+    {
+      "id": 16,
+      "start": 76.768,
+      "end": 77.168,
+      "speaker": "SPEECH",
+      "text": "такой"
+    },
+    {
+      "id": 17,
+      "start": 77.488,
+      "end": 78.032,
+      "speaker": "SPEECH",
+      "text": "поколение"
+    },
+    {
+      "id": 18,
+      "start": 78.528,
+      "end": 83.0,
+      "speaker": "SPEECH",
+      "text": "что эти технические условия может пользоваться для проектирования такого то объекта"
+    }
+  ],
+  "empty_segment_count": 2,
+  "num_threads": 2,
+  "note": "ASR on frozen VAD speech_regions; start/end copied; speaker=SPEECH."
+}

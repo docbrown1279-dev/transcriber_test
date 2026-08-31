@@ -1,0 +1,23 @@
+{
+  "asr_id": "gigaam_ten",
+  "vad_id": "ten_vad",
+  "status": "success",
+  "failure_kind": "none",
+  "execution_mode": "local",
+  "provider": "gigaam",
+  "asr_model": "v3_rnnt",
+  "torch": true,
+  "torch_version": "2.13.0+cpu",
+  "gigaam_version": "0.2.0",
+  "num_threads": 2,
+  "asr_runtime_sec": 35.543,
+  "asr_runtime_sec_per_clip": {
+    "test_voice": 9.003,
+    "test_apartments": 8.71,
+    "test_transformers": 9.395,
+    "test_ninth": 8.431
+  },
+  "peak_rss_mb": 1611.6,
+  "empty_segment_count": 9,
+  "source_dir": "results/asr/1f2/ten_vad"
+}

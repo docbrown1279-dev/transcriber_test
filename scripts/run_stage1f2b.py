@@ -194,7 +194,12 @@ def run_job(job_id: str) -> None:
         }
         write_json(dest_path, payload)
 
-    gigaam_version = getattr(gigaam, "__version__", "unknown")
+    try:
+        from importlib.metadata import version as pkg_version
+
+        gigaam_version = pkg_version("gigaam")
+    except Exception:
+        gigaam_version = getattr(gigaam, "__version__", "unknown")
     torch_version = getattr(torch, "__version__", "unknown")
     write_json(
         dest_dir / "_run.json",

@@ -1,0 +1,314 @@
+{
+  "audio": "data/test_voice.m4a",
+  "language": "ru",
+  "duration_sec": 83.0,
+  "asr_id": "gigaam_fsmn",
+  "vad_id": "fsmn_vad",
+  "source_regions": "results/asr/1f2/fsmn_vad/test_voice.json",
+  "model": "gigaam-v3-rnnt",
+  "provider": "gigaam",
+  "execution_mode": "local",
+  "torch": true,
+  "n_speakers": 1,
+  "n_turns": 12,
+  "speech_regions": [
+    {
+      "start": 0.58,
+      "end": 2.29
+    },
+    {
+      "start": 4.71,
+      "end": 6.1
+    },
+    {
+      "start": 6.6,
+      "end": 9.14
+    },
+    {
+      "start": 11.46,
+      "end": 12.38
+    },
+    {
+      "start": 14.11,
+      "end": 21.06
+    },
+    {
+      "start": 21.59,
+      "end": 25.08
+    },
+    {
+      "start": 25.79,
+      "end": 32.76
+    },
+    {
+      "start": 34.41,
+      "end": 52.39
+    },
+    {
+      "start": 53.41,
+      "end": 62.06
+    },
+    {
+      "start": 62.49,
+      "end": 75.27
+    },
+    {
+      "start": 78.51,
+      "end": 79.67
+    },
+    {
+      "start": 80.54,
+      "end": 82.99
+    }
+  ],
+  "merged_turns": [
+    {
+      "start": 0.58,
+      "end": 2.29,
+      "speaker": "SPEECH",
+      "id": 0,
+      "rms_dbfs": -38.05,
+      "peak_dbfs": -22.026,
+      "gain_db": 15.05
+    },
+    {
+      "start": 4.71,
+      "end": 6.1,
+      "speaker": "SPEECH",
+      "id": 1,
+      "rms_dbfs": -36.505,
+      "peak_dbfs": -21.082,
+      "gain_db": 13.505
+    },
+    {
+      "start": 6.6,
+      "end": 9.14,
+      "speaker": "SPEECH",
+      "id": 2,
+      "rms_dbfs": -37.986,
+      "peak_dbfs": -19.353,
+      "gain_db": 14.986
+    },
+    {
+      "start": 11.46,
+      "end": 12.38,
+      "speaker": "SPEECH",
+      "id": 3,
+      "rms_dbfs": -35.5,
+      "peak_dbfs": -21.016,
+      "gain_db": 12.5
+    },
+    {
+      "start": 14.11,
+      "end": 21.06,
+      "speaker": "SPEECH",
+      "id": 4,
+      "rms_dbfs": -24.845,
+      "peak_dbfs": -2.582,
+      "gain_db": 0.0
+    },
+    {
+      "start": 21.59,
+      "end": 25.08,
+      "speaker": "SPEECH",
+      "id": 5,
+      "rms_dbfs": -36.374,
+      "peak_dbfs": -17.716,
+      "gain_db": 13.374
+    },
+    {
+      "start": 25.79,
+      "end": 32.76,
+      "speaker": "SPEECH",
+      "id": 6,
+      "rms_dbfs": -41.327,
+      "peak_dbfs": -20.706,
+      "gain_db": 18.0
+    },
+    {
+      "start": 34.41,
+      "end": 52.39,
+      "speaker": "SPEECH",
+      "id": 7,
+      "rms_dbfs": -39.881,
+      "peak_dbfs": -20.189,
+      "gain_db": 16.881
+    },
+    {
+      "start": 53.41,
+      "end": 62.06,
+      "speaker": "SPEECH",
+      "id": 8,
+      "rms_dbfs": -39.362,
+      "peak_dbfs": -18.479,
+      "gain_db": 16.362
+    },
+    {
+      "start": 62.49,
+      "end": 75.27,
+      "speaker": "SPEECH",
+      "id": 9,
+      "rms_dbfs": -27.638,
+      "peak_dbfs": -8.001,
+      "gain_db": 0.0
+    },
+    {
+      "start": 78.51,
+      "end": 79.67,
+      "speaker": "SPEECH",
+      "id": 10,
+      "rms_dbfs": -38.716,
+      "peak_dbfs": -22.737,
+      "gain_db": 15.716
+    },
+    {
+      "start": 80.54,
+      "end": 82.99,
+      "speaker": "SPEECH",
+      "id": 11,
+      "rms_dbfs": -41.512,
+      "peak_dbfs": -25.854,
+      "gain_db": 18.0
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 0.58
+    },
+    {
+      "start": 2.29,
+      "end": 4.71
+    },
+    {
+      "start": 6.1,
+      "end": 6.6
+    },
+    {
+      "start": 9.14,
+      "end": 11.46
+    },
+    {
+      "start": 12.38,
+      "end": 14.11
+    },
+    {
+      "start": 21.06,
+      "end": 21.59
+    },
+    {
+      "start": 25.08,
+      "end": 25.79
+    },
+    {
+      "start": 32.76,
+      "end": 34.41
+    },
+    {
+      "start": 52.39,
+      "end": 53.41
+    },
+    {
+      "start": 75.27,
+      "end": 78.51
+    },
+    {
+      "start": 79.67,
+      "end": 80.54
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 6.826,
+  "peak_rss_mb": 1596.2,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.58,
+      "end": 2.29,
+      "speaker": "SPEECH",
+      "text": "давайте по протоколу"
+    },
+    {
+      "id": 1,
+      "start": 4.71,
+      "end": 6.1,
+      "speaker": "SPEECH",
+      "text": "сводного газом или обратно"
+    },
+    {
+      "id": 2,
+      "start": 6.6,
+      "end": 9.14,
+      "speaker": "SPEECH",
+      "text": "обратность"
+    },
+    {
+      "id": 3,
+      "start": 11.46,
+      "end": 12.38,
+      "speaker": "SPEECH",
+      "text": "все понятно"
+    },
+    {
+      "id": 4,
+      "start": 14.11,
+      "end": 21.06,
+      "speaker": "SPEECH",
+      "text": "ну направим пару вопросов есть попросим уточнить направим да"
+    },
+    {
+      "id": 5,
+      "start": 21.59,
+      "end": 25.08,
+      "speaker": "SPEECH",
+      "text": "хорошо дополнительно вы задавали вопрос"
+    },
+    {
+      "id": 6,
+      "start": 25.79,
+      "end": 32.76,
+      "speaker": "SPEECH",
+      "text": "надо через паркинг потому что это определено точкой подключения"
+    },
+    {
+      "id": 7,
+      "start": 34.41,
+      "end": 52.39,
+      "speaker": "SPEECH",
+      "text": "ориентируется на проект как я и написал что сейчас этот проект там ну в ближайшее время заходит в экспертизу то есть плюс минус останется на том же месте мы в дальнейшем будем ссылаться на их проект то есть"
+    },
+    {
+      "id": 8,
+      "start": 53.41,
+      "end": 62.06,
+      "speaker": "SPEECH",
+      "text": "у вас уже есть как появится положительное исключение я думаю к этому времени как раз просто нашлемся на экспертизы"
+    },
+    {
+      "id": 9,
+      "start": 62.49,
+      "end": 75.27,
+      "speaker": "SPEECH",
+      "text": "и соответственно таким образом вопрос закроем а скажи пожалуйста извини что а в технических условиях на ливневку там будет прописано что можно подключаться к сети удс да нет будем"
+    },
+    {
+      "id": 10,
+      "start": 78.51,
+      "end": 79.67,
+      "speaker": "SPEECH",
+      "text": "того что"
+    },
+    {
+      "id": 11,
+      "start": 80.54,
+      "end": 82.99,
+      "speaker": "SPEECH",
+      "text": "условия может использоваться для проектирования такого то"
+    }
+  ],
+  "empty_segment_count": 0,
+  "num_threads": 2,
+  "note": "ASR on frozen VAD speech_regions; start/end copied; speaker=SPEECH."
+}
