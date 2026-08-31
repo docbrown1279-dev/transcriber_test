@@ -20,7 +20,7 @@
 | **1f2** | закрыт | 3 VAD + 3 эмбеддера; Silero + TEN fallback, WeSpeaker |
 | **1f2b** | закрыт | GigaAM v3 на масках TEN и FSMN (хвост `test_voice`) |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
-| **3b** | **сейчас** | JSON→md, инсайты с меткой src, сборка отчёта (сначала API) |
+| **3b** | прогон есть | JSON→md, инсайты D + `report.md` (Gemini); API self-check `not_usable` — [`3b/notes.md`](../results/reports/3b/notes.md) |
 | словарь | потом | после ASR предлагать замены терминов, не молча править |
 
 Промпт 1f (закрыт): [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  

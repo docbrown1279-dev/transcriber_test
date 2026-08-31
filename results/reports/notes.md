@@ -14,7 +14,7 @@
 | [`3/`](3/notes.md) | этап 3 **закрыт**: P1/P2 на D, P1 на C; победитель промпта P1 (по title) |
 | [`1f/`](1f/notes.md) | этап 1f **закрыт**: vad_wespeaker vs sherpa vs pyannote 3.1 |
 | [`1f2/`](1f2/conclusions.md) | 1f2 **закрыт**: Silero + TEN fallback, WeSpeaker; таблицы [`notes.md`](1f2/notes.md), ASR [`asr_notes.md`](1f2/asr_notes.md) |
-| 3b | этап 3b: чанки `data/3b_data/chunks_d/`, промпт [`docs/prompts/stage3b.md`](../../docs/prompts/stage3b.md) |
+| [`3b/`](3b/notes.md) | этап 3b: инсайты D (Gemini 2.5 Flash), `report.md`; API self-check `not_usable`; локальный 8B не запускался |
 
 Канонические JSON: `results/reports/1a/` … `1e/`, `2/`. Прогон 2b: ветка `cursor/stage2b-four-hypotheses-4305`.
 План: [`docs/research_plan.md`](../../docs/research_plan.md), итог 2b: [`2b/conclusions.md`](2b/conclusions.md), итог 3: [`3/notes.md`](3/notes.md), итог 1f: [`1f/notes.md`](1f/notes.md), итог 1f2: [`1f2/conclusions.md`](1f2/conclusions.md).

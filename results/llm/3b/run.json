@@ -1,0 +1,366 @@
+{
+  "execution_mode": "api",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "gemini_failures": 0,
+  "nvidia_failures": 0,
+  "nvidia_called": false,
+  "calls": [
+    {
+      "purpose": "extract:D00",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.84,
+      "usage": {
+        "promptTokenCount": 955,
+        "candidatesTokenCount": 975,
+        "totalTokenCount": 1930,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 955
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D01",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 2.975,
+      "usage": {
+        "promptTokenCount": 941,
+        "candidatesTokenCount": 678,
+        "totalTokenCount": 1619,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 941
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D02",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 2.441,
+      "usage": {
+        "promptTokenCount": 1112,
+        "candidatesTokenCount": 555,
+        "totalTokenCount": 1667,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1112
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D03",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.421,
+      "usage": {
+        "promptTokenCount": 1103,
+        "candidatesTokenCount": 781,
+        "totalTokenCount": 1884,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1103
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D04",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 4.052,
+      "usage": {
+        "promptTokenCount": 1378,
+        "candidatesTokenCount": 968,
+        "totalTokenCount": 2346,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1378
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D05",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 4.205,
+      "usage": {
+        "promptTokenCount": 1340,
+        "candidatesTokenCount": 1045,
+        "totalTokenCount": 2385,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1340
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D06",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.974,
+      "usage": {
+        "promptTokenCount": 1174,
+        "candidatesTokenCount": 938,
+        "totalTokenCount": 2112,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1174
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D07",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.917,
+      "usage": {
+        "promptTokenCount": 1183,
+        "candidatesTokenCount": 850,
+        "totalTokenCount": 2033,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1183
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D08",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 2.798,
+      "usage": {
+        "promptTokenCount": 1351,
+        "candidatesTokenCount": 630,
+        "totalTokenCount": 1981,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1351
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D09",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 4.67,
+      "usage": {
+        "promptTokenCount": 1172,
+        "candidatesTokenCount": 937,
+        "totalTokenCount": 2109,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1172
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D10",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.431,
+      "usage": {
+        "promptTokenCount": 1265,
+        "candidatesTokenCount": 860,
+        "totalTokenCount": 2125,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1265
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract-retry-title:D10",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.842,
+      "usage": {
+        "promptTokenCount": 1286,
+        "candidatesTokenCount": 875,
+        "totalTokenCount": 2161,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1286
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D11",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 4.839,
+      "usage": {
+        "promptTokenCount": 1265,
+        "candidatesTokenCount": 1215,
+        "totalTokenCount": 2480,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1265
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "assemble",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 12.414,
+      "usage": {
+        "promptTokenCount": 8624,
+        "candidatesTokenCount": 3337,
+        "totalTokenCount": 11961,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 8624
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "self_check",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 12.415,
+      "usage": {
+        "promptTokenCount": 12826,
+        "candidatesTokenCount": 3072,
+        "totalTokenCount": 15898,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12826
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "purpose": "extract:D10",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.682,
+      "note": "pass2 re-extract after title-retry emptied D10"
+    },
+    {
+      "purpose": "extract-retry-title:D10",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 3.951,
+      "note": "pass2; model used - question: not - kind:"
+    },
+    {
+      "purpose": "assemble",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 12.671,
+      "note": "pass2"
+    },
+    {
+      "purpose": "self_check",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 1.305,
+      "note": "pass2; not_usable because D10 still empty after parse miss"
+    },
+    {
+      "purpose": "self_check",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 7.819,
+      "usage": {
+        "promptTokenCount": 13087,
+        "candidatesTokenCount": 2048,
+        "totalTokenCount": 15135,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13087
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "n_calls": 20,
+  "runtime_sec": 102.662,
+  "error_log": null,
+  "input_chunks": [
+    "data/3b_data/chunks_d/D00.md",
+    "data/3b_data/chunks_d/D01.md",
+    "data/3b_data/chunks_d/D02.md",
+    "data/3b_data/chunks_d/D03.md",
+    "data/3b_data/chunks_d/D04.md",
+    "data/3b_data/chunks_d/D05.md",
+    "data/3b_data/chunks_d/D06.md",
+    "data/3b_data/chunks_d/D07.md",
+    "data/3b_data/chunks_d/D08.md",
+    "data/3b_data/chunks_d/D09.md",
+    "data/3b_data/chunks_d/D10.md",
+    "data/3b_data/chunks_d/D11.md"
+  ],
+  "insights": [
+    "results/llm/3b/insights_d/D00.md",
+    "results/llm/3b/insights_d/D01.md",
+    "results/llm/3b/insights_d/D02.md",
+    "results/llm/3b/insights_d/D03.md",
+    "results/llm/3b/insights_d/D04.md",
+    "results/llm/3b/insights_d/D05.md",
+    "results/llm/3b/insights_d/D06.md",
+    "results/llm/3b/insights_d/D07.md",
+    "results/llm/3b/insights_d/D08.md",
+    "results/llm/3b/insights_d/D09.md",
+    "results/llm/3b/insights_d/D10.md",
+    "results/llm/3b/insights_d/D11.md"
+  ],
+  "report": "results/llm/3b/report.md",
+  "self_check": "results/llm/3b/self_check.md",
+  "self_check_pass1": "results/llm/3b/self_check_pass1.md",
+  "transcript_for_check": "data/3b_data/full_asr.md",
+  "hybrid_asr_gold": false,
+  "verdict_api": "not_usable",
+  "structure_ok": true,
+  "local_smoke": "skipped",
+  "created_at": "2026-08-31T23:09:28Z"
+}
