@@ -4,6 +4,7 @@
 .venv/
 .venv-onnx/
 .venv-gigaam/
+.venv-1f2/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -29,6 +30,9 @@ results/asr/*
 !results/asr/1f/
 !results/asr/1f/**
 results/asr/1f/_extracts/
+!results/asr/1f2/
+!results/asr/1f2/**
+results/asr/1f2/_extracts/
 results/denoise/*
 !results/denoise/.gitkeep
 results/chunking/*
