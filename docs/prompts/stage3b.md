@@ -73,7 +73,9 @@ Do not invent chapters or times. Use `clock_json` from the insight files.
 
 ## Self-check (API, after the report)
 
-Read `report.md` and the full transcript (`hybrid_asr_gold.md` if present, else `full_asr.md`). Write `results/llm/3b/self_check.md`: invented facts, invented numbers, clocks that are not in the manifest, owners not in the text. Verdict: `usable` / `not_usable`. Do not use a second model as a judge of style — only groundedness.
+Read `report.md` and the full transcript (`hybrid_asr_gold.md` if present, else `full_asr.md`). Write `results/llm/3b/self_check.md`: invented facts, invented numbers, clocks that are not in the **chapter** manifest (`clock_json` / `_manifest.json`), owners not in the text.
+
+Do **not** compare utterance `src` intervals to chapter clocks (those are nested on purpose). Do not judge style («это пересказ»). The LLM verdict is **notes only** — it does **not** block local smoke. Gate for local = `structure_check.json` `ok=true` (or the same checks by hand).
 
 ---
 
@@ -88,7 +90,7 @@ Read `report.md` and the full transcript (`hybrid_asr_gold.md` if present, else 
 
 Stage 1a Gemini once worked; NVIDIA was never called. Assume keys exist in the environment; do not open `.env`.
 
-**Then local, only if self-check is `usable`:** same prompts on `Qwen3-8B-Q5_K_M` / llama-cpp, **one** D chapter + assemble on the already-written insight files (or 2–3 chapters if cheap). We do not expect quality — only that JSON/markdown parses. Write `results/llm/3b/local_smoke.md`. 14B / GPU split is later, not this run.
+**Then local** if structure clocks match the 2b manifest: same prompts on `Qwen3-8B-Q5_K_M` / llama-cpp, **one** D chapter extract + assemble from the **already written** Gemini insight files (or 2–3 chapters if cheap). We do not expect quality — only that markdown parses. Write `results/llm/3b/local_smoke.md`. Ignore API `not_usable` if it came from a broken judge. 14B / GPU split is later, not this run.
 
 ---
 
