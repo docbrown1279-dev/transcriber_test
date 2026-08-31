@@ -1,4 +1,4 @@
-# Текущий этап — словарь после ASR (1f / 1f2 закрыты)
+# Текущий этап — 3b: инсайты из markdown
 
 Указатель отчётов: [`results/reports/notes.md`](../results/reports/notes.md).  
 Итог этапов 2+2b: [`results/reports/2b/conclusions.md`](../results/reports/2b/conclusions.md).  
@@ -20,12 +20,14 @@
 | **1f2** | закрыт | 3 VAD + 3 эмбеддера; Silero + TEN fallback, WeSpeaker |
 | **1f2b** | закрыт | GigaAM v3 на масках TEN и FSMN (хвост `test_voice`) |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
-| **словарь** | **сейчас** | после ASR предлагать замены терминов, не молча править |
+| **3b** | **сейчас** | JSON→md, инсайты с меткой src, сборка отчёта (сначала API) |
+| словарь | потом | после ASR предлагать замены терминов, не молча править |
 
 Промпт 1f (закрыт): [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  
 Промпт 1f2 (закрыт): [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md).  
 Промпт 1f2b (закрыт): [`docs/prompts/stage1f2_asr.md`](prompts/stage1f2_asr.md).  
 Итог 1f2: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md).  
+Промпт 3b: [`docs/prompts/stage3b.md`](prompts/stage3b.md).  
 Эталон меток 1e (в git): [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/).
 
 ---
@@ -166,6 +168,14 @@ VAD без спикеров в **1f** не кандидат (нужны id дл�
 | `gigaam_fsmn` | `results/asr/1f2/fsmn_vad/` `speech_regions` |
 
 Спикер в сегментах = `SPEECH`. Смотреть текст окон `test_voice` 0–10 с и 75–83 с.
+
+---
+
+## Этап 3b — инсайты из markdown (сейчас)
+
+Скрипт [`scripts/asr_json_to_md.py`](../scripts/asr_json_to_md.py) режет hybrid/ASR по главам 2b. Промпт: [`docs/prompts/stage3b.md`](prompts/stage3b.md).
+
+`hybrid_asr_gold.md` — полная встреча (GigaAM + gold в 4 окнах), **не** вход экстрактора. Вход: только `chunks_d/D00.md` … (Jina). **C не гоняем.** Выход чанка — markdown (`# заголовок` + инсайты). Сборка `report.md`. Self-check vs hybrid. Сначала Gemini/NVIDIA (5+5 ретраев), локальный 8B только если отчёт не выдуман.
 
 ---
 

@@ -1,16 +1,18 @@
 ---
 name: asr-research
-description: Этапы 1f/1f2 закрыты. Демка: Silero + TEN в дырах + WeSpeaker + GigaAM v3. Не читать eval/. Не пересчитывать полный файл.
+description: Этап 3b — инсайты по чанкам 2b (D), отчёт, self-check. Сначала Gemini/NVIDIA с ретраями. Не читать eval/.
 ---
 
-# Исследование — после 1f2
+# Этап 3b
 
-## Стек
+Промпт: [`docs/prompts/stage3b.md`](../../../docs/prompts/stage3b.md).
 
-- VAD: Silero, TEN только в дырах Silero.
-- Спикеры: WeSpeaker. ERes2Net-base и TitaNet-small на 4 клипах дали те же 2/3/2/2 — взаимозаменяемы, в демке не нужны.
-- ASR: GigaAM v3 (torch = рантайм ASR, не pyannote).
+```
+- [ ] экстрактор на data/3b_data/chunks_d/D*.md (не весь hybrid, не C)
+- [ ] insights: # title + kind/src/text
+- [ ] report.md + self_check.md
+- [ ] Gemini 5 попыток, лог без ключей; иначе NVIDIA 5
+- [ ] local 8B только если usable
+```
 
-Итог: [`results/reports/1f2/conclusions.md`](../../../results/reports/1f2/conclusions.md).
-
-Не читать `eval/`. Не перезаписывать `results/asr/1f/` и `results/**/2/`. Не открывать новый bakeoff VAD/эмбеддеров без явной просьбы.
+Не читать `eval/`. Не пересчитывать ASR/VAD/нарезку.

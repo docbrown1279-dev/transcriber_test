@@ -2,18 +2,18 @@
 
 ## Задача
 
-Этапы **1f / 1f2 / 1f2b закрыты.** Стек демки зафиксирован. Полный ASR и нарезка 2b заморожены. Дальше — словарь после ASR, не новый bakeoff VAD.
+Этап **3b**: инсайты по чанкам **2b-D (Jina)**, один отчёт. C не гоняем. 1f/1f2 закрыты.
 
 ## Роль
 
-Читать [`docs/research_plan.md`](docs/research_plan.md), [`results/reports/1f2/conclusions.md`](results/reports/1f2/conclusions.md). Не читать `eval/`.
+Читать [`docs/prompts/stage3b.md`](docs/prompts/stage3b.md). Не читать `eval/` и `.env`.
 
-## Зафиксировано (демка)
+## Вход / выход
 
-| Слой | Что |
+| Агенту на экстракцию | Не на экстракцию |
 |---|---|
-| VAD | Silero основной, TEN только в дырах Silero |
-| спикеры | WeSpeaker ResNet34 (ERes2Net / TitaNet на выборке те же 2/3/2/2 — можно, не тащим) |
-| ASR | GigaAM `v3_rnnt` + CPU-torch; linear gain |
+| `data/3b_data/chunks_d/D00.md` … `D11.md` | `hybrid_asr_gold.md` целиком (только self-check) |
 
-Не пересчитывать `results/asr/2/`, `results/asr/1f/`, маски 1f2. Не подставлять ECAPA / sherpa-full / pyannote 3.1 в демку.
+Выход чанка: markdown, первая строка `# заголовок`, инсайты со скопированным `src`. Потом `results/llm/3b/report.md`.
+
+Сначала Gemini (5 попыток, лог ошибок), иначе NVIDIA (ещё 5). Локальный 8B — только если self-check `usable`, дымовой прогон.

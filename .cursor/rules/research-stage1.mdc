@@ -1,12 +1,12 @@
 ---
-description: 1f/1f2 закрыты — Silero + TEN fallback + WeSpeaker; полный файл не пересчитывать
+description: Этап 3b — инсайты по чанкам D; hybrid не отдавать на экстракцию целиком
 alwaysApply: true
 ---
 
-# После 1f2
+# Этап 3b
 
-- Итог: `results/reports/1f2/conclusions.md`, план: `docs/research_plan.md`.
-- Демка: Silero основной VAD, TEN только в дырах Silero, спикеры WeSpeaker, ASR GigaAM v3.
-- ERes2Net и TitaNet на нашей выборке неотличимы по числу спикеров — не тащить в демку.
-- Не читать `eval/`. Не переписывать `results/**/2/` и `results/asr/1f/`.
-- Не открывать bakeoff VAD/эмбеддеров без явной просьбы.
+- Промпт: `docs/prompts/stage3b.md`.
+- Экстрактор: только `data/3b_data/chunks_d/D00.md` … `D11.md`. Не C. Не весь `hybrid_asr_gold.md`.
+- Выход чанка — markdown: первая строка `# заголовок`; `clock_json` копировать из комментария (он из 2b JSON).
+- Сначала Gemini, 5 ретраев, `api_errors.jsonl` без ключей; иначе NVIDIA.
+- Не читать `eval/` и `.env`. Не пересчитывать ASR/VAD/нарезку.
