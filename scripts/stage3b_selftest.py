@@ -36,9 +36,14 @@ def main() -> None:
     assert insights[0]["kind"] == "fact"
     assert "00:00:21.77" in insights[0]["src"]
 
-    allowed = ["[00:00:21.77-00:00:46.77 | SPEAKER_02 | D00]"]
+    allowed = [
+        "[00:00:21.77-00:00:46.77 | SPEAKER_02 | D00]",
+        "[00:00:46.77-00:01:05.46 | SPEAKER_02 | D00]",
+    ]
     assert match_src("00:00:21.77-00:00:46.77", allowed) == allowed[0]
     assert match_src(allowed[0], allowed) == allowed[0]
+    assert match_src("[00:00:21.77-00:01:05.46 | SPEAKER_02 | D00]", allowed)
+    assert match_src("[00:00:46.77 | SPEAKER_02 | D00]", allowed) == allowed[0]
     assert match_src("[99:99:99.00-99:99:99.00 | X]", allowed) is None
 
     rendered = render_insight_md(
@@ -56,6 +61,16 @@ def main() -> None:
 
     empty_md = render_insight_md("вне глав", "D_unassigned", "", [], [], True)
     assert "нет инсайтов" in empty_md
+
+    alt = parse_insights(
+        "# Выдача по девятому\n"
+        "- question:\n"
+        "  src: [00:20:48.54-00:20:56.86 | SPEAKER_00 | D10] еще момент по девятому\n"
+        "  text: Стоит ли присылать выдачу?\n"
+    )
+    assert alt[0] == "Выдача по девятому"
+    assert alt[1][0]["kind"] == "question"
+    assert alt[1][0]["src"] == "[00:20:48.54-00:20:56.86 | SPEAKER_00 | D10]"
 
     none_title, none_insights, none_empty = parse_insights("# Тишина\n\nнет инсайтов\n")
     assert none_title == "Тишина"

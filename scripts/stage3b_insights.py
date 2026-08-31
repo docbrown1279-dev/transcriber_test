@@ -118,18 +118,27 @@ def parse_insights(raw: str) -> tuple[str, list[dict[str, str]], bool]:
     empty = bool(re.search(r"^нет инсайтов\s*$", text, re.M | re.I))
     insights: list[dict[str, str]] = []
     block = re.compile(
-        r"^-\s*kind:\s*(\S+)\s*\n\s*src:\s*(.+?)\s*\n\s*text:\s*(.+?)\s*$",
+        r"^-\s*(?:kind:\s*)?([A-Za-z_]+):?\s*\n\s*src:\s*(.+?)\s*\n\s*text:\s*(.+?)\s*$",
         re.M,
     )
     for match in block.finditer(text):
+        src_raw = match.group(2).strip()
+        bracket = re.search(r"\[.*?\]", src_raw)
         insights.append(
             {
-                "kind": match.group(1).strip().lower(),
-                "src": match.group(2).strip(),
+                "kind": match.group(1).strip().lower().rstrip(":"),
+                "src": bracket.group(0) if bracket else src_raw,
                 "text": match.group(3).strip(),
             }
         )
     return title, insights, empty and not insights
+
+
+def _label_span(label: str) -> tuple[str, str] | None:
+    match = re.search(r"\[(\d{2}:\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}:\d{2}\.\d{2})", label)
+    if not match:
+        return None
+    return match.group(1), match.group(2)
 
 
 def match_src(src: str, allowed: list[str]) -> str | None:
@@ -143,6 +152,21 @@ def match_src(src: str, allowed: list[str]) -> str | None:
     if times:
         for label in allowed:
             if times.group(0) in label:
+                return label
+        starts = []
+        ends = []
+        for label in allowed:
+            span = _label_span(label)
+            if span:
+                starts.append(span[0])
+                ends.append(span[1])
+        if times.group(1) in starts and times.group(2) in ends:
+            return src if src.startswith("[") else f"[{times.group(0)}]"
+    one = re.search(r"(\d{2}:\d{2}:\d{2}\.\d{2})", src)
+    if one:
+        for label in allowed:
+            span = _label_span(label)
+            if span and one.group(1) in span:
                 return label
     return None
 
@@ -224,17 +248,21 @@ def assemble_prompt(bundle: str) -> str:
 def self_check_prompt(report: str, transcript: str, clocks: list[str]) -> str:
     clock_list = "\n".join(f"- {item}" for item in clocks)
     return (
-        "Проверь отчёт на обоснованность относительно полной стенограммы и списка часов манифеста.\n"
-        "Не оценивай стиль. Ищи только выдумки.\n\n"
-        "Найди и перечисли:\n"
-        "1. выдуманные факты (нет опоры в стенограмме / инсайтах)\n"
-        "2. выдуманные числа (цифры, которых нет в тексте)\n"
-        "3. часы / clock, которых нет в манифесте\n"
-        "4. владельцев / ответственных, которых нет в тексте\n\n"
-        "Пиши по-русски, кратко. Последняя строка ровно одна из:\n"
+        "Проверь отчёт только на выдумки относительно стенограммы и манифеста часов.\n"
+        "Не оценивай стиль, полноту, модальность («факт vs цитата vs обещание»).\n"
+        "Пересказ того же смысла, что есть в стенограмме — не выдумка.\n"
+        "Мусор ASR, скопированный как тезис — не выдумка.\n\n"
+        "Перечисли только то, чего НЕТ в стенограмме:\n"
+        "1. факты без опоры\n"
+        "2. числа, которых нет в тексте (новые цифры, не оговорка ASR)\n"
+        "3. clock / интервалы, которых нет в манифесте\n"
+        "4. владельцы / ФИО / роли, которых нет в тексте\n\n"
+        "Если список пуст — напиши «выдумок нет» по каждому пункту.\n"
+        "Коротко, без каталога всех тезисов отчёта.\n"
+        "Последняя строка ровно одна из:\n"
         "verdict: usable\n"
         "verdict: not_usable\n"
-        "usable = нет существенных выдумок фактов/чисел/владельцев и все clock из манифеста.\n\n"
+        "usable = нет новых фактов/чисел/владельцев и все clock из манифеста.\n\n"
         f"МАНИФЕСТ clock_json:\n{clock_list}\n\n"
         f"ОТЧЁТ:\n{report}\n\n"
         f"СТЕНОГРАММА:\n{transcript}\n"
@@ -438,6 +466,12 @@ def load_manifest_clocks() -> dict[str, str]:
     return {row["id"]: row["clock_json"] for row in manifest.get("chapters") or []}
 
 
+def save_raw(stem: str, suffix: str, text: str) -> None:
+    raw_dir = OUT_DIR / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    (raw_dir / f"{stem}{suffix}.txt").write_text(text, encoding="utf-8")
+
+
 def extract_one(client: Stage3bClient, path: Path, skip_existing: bool) -> Path:
     chapter = html_comment(path, "chapter") or path.stem
     clock = html_comment(path, "clock_json") or ""
@@ -449,18 +483,23 @@ def extract_one(client: Stage3bClient, path: Path, skip_existing: bool) -> Path:
     unassigned = path.stem == "_unassigned"
     prompt = extract_prompt(chunk, chapter, unassigned)
     raw = client.complete(prompt, max_tokens=2048, purpose=f"extract:{path.stem}")
+    save_raw(path.stem, "_extract", raw)
     title, insights, empty = parse_insights(raw)
     if not title:
         title = "вне глав" if unassigned else "Глава без названия"
     if DISCUSSION_RE.search(title) and not unassigned:
-        raw = client.complete(
-            prompt + "\n\nПовтор: заголовок без слова «обсуждение» / «совещание».",
+        raw2 = client.complete(
+            prompt + "\n\nПовтор: заголовок без слова «обсуждение» / «совещание». "
+            "Инсайты оставь; меняй только первую строку `# `.",
             max_tokens=2048,
             purpose=f"extract-retry-title:{path.stem}",
         )
-        title2, insights2, empty2 = parse_insights(raw)
+        save_raw(path.stem, "_extract_title_retry", raw2)
+        title2, insights2, empty2 = parse_insights(raw2)
         if title2 and not DISCUSSION_RE.search(title2):
-            title, insights, empty = title2, insights2, empty2
+            title = title2
+            if empty and insights2:
+                insights, empty = insights2, empty2
     if not clock:
         clocks = load_manifest_clocks()
         clock = clocks.get(chapter, "")
@@ -493,39 +532,120 @@ def write_run_meta(client: Stage3bClient, extra: dict[str, Any]) -> None:
     (OUT_DIR / "run.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def run_api(skip_existing: bool) -> dict[str, Any]:
+def structure_check() -> dict[str, Any]:
+    """Deterministic checks: clocks, src labels, report headings. No model."""
+    clocks = load_manifest_clocks()
+    issues: list[str] = []
+    titles: dict[str, str] = {}
+    src_ok = 0
+    src_bad = 0
+    for cid, clock in clocks.items():
+        path = INSIGHTS_DIR / f"{cid}.md"
+        if not path.is_file():
+            issues.append(f"missing insights {cid}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        title_match = TITLE_RE.search(text)
+        if not title_match:
+            issues.append(f"{cid}: no title")
+        else:
+            titles[cid] = title_match.group(1).strip()
+            if DISCUSSION_RE.search(titles[cid]):
+                issues.append(f"{cid}: discussion title")
+        got = CLOCK_RE.search(text)
+        if not got or got.group(1) != clock:
+            issues.append(f"{cid}: clock_json {got.group(1) if got else None} != manifest {clock}")
+        chapter = CHAPTER_RE.search(text)
+        if chapter and chapter.group(1) != cid:
+            issues.append(f"{cid}: chapter comment {chapter.group(1)}")
+        allowed = utterance_labels((CHUNKS_DIR / f"{cid}.md").read_text(encoding="utf-8"))
+        for src in re.findall(r"^  src:\s*(.+)$", text, re.M):
+            if match_src(src, allowed):
+                src_ok += 1
+            else:
+                src_bad += 1
+                issues.append(f"{cid}: src not in chunk: {src}")
+    report_path = OUT_DIR / "report.md"
+    report_clocks: list[str] = []
+    if report_path.is_file():
+        report = report_path.read_text(encoding="utf-8")
+        for heading in ("## Кратко", "## Решения", "## Дальше", "## Открыто", "## По времени"):
+            if heading not in report:
+                issues.append(f"report missing {heading}")
+        report_clocks = re.findall(r"^clock:\s*(\S+)", report, re.M)
+        unknown = [item for item in report_clocks if item not in clocks.values()]
+        if unknown:
+            issues.append(f"report clocks not in manifest: {unknown}")
+        for cid in clocks:
+            if f"### {cid}" not in report:
+                issues.append(f"report missing heading {cid}")
+    payload = {
+        "ok": not issues,
+        "src_ok": src_ok,
+        "src_bad": src_bad,
+        "titles": titles,
+        "report_clocks": report_clocks,
+        "issues": issues,
+    }
+    (OUT_DIR / "structure_check.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return payload
+
+
+def run_api(skip_existing: bool, chapters: list[str] | None, do_assemble: bool, do_check: bool) -> dict[str, Any]:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     INSIGHTS_DIR.mkdir(parents=True, exist_ok=True)
     client = Stage3bClient()
     sources = chapter_paths()
+    if chapters:
+        wanted = set(chapters)
+        sources = [path for path in sources if path.stem in wanted]
+        if not sources:
+            raise SystemExit(f"no matching chapters: {chapters}")
     insight_paths = [extract_one(client, path, skip_existing) for path in sources]
-    bundle = concat_insights(insight_paths)
-    report = client.complete(assemble_prompt(bundle), max_tokens=4096, purpose="assemble")
-    report = strip_model_text(report)
+    all_insights = [INSIGHTS_DIR / f"{cid}.md" for cid in CHAPTER_IDS if (INSIGHTS_DIR / f"{cid}.md").is_file()]
+    extra = INSIGHTS_DIR / "_unassigned.md"
+    if extra.is_file():
+        all_insights.append(extra)
     report_path = OUT_DIR / "report.md"
-    report_path.write_text(report.rstrip() + "\n", encoding="utf-8")
+    if do_assemble:
+        bundle = concat_insights(all_insights)
+        report = client.complete(assemble_prompt(bundle), max_tokens=4096, purpose="assemble")
+        report = strip_model_text(report)
+        save_raw("report", "_assemble", report)
+        report_path.write_text(report.rstrip() + "\n", encoding="utf-8")
+    elif report_path.is_file():
+        report = report_path.read_text(encoding="utf-8")
+    else:
+        report = ""
     hybrid = ROOT / "data" / "3b_data" / "hybrid_asr_gold.md"
     full = ROOT / "data" / "3b_data" / "full_asr.md"
     transcript_path = hybrid if hybrid.is_file() else full
     clocks = list(load_manifest_clocks().values())
-    check_raw = client.complete(
-        self_check_prompt(report, transcript_path.read_text(encoding="utf-8"), clocks),
-        max_tokens=3072,
-        purpose="self_check",
-    )
-    check_text = strip_model_text(check_raw).rstrip() + "\n"
-    if parse_verdict(check_text) is None:
-        check_text = check_text.rstrip() + "\nverdict: not_usable\n"
     check_path = OUT_DIR / "self_check.md"
-    check_path.write_text(check_text, encoding="utf-8")
-    verdict = parse_verdict(check_text)
+    if do_check:
+        check_raw = client.complete(
+            self_check_prompt(report, transcript_path.read_text(encoding="utf-8"), clocks),
+            max_tokens=2048,
+            purpose="self_check",
+        )
+        save_raw("self_check", "", check_raw)
+        check_text = strip_model_text(check_raw).rstrip() + "\n"
+        if parse_verdict(check_text) is None:
+            check_text = check_text.rstrip() + "\nverdict: not_usable\n"
+        check_path.write_text(check_text, encoding="utf-8")
+    verdict = parse_verdict(check_path.read_text(encoding="utf-8")) if check_path.is_file() else None
+    structure = structure_check()
     meta = {
-        "input_chunks": [str(path.relative_to(ROOT)) for path in sources],
-        "insights": [str(path.relative_to(ROOT)) for path in insight_paths],
+        "input_chunks": [str(path.relative_to(ROOT)) for path in chapter_paths()],
+        "insights": [str(path.relative_to(ROOT)) for path in all_insights],
         "report": str(report_path.relative_to(ROOT)),
-        "self_check": str(check_path.relative_to(ROOT)),
+        "self_check": str(check_path.relative_to(ROOT)) if check_path.is_file() else None,
         "transcript_for_check": str(transcript_path.relative_to(ROOT)),
         "verdict": verdict,
+        "structure_ok": structure["ok"],
+        "structure_issues": structure["issues"],
     }
     write_run_meta(client, meta)
     return meta
@@ -534,9 +654,22 @@ def run_api(skip_existing: bool) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-existing", action="store_true")
+    parser.add_argument("--chapters", nargs="*", help="only these stems, e.g. D10")
+    parser.add_argument("--no-assemble", action="store_true")
+    parser.add_argument("--no-self-check", action="store_true")
+    parser.add_argument("--structure-only", action="store_true")
     args = parser.parse_args()
-    meta = run_api(skip_existing=args.skip_existing)
-    print(json.dumps({"verdict": meta["verdict"], "provider": True, "insights": len(meta["insights"])}))
+    if args.structure_only:
+        payload = structure_check()
+        print(json.dumps({"structure_ok": payload["ok"], "issues": payload["issues"]}, ensure_ascii=False))
+        return
+    meta = run_api(
+        skip_existing=args.skip_existing,
+        chapters=args.chapters,
+        do_assemble=not args.no_assemble,
+        do_check=not args.no_self_check,
+    )
+    print(json.dumps({"verdict": meta["verdict"], "structure_ok": meta["structure_ok"], "insights": len(meta["insights"])}))
 
 
 if __name__ == "__main__":
