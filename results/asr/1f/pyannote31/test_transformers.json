@@ -1,0 +1,194 @@
+{
+  "audio": "data/test_transformers.m4a",
+  "language": "ru",
+  "duration_sec": 85.0,
+  "diarizer_id": "pyannote31",
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "torch": true,
+  "runtime_sec": 37.941,
+  "peak_rss_mb": null,
+  "n_speakers": 2,
+  "n_turns": 9,
+  "raw_turns": null,
+  "merged_turns": [
+    {
+      "start": 0.030969,
+      "end": 3.034719,
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -37.144,
+      "peak_dbfs": -20.266,
+      "gain_db": 14.144
+    },
+    {
+      "start": 3.034719,
+      "end": 21.141594,
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -29.265,
+      "peak_dbfs": -7.558,
+      "gain_db": 0.0
+    },
+    {
+      "start": 21.141594,
+      "end": 27.030969,
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -36.442,
+      "peak_dbfs": -14.785,
+      "gain_db": 13.442
+    },
+    {
+      "start": 30.675969,
+      "end": 32.616594,
+      "speaker": "SPEAKER_01",
+      "id": 3,
+      "rms_dbfs": -38.949,
+      "peak_dbfs": -20.018,
+      "gain_db": 15.949
+    },
+    {
+      "start": 33.375969,
+      "end": 54.267219,
+      "speaker": "SPEAKER_01",
+      "id": 4,
+      "rms_dbfs": -40.11,
+      "peak_dbfs": -17.465,
+      "gain_db": 16.465
+    },
+    {
+      "start": 57.726594,
+      "end": 72.880344,
+      "speaker": "SPEAKER_01",
+      "id": 5,
+      "rms_dbfs": -37.86,
+      "peak_dbfs": -14.871,
+      "gain_db": 13.871
+    },
+    {
+      "start": 74.804094,
+      "end": 81.149094,
+      "speaker": "SPEAKER_01",
+      "id": 6,
+      "rms_dbfs": -40.691,
+      "peak_dbfs": -20.387,
+      "gain_db": 17.691
+    },
+    {
+      "start": 76.542219,
+      "end": 78.989094,
+      "speaker": "SPEAKER_00",
+      "id": 7,
+      "rms_dbfs": -40.824,
+      "peak_dbfs": -23.101,
+      "gain_db": 17.824
+    },
+    {
+      "start": 83.123469,
+      "end": 84.591594,
+      "speaker": "SPEAKER_01",
+      "id": 8,
+      "rms_dbfs": -35.08,
+      "peak_dbfs": -17.001,
+      "gain_db": 12.08
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 27.030969,
+      "end": 30.675969
+    },
+    {
+      "start": 32.616594,
+      "end": 33.375969
+    },
+    {
+      "start": 54.267219,
+      "end": 57.726594
+    },
+    {
+      "start": 72.880344,
+      "end": 74.804094
+    },
+    {
+      "start": 81.149094,
+      "end": 83.123469
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 3.984,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.030969,
+      "end": 3.034719,
+      "speaker": "SPEAKER_01",
+      "text": "давайте так поступим планы разре"
+    },
+    {
+      "id": 1,
+      "start": 3.034719,
+      "end": 21.141594,
+      "speaker": "SPEAKER_00",
+      "text": "а игорь то есть смотрите мы смотрим по предыдущим корпусам да сравниваем мощность если у нас мощность условно там корпуса там девятого совпадает там с восьмым или с каким то да мы говорим что у нас все тоже самое если"
+    },
+    {
+      "id": 2,
+      "start": 21.141594,
+      "end": 27.030969,
+      "speaker": "SPEAKER_01",
+      "text": "да если нет трансформаторы могут отличаться по мощности по массогабаритным характеристикам они будут"
+    },
+    {
+      "id": 3,
+      "start": 30.675969,
+      "end": 32.616594,
+      "speaker": "SPEAKER_01",
+      "text": ""
+    },
+    {
+      "id": 4,
+      "start": 33.375969,
+      "end": 54.267219,
+      "speaker": "SPEAKER_01",
+      "text": "вот если это так вы смотрите да действительно такое же все по высоте по габаритам прошло расстояние там от стены там от входа и прочее вот ничего нового не делаем сейчас на данном этапе надо заложить это пятно разрисовать это помещение и максимально быстро отдать ресурс у вас было понимание что не надо где ничего кладовку выверить"
+    },
+    {
+      "id": 5,
+      "start": 57.726594,
+      "end": 72.880344,
+      "speaker": "SPEAKER_01",
+      "text": "другого варианта нету потому что ну это не москва четких требований у них нету все идет и прочее направить получить согласование потом бумажками все"
+    },
+    {
+      "id": 6,
+      "start": 74.804094,
+      "end": 81.149094,
+      "speaker": "SPEAKER_01",
+      "text": "другого варианта у нас работать с ними к сожалению нет потому что они потом от целов могут просто отказаться"
+    },
+    {
+      "id": 7,
+      "start": 76.542219,
+      "end": 78.989094,
+      "speaker": "SPEAKER_00",
+      "text": "к сожалению нет потому что они"
+    },
+    {
+      "id": 8,
+      "start": 83.123469,
+      "end": 84.591594,
+      "speaker": "SPEAKER_01",
+      "text": "бумага все"
+    }
+  ],
+  "copied_from": {
+    "turns": "results/reports/1f/baseline/pyannote31/test_transformers.json",
+    "text": "results/reports/1f/baseline/gigaam_v3_on_pyannote/test_transformers.json"
+  },
+  "note": "Copied Stage 1e pyannote 3.1 + GigaAM v3. Torch was used in 1e; not loaded here."
+}

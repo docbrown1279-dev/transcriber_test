@@ -1,0 +1,117 @@
+{
+  "audio": "data/test_voice.m4a",
+  "language": "ru",
+  "duration_sec": 83.0,
+  "diarizer_id": "pyannote31",
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "torch": true,
+  "runtime_sec": 36.917,
+  "peak_rss_mb": null,
+  "n_speakers": 2,
+  "n_turns": 4,
+  "raw_turns": null,
+  "merged_turns": [
+    {
+      "start": 9.970344,
+      "end": 13.952844,
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -37.675,
+      "peak_dbfs": -7.392,
+      "gain_db": 6.392
+    },
+    {
+      "start": 14.340969,
+      "end": 20.787219,
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -24.518,
+      "peak_dbfs": -2.668,
+      "gain_db": 0.0
+    },
+    {
+      "start": 21.765969,
+      "end": 65.438469,
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -39.806,
+      "peak_dbfs": -17.678,
+      "gain_db": 16.678
+    },
+    {
+      "start": 65.944719,
+      "end": 74.955969,
+      "speaker": "SPEAKER_00",
+      "id": 3,
+      "rms_dbfs": -26.159,
+      "peak_dbfs": -8.001,
+      "gain_db": 0.0
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 9.970344
+    },
+    {
+      "start": 20.787219,
+      "end": 21.765969
+    },
+    {
+      "start": 65.438469,
+      "end": 65.944719
+    },
+    {
+      "start": 74.955969,
+      "end": 83.0
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 2.732,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 9.970344,
+      "end": 13.952844,
+      "speaker": "SPEAKER_01",
+      "text": "все понятно и не нужно что то выяснять"
+    },
+    {
+      "id": 1,
+      "start": 14.340969,
+      "end": 20.787219,
+      "speaker": "SPEAKER_00",
+      "text": "ну направим пару вопросов есть попросим уточнить направим да"
+    },
+    {
+      "id": 2,
+      "start": 21.765969,
+      "end": 46.765969,
+      "speaker": "SPEAKER_01",
+      "text": "хорошо дополнительно вы задавали вопрос по канализации по да надо через паркинг потому что это определено точками подключения ориентироваться на проект как я и написал что сейчас этот проект там ну в ближайшее время заходит экспертизу то есть плюс минус останется на том же месте"
+    },
+    {
+      "id": 3,
+      "start": 46.765969,
+      "end": 65.438469,
+      "speaker": "SPEAKER_01",
+      "text": "мы в дальнейшем будем ссылаться на их проект то есть проект у вас уже есть как появится положительное заключение я думаю к этому времени как раз просто нашлемся на заключение экспертизы и соответственно таким образом вопрос закроем"
+    },
+    {
+      "id": 4,
+      "start": 65.944719,
+      "end": 74.955969,
+      "speaker": "SPEAKER_00",
+      "text": "а скажи пожалуйста извини что а в технических условиях на ливневку там будет прописано что можно подключаться к сети удс да"
+    }
+  ],
+  "copied_from": {
+    "turns": "results/reports/1f/baseline/pyannote31/test_voice.json",
+    "text": "results/reports/1f/baseline/gigaam_v3_on_pyannote/test_voice.json"
+  },
+  "note": "Copied Stage 1e pyannote 3.1 + GigaAM v3. Torch was used in 1e; not loaded here."
+}

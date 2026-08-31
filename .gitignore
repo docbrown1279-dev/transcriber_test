@@ -2,6 +2,8 @@
 .env.*
 !.env.example
 .venv/
+.venv-onnx/
+.venv-gigaam/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -24,6 +26,9 @@ models/
 # Intermediate run artifacts (reports are tracked)
 results/asr/*
 !results/asr/.gitkeep
+!results/asr/1f/
+!results/asr/1f/**
+results/asr/1f/_extracts/
 results/denoise/*
 !results/denoise/.gitkeep
 results/chunking/*

@@ -1,0 +1,322 @@
+{
+  "audio": "data/test_ninth.m4a",
+  "language": "ru",
+  "duration_sec": 85.0,
+  "diarizer_id": "pyannote31",
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "torch": true,
+  "runtime_sec": 39.469,
+  "peak_rss_mb": null,
+  "n_speakers": 2,
+  "n_turns": 16,
+  "raw_turns": null,
+  "merged_turns": [
+    {
+      "start": 1.178469,
+      "end": 3.439719,
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -41.626,
+      "peak_dbfs": -22.799,
+      "gain_db": 18.0
+    },
+    {
+      "start": 3.507219,
+      "end": 11.792844,
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -27.316,
+      "peak_dbfs": -9.093,
+      "gain_db": 0.0
+    },
+    {
+      "start": 11.337219,
+      "end": 14.475969,
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -33.516,
+      "peak_dbfs": -13.326,
+      "gain_db": 10.516
+    },
+    {
+      "start": 14.712219,
+      "end": 21.479094,
+      "speaker": "SPEAKER_00",
+      "id": 3,
+      "rms_dbfs": -27.169,
+      "peak_dbfs": -9.174,
+      "gain_db": 0.0
+    },
+    {
+      "start": 22.103469,
+      "end": 30.034719,
+      "speaker": "SPEAKER_00",
+      "id": 4,
+      "rms_dbfs": -28.795,
+      "peak_dbfs": -9.265,
+      "gain_db": 0.0
+    },
+    {
+      "start": 27.705969,
+      "end": 30.692844,
+      "speaker": "SPEAKER_01",
+      "id": 5,
+      "rms_dbfs": -30.352,
+      "peak_dbfs": -11.01,
+      "gain_db": 7.352
+    },
+    {
+      "start": 30.692844,
+      "end": 38.961594,
+      "speaker": "SPEAKER_00",
+      "id": 6,
+      "rms_dbfs": -27.796,
+      "peak_dbfs": -9.058,
+      "gain_db": 0.0
+    },
+    {
+      "start": 40.632219,
+      "end": 49.744719,
+      "speaker": "SPEAKER_01",
+      "id": 7,
+      "rms_dbfs": -38.085,
+      "peak_dbfs": -16.893,
+      "gain_db": 15.085
+    },
+    {
+      "start": 44.040969,
+      "end": 48.192219,
+      "speaker": "SPEAKER_00",
+      "id": 8,
+      "rms_dbfs": -38.016,
+      "peak_dbfs": -16.922,
+      "gain_db": 15.016
+    },
+    {
+      "start": 49.947219,
+      "end": 53.541594,
+      "speaker": "SPEAKER_00",
+      "id": 9,
+      "rms_dbfs": -29.803,
+      "peak_dbfs": -10.659,
+      "gain_db": 0.0
+    },
+    {
+      "start": 51.803469,
+      "end": 64.020969,
+      "speaker": "SPEAKER_01",
+      "id": 10,
+      "rms_dbfs": -34.775,
+      "peak_dbfs": -10.645,
+      "gain_db": 9.645
+    },
+    {
+      "start": 64.645344,
+      "end": 66.366594,
+      "speaker": "SPEAKER_01",
+      "id": 11,
+      "rms_dbfs": -41.482,
+      "peak_dbfs": -24.415,
+      "gain_db": 18.0
+    },
+    {
+      "start": 67.294719,
+      "end": 73.420344,
+      "speaker": "SPEAKER_01",
+      "id": 12,
+      "rms_dbfs": -42.174,
+      "peak_dbfs": -21.366,
+      "gain_db": 18.0
+    },
+    {
+      "start": 75.141594,
+      "end": 77.352219,
+      "speaker": "SPEAKER_01",
+      "id": 13,
+      "rms_dbfs": -44.22,
+      "peak_dbfs": -24.415,
+      "gain_db": 18.0
+    },
+    {
+      "start": 79.292844,
+      "end": 81.942219,
+      "speaker": "SPEAKER_01",
+      "id": 14,
+      "rms_dbfs": -37.567,
+      "peak_dbfs": -19.482,
+      "gain_db": 14.567
+    },
+    {
+      "start": 82.785969,
+      "end": 84.068469,
+      "speaker": "SPEAKER_01",
+      "id": 15,
+      "rms_dbfs": -48.177,
+      "peak_dbfs": -28.703,
+      "gain_db": 18.0
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 1.178469
+    },
+    {
+      "start": 21.479094,
+      "end": 22.103469
+    },
+    {
+      "start": 38.961594,
+      "end": 40.632219
+    },
+    {
+      "start": 64.020969,
+      "end": 64.645344
+    },
+    {
+      "start": 66.366594,
+      "end": 67.294719
+    },
+    {
+      "start": 73.420344,
+      "end": 75.141594
+    },
+    {
+      "start": 77.352219,
+      "end": 79.292844
+    },
+    {
+      "start": 81.942219,
+      "end": 82.785969
+    },
+    {
+      "start": 84.068469,
+      "end": 85.0
+    }
+  ],
+  "asr_model": "gigaam-v3-rnnt",
+  "asr_provider": "gigaam",
+  "asr_runtime_sec": 5.384,
+  "gain": "linear",
+  "segments": [
+    {
+      "id": 0,
+      "start": 1.178469,
+      "end": 3.439719,
+      "speaker": "SPEAKER_01",
+      "text": "смотрите завтра может быть че то обсудим"
+    },
+    {
+      "id": 1,
+      "start": 3.507219,
+      "end": 11.792844,
+      "speaker": "SPEAKER_00",
+      "text": "еще момент по девятому мы же на завтра готовили тоже выдачу стоит ее присылать или уже получить замечание все вместе отработать"
+    },
+    {
+      "id": 2,
+      "start": 11.337219,
+      "end": 14.475969,
+      "speaker": "SPEAKER_01",
+      "text": "там будет тоже самое что пятьдесят стоит"
+    },
+    {
+      "id": 3,
+      "start": 14.712219,
+      "end": 21.479094,
+      "speaker": "SPEAKER_00",
+      "text": "хорошо тогда мы наверное направлять сейчас не будем получим от вас обратную связь а на сколько у тебя готово"
+    },
+    {
+      "id": 4,
+      "start": 22.103469,
+      "end": 30.034719,
+      "speaker": "SPEAKER_00",
+      "text": "ну она также готова как десятая может может есть смысл все таки направить если там те же самые замечания если нет"
+    },
+    {
+      "id": 5,
+      "start": 27.705969,
+      "end": 30.692844,
+      "speaker": "SPEAKER_01",
+      "text": "те же самые замечания если нет то"
+    },
+    {
+      "id": 6,
+      "start": 30.692844,
+      "end": 38.961594,
+      "speaker": "SPEAKER_00",
+      "text": "там тоже есть отступление от нее в части ну трех больших трехкомнатных квартир есть отступление от квартирографии тоже я так понимаю это критично"
+    },
+    {
+      "id": 7,
+      "start": 40.632219,
+      "end": 49.744719,
+      "speaker": "SPEAKER_01",
+      "text": "ну трешки да ну давайте я сейчас отправлю вы посмотрите хорошо со своей стороны оцените стоит вообще отправлять может это в корзину"
+    },
+    {
+      "id": 8,
+      "start": 44.040969,
+      "end": 48.192219,
+      "speaker": "SPEAKER_00",
+      "text": "хорошо со своей стороны оценивается стоит вообще да"
+    },
+    {
+      "id": 9,
+      "start": 49.947219,
+      "end": 53.541594,
+      "speaker": "SPEAKER_00",
+      "text": "хорошо ну не в корзину на доработку точно да"
+    },
+    {
+      "id": 10,
+      "start": 51.803469,
+      "end": 64.020969,
+      "speaker": "SPEAKER_01",
+      "text": "на доработку точно да ну да у нас в касторографии подход поменялся я помню когда был на основании которого мы работали сейчас он там поменялся"
+    },
+    {
+      "id": 11,
+      "start": 64.645344,
+      "end": 66.366594,
+      "speaker": "SPEAKER_01",
+      "text": "потому что к сожалению"
+    },
+    {
+      "id": 12,
+      "start": 67.294719,
+      "end": 73.420344,
+      "speaker": "SPEAKER_01",
+      "text": "все эти вот изменения ключевых ставках повлияло сильно на рынок и сейчас"
+    },
+    {
+      "id": 13,
+      "start": 75.141594,
+      "end": 77.352219,
+      "speaker": "SPEAKER_01",
+      "text": "мало че может"
+    },
+    {
+      "id": 14,
+      "start": 79.292844,
+      "end": 81.942219,
+      "speaker": "SPEAKER_01",
+      "text": "да что еще можно по девять есть обсудить"
+    },
+    {
+      "id": 15,
+      "start": 82.785969,
+      "end": 84.068469,
+      "speaker": "SPEAKER_01",
+      "text": "как считаете"
+    }
+  ],
+  "copied_from": {
+    "turns": "results/reports/1f/baseline/pyannote31/test_ninth.json",
+    "text": "results/reports/1f/baseline/gigaam_v3_on_pyannote/test_ninth.json"
+  },
+  "note": "Copied Stage 1e pyannote 3.1 + GigaAM v3. Torch was used in 1e; not loaded here."
+}

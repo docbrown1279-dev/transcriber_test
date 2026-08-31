@@ -1,0 +1,6 @@
+{
+  "diarizer_id": "pyannote31",
+  "status": "copied",
+  "torch": true,
+  "note": "Baseline copy only; pyannote.audio was not imported."
+}
