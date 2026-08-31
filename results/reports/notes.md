@@ -13,9 +13,9 @@
 | [`2b/`](2b/conclusions.md) | этап 2b **закрыт**: рабочие C (14) и D (12); победителя нет |
 | [`3/`](3/notes.md) | этап 3 **закрыт**: P1/P2 на D, P1 на C; победитель промпта P1 (по title) |
 | [`1f/`](1f/notes.md) | этап 1f **закрыт**: vad_wespeaker vs sherpa vs pyannote 3.1 |
-| [`1f2/`](1f2/notes.md) | этап 1f2 **закрыт** (маски); 1f2b: GigaAM на TEN/FSMN — [`asr_notes.md`](1f2/asr_notes.md) |
+| [`1f2/`](1f2/conclusions.md) | 1f2 **закрыт**: Silero + TEN fallback, WeSpeaker; таблицы [`notes.md`](1f2/notes.md), ASR [`asr_notes.md`](1f2/asr_notes.md) |
 
 Канонические JSON: `results/reports/1a/` … `1e/`, `2/`. Прогон 2b: ветка `cursor/stage2b-four-hypotheses-4305`.
-План: [`docs/research_plan.md`](../../docs/research_plan.md), итог 2b: [`2b/conclusions.md`](2b/conclusions.md), итог 3: [`3/notes.md`](3/notes.md), итог 1f: [`1f/notes.md`](1f/notes.md), итог 1f2: [`1f2/notes.md`](1f2/notes.md), промпт 1f2b: [`docs/prompts/stage1f2_asr.md`](../../docs/prompts/stage1f2_asr.md).
+План: [`docs/research_plan.md`](../../docs/research_plan.md), итог 2b: [`2b/conclusions.md`](2b/conclusions.md), итог 3: [`3/notes.md`](3/notes.md), итог 1f: [`1f/notes.md`](1f/notes.md), итог 1f2: [`1f2/conclusions.md`](1f2/conclusions.md).
 ASR-дампы: `results/asr/1a|1b|1c|1d|1e/` (gitignored).  
 Eval-клипы: [`docs/eval_clips.md`](../../docs/eval_clips.md).

@@ -1,13 +1,12 @@
 ---
-description: Этап 1f2b — GigaAM на масках TEN/FSMN; разметка 1f2 закрыта
+description: 1f/1f2 закрыты — Silero + TEN fallback + WeSpeaker; полный файл не пересчитывать
 alwaysApply: true
 ---
 
-# Этап 1f2b — текст на готовых VAD
+# После 1f2
 
-- План: `docs/research_plan.md`, промпт: `docs/prompts/stage1f2_asr.md`.
-- Ветка: `cursor/stage1f2-gigaam`.
-- Только GigaAM v3 на `results/asr/1f2/{ten_vad,fsmn_vad}/`. Не пересчитывать VAD/эмбеддеры.
-- Silero не транскрибировать: текст в `results/asr/1f/vad_wespeaker/`.
+- Итог: `results/reports/1f2/conclusions.md`, план: `docs/research_plan.md`.
+- Демка: Silero основной VAD, TEN только в дырах Silero, спикеры WeSpeaker, ASR GigaAM v3.
+- ERes2Net и TitaNet на нашей выборке неотличимы по числу спикеров — не тащить в демку.
 - Не читать `eval/`. Не переписывать `results/**/2/` и `results/asr/1f/`.
-- Новые JSON: `results/asr/1f2/{gigaam_ten,gigaam_fsmn}/`. Отчёт: `results/reports/1f2/asr_notes.md`.
+- Не открывать bakeoff VAD/эмбеддеров без явной просьбы.

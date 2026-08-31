@@ -81,3 +81,5 @@
 ## Вне скоупа
 
 Этап 3 LLM, словарь, шумодавы, новый чанкинг, полная запись, объявление C/D единственным TOC, API LLM.
+
+После 1f2 демка: Silero + TEN в дырах Silero + WeSpeaker — [`../1f2/conclusions.md`](../1f2/conclusions.md).

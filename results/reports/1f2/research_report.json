@@ -183,5 +183,5 @@
       "notes": "Этап 1f2: summary запрещён и не выполнялся."
     }
   ],
-  "recommendations": "Таблицы в results/reports/1f2/notes.md; победитель продукта не выбирался. Phase B заморожена на Silero этого прогона, не на max IoU vs pyannote. На test_voice 0–10 с речь кроют silero/ten_vad/fsmn_vad (pyannote почти молчит); на 75–83 с pyannote=0 с, ten_vad≈5,9 с, fsmn≈3,9 с, silero≈0,09 с. Все три эмбеддера на этих Silero-срезах дали счётчик спикеров 2/3/2/2 (эталон pyannote; без over-split sherpa 1f 5/6/6/8). mean DER@0.25: eres2net 0,264 / titanet_small 0,271 / wespeaker 0,276. Speech IoU эмбеддеров совпадает на трёх клипах; на ninth ±0,01 из-за assemble/merge. Torch в процессе нет. Wall VAD <2 с / 4 клипа; embed без VAD ≈3–7 с. Демка 2 vCPU/8 ГиБ: RSS эмбеддеров 285–368 МиБ. 1f2b: текст GigaAM v3 на TEN/FSMN — results/reports/1f2/asr_notes.md (VAD-таблицы не переписывались); на хвосте test_voice 75–83 с у Silero нет слов, у TEN/FSMN есть."
+  "recommendations": "Закрыто: results/reports/1f2/conclusions.md. Демка: Silero + TEN в дырах Silero + WeSpeaker. ERes2Net и TitaNet на 4 клипах те же 2/3/2/2 — можно, не тащим. FSMN не в стеке. Полный файл этапа 2 не пересчитывать."
 }

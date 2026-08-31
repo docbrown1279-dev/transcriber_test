@@ -1,11 +1,10 @@
-# Текущий этап — 1f2b: GigaAM на масках TEN / FSMN
+# Текущий этап — словарь после ASR (1f / 1f2 закрыты)
 
 Указатель отчётов: [`results/reports/notes.md`](../results/reports/notes.md).  
 Итог этапов 2+2b: [`results/reports/2b/conclusions.md`](../results/reports/2b/conclusions.md).  
 Итог этапа 3: [`results/reports/3/notes.md`](../results/reports/3/notes.md).
 
-Рабочая ветка 1f **с артефактами 1f2**: `cursor/stage1f-onnx-diarization` (fast-forward до `5140039`).  
-Рабочая ветка 1f2b: `cursor/stage1f2-gigaam`.
+Архив 1f+1f2: `cursor/stage1f-onnx-diarization`. Итог: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md).
 
 **Eval-клипы:** [`docs/eval_clips.md`](eval_clips.md). Золото `eval/` агентам не отдавать.
 
@@ -18,26 +17,29 @@
 | 2b | закрыт | четыре гипотезы чанкинга; **рабочие C и D** |
 | 3 | закрыт | Qwen3-8B: P1 one-shot vs P2 two-pass на D; на C ушёл P1 (лучше title, не эталон инсайтов) |
 | **1f** | закрыт | ONNX-диаризация: vad_wespeaker (Silero+WeSpeaker) vs sherpa; эталон pyannote 3.1 |
-| **1f2** | закрыт | 3 VAD + 3 эмбеддера; без ASR (venv без torch) |
-| **1f2b** | **сейчас** | GigaAM v3 на готовых масках TEN и FSMN |
+| **1f2** | закрыт | 3 VAD + 3 эмбеддера; Silero + TEN fallback, WeSpeaker |
+| **1f2b** | закрыт | GigaAM v3 на масках TEN и FSMN (хвост `test_voice`) |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
-| словарь | потом | после ASR предлагать замены терминов, не молча править |
+| **словарь** | **сейчас** | после ASR предлагать замены терминов, не молча править |
 
 Промпт 1f (закрыт): [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  
 Промпт 1f2 (закрыт): [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md).  
-Промпт 1f2b: [`docs/prompts/stage1f2_asr.md`](prompts/stage1f2_asr.md).  
+Промпт 1f2b (закрыт): [`docs/prompts/stage1f2_asr.md`](prompts/stage1f2_asr.md).  
+Итог 1f2: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md).  
 Эталон меток 1e (в git): [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/).
 
 ---
 
 ## Зафиксированный стек (не пересматривать без явной просьбы)
 
-**ASR.** GigaAM `v3_rnnt` + pyannote 3.1 + linear `volume=` если RMS &lt; −30 dBFS. Текст полного файла:
+**ASR.** GigaAM `v3_rnnt` + linear `volume=` если RMS &lt; −30 dBFS. Torch нужен как рантайм GigaAM, не pyannote. Текст полного файла (разметка тогда была pyannote 3.1, **не пересчитывать**):
 
 - `results/asr/2/gigaam_v3_rnnt/meeting_sample.json`
 - копия `.txt`
 
-Это гипотеза, не человеческий эталон. Пустые сегменты остаются пустыми. Не гонять заново pyannote, GigaAM, Whisper, Podlodka, gain, извлечение, дыры. Ошибки вроде «касторозительно» / «дальневосрочная» — вход, не повод чинить JSON.
+Это гипотеза, не человеческий эталон. Пустые сегменты остаются пустыми. Не гонять заново полный файл, Whisper, Podlodka, gain, извлечение. Ошибки вроде «касторозительно» / «дальневосрочная» — вход, не повод чинить JSON.
+
+**Диаризация демки.** Silero VAD + TEN только в дырах Silero + WeSpeaker ResNet34. ERes2Net-base и TitaNet-small на 4 клипах дали те же 2/3/2/2 — можно заменить WeSpeaker, в демке не тащим. Не sherpa-full, не pyannote 3.1 на клиентской машине.
 
 **Фильтрация / шумодавы.** Не применяем. Linear gain этапа 2 остаётся единственной обработкой громкости.
 
@@ -126,11 +128,11 @@ VAD без спикеров в **1f** не кандидат (нужны id дл�
 
 ---
 
-## Этап 1f2 — 3 VAD + 3 эмбеддера (закрыт)
+## Этап 1f2 — 3 VAD + 3 эмбеддера (закрыт, решение в conclusions)
 
 «Дыры» в 1f считались относительно pyannote. Второй VAD нужен, чтобы увидеть, кто кого пропускает (начало/хвост `test_voice`). 1f не разделил wall Silero и WeSpeaker.
 
-Те же 4 клипа. Один агент, без паузы. Промпт: [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md). Итог: [`results/reports/1f2/notes.md`](../results/reports/1f2/notes.md). Эмбеддеры на Silero-кусках дали 2/3/2/2 (WeSpeaker оставляем). Silero ловит 0–10 с, TEN/FSMN — хвост 75–83 с. **ASR в 1f2 не было.**
+Те же 4 клипа. Промпт: [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md). Таблицы: [`results/reports/1f2/notes.md`](../results/reports/1f2/notes.md). Решение: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md) — **Silero + TEN fallback, WeSpeaker**.
 
 **A — речь/тишина**
 
@@ -154,9 +156,9 @@ VAD без спикеров в **1f** не кандидат (нужны id дл�
 
 ---
 
-## Этап 1f2b — GigaAM на TEN / FSMN (сейчас)
+## Этап 1f2b — GigaAM на TEN / FSMN (закрыт)
 
-Маски не пересчитывать. Тот же GigaAM `v3_rnnt`, что в 1f: linear gain, куски >25 с резать по времени. Silero не гонять — текст уже в [`results/asr/1f/vad_wespeaker/`](../results/asr/1f/vad_wespeaker/). Промпт: [`docs/prompts/stage1f2_asr.md`](prompts/stage1f2_asr.md).
+Маски не пересчитывались. Промпт: [`docs/prompts/stage1f2_asr.md`](prompts/stage1f2_asr.md). Текст: [`asr_notes.md`](../results/reports/1f2/asr_notes.md). Silero не гоняли — [`results/asr/1f/vad_wespeaker/`](../results/asr/1f/vad_wespeaker/).
 
 | id | Вход |
 |---|---|

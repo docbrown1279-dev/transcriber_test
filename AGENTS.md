@@ -2,20 +2,18 @@
 
 ## Задача
 
-Этап **1f2b** (сейчас): GigaAM v3 на уже готовых масках TEN и FSMN. Разметка 1f / 1f2 закрыта. Полный ASR и нарезка 2b заморожены.
+Этапы **1f / 1f2 / 1f2b закрыты.** Стек демки зафиксирован. Полный ASR и нарезка 2b заморожены. Дальше — словарь после ASR, не новый bakeoff VAD.
 
 ## Роль
 
-Читать [`docs/research_plan.md`](docs/research_plan.md), [`docs/prompts/stage1f2_asr.md`](docs/prompts/stage1f2_asr.md), [`results/reports/1f2/notes.md`](results/reports/1f2/notes.md). Не читать `eval/`.
+Читать [`docs/research_plan.md`](docs/research_plan.md), [`results/reports/1f2/conclusions.md`](results/reports/1f2/conclusions.md). Не читать `eval/`.
 
-## Текущий этап (1f2b)
+## Зафиксировано (демка)
 
-| В скоупе | Вне скоупа |
+| Слой | Что |
 |---|---|
-| GigaAM `v3_rnnt` на `results/asr/1f2/{ten_vad,fsmn_vad}/` | Новый VAD / эмбеддер / sherpa / pyannote 3.1 |
-| `results/asr/1f2/{gigaam_ten,gigaam_fsmn}/` | Пересчёт Silero (текст уже в `results/asr/1f/vad_wespeaker/`) |
-| Цитаты окон `test_voice` 0–10 с и 75–83 с | Чтение `eval/`; WER; этап 3 |
+| VAD | Silero основной, TEN только в дырах Silero |
+| спикеры | WeSpeaker ResNet34 (ERes2Net / TitaNet на выборке те же 2/3/2/2 — можно, не тащим) |
+| ASR | GigaAM `v3_rnnt` + CPU-torch; linear gain |
 
-## Критерий
-
-На хвосте `test_voice` 75–83 с есть текст TEN (и FSMN, если маска не пустая). Silero там почти молчал — его не гоняем заново.
+Не пересчитывать `results/asr/2/`, `results/asr/1f/`, маски 1f2. Не подставлять ECAPA / sherpa-full / pyannote 3.1 в демку.
