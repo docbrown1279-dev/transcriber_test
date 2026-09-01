@@ -1,18 +1,18 @@
 ---
 name: asr-research
-description: Этап 3b — инсайты по чанкам 2b (D), отчёт, self-check. Сначала Gemini/NVIDIA с ретраями. Не читать eval/.
+description: Этап 3c — фильтрованные инсайты по чанкам 2b (D). Gemini и локальный Qwen независимо. Не читать eval/.
 ---
 
-# Этап 3b
+# Этап 3c
 
-Промпт: [`docs/prompts/stage3b.md`](../../../docs/prompts/stage3b.md).
+Промпт: [`docs/prompts/stage3c.md`](../../../docs/prompts/stage3c.md).
 
 ```
-- [ ] экстрактор на data/3b_data/chunks_d/D*.md (не весь hybrid, не C)
-- [ ] insights: # title + kind/src/text
-- [ ] report.md + self_check.md
+- [ ] вход только data/3c_data/transcript.md + chapters.json (не 3b_data, не C)
+- [ ] gemini/insights.md + gemini/summary.md
+- [ ] local/insights.md + local/summary.md (свой экстракт, не сборка Gemini)
+- [ ] фильтр: 2–3 реплики / вопрос–ответ / развилка
 - [ ] Gemini 5 попыток, лог без ключей; иначе NVIDIA 5
-- [ ] local 8B только если usable
 ```
 
-Не читать `eval/`. Не пересчитывать ASR/VAD/нарезку.
+Не читать `eval/`. Не пересчитывать ASR/VAD/нарезку. Не перезаписывать `results/llm/3b/`.

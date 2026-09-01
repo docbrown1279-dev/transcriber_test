@@ -1,12 +1,13 @@
 ---
-description: Этап 3b — инсайты по чанкам D; hybrid не отдавать на экстракцию целиком
+description: Этап 3c — два файла входа D; Gemini и local независимо
 alwaysApply: true
 ---
 
-# Этап 3b
+# Этап 3c
 
-- Промпт: `docs/prompts/stage3b.md`.
-- Экстрактор: только `data/3b_data/chunks_d/D00.md` … `D11.md`. Не C. Не весь `hybrid_asr_gold.md`.
-- Выход чанка — markdown: первая строка `# заголовок`; `clock_json` копировать из комментария (он из 2b JSON).
-- Сначала Gemini, 5 ретраев, `api_errors.jsonl` без ключей; иначе NVIDIA.
+- Промпт: `docs/prompts/stage3c.md`.
+- Вход: только `data/3c_data/transcript.md` и `data/3c_data/chapters.json`. Не `data/3b_data/`. Не C.
+- Выход: `results/llm/3c/gemini/` и `results/llm/3c/local/` — в каждой `insights.md` и `summary.md`. Local не копирует Gemini.
+- Инсайт только если тема на 2–3 реплики, вопрос–ответ или развилка. `clock` из JSON.
+- Сначала Gemini, 5 ретраев, лог без ключей; иначе NVIDIA.
 - Не читать `eval/` и `.env`. Не пересчитывать ASR/VAD/нарезку.

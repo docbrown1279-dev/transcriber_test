@@ -1,0 +1,139 @@
+# Prompt — Stage 3c (filtered D insights, Gemini and local Qwen)
+
+Continue from this branch. Do **not** rerun ASR, VAD, or Stage 2/2b chunking. Do **not** read `eval/` or `.env`. Do not overwrite `results/asr/2/`, `results/llm/3/`, or `results/llm/3b/`. Do not open `data/3b_data/` or `.trash/`.
+
+---
+
+## Why 3c (read this)
+
+Stage 3b dumped every stray ASR phrase (investors, «заказчик администрации»). Gemini extract was usable as a ceiling; local `report` looked the same because the 3b local smoke **assembled Gemini insights**, it did not extract on its own.
+
+This meeting is a working call: little is underlined, quiet bits are bad ASR. Keep only topics that **actually got airtime**.
+
+**In:** two files. **Out:** two folders. Gemini and local are **independent** full runs.
+
+---
+
+## The only inputs
+
+| File | What |
+|---|---|
+| [`data/3c_data/transcript.md`](../../data/3c_data/transcript.md) | GigaAM v3 + pyannote 3.1, full meeting. Lines: `[HH:MM:SS.cc-HH:MM:SS.cc \| SPEAKER] text` |
+| [`data/3c_data/chapters.json`](../../data/3c_data/chapters.json) | 12 Jina **D** clocks from `exp_d_chapters.json`. Ground truth. No titles (titles are your job). |
+
+That is the whole corpus. If those two files exist, **do not** rebuild from JSON.
+
+Slice by clock when you extract (overlap: utterance interval vs chapter `start_sec`/`end_sec`):
+
+```bash
+python scripts/stage3c_pack.py --slice
+```
+
+Writes gitignored `data/3c_data/_slices/D00.md` … `D11.md`. Optional. You may slice in memory from the two files instead. **Do not** recreate 12 committed chunk files. **Do not** run C.
+
+Prefer the runner so Gemini and local cannot mix outputs:
+
+```bash
+python scripts/stage3c_run.py --provider gemini
+python scripts/stage3c_run.py --provider local --model models/Qwen3-8B-Q5_K_M.gguf
+```
+
+If you call the models yourself, still write the same paths and formats.
+
+---
+
+## What to keep (filter)
+
+Write an insight only if **one** of these is true:
+
+- the topic is discussed in **two or three utterances** (not a one-liner);
+- it is a **question and an answer** (even a weak / deferred answer);
+- **two viewpoints** or a real fork (underground vs first floor, send now vs wait).
+
+Drop: greetings, «ну как бы», role crumbs («мы как инвесторы»), ASR debris, a number that appears once with no follow-up, promises with no object.
+
+**Good (shape, not a gold list):**
+
+- канализация идёт через паркинг, потому что так заданы точки подключения в ТУ
+- проект канализации / ливнёвки заходит в экспертизу
+- размещение ТП: подземная часть или первый этаж?
+- несоответствие ТУ — какой срок изменения?
+- нагрузка внутри ТУ может перераспределиться, общая не меняется
+- вопрос размещения помещения провайдера
+- когда нужно следующее совещание
+
+Interpret into a short Russian thesis. Do **not** paste the ASR line as the insight. Do **not** “fix” ASR into a new number. If the chunk is noise, `нет инсайтов` is correct.
+
+Title: ≤8 Russian words, nouns/outcome, not «Обсуждение …». After the bullets, not before you have them.
+
+`clock:` — copy **verbatim** from `chapters.json` (`clock` field). Never invent times.
+
+`src:` — copy the whole `[…]` label from a transcript line that supports the thesis. Do not invent a span.
+
+---
+
+## Outputs (exactly these files)
+
+```
+results/llm/3c/gemini/insights.md
+results/llm/3c/gemini/summary.md
+results/llm/3c/local/insights.md
+results/llm/3c/local/summary.md
+```
+
+Local Qwen **re-extracts every D chapter from the transcript**. Do not copy Gemini insights into `local/`. Do not assemble a Gemini report with Qwen.
+
+### `insights.md`
+
+```markdown
+# Главы D
+
+### D00 — Канализация через паркинг
+clock: 00:00:09.97-00:01:58.73
+- канализация идёт через паркинг: так заданы точки подключения в ТУ
+  src: [00:00:21.77-00:00:46.77 | SPEAKER_02]
+- проект в ближайшее время заходит в экспертизу
+  src: [00:00:21.77-00:00:46.77 | SPEAKER_02]
+```
+
+All 12 ids `D00` … `D11`, in order, even if a chapter is `нет инсайтов` under the heading. No `kind:` taxonomy.
+
+### `summary.md`
+
+```markdown
+# Саммари
+
+## Оценка
+(2–5 sentences: what kind of meeting this is, how noisy ASR is, whether anything was actually decided)
+
+## Ключевые инсайты
+- (the same bar as above, meeting-level, not a dump of every chapter bullet)
+```
+
+No «Кратко / Решения / Дальше / Открыто / По времени» dump. Empty decisions belong in **Оценка**, not a fake list.
+
+---
+
+## Models
+
+Text only. No audio.
+
+1. **Gemini** (`GEMINI_API_KEY` or `GOOGLE_API_KEY`). Pattern: `scripts/summarize_gemini.py` / `scripts/stage3b_insights.py`. Prefer `gemini-2.5-flash`. 5 tries. Then NVIDIA NIM (`NVIDIA_API_KEY`, `https://integrate.api.nvidia.com`) 5 tries. Log `{attempt, provider, http_status, error_class, message}` to `results/llm/3c/gemini/api_errors.jsonl` — **no key**. Sleep 2–10 s between tries.
+2. **Local** `Qwen3-8B-Q5_K_M` / llama-cpp, same as Stage 3/3b. One chapter per extract call (`n_ctx` 8192 is enough per slice). Summary from **that** `insights.md`, not from the whole transcript (8B will truncate). If GGUF missing: one install like Stage 3, two load tries, then `failure_kind: install` in `results/llm/3c/local/summary.md` and still push Gemini.
+
+Clock gate (deterministic, not an LLM judge):
+
+```bash
+python scripts/stage3c_pack.py --check results/llm/3c/gemini/insights.md
+python scripts/stage3c_pack.py --check results/llm/3c/local/insights.md
+```
+
+`src` may straddle a chapter boundary; that is overlap, not invention. Do not fail a run because an utterance is not a subset of `clock`.
+
+Write `results/reports/3c/notes.md` in Russian (what ran, filter vs 3b, Gemini vs local in 5–8 lines). Commit and push this branch. No force-push to `main`.
+
+---
+
+## Out of scope
+
+New ASR, VAD, chunking, **framework C**, WER, `eval/`, rewriting 3b files, audio to APIs, 14B / GPU.

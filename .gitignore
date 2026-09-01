@@ -51,6 +51,8 @@ results/llm/*
 !results/llm/3/**
 !results/llm/3b/
 !results/llm/3b/**
+!results/llm/3c/
+!results/llm/3c/**
 
 # Local human labels and notes — never push (keeps gold off agent clones)
 eval/
@@ -58,4 +60,7 @@ eval/
 # 3b generated transcripts (may include spliced gold)
 data/3b_data/*
 !data/3b_data/README.md
+
+# 3c: commit transcript.md + chapters.json; slices are derived
+data/3c_data/_slices/
 

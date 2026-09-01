@@ -1,4 +1,4 @@
-# Текущий этап — 3b: инсайты из markdown
+# Текущий этап — 3c: фильтрованные инсайты D (Gemini + Qwen)
 
 Указатель отчётов: [`results/reports/notes.md`](../results/reports/notes.md).  
 Итог этапов 2+2b: [`results/reports/2b/conclusions.md`](../results/reports/2b/conclusions.md).  
@@ -20,14 +20,16 @@
 | **1f2** | закрыт | 3 VAD + 3 эмбеддера; Silero + TEN fallback, WeSpeaker |
 | **1f2b** | закрыт | GigaAM v3 на масках TEN и FSMN (хвост `test_voice`) |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
-| **3b** | прогон есть | JSON→md, инсайты D + `report.md` (Gemini); API self-check `not_usable` — [`3b/notes.md`](../results/reports/3b/notes.md) |
+| **3b** | закрыт | инсайты D + `report.md` (Gemini); локальный assemble тех же инсайтов; API self-check сломан — [`3b/notes.md`](../results/reports/3b/notes.md) |
+| **3c** | сейчас | те же D, фильтр «2–3 реплики / Q–A / развилка»; Gemini и Qwen независимо; два файла входа — [`3c/notes.md`](../results/reports/3c/notes.md) |
 | словарь | потом | после ASR предлагать замены терминов, не молча править |
 
 Промпт 1f (закрыт): [`docs/prompts/stage1f_diarization.md`](prompts/stage1f_diarization.md).  
 Промпт 1f2 (закрыт): [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md).  
 Промпт 1f2b (закрыт): [`docs/prompts/stage1f2_asr.md`](prompts/stage1f2_asr.md).  
 Итог 1f2: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md).  
-Промпт 3b: [`docs/prompts/stage3b.md`](prompts/stage3b.md).  
+Промпт 3b (архив): [`docs/prompts/stage3b.md`](prompts/stage3b.md).  
+Промпт 3c: [`docs/prompts/stage3c.md`](prompts/stage3c.md).  
 Эталон меток 1e (в git): [`results/reports/1f/baseline/pyannote31/`](../results/reports/1f/baseline/pyannote31/).
 
 ---
@@ -171,11 +173,17 @@ VAD без спикеров в **1f** не кандидат (нужны id дл�
 
 ---
 
-## Этап 3b — инсайты из markdown (сейчас)
+## Этап 3b — инсайты из markdown (закрыт)
 
-Скрипт [`scripts/asr_json_to_md.py`](../scripts/asr_json_to_md.py) режет hybrid/ASR по главам 2b. Промпт: [`docs/prompts/stage3b.md`](prompts/stage3b.md).
+Скрипт [`scripts/asr_json_to_md.py`](../scripts/asr_json_to_md.py) резал ASR по главам 2b. Промпт: [`docs/prompts/stage3b.md`](prompts/stage3b.md). Вход был 12 файлов `chunks_d/`. Gemini-экстракт — потолок; локальный 8B в 3b **собирал Gemini**, не экстрагировал заново. Self-check API сравнивал `src` реплик с часами глав — это не groundedness.
 
-`hybrid_asr_gold.md` — полная встреча (GigaAM + gold в 4 окнах), **не** вход экстрактора. Вход: только `chunks_d/D00.md` … (Jina). **C не гоняем.** Выход чанка — markdown (`# заголовок` + инсайты). Сборка `report.md`. Self-check vs hybrid. Сначала Gemini/NVIDIA (5+5 ретраев), локальный 8B только если отчёт не выдуман.
+---
+
+## Этап 3c — фильтр и два независимых прогона (сейчас)
+
+Вход — **два файла**: [`data/3c_data/transcript.md`](../data/3c_data/transcript.md) и [`data/3c_data/chapters.json`](../data/3c_data/chapters.json) (часы D из 2b JSON). Промпт: [`docs/prompts/stage3c.md`](prompts/stage3c.md). Скрипт склейки: [`scripts/stage3c_pack.py`](../scripts/stage3c_pack.py).
+
+Инсайт только если тема на 2–3 реплики, вопрос–ответ или развилка. Не тащить случайные фразы. Выход: `results/llm/3c/gemini/` и `results/llm/3c/local/` — в каждой список глав с часами + саммари. Local пишет свой экстракт. **C не гоняем.**
 
 ---
 

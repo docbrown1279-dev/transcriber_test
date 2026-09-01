@@ -2,18 +2,19 @@
 
 ## Задача
 
-Этап **3b**: инсайты по чанкам **2b-D (Jina)**, один отчёт. C не гоняем. 1f/1f2 закрыты.
+Этап **3c**: фильтрованные инсайты по чанкам **2b-D (Jina)**. Два независимых прогона — Gemini API и локальный Qwen. C не гоняем. 3b закрыт (не перезаписывать).
 
 ## Роль
 
-Читать [`docs/prompts/stage3b.md`](docs/prompts/stage3b.md). Не читать `eval/` и `.env`.
+Читать [`docs/prompts/stage3c.md`](docs/prompts/stage3c.md). Не читать `eval/` и `.env`. Не открывать `data/3b_data/`.
 
 ## Вход / выход
 
-| Агенту на экстракцию | Не на экстракцию |
+| Агенту | Не читать |
 |---|---|
-| `data/3b_data/chunks_d/D00.md` … `D11.md` | `hybrid_asr_gold.md` целиком (только self-check) |
+| `data/3c_data/transcript.md` | `data/3b_data/`, hybrid, C, `eval/` |
+| `data/3c_data/chapters.json` | весь `results/llm/3b/` на запись |
 
-Выход чанка: markdown, первая строка `# заголовок`, инсайты со скопированным `src`. Потом `results/llm/3b/report.md`.
+Выход: `results/llm/3c/gemini/{insights,summary}.md` и `results/llm/3c/local/{insights,summary}.md`. Local **не** копирует Gemini.
 
-Сначала Gemini (5 попыток, лог ошибок), иначе NVIDIA (ещё 5). Локальный 8B — только если self-check `usable`, дымовой прогон.
+Сначала Gemini (5 попыток, лог ошибок), иначе NVIDIA (ещё 5). Потом локальный 8B — полный экстракт, не дым.

@@ -1,19 +1,7 @@
-# 3b sources
+# 3b sources (archive)
 
-Rebuild:
+Этап **3b закрыт**. Агентам 3c **не читать** эту папку.
 
-```bash
-python scripts/asr_json_to_md.py --gold
-```
+Лишние файлы (hybrid, clips, 12 чанков, C, full_asr*) убраны в `.trash/3b_data/`. Текущий вход: [`data/3c_data/`](../3c_data/README.md) — два файла.
 
-`--gold` is local (`eval/`). Cloud agents use files that are already here; do not read `eval/`.
-
-| File / folder | Give to the extractor? |
-|---|---|
-| `hybrid_asr_gold.md` | **no** — full meeting (GigaAM + gold in 4 windows). Self-check only |
-| `full_asr.md` | no — same meeting, ASR only |
-| `chunks_d/D00.md` … `D11.md` | **yes** — only stack (Jina / 2b D) |
-| `chunks_d/_manifest.json` | clocks from 2b JSON |
-| `chunks_d/_unassigned.md` | lines outside D intervals |
-
-Pipeline: [`docs/prompts/stage3b.md`](../../docs/prompts/stage3b.md).
+Промпт 3c: [`docs/prompts/stage3c.md`](../../docs/prompts/stage3c.md). Итог 3b: [`results/reports/3b/notes.md`](../../results/reports/3b/notes.md).
