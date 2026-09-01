@@ -38,11 +38,13 @@ OUT = ROOT / "results" / "llm" / "3c"
 DISCUSSION_RE = re.compile(r"^\s*(обсуждение|совещание по|говорили о|обсудили)\b", re.I)
 FENCE_RE = re.compile(r"^```(?:markdown|md)?\s*|\s*```$", re.I | re.M)
 THINK_RE = re.compile(r"<think>.*?</think>", re.S | re.I)
-SRC_LINE = re.compile(
-    r"src:\s*(\[(\d{2}:\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}:\d{2}\.\d{2}) \| [A-Z0-9_]+(?: \| D\d{2})?\])"
-)
+SRC_LINE = re.compile(r"src:\s*(\[[^\]]+\])")
 BULLET = re.compile(r"^-\s+(?!\s*kind:)(.+)$")
 TITLE_LINE = re.compile(r"^#{1,3}\s+(?:D\d{2}\s+[—-]\s+)?(.+)$")
+FULL_SPAN = re.compile(r"(\d{2}:\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}:\d{2}\.\d{2})")
+ONE_TS = re.compile(r"(\d{2}:\d{2}:\d{2}\.\d{2})")
+SHORT_SPAN = re.compile(r"(\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}\.\d{2})")
+SPEAKER_RE = re.compile(r"SPEAKER_[A-Z0-9]+")
 
 
 def strip_model_text(text: str) -> str:
@@ -67,6 +69,17 @@ def allowed_labels(chapter: dict[str, Any], utterances: list[dict[str, Any]]) ->
     return labels
 
 
+def _pick_by_speaker(hits: list[str], src: str) -> str | None:
+    if not hits:
+        return None
+    speaker = SPEAKER_RE.search(src)
+    if speaker:
+        for label in hits:
+            if speaker.group(0) in label:
+                return label
+    return hits[0]
+
+
 def match_src(src: str, allowed: list[str]) -> str | None:
     got = src.strip()
     if not got.startswith("["):
@@ -75,14 +88,32 @@ def match_src(src: str, allowed: list[str]) -> str | None:
         got = f"{got}]"
     if got in allowed:
         return got
-    times = re.search(
-        r"(\d{2}:\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}:\d{2}\.\d{2})", got
-    )
-    if not times:
-        return None
-    for label in allowed:
-        if times.group(0) in label:
-            return label
+    times = FULL_SPAN.search(got)
+    if times:
+        hits = [label for label in allowed if times.group(0) in label]
+        picked = _pick_by_speaker(hits, got)
+        if picked:
+            return picked
+    one = ONE_TS.search(got)
+    if one:
+        hits = [label for label in allowed if one.group(1) in label]
+        picked = _pick_by_speaker(hits, got)
+        if picked:
+            return picked
+    short = SHORT_SPAN.search(got)
+    if short:
+        start_tail = short.group(1).split(":")[-1]
+        end_tail = short.group(2).split(":")[-1]
+        hits = []
+        for label in allowed:
+            span = FULL_SPAN.search(label)
+            if not span:
+                continue
+            if span.group(1).endswith(start_tail) and span.group(2).endswith(end_tail):
+                hits.append(label)
+        picked = _pick_by_speaker(hits, got)
+        if picked:
+            return picked
     return None
 
 
@@ -148,18 +179,15 @@ def parse_extract(raw: str, chapter: dict[str, Any], allowed: list[str]) -> dict
             continue
         src_match = SRC_LINE.search(stripped)
         if src_match and pending is not None:
-            src = match_src(src_match.group(1), allowed) or src_match.group(1)
-            bullets.append({"text": pending, "src": src})
-            pending = None
+            mapped = match_src(src_match.group(1), allowed)
+            if mapped:
+                bullets.append({"text": pending, "src": mapped})
+                pending = None
             continue
         bullet = BULLET.match(stripped)
         if bullet:
-            if pending:
-                bullets.append({"text": pending, "src": ""})
             pending = bullet.group(1).strip()
             continue
-    if pending:
-        bullets.append({"text": pending, "src": ""})
     if DISCUSSION_RE.search(title):
         title = re.sub(r"^\s*(обсуждение|совещание по)\s+", "", title, flags=re.I).strip() or title
     if empty and not bullets:
@@ -318,6 +346,7 @@ class LocalClient:
 
     def complete(self, prompt: str, *, max_tokens: int, purpose: str) -> str:
         started = time.monotonic()
+        user = prompt if prompt.lstrip().startswith("/no_think") else "/no_think\n" + prompt
         response = self.llm.create_chat_completion(
             messages=[
                 {
@@ -327,7 +356,7 @@ class LocalClient:
                         "Пиши только то, что явно сказано. Не выдумывай числа и людей."
                     ),
                 },
-                {"role": "user", "content": prompt},
+                {"role": "user", "content": user},
             ],
             max_tokens=max_tokens,
             temperature=0.1,
@@ -381,12 +410,33 @@ def run_provider(name: str, client: Any, chapters: list[dict[str, Any]], utteran
     print(json.dumps({"folder": name, **{k: meta[k] for k in ("provider", "model", "n_insights")}}, ensure_ascii=False))
 
 
+def rerender_from_raw(name: str, chapters: list[dict[str, Any]], utterances: list[dict[str, Any]]) -> None:
+    dest = OUT / name
+    raw_dir = dest / "raw"
+    parsed: dict[str, dict[str, Any]] = {}
+    for chapter in chapters:
+        raw_path = raw_dir / f"{chapter['id']}.txt"
+        if not raw_path.is_file():
+            raise SystemExit(f"missing {raw_path}")
+        allowed = allowed_labels(chapter, utterances)
+        parsed[chapter["id"]] = parse_extract(raw_path.read_text(encoding="utf-8"), chapter, allowed)
+    insights = render_insights(chapters, parsed)
+    (dest / "insights.md").write_text(insights, encoding="utf-8")
+    meta_path = dest / "run.json"
+    meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.is_file() else {}
+    meta["n_insights"] = sum(len(row["insights"]) for row in parsed.values())
+    meta["rerendered"] = True
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"folder": name, "rerender": True, "n_insights": meta["n_insights"]}, ensure_ascii=False))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--provider", choices=("gemini", "local", "both"), default="gemini")
     parser.add_argument("--model", type=Path, default=ROOT / "models" / "Qwen3-8B-Q5_K_M.gguf")
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--n-ctx", type=int, default=8192)
+    parser.add_argument("--rerender", action="store_true", help="reparse raw chapter extracts; no model calls")
     args = parser.parse_args()
     if not TRANSCRIPT.is_file() or not CHAPTERS_JSON.is_file():
         raise SystemExit("missing data/3c_data/transcript.md or chapters.json; run python scripts/stage3c_pack.py")
@@ -394,6 +444,11 @@ def main() -> None:
     utterances = load_utterances()
     write_slices(utterances, chapters)
     OUT.mkdir(parents=True, exist_ok=True)
+    if args.rerender:
+        targets = ["gemini", "local"] if args.provider == "both" else [args.provider]
+        for name in targets:
+            rerender_from_raw(name, chapters, utterances)
+        return
     if args.provider in ("gemini", "both"):
         client = ApiClient(OUT / "gemini" / "api_errors.jsonl")
         run_provider("gemini", client, chapters, utterances)

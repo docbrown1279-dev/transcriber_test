@@ -199,6 +199,7 @@ def write_slices(utterances: list[dict], chapters: list[dict]) -> None:
 
 
 def check_insights(path: Path, chapters: list[dict]) -> dict:
+    path = path if path.is_absolute() else ROOT / path
     text = path.read_text(encoding="utf-8")
     by_id = {row["id"]: row for row in chapters}
     heads = HEAD_RE.findall(text)
