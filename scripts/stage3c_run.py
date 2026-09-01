@@ -161,7 +161,43 @@ def extract_prompt(chapter: dict[str, Any], chunk: str) -> str:
     )
 
 
-def summary_prompt(insights: str) -> str:
+SPEAKER_TOKEN = re.compile(r"SPEAKER_[A-Z0-9]+")
+INSIGHT_CLOCK = re.compile(r"\[(\d{2}:\d{2}:\d{2}\.\d{2}-\d{2}:\d{2}:\d{2}\.\d{2})")
+
+
+def speakers_from_insights(insights: str) -> list[str]:
+    found: list[str] = []
+    seen: set[str] = set()
+    for match in SPEAKER_TOKEN.finditer(insights):
+        name = match.group(0)
+        if name not in seen:
+            seen.add(name)
+            found.append(name)
+    return found
+
+
+def insight_clocks(insights: str) -> list[tuple[str, str]]:
+    rows: list[tuple[str, str]] = []
+    pending: str | None = None
+    for line in insights.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("- "):
+            pending = stripped[2:].strip()
+            continue
+        clock = INSIGHT_CLOCK.search(stripped)
+        if clock and pending:
+            rows.append((pending, clock.group(1)))
+            pending = None
+    return rows
+
+
+def speaker_line(speakers: list[str]) -> str:
+    return " | ".join(speakers) if speakers else "нет меток"
+
+
+def summary_prompt(insights: str, speakers: list[str] | None = None) -> str:
+    names = speakers if speakers is not None else speakers_from_insights(insights)
+    listed = speaker_line(names)
     return (
         "По готовым инсайтам совещания напиши саммари. Не выдумывай факты и числа.\n"
         "Не тащи все пункты глав — только те, что тянут встречу (2–3 реплики / вопрос-ответ / развилка).\n"
@@ -170,11 +206,73 @@ def summary_prompt(insights: str) -> str:
         "# Саммари\n"
         "## Оценка\n"
         "(2–5 предложений: характер встречи, шум ASR, были ли решения)\n"
+        "## Спикеры\n"
+        f"{listed}\n"
+        "Список спикеров скопируй БЕЗ ИЗМЕНЕНИЙ, в одну строку, через « | ».\n"
         "## Ключевые инсайты\n"
-        "- короткие тезисы\n\n"
+        "- короткий тезис [00:16:31.50-00:16:42.30]\n\n"
+        "После каждого ключевого тезиса поставь clock из `src:` той же мысли.\n"
+        "Формат clock только [HH:MM:SS.cc-HH:MM:SS.cc], без имени спикера. Время не выдумывай.\n\n"
+        f"СПИКЕРЫ (скопируй): {listed}\n\n"
         "ИНСАЙТЫ:\n"
         f"{insights}\n"
     )
+
+
+def normalize_summary(summary: str, insights: str, speakers: list[str]) -> str:
+    text = summary.strip()
+    if not text.lstrip().startswith("#"):
+        text = "# Саммари\n\n" + text
+    listed = speaker_line(speakers)
+    speaker_block = f"## Спикеры\n{listed}"
+    if re.search(r"^##\s*Спикеры\s*$", text, re.M):
+        text = re.sub(
+            r"^##\s*Спикеры\s*\n(?:.*\n)*?(?=^## |\Z)",
+            speaker_block + "\n\n",
+            text,
+            count=1,
+            flags=re.M,
+        )
+    elif re.search(r"^##\s*Оценка\s*$", text, re.M):
+        text = re.sub(
+            r"(^##\s*Оценка\s*\n(?:.*\n)*?)(?=^## |\Z)",
+            r"\1" + speaker_block + "\n\n",
+            text,
+            count=1,
+            flags=re.M,
+        )
+    else:
+        text = text.rstrip() + "\n\n" + speaker_block + "\n"
+    pairs = insight_clocks(insights)
+    out_lines: list[str] = []
+    in_keys = False
+    for line in text.splitlines():
+        if re.match(r"^##\s+", line):
+            in_keys = bool(re.match(r"^##\s*Ключевые инсайты\s*$", line))
+            out_lines.append(line)
+            continue
+        bullet = re.match(r"^(-\s+)(.+)$", line)
+        if in_keys and bullet and pairs:
+            body = bullet.group(2).strip()
+            if not INSIGHT_CLOCK.search(body):
+                clock = _best_clock(body, pairs)
+                if clock:
+                    line = f"{bullet.group(1)}{body} [{clock}]"
+        out_lines.append(line)
+    return "\n".join(out_lines).rstrip() + "\n"
+
+
+def _best_clock(thesis: str, pairs: list[tuple[str, str]]) -> str | None:
+    needle = set(re.findall(r"[А-Яа-яA-Za-z0-9]{4,}", thesis.lower()))
+    if not needle:
+        return None
+    best: tuple[int, str] | None = None
+    for text, clock in pairs:
+        hay = set(re.findall(r"[А-Яа-яA-Za-z0-9]{4,}", text.lower()))
+        score = len(needle & hay)
+        if score and (best is None or score > best[0]):
+            best = (score, clock)
+    return best[1] if best and best[0] >= 2 else None
 
 
 def parse_extract(
@@ -419,12 +517,7 @@ def run_provider(name: str, client: Any, chapters: list[dict[str, Any]], utteran
         parsed[chapter["id"]] = parse_extract(raw, chapter, allowed, texts)
     insights = render_insights(chapters, parsed)
     (dest / "insights.md").write_text(insights, encoding="utf-8")
-    summary_raw = client.complete(summary_prompt(insights), max_tokens=2048, purpose="summary")
-    (dest / "raw" / "summary.txt").write_text(summary_raw, encoding="utf-8")
-    summary = strip_model_text(summary_raw)
-    if not summary.lstrip().startswith("#"):
-        summary = "# Саммари\n\n" + summary
-    (dest / "summary.md").write_text(summary.rstrip() + "\n", encoding="utf-8")
+    write_summary(dest, client, insights)
     meta = {
         "provider": getattr(client, "provider", name),
         "model": getattr(client, "model", name),
@@ -462,6 +555,68 @@ def rerender_from_raw(name: str, chapters: list[dict[str, Any]], utterances: lis
     print(json.dumps({"folder": name, "rerender": True, "n_insights": meta["n_insights"]}, ensure_ascii=False))
 
 
+def write_summary(dest: Path, client: Any, insights: str) -> str:
+    speakers = speakers_from_insights(insights)
+    summary_raw = client.complete(
+        summary_prompt(insights, speakers),
+        max_tokens=2048,
+        purpose="summary",
+    )
+    (dest / "raw").mkdir(exist_ok=True)
+    (dest / "raw" / "summary.txt").write_text(summary_raw, encoding="utf-8")
+    summary = normalize_summary(strip_model_text(summary_raw), insights, speakers)
+    (dest / "summary.md").write_text(summary, encoding="utf-8")
+    return summary
+
+
+def run_summary_only(name: str, client: Any) -> None:
+    dest = OUT / name
+    insights_path = dest / "insights.md"
+    if not insights_path.is_file():
+        raise SystemExit(f"missing {insights_path}; cannot summarize without a prior extract")
+    insights = insights_path.read_text(encoding="utf-8")
+    write_summary(dest, client, insights)
+    meta_path = dest / "run.json"
+    meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.is_file() else {}
+    calls = [row for row in meta.get("calls", []) if row.get("purpose") != "summary"]
+    calls.extend(getattr(client, "calls", []))
+    meta["provider"] = getattr(client, "provider", name)
+    meta["model"] = getattr(client, "model", name)
+    meta["calls"] = calls
+    meta["summary_only"] = True
+    meta["speakers"] = speakers_from_insights(insights)
+    if hasattr(client, "load_sec"):
+        meta["load_sec"] = client.load_sec
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"folder": name, "summary_only": True, "speakers": meta["speakers"]}, ensure_ascii=False))
+
+
+def build_client(name: str, args: argparse.Namespace) -> Any:
+    if name == "gemini":
+        return ApiClient(OUT / "gemini" / "api_errors.jsonl")
+    if not args.model.is_file():
+        dest = OUT / "local"
+        dest.mkdir(parents=True, exist_ok=True)
+        (dest / "summary.md").write_text(
+            f"# Саммари\n\nfailure_kind: install\n\nmissing GGUF: {args.model}\n",
+            encoding="utf-8",
+        )
+        raise SystemExit(2)
+    last_error: Exception | None = None
+    for _attempt in range(2):
+        try:
+            return LocalClient(args.model, args.threads, args.n_ctx)
+        except Exception as exc:
+            last_error = exc
+    dest = OUT / "local"
+    dest.mkdir(parents=True, exist_ok=True)
+    (dest / "summary.md").write_text(
+        f"# Саммари\n\nfailure_kind: install\n\n{type(last_error).__name__}: {last_error}\n",
+        encoding="utf-8",
+    )
+    raise SystemExit(2)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--provider", choices=("gemini", "local", "both"), default="gemini")
@@ -469,6 +624,11 @@ def main() -> None:
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--n-ctx", type=int, default=8192)
     parser.add_argument("--rerender", action="store_true", help="reparse raw chapter extracts; no model calls")
+    parser.add_argument(
+        "--summary-only",
+        action="store_true",
+        help="regenerate summary.md from an existing insights.md; no extract calls",
+    )
     args = parser.parse_args()
     if not TRANSCRIPT.is_file() or not CHAPTERS_JSON.is_file():
         raise SystemExit("missing data/3c_data/transcript.md or chapters.json; run python scripts/stage3c_pack.py")
@@ -476,40 +636,19 @@ def main() -> None:
     utterances = load_utterances()
     write_slices(utterances, chapters)
     OUT.mkdir(parents=True, exist_ok=True)
+    targets = ["gemini", "local"] if args.provider == "both" else [args.provider]
     if args.rerender:
-        targets = ["gemini", "local"] if args.provider == "both" else [args.provider]
         for name in targets:
             rerender_from_raw(name, chapters, utterances)
         return
-    if args.provider in ("gemini", "both"):
-        client = ApiClient(OUT / "gemini" / "api_errors.jsonl")
-        run_provider("gemini", client, chapters, utterances)
-    if args.provider in ("local", "both"):
-        if not args.model.is_file():
-            dest = OUT / "local"
-            dest.mkdir(parents=True, exist_ok=True)
-            (dest / "summary.md").write_text(
-                f"# Саммари\n\nfailure_kind: install\n\nmissing GGUF: {args.model}\n",
-                encoding="utf-8",
-            )
-            raise SystemExit(2)
-        local = None
-        last_error: Exception | None = None
-        for _attempt in range(2):
-            try:
-                local = LocalClient(args.model, args.threads, args.n_ctx)
-                break
-            except Exception as exc:
-                last_error = exc
-        if local is None:
-            dest = OUT / "local"
-            dest.mkdir(parents=True, exist_ok=True)
-            (dest / "summary.md").write_text(
-                f"# Саммари\n\nfailure_kind: install\n\n{type(last_error).__name__}: {last_error}\n",
-                encoding="utf-8",
-            )
-            raise SystemExit(2)
-        run_provider("local", local, chapters, utterances)
+    if args.summary_only:
+        for name in targets:
+            run_summary_only(name, build_client(name, args))
+        return
+    if "gemini" in targets:
+        run_provider("gemini", build_client("gemini", args), chapters, utterances)
+    if "local" in targets:
+        run_provider("local", build_client("local", args), chapters, utterances)
 
 
 if __name__ == "__main__":

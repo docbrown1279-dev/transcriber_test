@@ -120,9 +120,14 @@ Gold windows (for your notes, not for the model): `00:00:00–00:01:23`, `00:09:
 ## Оценка
 (2–5 sentences: what kind of meeting this is, how noisy ASR is, whether anything was actually decided)
 
+## Спикеры
+SPEAKER_01 | SPEAKER_02
+
 ## Ключевые инсайты
-- (the same bar as above, meeting-level, not a dump of every chapter bullet)
+- короткий тезис [00:16:31.50-00:16:42.30]
 ```
+
+Speakers: unique `SPEAKER_*` from `src:` in that run's `insights.md`, one line, ` | ` between names. Key insights: meeting-level bar as above, each bullet ends with the supporting clock copied from `src:` as `[HH:MM:SS.cc-HH:MM:SS.cc]` (time only, no speaker). Do not invent clocks.
 
 No «Кратко / Решения / Дальше / Открыто / По времени» dump. Empty decisions belong in **Оценка**, not a fake list.
 
