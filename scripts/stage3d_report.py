@@ -28,12 +28,96 @@ SRC_RE = re.compile(
 KEY_CLOCK_RE = re.compile(
     r"\((SPEAKER_[A-Z0-9]+);\s*(\d{2}:\d{2}:\d{2}\.\d{2})[–-](\d{2}:\d{2}:\d{2}\.\d{2})\)"
 )
+BRACKET_CLOCK_RE = re.compile(r"\[(\d{2}:\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}:\d{2}\.\d{2})\]")
+
+
 def speakers_in(text: str) -> list[str]:
     return sorted(set(SPEAKER_RE.findall(text)), key=lambda name: (len(name), name))
 
 
 def src_triples(insights: str) -> set[tuple[str, str, str]]:
     return {(a, b, spk) for a, b, spk in SRC_RE.findall(insights)}
+
+
+def insight_rows(insights: str) -> list[tuple[str, str, str, str]]:
+    rows: list[tuple[str, str, str, str]] = []
+    pending: str | None = None
+    for line in insights.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("- "):
+            pending = stripped[2:].strip()
+            continue
+        match = SRC_RE.search(stripped)
+        if match and pending:
+            rows.append((pending, match.group(1), match.group(2), match.group(3)))
+            pending = None
+    return rows
+
+
+def inject_speakers(text: str, speakers: list[str]) -> str:
+    roster = "## Спикеры\n" + "\n".join(f"- {name} →" for name in speakers) + "\n"
+    if re.search(r"^##\s*Спикеры\s*$", text, re.M):
+        return re.sub(
+            r"^##\s*Спикеры\s*\n(?:.*\n)*?(?=^## |\Z)",
+            roster + "\n",
+            text,
+            count=1,
+            flags=re.M,
+        )
+    if text.lstrip().startswith("#"):
+        first, _, rest = text.lstrip().partition("\n")
+        return first + "\n\n" + roster + "\n" + rest.lstrip()
+    return roster + "\n" + text
+
+
+def _best_row(thesis: str, rows: list[tuple[str, str, str, str]]) -> tuple[str, str, str] | None:
+    needle = set(re.findall(r"[А-Яа-яA-Za-z0-9]{4,}", thesis.lower()))
+    best: tuple[int, tuple[str, str, str]] | None = None
+    for text, start, end, speaker in rows:
+        hay = set(re.findall(r"[А-Яа-яA-Za-z0-9]{4,}", text.lower()))
+        score = len(needle & hay)
+        if score and (best is None or score > best[0]):
+            best = (score, (start, end, speaker))
+    return best[1] if best and best[0] >= 2 else None
+
+
+def attach_key_refs(text: str, insights: str) -> str:
+    rows = insight_rows(insights)
+    allowed = {(start, end, speaker) for _thesis, start, end, speaker in rows}
+    if "## Ключевые инсайты" not in text:
+        return text
+    head, rest = text.split("## Ключевые инсайты", 1)
+    if "## По главам" in rest:
+        keys, tail = rest.split("## По главам", 1)
+        tail = "## По главам" + tail
+    else:
+        keys, tail = rest, ""
+    out: list[str] = []
+    for line in keys.splitlines():
+        if not line.startswith("- "):
+            out.append(line)
+            continue
+        match = KEY_CLOCK_RE.search(line)
+        if match and (match.group(2), match.group(3), match.group(1)) in allowed:
+            out.append(line)
+            continue
+        thesis = KEY_CLOCK_RE.sub("", line[2:]).strip()
+        thesis = BRACKET_CLOCK_RE.sub("", thesis).strip()
+        picked = None
+        bracket = BRACKET_CLOCK_RE.search(line)
+        if bracket:
+            for start, end, speaker in allowed:
+                if start == bracket.group(1) and end == bracket.group(2):
+                    picked = (start, end, speaker)
+                    break
+        if picked is None:
+            picked = _best_row(thesis, rows)
+        if picked:
+            start, end, speaker = picked
+            out.append(f"- {thesis} ({speaker}; {start}–{end})")
+        else:
+            out.append(line)
+    return head + "## Ключевые инсайты" + "\n".join(out) + "\n" + tail
 
 
 def report_prompt(insights: str, speakers: list[str]) -> str:
@@ -132,6 +216,8 @@ def run_provider(name: str, client: Any) -> None:
     text = strip_model_text(raw)
     if not text.lstrip().startswith("#"):
         text = "# Отчёт\n\n" + text
+    text = inject_speakers(text, speakers)
+    text = attach_key_refs(text, insights)
     (dest / "report.md").write_text(text.rstrip() + "\n", encoding="utf-8")
     meta = {
         "provider": getattr(client, "provider", name),
@@ -142,7 +228,7 @@ def run_provider(name: str, client: Any) -> None:
     }
     if hasattr(client, "load_sec"):
         meta["load_sec"] = client.load_sec
-    (dest / "run.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (dest / "report_run.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"folder": name, "speakers": speakers, "model": meta["model"]}, ensure_ascii=False))
 
 
@@ -151,12 +237,13 @@ def main() -> None:
     parser.add_argument("--provider", choices=("gemini", "local", "both"), default="gemini")
     parser.add_argument("--model", type=Path, default=ROOT / "models" / "Qwen3-8B-Q5_K_M.gguf")
     parser.add_argument("--threads", type=int, default=4)
-    parser.add_argument("--n-ctx", type=int, default=8192)
+    parser.add_argument("--n-ctx", type=int, default=16384)
     parser.add_argument("--check", type=Path, help="regex-check a 3d report.md")
     args = parser.parse_args()
     if args.check:
-        folder = "local" if "local" in str(args.check) else "gemini"
-        payload = check_report(args.check, INSIGHTS[folder])
+        check_path = args.check if args.check.is_absolute() else ROOT / args.check
+        folder = "local" if "local" in str(check_path) else "gemini"
+        payload = check_report(check_path, INSIGHTS[folder])
         raise SystemExit(0 if payload["ok"] else 1)
     if not TRANSCRIPT.is_file():
         raise SystemExit("missing data/3c_data/transcript.md")
