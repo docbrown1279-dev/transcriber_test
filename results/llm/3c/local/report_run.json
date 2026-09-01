@@ -1,0 +1,24 @@
+{
+  "provider": "local",
+  "model": "Qwen3-8B-Q5_K_M.gguf",
+  "calls": [
+    {
+      "purpose": "report",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 1195.569
+    }
+  ],
+  "source_insights": "results/llm/3c/local/insights.md",
+  "speakers": [
+    "SPEAKER_A",
+    "SPEAKER_B",
+    "SPEAKER_C",
+    "SPEAKER_D",
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02",
+    "SPEAKER_03"
+  ],
+  "load_sec": 5.134
+}

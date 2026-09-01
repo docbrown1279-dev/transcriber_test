@@ -120,6 +120,53 @@ def attach_key_refs(text: str, insights: str) -> str:
     return head + "## Ключевые инсайты" + "\n".join(out) + "\n" + tail
 
 
+HEAD_RE = re.compile(r"^### (D\d{2}) — (.+)$")
+CLOCK_LINE_RE = re.compile(r"^clock: (.+)$")
+
+
+def render_chapters(insights: str) -> str:
+    lines = ["## По главам", ""]
+    title = clock = None
+    pending: str | None = None
+    for raw in insights.splitlines():
+        line = raw.strip()
+        head = HEAD_RE.match(line)
+        if head:
+            title = f"### {head.group(1)} — {head.group(2)}"
+            clock = None
+            pending = None
+            continue
+        clock_match = CLOCK_LINE_RE.match(line)
+        if clock_match and title:
+            lines.append(title)
+            lines.append(f"clock: {clock_match.group(1)}")
+            continue
+        if line.lower() == "нет инсайтов":
+            lines.append("нет инсайтов")
+            lines.append("")
+            continue
+        if line.startswith("- "):
+            pending = line[2:].strip()
+            continue
+        src = SRC_RE.search(line)
+        if src and pending:
+            lines.append(f"- {pending}")
+            lines.append(f"  кто: {src.group(3)}")
+            lines.append(f"  когда: {src.group(1)}–{src.group(2)}")
+            pending = None
+            continue
+    if not lines[-1]:
+        lines.pop()
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def ensure_chapters(text: str, insights: str) -> str:
+    block = render_chapters(insights)
+    if re.search(r"^##\s*По главам\s*$", text, re.M):
+        return re.sub(r"^##\s*По главам\s*\n[\s\S]*\Z", block, text, count=1, flags=re.M)
+    return text.rstrip() + "\n\n" + block
+
+
 def report_prompt(insights: str, speakers: list[str]) -> str:
     roster = "\n".join(f"- {name} →" for name in speakers)
     dummy = "- согласовать смету до пятницы (SPEAKER_02; 00:12:04.00–00:12:18.50)"
@@ -218,6 +265,7 @@ def run_provider(name: str, client: Any) -> None:
         text = "# Отчёт\n\n" + text
     text = inject_speakers(text, speakers)
     text = attach_key_refs(text, insights)
+    text = ensure_chapters(text, insights)
     (dest / "report.md").write_text(text.rstrip() + "\n", encoding="utf-8")
     meta = {
         "provider": getattr(client, "provider", name),

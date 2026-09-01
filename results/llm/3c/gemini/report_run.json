@@ -1,0 +1,35 @@
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-flash",
+  "calls": [
+    {
+      "purpose": "report",
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "runtime_sec": 16.677,
+      "usage": {
+        "promptTokenCount": 3386,
+        "candidatesTokenCount": 4096,
+        "totalTokenCount": 7482,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 3386
+          }
+        ],
+        "serviceTier": "standard"
+      }
+    }
+  ],
+  "source_insights": "results/llm/3c/gemini/insights.md",
+  "speakers": [
+    "SPEAKER_A",
+    "SPEAKER_B",
+    "SPEAKER_C",
+    "SPEAKER_D",
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02",
+    "SPEAKER_03"
+  ]
+}
