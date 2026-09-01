@@ -10,4 +10,5 @@ alwaysApply: true
 - Выход: `results/llm/3c/gemini/` и `results/llm/3c/local/` — в каждой `insights.md` и `summary.md`. Local не копирует Gemini.
 - Инсайт только если тема на 2–3 реплики, вопрос–ответ или развилка. `clock` из JSON.
 - Сначала Gemini, 5 ретраев, лог без ключей; иначе NVIDIA.
+- Follow-up (спикеры + таймкоды в отчёте, без нового экстракта): `docs/prompts/stage3c_report.md` → `report.md`. `insights.md` не затирать.
 - Не читать `eval/` и `.env`. Не пересчитывать ASR/VAD/нарезку.

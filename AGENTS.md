@@ -15,6 +15,6 @@
 | `data/3c_data/transcript.md` | `data/3b_data/`, C, `eval/` |
 | `data/3c_data/chapters.json` | весь `results/llm/3b/` на запись |
 
-Выход: `results/llm/3c/gemini/{insights,summary}.md` и `results/llm/3c/local/{insights,summary}.md`. Local **не** копирует Gemini.
+Выход экстракта (уже есть, не перезаписывать): `results/llm/3c/{gemini,local}/insights.md`.
 
-Сначала Gemini (5 попыток, лог ошибок), иначе NVIDIA (ещё 5). Потом локальный 8B — полный экстракт, не дым.
+Если просят спикеров и таймкоды в отчёте — [`docs/prompts/stage3c_report.md`](docs/prompts/stage3c_report.md): один assemble, `report.md` рядом, `insights.md` не трогать.
