@@ -169,7 +169,9 @@ def write_smoke(load_sec: float, extract: dict, assemble: dict, n_ctx: int, mode
         "# Local smoke — Qwen3-8B Q5_K_M",
         "",
         f"- model: `{model.name}`, llama.cpp, n_ctx={n_ctx}, 4 threads, CPU.",
-        f"- load_sec: {load_sec}; extract D00: {extract['runtime_sec']} s; assemble Gemini insights: {assemble['runtime_sec']} s.",
+        f"- load_sec: {load_sec}; extract D00: {extract.get('runtime_sec')} s"
+        f"{' (reused local_d00.md)' if extract.get('reused') else ''}; "
+        f"assemble Gemini insights: {assemble['runtime_sec']} s.",
         f"- peak RSS: {rss} MiB (process).",
         f"- extract parse_ok: {extract['parse_ok']}; assemble parse_ok: {assemble['parse_ok']}; sections={assemble['sections']}; ### глав: {len(assemble['chapter_headings'])}/12.",
         f"- входы: `{CHUNK_D00.relative_to(ROOT)}` → `{LOCAL_D00.relative_to(ROOT)}`; assemble из существующих `insights_d/D00.md`…`D11.md` → `{LOCAL_REPORT.relative_to(ROOT)}`. Gemini файлы не перезаписывались.",
@@ -195,7 +197,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=Path, required=True)
     parser.add_argument("--threads", type=int, default=4)
-    parser.add_argument("--n-ctx", type=int, default=8192)
+    parser.add_argument("--n-ctx", type=int, default=16384)
+    parser.add_argument("--skip-extract", action="store_true", help="reuse local_d00.md")
     args = parser.parse_args()
     if not args.model.is_file():
         write_install_fail(f"missing GGUF: {args.model}")
@@ -219,7 +222,22 @@ def main() -> None:
                 raise SystemExit(2) from exc
     assert llm is not None
     load_sec = round(time.monotonic() - started, 3)
-    extract = extract_d00(llm)
+    if args.skip_extract and LOCAL_D00.is_file():
+        text = LOCAL_D00.read_text(encoding="utf-8")
+        title, insights, empty = parse_insights(text)
+        extract = {
+            "parse_ok": bool(title) and (empty or bool(insights)),
+            "title": title,
+            "n_insights": len(insights),
+            "kinds": [row["kind"] for row in insights],
+            "empty": empty or not insights,
+            "runtime_sec": None,
+            "clock_json": html_comment(LOCAL_D00, "clock_json") or "",
+            "clock_copied": True,
+            "reused": True,
+        }
+    else:
+        extract = extract_d00(llm)
     assemble = assemble_gemini(llm)
     write_smoke(load_sec, extract, assemble, args.n_ctx, args.model)
     print(

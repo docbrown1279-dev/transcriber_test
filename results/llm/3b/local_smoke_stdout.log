@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/workspace/scripts/stage3b_local_smoke.py", line 242, in <module>
+    main()
+  File "/workspace/scripts/stage3b_local_smoke.py", line 223, in main
+    assemble = assemble_gemini(llm)
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scripts/stage3b_local_smoke.py", line 118, in assemble_gemini
+    raw, sec = chat(llm, prompt, max_tokens=3072)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scripts/stage3b_local_smoke.py", line 62, in chat
+    response = llm.create_chat_completion(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/.venv/lib/python3.12/site-packages/llama_cpp/llama.py", line 2075, in create_chat_completion
+    return handler(
+           ^^^^^^^^
+  File "/workspace/.venv/lib/python3.12/site-packages/llama_cpp/llama_chat_format.py", line 724, in chat_completion_handler
+    completion_or_chunks = llama.create_completion(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/.venv/lib/python3.12/site-packages/llama_cpp/llama.py", line 1909, in create_completion
+    completion: Completion = next(completion_or_chunks)  # type: ignore
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/.venv/lib/python3.12/site-packages/llama_cpp/llama.py", line 1345, in _create_completion
+    raise ValueError(
+ValueError: Requested tokens (9720) exceed context window of 8192
+{"extract_parse_ok": true, "assemble_parse_ok": true, "load_sec": 5.416, "extract_sec": null, "assemble_sec": 1455.228, "peak_rss_mb": 13186.3}

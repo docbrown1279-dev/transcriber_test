@@ -87,14 +87,14 @@
     {
       "runtime": "llama.cpp",
       "model": "Qwen3-8B-Q5_K_M.gguf",
-      "status": "skipped",
+      "status": "success",
       "execution_mode": "local",
       "provider": "llama.cpp",
       "input_artifact": "data/3b_data/chunks_d/D00.md",
-      "runtime_sec": null,
-      "hallucination_flag": null,
+      "runtime_sec": 1659.0,
+      "hallucination_flag": true,
       "artifact": "results/llm/3b/local_smoke.md",
-      "notes": "Пропуск: API self-check not_usable."
+      "notes": "Дым: D00 extract parse_ok (7 fact, title «Подключение к сетям»). Assemble Gemini insights parse_ok, n_ctx=16384, 1455 с, RSS 13.2 GiB; 5 секций, 8/12 глав. insights_d и report.md не перезаписывались."
     }
   ],
   "recommendations": "Для инсайтов по готовым главам D: Gemini 2.5 Flash текстом, один чанк = один вызов, clock_json и src копировать из markdown (не из головы модели). Парсер обязан принимать и `- kind: fact`, и `- question:`. Title-retry не должен затирать инсайты. Сборку отчёта тем же Flash можно оставлять, но «Дальше» фильтровать по kind=action. Self-check тем же API как судья стиля не годится: сверять clock только со строками `clock:` / манифестом, числа — со стенограммой. Локальный 8B в этом прогоне не подтверждён (правило usable). NVIDIA не понадобился. Каркас C и 14B — не этот этап. ASR MVP без изменений: GigaAM v3_rnnt + линейный gain; диаризация демки — Silero+TEN / WeSpeaker."

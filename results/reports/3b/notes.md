@@ -10,7 +10,7 @@
 
 - Gemini `gemini-2.5-flash`, ключ из окружения, текст только. 0 ошибок HTTP. `api_errors.jsonl` не создавался.
 - NVIDIA не вызывался (Gemini отвечал с первой попытки).
-- Локальный Qwen3-8B: **пропуск** — API self-check = `not_usable`. См. [`local_smoke.md`](../../llm/3b/local_smoke.md).
+- Локальный Qwen3-8B: **дым пройден** после того как `structure_check.json` признали воротами (API `not_usable` игнорировали). См. [`local_smoke.md`](../../llm/3b/local_smoke.md).
 
 Вызовы (ориентир, включая ретраи D10 и повторные self-check): ~20, сумма wall ~103 с. Мета: [`run.json`](../../llm/3b/run.json).
 
@@ -23,6 +23,9 @@
 | [`self_check.md`](../../llm/3b/self_check.md) | вердикт API `not_usable` |
 | [`self_check_notes.md`](../../llm/3b/self_check_notes.md) | почему судья сломался; детерминированная сверка |
 | [`structure_check.json`](../../llm/3b/structure_check.json) | 12 clock = манифест, 138 src в чанках |
+| [`local_d00.md`](../../llm/3b/local_d00.md) | дым 8B на D00 |
+| [`local_report.md`](../../llm/3b/local_report.md) | дым assemble из Gemini insights |
+| [`local_smoke.md`](../../llm/3b/local_smoke.md) | parse / wall / RSS / сравнение D00 |
 
 Заголовки ≤5 слов, без префикса «Обсуждение …». D06 содержит слово «обсуждение» в середине («украшательств») — не шаблон «Обсуждение X».
 
