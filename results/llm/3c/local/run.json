@@ -1,0 +1,89 @@
+{
+  "provider": "local",
+  "model": "Qwen3-8B-Q5_K_M.gguf",
+  "calls": [
+    {
+      "purpose": "extract-D00",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 70.914
+    },
+    {
+      "purpose": "extract-D01",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 60.578
+    },
+    {
+      "purpose": "extract-D02",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 53.704
+    },
+    {
+      "purpose": "extract-D03",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 56.972
+    },
+    {
+      "purpose": "extract-D04",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 79.558
+    },
+    {
+      "purpose": "extract-D05",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 92.989
+    },
+    {
+      "purpose": "extract-D06",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 72.14
+    },
+    {
+      "purpose": "extract-D07",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 80.155
+    },
+    {
+      "purpose": "extract-D08",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 90.613
+    },
+    {
+      "purpose": "extract-D09",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 76.144
+    },
+    {
+      "purpose": "extract-D10",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 50.511
+    },
+    {
+      "purpose": "extract-D11",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 78.057
+    },
+    {
+      "purpose": "summary",
+      "provider": "local",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "runtime_sec": 124.981
+    }
+  ],
+  "n_chapters": 12,
+  "n_insights": 40,
+  "load_sec": 2.73,
+  "rerendered": true,
+  "summary_resumed_from_insights": true
+}

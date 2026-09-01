@@ -61,12 +61,17 @@ def load_utterances() -> list[dict[str, Any]]:
     return parse_md_utterances(TRANSCRIPT)
 
 
-def allowed_labels(chapter: dict[str, Any], utterances: list[dict[str, Any]]) -> list[str]:
-    labels = []
+def chapter_utterances(chapter: dict[str, Any], utterances: list[dict[str, Any]]) -> list[tuple[str, str]]:
+    rows = []
     for row in utterances:
         if overlap(row["start"], row["end"], chapter):
-            labels.append(f"[{fmt_ts(row['start'])}-{fmt_ts(row['end'])} | {row['speaker']}]")
-    return labels
+            label = f"[{fmt_ts(row['start'])}-{fmt_ts(row['end'])} | {row['speaker']}]"
+            rows.append((label, row["text"]))
+    return rows
+
+
+def allowed_labels(chapter: dict[str, Any], utterances: list[dict[str, Any]]) -> list[str]:
+    return [label for label, _text in chapter_utterances(chapter, utterances)]
 
 
 def _pick_by_speaker(hits: list[str], src: str) -> str | None:
@@ -80,7 +85,11 @@ def _pick_by_speaker(hits: list[str], src: str) -> str | None:
     return hits[0]
 
 
-def match_src(src: str, allowed: list[str]) -> str | None:
+def match_src(
+    src: str,
+    allowed: list[str],
+    texts: dict[str, str] | None = None,
+) -> str | None:
     got = src.strip()
     if not got.startswith("["):
         got = f"[{got}"
@@ -114,6 +123,18 @@ def match_src(src: str, allowed: list[str]) -> str | None:
         picked = _pick_by_speaker(hits, got)
         if picked:
             return picked
+    needle = re.sub(r"\s+", " ", got.strip("[]").strip())
+    if texts and len(needle) >= 20:
+        scored: list[tuple[int, str]] = []
+        for label, text in texts.items():
+            body = re.sub(r"\s+", " ", text)
+            if needle in body:
+                scored.append((len(body), label))
+            elif len(body) >= 20 and body in needle:
+                scored.append((len(body), label))
+        if scored:
+            scored.sort(reverse=True)
+            return scored[0][1]
     return None
 
 
@@ -156,7 +177,12 @@ def summary_prompt(insights: str) -> str:
     )
 
 
-def parse_extract(raw: str, chapter: dict[str, Any], allowed: list[str]) -> dict[str, Any]:
+def parse_extract(
+    raw: str,
+    chapter: dict[str, Any],
+    allowed: list[str],
+    texts: dict[str, str] | None = None,
+) -> dict[str, Any]:
     text = strip_model_text(raw)
     title = chapter["id"]
     bullets: list[dict[str, str]] = []
@@ -179,7 +205,7 @@ def parse_extract(raw: str, chapter: dict[str, Any], allowed: list[str]) -> dict
             continue
         src_match = SRC_LINE.search(stripped)
         if src_match and pending is not None:
-            mapped = match_src(src_match.group(1), allowed)
+            mapped = match_src(src_match.group(1), allowed, texts)
             if mapped:
                 bullets.append({"text": pending, "src": mapped})
                 pending = None
@@ -380,7 +406,9 @@ def run_provider(name: str, client: Any, chapters: list[dict[str, Any]], utteran
     parsed: dict[str, dict[str, Any]] = {}
     for chapter in chapters:
         chunk = slice_chapter(utterances, chapter)
-        allowed = allowed_labels(chapter, utterances)
+        rows = chapter_utterances(chapter, utterances)
+        allowed = [label for label, _text in rows]
+        texts = {label: text for label, text in rows}
         raw = client.complete(
             extract_prompt(chapter, chunk),
             max_tokens=1024,
@@ -388,7 +416,7 @@ def run_provider(name: str, client: Any, chapters: list[dict[str, Any]], utteran
         )
         (dest / "raw").mkdir(exist_ok=True)
         (dest / "raw" / f"{chapter['id']}.txt").write_text(raw, encoding="utf-8")
-        parsed[chapter["id"]] = parse_extract(raw, chapter, allowed)
+        parsed[chapter["id"]] = parse_extract(raw, chapter, allowed, texts)
     insights = render_insights(chapters, parsed)
     (dest / "insights.md").write_text(insights, encoding="utf-8")
     summary_raw = client.complete(summary_prompt(insights), max_tokens=2048, purpose="summary")
@@ -418,8 +446,12 @@ def rerender_from_raw(name: str, chapters: list[dict[str, Any]], utterances: lis
         raw_path = raw_dir / f"{chapter['id']}.txt"
         if not raw_path.is_file():
             raise SystemExit(f"missing {raw_path}")
-        allowed = allowed_labels(chapter, utterances)
-        parsed[chapter["id"]] = parse_extract(raw_path.read_text(encoding="utf-8"), chapter, allowed)
+        rows = chapter_utterances(chapter, utterances)
+        allowed = [label for label, _text in rows]
+        texts = {label: text for label, text in rows}
+        parsed[chapter["id"]] = parse_extract(
+            raw_path.read_text(encoding="utf-8"), chapter, allowed, texts
+        )
     insights = render_insights(chapters, parsed)
     (dest / "insights.md").write_text(insights, encoding="utf-8")
     meta_path = dest / "run.json"
