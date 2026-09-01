@@ -10,6 +10,13 @@ Stage 3b dumped every stray ASR phrase (investors, «заказчик админ
 
 This meeting is a working call: little is underlined, quiet bits are bad ASR. Keep only topics that **actually got airtime**.
 
+The transcript is **not** all ASR. Four eval clips are human gold (complete sentences). The rest is GigaAM crumbs. That is the point of 3c:
+
+1. **Finished thoughts** (mostly gold windows) → real insights (Q–A, 2–3 utterances, a fork).
+2. **Broken ASR** → do **not** invent insights. Still emit the chapter: `clock` + a short title for the general topic + `нет инсайтов`.
+
+Do **not** put “this span is gold” into the extract prompt. The model should react to whether the lines are a thought, not to a label. After the run, in `notes.md`, compare those two regimes using `gold_windows` in `chapters.json` (do not open `eval/`).
+
 **In:** two files. **Out:** two folders. Gemini and local are **independent** full runs.
 
 ---
@@ -18,8 +25,8 @@ This meeting is a working call: little is underlined, quiet bits are bad ASR. Ke
 
 | File | What |
 |---|---|
-| [`data/3c_data/transcript.md`](../../data/3c_data/transcript.md) | GigaAM v3 + pyannote 3.1, full meeting. Lines: `[HH:MM:SS.cc-HH:MM:SS.cc \| SPEAKER] text` |
-| [`data/3c_data/chapters.json`](../../data/3c_data/chapters.json) | 12 Jina **D** clocks from `exp_d_chapters.json`. Ground truth. No titles (titles are your job). |
+| [`data/3c_data/transcript.md`](../../data/3c_data/transcript.md) | Full meeting: GigaAM v3, with **human gold spliced** into four eval windows (same splice as 3b hybrid). Lines: `[HH:MM:SS.cc-HH:MM:SS.cc \| SPEAKER] text`. Gold speakers look like `SPEAKER_A`/`B`/`C`; ASR like `SPEAKER_00`/`01`/`02`. |
+| [`data/3c_data/chapters.json`](../../data/3c_data/chapters.json) | 12 Jina **D** clocks + `gold_windows`. Titles are your job. |
 
 That is the whole corpus. If those two files exist, **do not** rebuild from JSON.
 
@@ -51,6 +58,8 @@ Write an insight only if **one** of these is true:
 - **two viewpoints** or a real fork (underground vs first floor, send now vs wait).
 
 Drop: greetings, «ну как бы», role crumbs («мы как инвесторы»), ASR debris, a number that appears once with no follow-up, promises with no object.
+
+If the chapter is only fragments: heading + `clock` + `нет инсайтов`. The title may still name the general topic («сети», «квартиры») — that is scenario 2, not a failure.
 
 **Good (shape, not a gold list):**
 
@@ -91,12 +100,17 @@ Local Qwen **re-extracts every D chapter from the transcript**. Do not copy Gemi
 ### D00 — Канализация через паркинг
 clock: 00:00:09.97-00:01:58.73
 - канализация идёт через паркинг: так заданы точки подключения в ТУ
-  src: [00:00:21.77-00:00:46.77 | SPEAKER_02]
-- проект в ближайшее время заходит в экспертизу
-  src: [00:00:21.77-00:00:46.77 | SPEAKER_02]
+  src: [00:00:22.30-00:01:04.30 | SPEAKER_B]
+- в ТУ на ливнёвку — можно ли подключаться к сети УДС?
+  src: [00:01:05.00-00:01:13.30 | SPEAKER_A]
+### D01 — Расходы, озеленение, светильники
+clock: 00:01:59.30-00:04:05.04
+нет инсайтов
 ```
 
-All 12 ids `D00` … `D11`, in order, even if a chapter is `нет инсайтов` under the heading. No `kind:` taxonomy.
+All 12 ids `D00` … `D11`, in order, even if a chapter is `нет инсайтов` under the heading. No `kind:` taxonomy. A chapter with only a title and clock is valid (ASR crumbs).
+
+Gold windows (for your notes, not for the model): `00:00:00–00:01:23`, `00:09:30–00:10:55`, `00:14:35–00:16:00`, `00:20:45–00:22:10`. They cut across D chapters (D00, D04/D05, D07, D10/D11) — mixed gold+ASR in one chapter is expected.
 
 ### `summary.md`
 
@@ -130,7 +144,7 @@ python scripts/stage3c_pack.py --check results/llm/3c/local/insights.md
 
 `src` may straddle a chapter boundary; that is overlap, not invention. Do not fail a run because an utterance is not a subset of `clock`.
 
-Write `results/reports/3c/notes.md` in Russian (what ran, filter vs 3b, Gemini vs local in 5–8 lines). Commit and push this branch. No force-push to `main`.
+Write `results/reports/3c/notes.md` in Russian: what ran; whether gold-ish chapters grew insights and ASR-only chapters stayed `нет инсайтов`; Gemini vs local in 5–8 lines. Commit and push this branch. No force-push to `main`.
 
 ---
 

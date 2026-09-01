@@ -2,6 +2,32 @@
   "letter": "D",
   "chapters_json": "results/chunking/2b/exp_d_chapters.json",
   "transcript": "data/3c_data/transcript.md",
+  "gold_windows": [
+    {
+      "id": "test_voice",
+      "clock": "00:00:00.00-00:01:23.00",
+      "start_sec": 0.0,
+      "end_sec": 83.0
+    },
+    {
+      "id": "test_apartments",
+      "clock": "00:09:30.00-00:10:55.00",
+      "start_sec": 570.0,
+      "end_sec": 655.0
+    },
+    {
+      "id": "test_transformers",
+      "clock": "00:14:35.00-00:16:00.00",
+      "start_sec": 875.0,
+      "end_sec": 960.0
+    },
+    {
+      "id": "test_ninth",
+      "clock": "00:20:45.00-00:22:10.00",
+      "start_sec": 1245.0,
+      "end_sec": 1330.0
+    }
+  ],
   "chapters": [
     {
       "id": "D00",

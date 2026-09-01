@@ -8,7 +8,7 @@ description: Этап 3c — фильтрованные инсайты по ча
 Промпт: [`docs/prompts/stage3c.md`](../../../docs/prompts/stage3c.md).
 
 ```
-- [ ] вход только data/3c_data/transcript.md + chapters.json (не 3b_data, не C)
+- [ ] вход только data/3c_data/transcript.md + chapters.json (gold в 4 окнах; не eval/, не C)
 - [ ] gemini/insights.md + gemini/summary.md
 - [ ] local/insights.md + local/summary.md (свой экстракт, не сборка Gemini)
 - [ ] фильтр: 2–3 реплики / вопрос–ответ / развилка

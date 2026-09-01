@@ -181,9 +181,9 @@ VAD без спикеров в **1f** не кандидат (нужны id дл�
 
 ## Этап 3c — фильтр и два независимых прогона (сейчас)
 
-Вход — **два файла**: [`data/3c_data/transcript.md`](../data/3c_data/transcript.md) и [`data/3c_data/chapters.json`](../data/3c_data/chapters.json) (часы D из 2b JSON). Промпт: [`docs/prompts/stage3c.md`](prompts/stage3c.md). Скрипт склейки: [`scripts/stage3c_pack.py`](../scripts/stage3c_pack.py).
+Вход — **два файла**: [`data/3c_data/transcript.md`](../data/3c_data/transcript.md) (GigaAM + gold в четырёх окнах eval) и [`data/3c_data/chapters.json`](../data/3c_data/chapters.json) (часы D + `gold_windows`). Промпт: [`docs/prompts/stage3c.md`](prompts/stage3c.md). Скрипт: [`scripts/stage3c_pack.py`](../scripts/stage3c_pack.py).
 
-Инсайт только если тема на 2–3 реплики, вопрос–ответ или развилка. Не тащить случайные фразы. Выход: `results/llm/3c/gemini/` и `results/llm/3c/local/` — в каждой список глав с часами + саммари. Local пишет свой экстракт. **C не гоняем.**
+Два режима: законченная мысль (в основном gold) → инсайт; обрывки ASR → только `clock` + общее название, `нет инсайтов`. Local пишет свой экстракт. **C не гоняем.** `eval/` агентам не читать.
 
 ---
 

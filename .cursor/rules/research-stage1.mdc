@@ -6,7 +6,7 @@ alwaysApply: true
 # Этап 3c
 
 - Промпт: `docs/prompts/stage3c.md`.
-- Вход: только `data/3c_data/transcript.md` и `data/3c_data/chapters.json`. Не `data/3b_data/`. Не C.
+- Вход: только `data/3c_data/transcript.md` (GigaAM + gold в 4 окнах) и `data/3c_data/chapters.json`. Не `eval/`. Не C.
 - Выход: `results/llm/3c/gemini/` и `results/llm/3c/local/` — в каждой `insights.md` и `summary.md`. Local не копирует Gemini.
 - Инсайт только если тема на 2–3 реплики, вопрос–ответ или развилка. `clock` из JSON.
 - Сначала Gemini, 5 ретраев, лог без ключей; иначе NVIDIA.

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Stage 3c sources: one transcript + D chapter clocks. No gold, no C, no 12 chunk files.
+"""Stage 3c sources: one transcript + D chapter clocks. No C, no 12 chunk files.
+
+Transcript is GigaAM with gold spliced into the four eval windows (same as 3b hybrid).
+Cloud agents use the committed files; do not read eval/.
 
   python scripts/stage3c_pack.py          # write data/3c_data/{transcript.md,chapters.json}
   python scripts/stage3c_pack.py --slice  # also write _slices/D00.md … D11.md (gitignored)
@@ -19,14 +22,17 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from asr_json_to_md import (  # noqa: E402
     CHAPTERS,
+    CLIPS,
     FULL_ASR,
     format_line,
     fmt_ts,
     load_chapters,
     load_json,
+    overlaps,
     parse_md_utterances,
     parse_ts,
     segments_from,
+    shift,
 )
 
 OUT = ROOT / "data" / "3c_data"
@@ -40,15 +46,79 @@ HEAD_RE = re.compile(r"^### (D\d{2}) — (.+)$", re.M)
 CLOCK_RE = re.compile(r"^clock: (\d{2}:\d{2}:\d{2}\.\d{2})-(\d{2}:\d{2}:\d{2}\.\d{2})$", re.M)
 
 
-def load_utterances() -> list[dict]:
+def gold_windows() -> list[dict]:
+    rows = []
+    for clip_id, offset, duration in CLIPS:
+        start, end = float(offset), float(offset) + float(duration)
+        rows.append(
+            {
+                "id": clip_id,
+                "clock": f"{fmt_ts(start)}-{fmt_ts(end)}",
+                "start_sec": start,
+                "end_sec": end,
+            }
+        )
+    return rows
+
+
+def find_hybrid() -> Path | None:
+    for path in (
+        ROOT / ".trash" / "3b_data" / "hybrid_asr_gold.md",
+        ROOT / "data" / "3b_data" / "hybrid_asr_gold.md",
+    ):
+        if path.is_file():
+            return path
+    return None
+
+
+def load_gold_from_eval() -> tuple[list[dict], list[tuple[float, float]]] | None:
+    eval_dir = ROOT / "eval"
+    if not eval_dir.is_dir():
+        return None
+    gold_rows: list[dict] = []
+    windows: list[tuple[float, float]] = []
+    for clip_id, offset, duration in CLIPS:
+        path = eval_dir / f"{clip_id}.json"
+        if not path.is_file():
+            continue
+        windows.append((float(offset), float(offset) + float(duration)))
+        gold_rows.extend(shift(segments_from(load_json(path)), float(offset)))
+    if not gold_rows:
+        return None
+    return gold_rows, windows
+
+
+def splice(asr_rows: list[dict], gold_rows: list[dict], windows: list[tuple[float, float]]) -> list[dict]:
+    kept = [row for row in asr_rows if not overlaps(row["start"], row["end"], windows)]
+    return sorted(kept + gold_rows, key=lambda row: (row["start"], row["end"]))
+
+
+def load_asr_rows() -> list[dict]:
     if FULL_ASR.is_file():
         return segments_from(load_json(FULL_ASR))
-    legacy = ROOT / "data" / "3b_data" / "full_asr.md"
-    trash = ROOT / ".trash" / "3b_data" / "full_asr.md"
-    for path in (TRANSCRIPT, legacy, trash):
+    for path in (
+        ROOT / ".trash" / "3b_data" / "full_asr.md",
+        ROOT / "data" / "3b_data" / "full_asr.md",
+    ):
         if path.is_file():
             return parse_md_utterances(path)
-    raise SystemExit("no ASR JSON and no transcript.md — cannot pack 3c sources")
+    return []
+
+
+def load_utterances() -> tuple[list[dict], str]:
+    hybrid = find_hybrid()
+    if hybrid is not None:
+        return parse_md_utterances(hybrid), f"hybrid:{hybrid.name}"
+    asr_rows = load_asr_rows()
+    gold = load_gold_from_eval()
+    if asr_rows and gold:
+        gold_rows, windows = gold
+        return splice(asr_rows, gold_rows, windows), "hybrid:eval"
+    if TRANSCRIPT.is_file():
+        return parse_md_utterances(TRANSCRIPT), "transcript.md"
+    if asr_rows:
+        return asr_rows, "asr-only"
+    raise SystemExit("no hybrid, no eval gold, no ASR JSON, no transcript.md")
 
 
 def chapter_rows() -> list[dict]:
@@ -68,12 +138,15 @@ def chapter_rows() -> list[dict]:
     return rows
 
 
-def write_transcript(utterances: list[dict]) -> None:
+def write_transcript(utterances: list[dict], source: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    windows = "; ".join(row["clock"] for row in gold_windows())
     lines = [
-        "<!-- source: results/asr/2/gigaam_v3_rnnt/meeting_sample.json -->",
+        f"<!-- source: {source} -->",
         "<!-- line: [HH:MM:SS.cc-HH:MM:SS.cc | SPEAKER] text -->",
         "<!-- clocks of chapters D: chapters.json, not this file -->",
+        f"<!-- gold_windows: {windows} -->",
+        "<!-- gold replaces ASR inside those 4 eval clips; the rest is GigaAM -->",
         "",
     ]
     for row in utterances:
@@ -89,6 +162,7 @@ def write_chapters(rows: list[dict]) -> None:
                 "letter": "D",
                 "chapters_json": str(CHAPTERS["D"].relative_to(ROOT)),
                 "transcript": str(TRANSCRIPT.relative_to(ROOT)),
+                "gold_windows": gold_windows(),
                 "chapters": rows,
             },
             ensure_ascii=False,
@@ -183,9 +257,9 @@ def main() -> None:
         chapters = json.loads(CHAPTERS_JSON.read_text(encoding="utf-8"))["chapters"]
         payload = check_insights(args.check, chapters)
         raise SystemExit(0 if payload["ok"] else 1)
-    utterances = load_utterances()
+    utterances, source = load_utterances()
     chapters = chapter_rows()
-    write_transcript(utterances)
+    write_transcript(utterances, source)
     write_chapters(chapters)
     if args.slice:
         write_slices(utterances, chapters)
@@ -194,8 +268,10 @@ def main() -> None:
             {
                 "transcript": str(TRANSCRIPT.relative_to(ROOT)),
                 "chapters": str(CHAPTERS_JSON.relative_to(ROOT)),
+                "source": source,
                 "n_lines": len(utterances),
                 "n_chapters": len(chapters),
+                "gold_windows": [row["clock"] for row in gold_windows()],
                 "slices": str(SLICES.relative_to(ROOT)) if args.slice else None,
             },
             ensure_ascii=False,

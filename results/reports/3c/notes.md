@@ -8,6 +8,8 @@
 
 3b тащил случайные фразы. Локальный `report.md` совпал с Gemini, потому что 8B **собирала уже готовые** Gemini-инсайты. Здесь оба экстрактора пишут сами. В инсайт попадает только тема на 2–3 реплики, вопрос–ответ или развилка.
 
+В `transcript.md` вклеен **gold** в четыре окна eval (как hybrid в 3b). Это и есть проверка: законченные мысли → инсайты; обрывки ASR → только часы главы и общий смысл (`нет инсайтов`).
+
 ## Вход
 
-Только [`data/3c_data/transcript.md`](../../../data/3c_data/transcript.md) и [`data/3c_data/chapters.json`](../../../data/3c_data/chapters.json). Промпт: [`docs/prompts/stage3c.md`](../../../docs/prompts/stage3c.md).
+Только [`data/3c_data/transcript.md`](../../../data/3c_data/transcript.md) и [`data/3c_data/chapters.json`](../../../data/3c_data/chapters.json) (`gold_windows` там же). `eval/` не читать. Промпт: [`docs/prompts/stage3c.md`](../../../docs/prompts/stage3c.md).

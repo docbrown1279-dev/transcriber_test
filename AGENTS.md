@@ -12,7 +12,7 @@
 
 | Агенту | Не читать |
 |---|---|
-| `data/3c_data/transcript.md` | `data/3b_data/`, hybrid, C, `eval/` |
+| `data/3c_data/transcript.md` | `data/3b_data/`, C, `eval/` |
 | `data/3c_data/chapters.json` | весь `results/llm/3b/` на запись |
 
 Выход: `results/llm/3c/gemini/{insights,summary}.md` и `results/llm/3c/local/{insights,summary}.md`. Local **не** копирует Gemini.
