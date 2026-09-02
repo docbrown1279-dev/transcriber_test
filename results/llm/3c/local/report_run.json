@@ -6,7 +6,7 @@
       "purpose": "report",
       "provider": "local",
       "model": "Qwen3-8B-Q5_K_M.gguf",
-      "runtime_sec": 1195.569
+      "runtime_sec": 235.101
     }
   ],
   "source_insights": "results/llm/3c/local/insights.md",
@@ -20,5 +20,5 @@
     "SPEAKER_02",
     "SPEAKER_03"
   ],
-  "load_sec": 5.134
+  "load_sec": 4.072
 }
