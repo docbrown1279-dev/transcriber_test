@@ -115,8 +115,7 @@ def attach_key_refs(text: str, insights: str) -> str:
         if picked:
             start, end, speaker = picked
             out.append(f"- {thesis} ({speaker}; {start}–{end})")
-        else:
-            out.append(line)
+        # drop bullets that cannot be grounded to a 3c src
     return head + "## Ключевые инсайты" + "\n".join(out) + "\n" + tail
 
 
@@ -167,31 +166,38 @@ def ensure_chapters(text: str, insights: str) -> str:
     return text.rstrip() + "\n\n" + block
 
 
+def strip_chapters(text: str) -> str:
+    """Chapter list lives in insights.md; do not keep a dump in the meeting report."""
+    cleaned = re.sub(r"^##\s*По главам\s*\n[\s\S]*\Z", "", text, flags=re.M)
+    cleaned = re.sub(r"^### D\d{2} — .+\n(?:clock: .+\n)?(?:.*\n)*?(?=^### D\d{2} — |\Z)", "", cleaned, flags=re.M)
+    return cleaned.rstrip() + "\n"
+
+
 def report_prompt(insights: str, speakers: list[str]) -> str:
     roster = "\n".join(f"- {name} →" for name in speakers)
-    dummy = "- согласовать смету до пятницы (SPEAKER_02; 00:12:04.00–00:12:18.50)"
+    dummy = "- канализация идёт через паркинг, потому что так заданы точки в ТУ (SPEAKER_B; 00:00:22.30–00:01:04.30)"
     return (
-        "Собери отчёт секретаря из готовых инсайтов. Не добавляй факты, числа и людей, которых нет во входе.\n"
+        "Собери КОРОТКИЙ отчёт секретаря из готовых инсайтов. Не добавляй факты, числа и людей, которых нет во входе.\n"
         "Имена и должности не выдумывай: в блоке «Спикеры» оставь пустое место после стрелки.\n"
-        "Идентификаторы копируй как есть (SPEAKER_02 и SPEAKER_B — разные слоты, не сливай).\n"
-        "Каждый пункт «Ключевые инсайты» обязан кончаться скобкой с id и часами из строки src инсайта.\n"
-        f"Формат скобки как здесь (это ФОРМА, не факт этой записи): {dummy}\n"
-        "Если у тезиса нет src — не ставь его в «Ключевые». Время не выдумывай.\n"
-        "Главы D00…D11 сохрани все, даже с «нет инсайтов».\n\n"
+        "Идентификаторы копируй как есть (SPEAKER_02 и SPEAKER_B — разные слоты, не сливай).\n\n"
+        "В «Ключевые инсайты» ставь пункт ТОЛЬКО если верно одно:\n"
+        "1) одна тема звучит минимум в трёх разных репликах (не три пересказа одной фразы);\n"
+        "2) явный вопрос одного спикера и ответ другого; мелкий диалог («Андрей подойдёт?» — «да») не считается;\n"
+        "3) один спикер раскрывает проблему: что сделать и почему важно, либо что не сделали и почему.\n"
+        "Не бери: реплику без развития, приветствия, переспрашивания, общие «направим»/«уточним» без объекта.\n"
+        "Не копируй все пункты глав. 5–12 ключевых тезисов на всю встречу достаточно. Полный разбор по D00…D11 уже есть отдельно — блок «По главам» НЕ пиши.\n\n"
+        "Каждый пункт «Ключевые инсайты» кончается скобкой с id и часами из строки src.\n"
+        f"Формат скобки (это ФОРМА, не факт этой записи): {dummy}\n"
+        "Если у тезиса нет src — не ставь его. Время не выдумывай.\n\n"
         "Формат, без вступления:\n"
         "# Отчёт\n"
         "## Спикеры\n"
         f"{roster}\n"
         "## Оценка\n"
-        "(2–5 предложений)\n"
+        "(2–5 предложений: характер встречи, шум ASR, были ли решения)\n"
         "## Ключевые инсайты\n"
-        "- тезис (SPEAKER_xx; HH:MM:SS.cc–HH:MM:SS.cc)\n"
-        "## По главам\n"
-        "### D00 — <title>\n"
-        "clock: <как во входе>\n"
-        "- тезис\n"
-        "  кто: SPEAKER_xx\n"
-        "  когда: HH:MM:SS.cc–HH:MM:SS.cc\n\n"
+        "- тезис (SPEAKER_xx; HH:MM:SS.cc–HH:MM:SS.cc)\n\n"
+        "Не добавляй секции «По главам», «По времени», «Решения».\n\n"
         f"СПИСОК ID (все вывести в «Спикеры»):\n{roster}\n\n"
         f"ИНСАЙТЫ:\n{insights}\n"
     )
@@ -215,9 +221,9 @@ def check_report(path: Path, insights_path: Path) -> dict[str, Any]:
         issues.append(f"speakers extra {extra}")
     if "## Спикеры" not in report or "## Ключевые инсайты" not in report:
         issues.append("missing sections")
-    for tag in [f"D{i:02d}" for i in range(12)]:
-        if f"### {tag} — " not in report:
-            issues.append(f"missing {tag}")
+    if re.search(r"^##\s*По главам\s*$", report, re.M) or re.search(r"^### D\d{2} — ", report, re.M):
+        issues.append("chapter dump present; belongs in insights.md")
+    n_src = len(insight_rows(insights))
     key_block = report.split("## Ключевые инсайты", 1)[-1].split("## По главам", 1)[0]
     timed = 0
     untimed = 0
@@ -235,6 +241,10 @@ def check_report(path: Path, insights_path: Path) -> dict[str, Any]:
         if triple not in allowed:
             bad_clock += 1
             issues.append(f"clock not in 3c src: {match.group(0)}")
+    if timed == 0:
+        issues.append("no key insights")
+    if n_src >= 15 and timed >= min(n_src - 2, 20):
+        issues.append(f"key dump {timed}/{n_src}; keep 5–12 meeting-level items")
     payload = {
         "ok": not issues,
         "file": str(path.relative_to(ROOT)),
@@ -257,7 +267,7 @@ def run_provider(name: str, client: Any) -> None:
     speakers = speakers_in(TRANSCRIPT.read_text(encoding="utf-8"))
     dest = OUT / name
     dest.mkdir(parents=True, exist_ok=True)
-    raw = client.complete(report_prompt(insights, speakers), max_tokens=4096, purpose="report")
+    raw = client.complete(report_prompt(insights, speakers), max_tokens=2048, purpose="report")
     (dest / "raw").mkdir(exist_ok=True)
     (dest / "raw" / "report.txt").write_text(raw, encoding="utf-8")
     text = strip_model_text(raw)
@@ -265,7 +275,7 @@ def run_provider(name: str, client: Any) -> None:
         text = "# Отчёт\n\n" + text
     text = inject_speakers(text, speakers)
     text = attach_key_refs(text, insights)
-    text = ensure_chapters(text, insights)
+    text = strip_chapters(text)
     (dest / "report.md").write_text(text.rstrip() + "\n", encoding="utf-8")
     meta = {
         "provider": getattr(client, "provider", name),
@@ -285,7 +295,7 @@ def main() -> None:
     parser.add_argument("--provider", choices=("gemini", "local", "both"), default="gemini")
     parser.add_argument("--model", type=Path, default=ROOT / "models" / "Qwen3-8B-Q5_K_M.gguf")
     parser.add_argument("--threads", type=int, default=4)
-    parser.add_argument("--n-ctx", type=int, default=16384)
+    parser.add_argument("--n-ctx", type=int, default=8192)
     parser.add_argument("--check", type=Path, help="regex-check a 3d report.md")
     args = parser.parse_args()
     if args.check:

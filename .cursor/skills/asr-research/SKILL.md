@@ -13,7 +13,7 @@ description: Этап 3c — фильтрованные инсайты по ча
 - [ ] local/insights.md + local/summary.md (свой экстракт, не сборка Gemini)
 - [ ] фильтр: 2–3 реплики / вопрос–ответ / развилка
 - [ ] Gemini 5 попыток, лог без ключей; иначе NVIDIA 5
-- [ ] follow-up без нового экстракта: docs/prompts/stage3c_report.md → report.md (спикеры + часы)
+- [ ] follow-up: docs/prompts/stage3c_report.md → report.md (спикеры + **короткие** ключевые инсайты, без «По главам»)
 ```
 
 Не читать `eval/`. Не пересчитывать ASR/VAD/нарезку. Не перезаписывать `insights.md`.
