@@ -177,6 +177,6 @@ Gold **может лежать в git на `main`**. Cloud Agent, клониру
 ## Ещё не сделано
 
 - Шаблон `cloud_in/agent/` (AGENTS.md + rules.md: запрет `eval/`)
-- Promote-ветка: plan + reports + `eval/` → PR в `main` (без моделей/кода этапов)
+- ~~Promote в `main`~~ — сделано (`ffe4bc1`); позже вернуть `eval/` в ignore (файлы уже tracked, ignore не снимет их из git без `git rm --cached`)
 - Product planner: MVP из freeze
 - Заготовки `progress/plan.md` / `log.md`
