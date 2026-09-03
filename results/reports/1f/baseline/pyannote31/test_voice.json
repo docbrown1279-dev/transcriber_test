@@ -1,0 +1,66 @@
+{
+  "audio": "data/test_voice.m4a",
+  "duration_sec": 83.0,
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "runtime_sec": 36.917,
+  "merged_turns": [
+    {
+      "start": 9.970344,
+      "end": 13.952844,
+      "speaker": "SPEAKER_01",
+      "id": 0,
+      "rms_dbfs": -37.675,
+      "peak_dbfs": -7.392,
+      "gain_db": 6.392
+    },
+    {
+      "start": 14.340969,
+      "end": 20.787219,
+      "speaker": "SPEAKER_00",
+      "id": 1,
+      "rms_dbfs": -24.518,
+      "peak_dbfs": -2.668,
+      "gain_db": 0.0
+    },
+    {
+      "start": 21.765969,
+      "end": 65.438469,
+      "speaker": "SPEAKER_01",
+      "id": 2,
+      "rms_dbfs": -39.806,
+      "peak_dbfs": -17.678,
+      "gain_db": 16.678
+    },
+    {
+      "start": 65.944719,
+      "end": 74.955969,
+      "speaker": "SPEAKER_00",
+      "id": 3,
+      "rms_dbfs": -26.159,
+      "peak_dbfs": -8.001,
+      "gain_db": 0.0
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 0.0,
+      "end": 9.970344
+    },
+    {
+      "start": 20.787219,
+      "end": 21.765969
+    },
+    {
+      "start": 65.438469,
+      "end": 65.944719
+    },
+    {
+      "start": 74.955969,
+      "end": 83.0
+    }
+  ],
+  "copied_from": "results/asr/eval_clips/pyannote/test_voice.json",
+  "note": "Stage 1e pyannote 3.1 etalon for 1f label compare. Not human gold."
+}

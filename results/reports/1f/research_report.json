@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "stage": 1,
+    "substage": "1f",
+    "fixture": "eval_example/clips.json: data/test_voice.m4a, data/test_apartments.m4a, data/test_transformers.m4a, data/test_ninth.m4a",
+    "host": "CPU 4 vCPU, RAM 15 GiB, без GPU; ONNX diarizers limited to 2 threads",
+    "created_at": "2026-08-31T18:05:00Z",
+    "reference_turns": "results/reports/1f/baseline/pyannote31/",
+    "reference_note": "Stage 1e pyannote 3.1 merged turns, not human gold",
+    "turn_compare": "results/reports/1f/turn_compare.json"
+  },
+  "asr_results": [
+    {
+      "lib": "pyannote.audio",
+      "model": "pyannote/speaker-diarization-3.1 + gigaam-v3-rnnt",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "copied-1e-baseline",
+      "input_artifact": "data/test_*.m4a",
+      "failure_kind": "none",
+      "sample_check": "n/a",
+      "meaning_check": "n/a",
+      "diarization": "pyannote31",
+      "speakers": null,
+      "attempt": 1,
+      "runtime_sec": 153.86,
+      "artifact": "results/asr/1f/pyannote31/",
+      "notes": "Copied Stage 1e turns+GigaAM text. torch: yes (in 1e only). Not loaded in 1f. Speakers 2/3/2/2."
+    },
+    {
+      "lib": "sherpa-onnx",
+      "model": "pyannote-segmentation-3.0-onnx + 3dspeaker-eres2net-base-zh-cn",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "sherpa-onnx",
+      "input_artifact": "data/test_*.m4a",
+      "failure_kind": "none",
+      "sample_check": "n/a",
+      "meaning_check": "n/a",
+      "diarization": "sherpa_onnx",
+      "speakers": null,
+      "attempt": 1,
+      "runtime_sec": 39.117,
+      "artifact": "results/asr/1f/sherpa_onnx/",
+      "notes": "torch: no. Peak RSS 382 MiB. mean DER@0.25=0.3202 vs pyannote etalon, speech IoU=0.9415. Over-clusters 5/6/6/8 speakers. GigaAM v3_rnnt asr_runtime_sec=29.932. Cluster threshold left at 0.5."
+    },
+    {
+      "lib": "onnxruntime+speakeronnx",
+      "model": "silero-vad-onnx + wespeaker-resnet34-LM",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "vad_wespeaker",
+      "input_artifact": "data/test_*.m4a",
+      "failure_kind": "none",
+      "sample_check": "n/a",
+      "meaning_check": "n/a",
+      "diarization": "vad_wespeaker",
+      "speakers": null,
+      "attempt": 1,
+      "runtime_sec": 8.253,
+      "artifact": "results/asr/1f/vad_wespeaker/",
+      "notes": "torch: no. Peak RSS 242 MiB. mean DER@0.25=0.2963, speech IoU=0.8133. Speakers 2/4/2/2. GigaAM v3_rnnt asr_runtime_sec=33.692. Not the PyPI diarize package (it imports torch)."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Этап 1f: denoise не выполнялся."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "threshold": null,
+      "num_chunks": null,
+      "spot_check": "n/a",
+      "notes": "Этап 1f: semantic chunking не выполнялся."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "none",
+      "model": "none",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "none",
+      "input_artifact": "results/asr/1f/",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "notes": "Этап 1f: summary запрещён и не выполнялся."
+    }
+  ],
+  "recommendations": "Потолок качества меток — pyannote 3.1 + torch на жирной машине (эталон 1e; в 1f не пересчитывался). Для демки 2 vCPU / 8 ГиБ оба ONNX-стека влезают в RAM (240–380 МиБ, без torch в процессе). По числу спикеров на 4 клипах правдоподобен vad_wespeaker (Silero VAD ONNX + WeSpeaker ResNet34-LM): 2/4/2/2 против эталона 2/3/2/2, ~8 с на 4×85 с. sherpa-onnx даёт почти те же речевые границы, что pyannote (IoU 0,94), но при cluster_threshold=0.5 дробит спикеров (5–8 id) — без nudge порога не аннотатор для packing C. Текст: тот же GigaAM v3_rnnt на новых стыках; WER человеку. Шумодавы/чанкинг/LLM 1f не трогали."
+}

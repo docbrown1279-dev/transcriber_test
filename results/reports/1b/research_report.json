@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "stage": 1,
+    "substage": "1b",
+    "status": "fail",
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "Linux x86_64, 4 CPU, 15 GiB RAM, без GPU и swap",
+    "created_at": "2026-08-29T12:42:32Z",
+    "execution_mode": "local",
+    "stop_reason": "quality"
+  },
+  "preflight": {
+    "status": "success",
+    "token_present": true,
+    "artifact": "results/asr/hf_access_preflight.json",
+    "notes": "Аутентифицированные GET-пробы трёх gated-репозиториев pyannote и публичного faster-whisper-large-v3 завершились HTTP 200. Секреты и заголовки не сохранялись."
+  },
+  "preprocessing": {
+    "method": "ffmpeg loudnorm=I=-16:TP=-1.5:LRA=11",
+    "status": "success",
+    "input_artifact": "data/fixtures/meeting_sample.m4a",
+    "artifact": "data/processed/meeting_sample_loudnorm.wav",
+    "notes": "Один разрешённый проход loudnorm, mono PCM 16 кГц. Компрессор и ffmpeg denoise не применялись."
+  },
+  "asr_results": [
+    {
+      "lib": "WhisperX 3.8.6",
+      "model": "large-v3",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "WhisperX / faster-whisper 1.2.1",
+      "input_artifact": "data/processed/meeting_sample_loudnorm.wav",
+      "failure_kind": "quality",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "bad",
+      "meaning_check": "bad",
+      "diarization": "pyannote/speaker-diarization-community-1",
+      "speakers": 4,
+      "attempt": 1,
+      "runtime_sec": 1204,
+      "artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+      "notes": "Получено 143 сегмента, 1486 выровненных слов и 4 метки спикеров. Qwen3-8B признал связными 2 из 12 случайных фрагментов (по 3 на спикера); итог incoherent. В тексте много случайных английских/многоязычных вставок и невозможных сочетаний."
+    },
+    {
+      "lib": "WhisperX 3.8.6 после DeepFilterNet3",
+      "model": "large-v3",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "WhisperX / faster-whisper 1.2.1",
+      "input_artifact": "data/processed/deepfilternet_default/meeting_sample_loudnorm_DeepFilterNet3.wav",
+      "failure_kind": "quality",
+      "rw_ratio": null,
+      "oo_words": [],
+      "sample_check": "bad",
+      "meaning_check": "bad",
+      "diarization": "pyannote/speaker-diarization-community-1",
+      "speakers": 4,
+      "attempt": 2,
+      "runtime_sec": 936,
+      "artifact": "results/asr/whisperx_large_v3_deepfilter_default/meeting_sample_loudnorm_DeepFilterNet3.json",
+      "notes": "Получено 112 сегментов и 975 выровненных слов. Qwen3-8B признал связными 0 из 12 случайных фрагментов; итог incoherent. Покрытие речи снизилось, поэтому дальнейшие пресеты DeepFilterNet не запускались."
+    }
+  ],
+  "meaning_checks": [
+    {
+      "runtime": "llama.cpp 0.3.35",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "execution_mode": "local",
+      "input_artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+      "samples": 12,
+      "speakers": 4,
+      "coherent": 2,
+      "incoherent": 10,
+      "overall": "incoherent",
+      "runtime_sec": 165.905,
+      "artifact": "results/asr/qwen3_8b_meaning_check.json"
+    },
+    {
+      "runtime": "llama.cpp 0.3.35",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "execution_mode": "local",
+      "input_artifact": "results/asr/whisperx_large_v3_deepfilter_default/meeting_sample_loudnorm_DeepFilterNet3.json",
+      "samples": 12,
+      "speakers": 4,
+      "coherent": 0,
+      "incoherent": 12,
+      "overall": "incoherent",
+      "runtime_sec": 184.546,
+      "artifact": "results/asr/qwen3_8b_deepfilter_default_meaning_check.json"
+    }
+  ],
+  "acoustic_analysis": {
+    "status": "success",
+    "input_artifact": "data/fixtures/meeting_sample.m4a",
+    "meaning_check_artifact": "results/asr/qwen3_8b_meaning_check.json",
+    "audio_stage": "до loudnorm",
+    "metric": "RMS dBFS по полному интервалу каждого из 12 исходных фрагментов, без gating",
+    "speaker_rms_dbfs_mean": {
+      "SPEAKER_00": -29.411,
+      "SPEAKER_01": -27.789,
+      "SPEAKER_02": -30.143,
+      "SPEAKER_03": -42.001
+    },
+    "coherent_fragment_rms_dbfs_mean": -30.127,
+    "incoherent_fragment_rms_dbfs_mean": -32.778,
+    "coherent_minus_incoherent_db": 2.651,
+    "fragment_point_biserial_correlation": 0.167,
+    "speaker_mean_rms_vs_coherent_ratio_correlation": 0.299,
+    "artifact": "results/asr/sampled_fragment_rms.json",
+    "conclusion": "Гипотеза подтверждается только частично. SPEAKER_03 действительно намного тише остальных и не имеет связных фрагментов. Однако самый громкий SPEAKER_01 также имеет 0/3 связных фрагментов, а лучше распознанный SPEAKER_00 не самый громкий. На 12 фрагментах связь RMS с качеством слабая; вероятны дополнительные факторы, прежде всего SNR, расстояние, реверберация и перекрытия речи."
+  },
+  "denoise_results": [
+    {
+      "method": "DeepFilterNet3 0.5.6, default",
+      "status": "fail",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "worse",
+      "artifacts": "data/processed/deepfilternet_default/meeting_sample_loudnorm_DeepFilterNet3.wav; results/denoise/deepfilternet_default.log",
+      "recommend": false,
+      "notes": "Обработка заняла 29,16 с. После неё число выровненных слов упало с 1486 до 975, а Qwen3-8B — с 2/12 до 0/12 связных фрагментов. Стоп по падению покрытия речи; параметрические пресеты не запускались."
+    },
+    {
+      "method": "pyrnnoise 0.4.3, default",
+      "status": "fail",
+      "asr_before_rw_ratio": null,
+      "asr_after_rw_ratio": null,
+      "quality_delta": "unknown",
+      "artifacts": "results/denoise/rnnoise_attempts.json; scripts/denoise_rnnoise.py",
+      "recommend": false,
+      "notes": "Начальная попытка и два разрешённых повтора завершились runtime-ошибками несовместимости pyrnnoise с audiolab 0.5.2: отсутствующие rate и устаревший аргумент Graph(rate=...). Аудио не создано; лимит повторов исчерпан."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "не применимо",
+      "status": "skipped",
+      "spot_check": "n/a",
+      "notes": "Этап 1b: только текст с диаризацией; чанкинг явно запрещён."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "llama.cpp 0.3.35",
+      "input_artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "notes": "Саммари не запускалось: вне скоупа Stage 1b. Эта же модель использовалась только как проверяющий смысла, результаты вынесены в meaning_checks."
+    }
+  ],
+  "api_usage": {
+    "gemini_calls_stage1b": 0,
+    "nvidia_calls_stage1b": 0,
+    "audio_uploaded_stage1b": false
+  },
+  "recommendations": "Stage 1b не достиг критерия успеха. WhisperX large-v3 на loudnorm-аудио дал технически полную диаризацию на 4 спикера, но Qwen3-8B признал большинство фрагментов бессмысленными. DeepFilterNet3 ухудшил покрытие и смысл; RNNoise не запустился из-за несовместимости библиотек после трёх разрешённых попыток. Не считать эту конфигурацию пригодной для MVP. Закрытое дерево исчерпано; следующий эксперимент требует отдельного решения человека (совместимая сборка RNNoise либо улучшение исходного аудио), а не незаявленного ASR-варианта."
+}

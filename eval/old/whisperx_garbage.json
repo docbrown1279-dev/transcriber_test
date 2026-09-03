@@ -1,0 +1,1870 @@
+{
+  "audio": "data/fixtures/meeting_sample.m4a",
+  "same_file": "docs/Голос 002.m4a",
+  "source_transcript": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+  "pipeline": {
+    "what_this_file_is": "Тексты из Stage 1b: WhisperX 3.8.6, модель Whisper large-v3, CPU int8, language=ru, потом wav2vec2 alignment и pyannote. Это НЕ faster-whisper medium и НЕ отдельный faster-whisper large без WhisperX (тот fallback не запускали: WhisperX не упал).",
+    "not_in_this_file": [
+      "faster-whisper medium (Stage 1a) — лежит в results/asr/faster_whisper_medium_attempt1.{json,txt}",
+      "faster-whisper large-v3 без WhisperX — не запускался",
+      "Qwen — не писал стенограмму"
+    ],
+    "qwen": {
+      "did_qwen_rewrite_asr": false,
+      "role": "Только оценка 12 уже готовых фрагментов. На вход подавался текст WhisperX как есть. Ответ — JSON verdict coherent/incoherent. Скрипт не подставляет новый текст в транскрипт.",
+      "artifact": "results/asr/qwen3_8b_meaning_check.json"
+    },
+    "logging_this_run": {
+      "have": [
+        "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.{json,txt} — полный текст после align+diarize",
+        "results/asr/whisperx_large_v3_loudnorm.log — почти только Progress %, exit 0, без OOM",
+        "Qwen meaning_check.json — семплы + вердикты, не правки текста"
+      ],
+      "missing": [
+        "стенограмма Whisper large-v3 ДО alignment (не сохранили)",
+        "язык/logprob по 30-секундным окнам",
+        "RSS/CPU во времени — нельзя подтвердить нехватку RAM",
+        "condition_on_previous_text и точный align_model в логе"
+      ],
+      "host": "4 CPU, 15 GiB RAM, без swap, без GPU; прогон ~1204 с, crash/OOM не было"
+    }
+  },
+  "scope": "Только полный мусор: ASR-фраза целиком не про совещание. 00:01.45 cooked/enjoying в живом русском сюда не входит — это одиночная вставка.",
+  "how_to_listen": "Сначала overview (уже отсортирован: английский захват → петли → обрывки). play — куда прыгать в плеере. asr — весь текст WhisperX. before/after — ближайшая ещё русская реплика ASR, не соседний бред.",
+  "counts": {
+    "full_garbage_blocks": 18,
+    "full_garbage_segments": 20,
+    "all_asr_segments": 143
+  },
+  "full_texts_vs_medium": {
+    "why": "Полные фразы WhisperX large-v3 рядом с faster-whisper medium на тех же секундах. Medium — другой прогон Stage 1a, без WhisperX alignment. Нужен как контроль: если medium на русском, а large-v3 на английском — это не Qwen и не «лаг плеера».",
+    "clips": [
+      {
+        "id": "english_09m39",
+        "note": "осмысленный английский после русских слов",
+        "whisperx_large_v3": [
+          {
+            "speaker": "SPEAKER_02",
+            "start": 579.614,
+            "end": 590.896,
+            "start_hms": "09:39.61",
+            "end_hms": "09:50.90",
+            "text": "будет точно известно staff we are waiting to bet with the apartment and then it is clear that we will participate in the cook but again I say that if you maintain 300 megawatts, I don't remember how much you can make less split"
+          }
+        ],
+        "faster_whisper_medium_same_time": [
+          {
+            "start": 575.76,
+            "end": 582.76,
+            "start_hms": "09:35.76",
+            "end_hms": "09:42.76",
+            "text": "Количество квартир на сегодня уже точно известно, или оно еще может поменяться?"
+          },
+          {
+            "start": 582.76,
+            "end": 584.76,
+            "start_hms": "09:42.76",
+            "end_hms": "09:44.76",
+            "text": "Это наш вопрос.�에."
+          },
+          {
+            "start": 586.76,
+            "end": 591.76,
+            "start_hms": "09:46.76",
+            "end_hms": "09:51.76",
+            "text": "Ну вот все, значит мы тогда с точки зрения инженерии ждем согласования."
+          },
+          {
+            "start": 591.76,
+            "end": 593.76,
+            "start_hms": "09:51.76",
+            "end_hms": "09:53.76",
+            "text": "Квартиру, да."
+          }
+        ]
+      },
+      {
+        "id": "english_14m51",
+        "note": "осмысленный английский (chopsticks / yes yes putting it this way)",
+        "whisperx_large_v3": [
+          {
+            "speaker": "SPEAKER_02",
+            "start": 885.176,
+            "end": 890.598,
+            "start_hms": "14:45.18",
+            "end_hms": "14:50.60",
+            "text": "Если у нас мощность корпусу 9 совпадает с 8 или с каким-то,"
+          },
+          {
+            "speaker": "SPEAKER_02",
+            "start": 891.725,
+            "end": 898.587,
+            "start_hms": "14:51.73",
+            "end_hms": "14:58.59",
+            "text": "Мы arose that we, we say that we have the chopsticks the same."
+          },
+          {
+            "speaker": "SPEAKER_03",
+            "start": 898.647,
+            "end": 909.591,
+            "start_hms": "14:58.65",
+            "end_hms": "15:09.59",
+            "text": "Yes, yes, yes, yes, yes, yes, yes, yes, putting it this way, you look, yes, indeed, we have the same, everything is the same in height, in size, distance drain,"
+          }
+        ],
+        "faster_whisper_medium_same_time": [
+          {
+            "start": 866.84,
+            "end": 896.84,
+            "start_hms": "14:26.84",
+            "end_hms": "14:56.84",
+            "text": "И, соответственно, мы"
+          },
+          {
+            "start": 896.84,
+            "end": 916.84,
+            "start_hms": "14:56.84",
+            "end_hms": "15:16.84",
+            "text": "Если это так, вы смотрите, что по высоте, по габаритам прошло, расстояние!'"
+          },
+          {
+            "start": 916.84,
+            "end": 925.84,
+            "start_hms": "15:16.84",
+            "end_hms": "15:25.84",
+            "text": "Ничего нового не делаем, на данном этапе надо заложить пятно, зарисовать помещение и максимально быстро отдать ресурс."
+          }
+        ]
+      },
+      {
+        "id": "loop_staff",
+        "note": "бессмыслица-петля",
+        "whisperx_large_v3": [
+          {
+            "speaker": "SPEAKER_03",
+            "start": 645.247,
+            "end": 645.407,
+            "start_hms": "10:45.25",
+            "end_hms": "10:45.41",
+            "text": "Ну?"
+          },
+          {
+            "speaker": "SPEAKER_03",
+            "start": 645.527,
+            "end": 645.627,
+            "start_hms": "10:45.53",
+            "end_hms": "10:45.63",
+            "text": "Ну?"
+          },
+          {
+            "speaker": "SPEAKER_03",
+            "start": 645.707,
+            "end": 648.35,
+            "start_hms": "10:45.71",
+            "end_hms": "10:48.35",
+            "text": "staff staff staff staff staff staff staff"
+          }
+        ],
+        "faster_whisper_medium_same_time": [
+          {
+            "start": 630.46,
+            "end": 640.16,
+            "start_hms": "10:30.46",
+            "end_hms": "10:40.16",
+            "text": "Мы просто помещение предусматривали для провайдера."
+          }
+        ]
+      },
+      {
+        "id": "loop_gdb",
+        "note": "бессмыслица-петля",
+        "whisperx_large_v3": [
+          {
+            "speaker": "SPEAKER_03",
+            "start": 994.571,
+            "end": 997.332,
+            "start_hms": "16:34.57",
+            "end_hms": "16:37.33",
+            "text": "И есть посыл от gdb."
+          },
+          {
+            "speaker": "SPEAKER_03",
+            "start": 997.272,
+            "end": 1002.155,
+            "start_hms": "16:37.27",
+            "end_hms": "16:42.15",
+            "text": "?-gdb.-gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb-gdb.gdb.gdb.gdb.gdb.gdb.gdb."
+          }
+        ],
+        "faster_whisper_medium_same_time": [
+          {
+            "start": 973.0,
+            "end": 1023.66,
+            "start_hms": "16:13.00",
+            "end_hms": "17:03.66",
+            "text": "И есть посыл, который говорит, что сейчас надо максимально отписывать те квадраты и квадраты."
+          }
+        ]
+      },
+      {
+        "id": "loop_grinding",
+        "note": "бессмыслица-петля",
+        "whisperx_large_v3": [
+          {
+            "speaker": "SPEAKER_03",
+            "start": 1057.149,
+            "end": 1060.29,
+            "start_hms": "17:37.15",
+            "end_hms": "17:40.29",
+            "text": "То есть, как говорится, вероятительность кварти shouting на них возложена."
+          },
+          {
+            "speaker": "SPEAKER_03",
+            "start": 1060.31,
+            "end": 1069.113,
+            "start_hms": "17:40.31",
+            "end_hms": "17:49.11",
+            "text": "Суть grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding."
+          },
+          {
+            "speaker": "SPEAKER_03",
+            "start": 1069.173,
+            "end": 1078.236,
+            "start_hms": "17:49.17",
+            "end_hms": "17:58.24",
+            "text": "Суть в том, что сейчас,celand на тOUTующий момент, как раз таки нет того grabs, как раз таки нет того, что можно было сказать, carrots, carrots, carrots,"
+          }
+        ],
+        "faster_whisper_medium_same_time": [
+          {
+            "start": 1035.51,
+            "end": 1069.65,
+            "start_hms": "17:15.51",
+            "end_hms": "17:49.65",
+            "text": "Есть позиция, например, условно 30, что не все должны отписывать одни квадраты из кварти."
+          },
+          {
+            "start": 1069.65,
+            "end": 1098.18,
+            "start_hms": "17:49.65",
+            "end_hms": "18:18.18",
+            "text": "В том, что сейчас, пока на технический момент, гости может быть, мы с вами обсуждали."
+          }
+        ]
+      },
+      {
+        "id": "burst_cooked_by_the",
+        "note": "короткий английский обрывок",
+        "whisperx_large_v3": [
+          {
+            "speaker": "SPEAKER_03",
+            "start": 95.257,
+            "end": 96.878,
+            "start_hms": "01:35.26",
+            "end_hms": "01:36.88",
+            "text": "cooked by the enjoying"
+          }
+        ],
+        "faster_whisper_medium_same_time": [
+          {
+            "start": 74.17,
+            "end": 152.8,
+            "start_hms": "01:14.17",
+            "end_hms": "02:32.80",
+            "text": "А точно точно они как бы учитывают наши расходы."
+          }
+        ]
+      }
+    ]
+  },
+  "overview": [
+    {
+      "play": "09:39.61 – 09:50.90",
+      "kind": "english_takeover",
+      "why": "живая речь сменилась целым английским текстом",
+      "asr": "будет точно известно staff we are waiting to bet with the apartment and then it is clear that we will participate in the cook but again I say that if you maintain 300 megawatts, I don't remember how much you can make less split",
+      "before": "09:09.16 [SPEAKER_03] челов- Коллеги, вы сначала рассчитайте челов- Хорошо челов- Вот, отдать не будем, нет смысла обсуждать, пока мы за расчет проекта произведем",
+      "after": "10:15.25 [SPEAKER_03] хотел уточнить staff сказал что там всеving"
+    },
+    {
+      "play": "14:51.73 – 15:09.59",
+      "kind": "english_takeover",
+      "why": "живая речь сменилась целым английским текстом",
+      "asr": "Мы arose that we, we say that we have the chopsticks the same. // Yes, yes, yes, yes, yes, yes, yes, yes, putting it this way, you look, yes, indeed, we have the same, everything is the same in height, in size, distance drain,",
+      "before": "14:45.18 [SPEAKER_02] Если у нас мощность корпусу 9 совпадает с 8 или с каким-то,",
+      "after": "15:22.62 [SPEAKER_03] У вас, понимаете, что у вас был колодок.. Но вариан?-то нету, потому что это не Москва."
+    },
+    {
+      "play": "10:45.71 – 10:48.35",
+      "kind": "loop",
+      "why": "петля токена — русской фразы нет",
+      "asr": "staff staff staff staff staff staff staff",
+      "before": "10:15.25 [SPEAKER_03] хотел уточнить staff сказал что там всеving",
+      "after": "13:19.64 [SPEAKER_03] внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+    },
+    {
+      "play": "16:37.27 – 16:42.15",
+      "kind": "loop",
+      "why": "петля токена — русской фразы нет",
+      "asr": "?-gdb.-gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb-gdb.gdb.gdb.gdb.gdb.gdb.gdb.",
+      "before": "16:34.57 [SPEAKER_03] И есть посыл от gdb.",
+      "after": "17:03.26 [SPEAKER_03] квад, которых у них нет вообще."
+    },
+    {
+      "play": "17:40.31 – 17:49.11",
+      "kind": "loop",
+      "why": "петля grinding — русской фразы нет",
+      "asr": "Суть grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding.",
+      "before": "17:37.15 [SPEAKER_03] То есть, как говорится, вероятительность кварти shouting на них возложена.",
+      "after": "17:49.17 [SPEAKER_03] Суть в том, что сейчас,celand на тOUTующий момент, как раз таки нет того grabs, как раз таки нет того, что можно было сказать, carrots, carrots, carrots,"
+    },
+    {
+      "play": "18:05.89 – 18:06.47",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "asr": "Но cries [...]",
+      "before": "18:04.42 [SPEAKER_03] посадочные квартиры.",
+      "after": "18:35.35 [SPEAKER_03] Суть в том, что cries [...]"
+    },
+    {
+      "play": "21:36.50 – 21:38.24",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "asr": ")( РАДИОСИГНАЛЮКОВЫЙ uhhh",
+      "before": "21:26.92 [SPEAKER_03] Ну, давайте я сейчас отправлю, вы посмотрите.",
+      "after": "22:12.40 [SPEAKER_01] У нас пока нет вопросов."
+    },
+    {
+      "play": "23:39.06 – 23:39.70",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "asr": "maintain. // Вот, volumes.",
+      "before": "23:32.74 [SPEAKER_03] конечно, что они за это смотрят, но есть как бы разные стадии проектирования, соответственно, давайте им следуем.",
+      "after": "23:39.74 [SPEAKER_03] Вот, а в части вот именно продаваемости по терроризации я думаю, к сожалению, это сейчас, потому что без этого дальше стартануть вообще не получится., да."
+    },
+    {
+      "play": "23:52.59 – 23:53.74",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "asr": "Ну forbidden...\" Ну, да, exaggerated.",
+      "before": "23:39.74 [SPEAKER_03] Вот, а в части вот именно продаваемости по терроризации я думаю, к сожалению, это сейчас, потому что без этого дальше стартануть вообще не получится., да.",
+      "after": "23:53.77 [SPEAKER_03] Ну, да, предлагаю все."
+    },
+    {
+      "play": "01:35.26 – 01:36.88",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "cooked by the enjoying",
+      "before": "01:03.16 [SPEAKER_01] cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально",
+      "after": "04:01.66 [SPEAKER_03] Мы в принципе уже endure дали."
+    },
+    {
+      "play": "02:04.27 – 02:05.15",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "hurting – а – а – а",
+      "before": "01:03.16 [SPEAKER_01] cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально",
+      "after": "04:01.66 [SPEAKER_03] Мы в принципе уже endure дали."
+    },
+    {
+      "play": "02:32.72 – 02:33.03",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "hurt –- – – –",
+      "before": "01:03.16 [SPEAKER_01] cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально",
+      "after": "04:01.66 [SPEAKER_03] Мы в принципе уже endure дали."
+    },
+    {
+      "play": "03:02.07 – 03:03.25",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "hurt, – а, а, а, а,",
+      "before": "01:03.16 [SPEAKER_01] cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально",
+      "after": "04:01.66 [SPEAKER_03] Мы в принципе уже endure дали."
+    },
+    {
+      "play": "03:32.05 – 03:32.99",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "hurt –- – – – –",
+      "before": "01:03.16 [SPEAKER_01] cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально",
+      "after": "04:01.66 [SPEAKER_03] Мы в принципе уже endure дали."
+    },
+    {
+      "play": "11:36.40 – 11:38.62",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "relatives- handing",
+      "before": "10:15.25 [SPEAKER_03] хотел уточнить staff сказал что там всеving",
+      "after": "13:19.64 [SPEAKER_03] внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+    },
+    {
+      "play": "12:01.67 – 12:02.55",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "relatives- handing",
+      "before": "10:15.25 [SPEAKER_03] хотел уточнить staff сказал что там всеving",
+      "after": "13:19.64 [SPEAKER_03] внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+    },
+    {
+      "play": "12:33.38 – 12:35.39",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "relatives of handing",
+      "before": "10:15.25 [SPEAKER_03] хотел уточнить staff сказал что там всеving",
+      "after": "13:19.64 [SPEAKER_03] внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+    },
+    {
+      "play": "12:50.97 – 12:52.25",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "asr": "relatives of handing",
+      "before": "10:15.25 [SPEAKER_03] хотел уточнить staff сказал что там всеving",
+      "after": "13:19.64 [SPEAKER_03] внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+    }
+  ],
+  "listen": [
+    {
+      "play": "09:39.61 – 09:50.90",
+      "kind": "english_takeover",
+      "why": "живая речь сменилась целым английским текстом",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "09:09.16",
+        "end_hms": "09:15.49",
+        "text": "челов- Коллеги, вы сначала рассчитайте челов- Хорошо челов- Вот, отдать не будем, нет смысла обсуждать, пока мы за расчет проекта произведем"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_02",
+          "play": "09:39.61–09:50.90",
+          "start": 579.614,
+          "end": 590.896,
+          "latin_ratio": 0.864,
+          "junk_words": [
+            {
+              "token": "staff",
+              "start_hms": "09:41.45",
+              "end_hms": "09:41.61",
+              "start": 581.454,
+              "end": 581.614
+            },
+            {
+              "token": "we",
+              "start_hms": "09:41.65",
+              "end_hms": "09:41.73",
+              "start": 581.654,
+              "end": 581.734
+            },
+            {
+              "token": "are",
+              "start_hms": "09:41.77",
+              "end_hms": "09:41.86",
+              "start": 581.775,
+              "end": 581.855
+            },
+            {
+              "token": "waiting",
+              "start_hms": "09:41.88",
+              "end_hms": "09:42.17",
+              "start": 581.875,
+              "end": 582.175
+            },
+            {
+              "token": "to",
+              "start_hms": "09:42.20",
+              "end_hms": "09:42.24",
+              "start": 582.195,
+              "end": 582.235
+            },
+            {
+              "token": "bet",
+              "start_hms": "09:42.27",
+              "end_hms": "09:42.38",
+              "start": 582.275,
+              "end": 582.375
+            },
+            {
+              "token": "with",
+              "start_hms": "09:42.41",
+              "end_hms": "09:42.65",
+              "start": 582.415,
+              "end": 582.655
+            },
+            {
+              "token": "the",
+              "start_hms": "09:42.70",
+              "end_hms": "09:42.86",
+              "start": 582.695,
+              "end": 582.855
+            },
+            {
+              "token": "apartment",
+              "start_hms": "09:42.89",
+              "end_hms": "09:43.29",
+              "start": 582.895,
+              "end": 583.295
+            },
+            {
+              "token": "and",
+              "start_hms": "09:43.34",
+              "end_hms": "09:43.46",
+              "start": 583.335,
+              "end": 583.455
+            },
+            {
+              "token": "then",
+              "start_hms": "09:43.50",
+              "end_hms": "09:43.70",
+              "start": 583.495,
+              "end": 583.695
+            },
+            {
+              "token": "it",
+              "start_hms": "09:43.72",
+              "end_hms": "09:43.75",
+              "start": 583.715,
+              "end": 583.755
+            },
+            {
+              "token": "is",
+              "start_hms": "09:43.77",
+              "end_hms": "09:43.82",
+              "start": 583.775,
+              "end": 583.815
+            },
+            {
+              "token": "clear",
+              "start_hms": "09:43.84",
+              "end_hms": "09:44.15",
+              "start": 583.835,
+              "end": 584.155
+            },
+            {
+              "token": "that",
+              "start_hms": "09:44.17",
+              "end_hms": "09:44.29",
+              "start": 584.175,
+              "end": 584.295
+            },
+            {
+              "token": "we",
+              "start_hms": "09:44.32",
+              "end_hms": "09:44.38",
+              "start": 584.315,
+              "end": 584.375
+            },
+            {
+              "token": "will",
+              "start_hms": "09:44.43",
+              "end_hms": "09:44.51",
+              "start": 584.435,
+              "end": 584.515
+            },
+            {
+              "token": "participate",
+              "start_hms": "09:44.53",
+              "end_hms": "09:45.00",
+              "start": 584.535,
+              "end": 584.995
+            },
+            {
+              "token": "in",
+              "start_hms": "09:45.01",
+              "end_hms": "09:45.12",
+              "start": 585.015,
+              "end": 585.115
+            },
+            {
+              "token": "the",
+              "start_hms": "09:45.13",
+              "end_hms": "09:45.38",
+              "start": 585.135,
+              "end": 585.375
+            },
+            {
+              "token": "cook",
+              "start_hms": "09:45.41",
+              "end_hms": "09:45.55",
+              "start": 585.415,
+              "end": 585.555
+            },
+            {
+              "token": "but",
+              "start_hms": "09:45.58",
+              "end_hms": "09:45.84",
+              "start": 585.575,
+              "end": 585.835
+            },
+            {
+              "token": "again",
+              "start_hms": "09:45.88",
+              "end_hms": "09:46.15",
+              "start": 585.875,
+              "end": 586.155
+            },
+            {
+              "token": "say",
+              "start_hms": "09:46.29",
+              "end_hms": "09:46.48",
+              "start": 586.295,
+              "end": 586.476
+            },
+            {
+              "token": "that",
+              "start_hms": "09:46.54",
+              "end_hms": "09:46.96",
+              "start": 586.536,
+              "end": 586.956
+            },
+            {
+              "token": "if",
+              "start_hms": "09:47.00",
+              "end_hms": "09:47.04",
+              "start": 586.996,
+              "end": 587.036
+            },
+            {
+              "token": "you",
+              "start_hms": "09:47.08",
+              "end_hms": "09:47.30",
+              "start": 587.076,
+              "end": 587.296
+            },
+            {
+              "token": "maintain",
+              "start_hms": "09:47.32",
+              "end_hms": "09:47.76",
+              "start": 587.316,
+              "end": 587.756
+            },
+            {
+              "token": "megawatts,",
+              "start_hms": "09:47.88",
+              "end_hms": "09:48.80",
+              "start": 587.876,
+              "end": 588.796
+            },
+            {
+              "token": "don't",
+              "start_hms": "09:48.86",
+              "end_hms": "09:49.02",
+              "start": 588.856,
+              "end": 589.016
+            },
+            {
+              "token": "remember",
+              "start_hms": "09:49.06",
+              "end_hms": "09:49.46",
+              "start": 589.056,
+              "end": 589.456
+            },
+            {
+              "token": "how",
+              "start_hms": "09:49.48",
+              "end_hms": "09:49.62",
+              "start": 589.476,
+              "end": 589.616
+            },
+            {
+              "token": "much",
+              "start_hms": "09:49.64",
+              "end_hms": "09:49.84",
+              "start": 589.636,
+              "end": 589.836
+            },
+            {
+              "token": "you",
+              "start_hms": "09:49.88",
+              "end_hms": "09:50.02",
+              "start": 589.876,
+              "end": 590.016
+            },
+            {
+              "token": "can",
+              "start_hms": "09:50.06",
+              "end_hms": "09:50.22",
+              "start": 590.056,
+              "end": 590.216
+            },
+            {
+              "token": "make",
+              "start_hms": "09:50.26",
+              "end_hms": "09:50.58",
+              "start": 590.256,
+              "end": 590.576
+            },
+            {
+              "token": "less",
+              "start_hms": "09:50.60",
+              "end_hms": "09:50.68",
+              "start": 590.596,
+              "end": 590.676
+            },
+            {
+              "token": "split",
+              "start_hms": "09:50.70",
+              "end_hms": "09:50.90",
+              "start": 590.696,
+              "end": 590.896
+            }
+          ],
+          "text": "будет точно известно staff we are waiting to bet with the apartment and then it is clear that we will participate in the cook but again I say that if you maintain 300 megawatts, I don't remember how much you can make less split"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "10:15.25",
+        "end_hms": "10:20.59",
+        "text": "хотел уточнить staff сказал что там всеving"
+      }
+    },
+    {
+      "play": "14:51.73 – 15:09.59",
+      "kind": "english_takeover",
+      "why": "живая речь сменилась целым английским текстом",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_02",
+        "start_hms": "14:45.18",
+        "end_hms": "14:50.60",
+        "text": "Если у нас мощность корпусу 9 совпадает с 8 или с каким-то,"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_02",
+          "play": "14:51.73–14:58.59",
+          "start": 891.725,
+          "end": 898.587,
+          "latin_ratio": 0.923,
+          "junk_words": [
+            {
+              "token": "arose",
+              "start_hms": "14:51.80",
+              "end_hms": "14:52.02",
+              "start": 891.805,
+              "end": 892.025
+            },
+            {
+              "token": "that",
+              "start_hms": "14:52.07",
+              "end_hms": "14:52.23",
+              "start": 892.065,
+              "end": 892.225
+            },
+            {
+              "token": "we,",
+              "start_hms": "14:52.28",
+              "end_hms": "14:55.39",
+              "start": 892.285,
+              "end": 895.386
+            },
+            {
+              "token": "we",
+              "start_hms": "14:55.45",
+              "end_hms": "14:55.63",
+              "start": 895.446,
+              "end": 895.626
+            },
+            {
+              "token": "say",
+              "start_hms": "14:55.65",
+              "end_hms": "14:55.83",
+              "start": 895.646,
+              "end": 895.826
+            },
+            {
+              "token": "that",
+              "start_hms": "14:55.85",
+              "end_hms": "14:56.11",
+              "start": 895.846,
+              "end": 896.107
+            },
+            {
+              "token": "we",
+              "start_hms": "14:56.17",
+              "end_hms": "14:56.51",
+              "start": 896.167,
+              "end": 896.507
+            },
+            {
+              "token": "have",
+              "start_hms": "14:56.53",
+              "end_hms": "14:56.75",
+              "start": 896.527,
+              "end": 896.747
+            },
+            {
+              "token": "the",
+              "start_hms": "14:56.83",
+              "end_hms": "14:57.27",
+              "start": 896.827,
+              "end": 897.267
+            },
+            {
+              "token": "chopsticks",
+              "start_hms": "14:57.29",
+              "end_hms": "14:58.09",
+              "start": 897.287,
+              "end": 898.087
+            },
+            {
+              "token": "the",
+              "start_hms": "14:58.11",
+              "end_hms": "14:58.27",
+              "start": 898.107,
+              "end": 898.267
+            },
+            {
+              "token": "same.",
+              "start_hms": "14:58.29",
+              "end_hms": "14:58.59",
+              "start": 898.287,
+              "end": 898.587
+            }
+          ],
+          "text": "Мы arose that we, we say that we have the chopsticks the same."
+        },
+        {
+          "speaker": "SPEAKER_03",
+          "play": "14:58.65–15:09.59",
+          "start": 898.647,
+          "end": 909.591,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "Yes,",
+              "start_hms": "14:58.65",
+              "end_hms": "14:58.85",
+              "start": 898.647,
+              "end": 898.847
+            },
+            {
+              "token": "yes,",
+              "start_hms": "14:58.89",
+              "end_hms": "14:59.15",
+              "start": 898.887,
+              "end": 899.148
+            },
+            {
+              "token": "yes,",
+              "start_hms": "14:59.17",
+              "end_hms": "14:59.31",
+              "start": 899.168,
+              "end": 899.308
+            },
+            {
+              "token": "yes,",
+              "start_hms": "14:59.37",
+              "end_hms": "14:59.65",
+              "start": 899.368,
+              "end": 899.648
+            },
+            {
+              "token": "yes,",
+              "start_hms": "14:59.67",
+              "end_hms": "14:59.85",
+              "start": 899.668,
+              "end": 899.848
+            },
+            {
+              "token": "yes,",
+              "start_hms": "14:59.87",
+              "end_hms": "15:00.03",
+              "start": 899.868,
+              "end": 900.028
+            },
+            {
+              "token": "yes,",
+              "start_hms": "15:00.05",
+              "end_hms": "15:00.25",
+              "start": 900.048,
+              "end": 900.248
+            },
+            {
+              "token": "yes,",
+              "start_hms": "15:00.33",
+              "end_hms": "15:00.65",
+              "start": 900.328,
+              "end": 900.648
+            },
+            {
+              "token": "putting",
+              "start_hms": "15:00.69",
+              "end_hms": "15:01.07",
+              "start": 900.688,
+              "end": 901.068
+            },
+            {
+              "token": "it",
+              "start_hms": "15:01.09",
+              "end_hms": "15:01.27",
+              "start": 901.088,
+              "end": 901.268
+            },
+            {
+              "token": "this",
+              "start_hms": "15:01.31",
+              "end_hms": "15:01.67",
+              "start": 901.308,
+              "end": 901.668
+            },
+            {
+              "token": "way,",
+              "start_hms": "15:01.71",
+              "end_hms": "15:01.85",
+              "start": 901.708,
+              "end": 901.848
+            },
+            {
+              "token": "you",
+              "start_hms": "15:01.93",
+              "end_hms": "15:02.15",
+              "start": 901.928,
+              "end": 902.149
+            },
+            {
+              "token": "look,",
+              "start_hms": "15:02.17",
+              "end_hms": "15:02.71",
+              "start": 902.169,
+              "end": 902.709
+            },
+            {
+              "token": "yes,",
+              "start_hms": "15:02.77",
+              "end_hms": "15:03.45",
+              "start": 902.769,
+              "end": 903.449
+            },
+            {
+              "token": "indeed,",
+              "start_hms": "15:03.49",
+              "end_hms": "15:03.81",
+              "start": 903.489,
+              "end": 903.809
+            },
+            {
+              "token": "we",
+              "start_hms": "15:03.83",
+              "end_hms": "15:04.01",
+              "start": 903.829,
+              "end": 904.009
+            },
+            {
+              "token": "have",
+              "start_hms": "15:04.03",
+              "end_hms": "15:04.31",
+              "start": 904.029,
+              "end": 904.309
+            },
+            {
+              "token": "the",
+              "start_hms": "15:04.33",
+              "end_hms": "15:04.53",
+              "start": 904.329,
+              "end": 904.529
+            },
+            {
+              "token": "same,",
+              "start_hms": "15:04.55",
+              "end_hms": "15:04.81",
+              "start": 904.549,
+              "end": 904.809
+            },
+            {
+              "token": "everything",
+              "start_hms": "15:04.83",
+              "end_hms": "15:05.77",
+              "start": 904.829,
+              "end": 905.77
+            },
+            {
+              "token": "is",
+              "start_hms": "15:05.79",
+              "end_hms": "15:06.01",
+              "start": 905.79,
+              "end": 906.01
+            },
+            {
+              "token": "the",
+              "start_hms": "15:06.03",
+              "end_hms": "15:06.25",
+              "start": 906.03,
+              "end": 906.25
+            },
+            {
+              "token": "same",
+              "start_hms": "15:06.29",
+              "end_hms": "15:06.65",
+              "start": 906.29,
+              "end": 906.65
+            },
+            {
+              "token": "in",
+              "start_hms": "15:06.69",
+              "end_hms": "15:06.85",
+              "start": 906.69,
+              "end": 906.85
+            },
+            {
+              "token": "height,",
+              "start_hms": "15:06.87",
+              "end_hms": "15:07.25",
+              "start": 906.87,
+              "end": 907.25
+            },
+            {
+              "token": "in",
+              "start_hms": "15:07.27",
+              "end_hms": "15:07.45",
+              "start": 907.27,
+              "end": 907.45
+            },
+            {
+              "token": "size,",
+              "start_hms": "15:07.47",
+              "end_hms": "15:08.43",
+              "start": 907.47,
+              "end": 908.431
+            },
+            {
+              "token": "distance",
+              "start_hms": "15:08.49",
+              "end_hms": "15:09.39",
+              "start": 908.491,
+              "end": 909.391
+            },
+            {
+              "token": "drain,",
+              "start_hms": "15:09.41",
+              "end_hms": "15:09.59",
+              "start": 909.411,
+              "end": 909.591
+            }
+          ],
+          "text": "Yes, yes, yes, yes, yes, yes, yes, yes, putting it this way, you look, yes, indeed, we have the same, everything is the same in height, in size, distance drain,"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "15:22.62",
+        "end_hms": "15:38.27",
+        "text": "У вас, понимаете, что у вас был колодок.. Но вариан?-то нету, потому что это не Москва."
+      }
+    },
+    {
+      "play": "10:45.71 – 10:48.35",
+      "kind": "loop",
+      "why": "петля токена — русской фразы нет",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "10:15.25",
+        "end_hms": "10:20.59",
+        "text": "хотел уточнить staff сказал что там всеving"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "10:45.71–10:48.35",
+          "start": 645.707,
+          "end": 648.35,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "staff",
+              "start_hms": "10:45.71",
+              "end_hms": "10:45.91",
+              "start": 645.707,
+              "end": 645.908
+            },
+            {
+              "token": "staff",
+              "start_hms": "10:45.93",
+              "end_hms": "10:46.23",
+              "start": 645.928,
+              "end": 646.228
+            },
+            {
+              "token": "staff",
+              "start_hms": "10:46.25",
+              "end_hms": "10:46.73",
+              "start": 646.248,
+              "end": 646.728
+            },
+            {
+              "token": "staff",
+              "start_hms": "10:46.77",
+              "end_hms": "10:47.01",
+              "start": 646.768,
+              "end": 647.009
+            },
+            {
+              "token": "staff",
+              "start_hms": "10:47.53",
+              "end_hms": "10:47.75",
+              "start": 647.529,
+              "end": 647.749
+            },
+            {
+              "token": "staff",
+              "start_hms": "10:47.77",
+              "end_hms": "10:47.99",
+              "start": 647.769,
+              "end": 647.989
+            },
+            {
+              "token": "staff",
+              "start_hms": "10:48.01",
+              "end_hms": "10:48.35",
+              "start": 648.01,
+              "end": 648.35
+            }
+          ],
+          "text": "staff staff staff staff staff staff staff"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "13:19.64",
+        "end_hms": "13:39.76",
+        "text": "внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+      }
+    },
+    {
+      "play": "16:37.27 – 16:42.15",
+      "kind": "loop",
+      "why": "петля токена — русской фразы нет",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "16:34.57",
+        "end_hms": "16:37.33",
+        "text": "И есть посыл от gdb."
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "16:37.27–16:42.15",
+          "start": 997.272,
+          "end": 1002.155,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "?-gdb.-gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb-gdb.gdb.gdb.gdb.gdb.gdb.gdb.",
+              "start_hms": "16:37.27",
+              "end_hms": "16:42.15",
+              "start": 997.272,
+              "end": 1002.155
+            }
+          ],
+          "text": "?-gdb.-gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb.gdb-gdb.gdb.gdb.gdb.gdb.gdb.gdb."
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "17:03.26",
+        "end_hms": "17:05.48",
+        "text": "квад, которых у них нет вообще."
+      }
+    },
+    {
+      "play": "17:40.31 – 17:49.11",
+      "kind": "loop",
+      "why": "петля grinding — русской фразы нет",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "17:37.15",
+        "end_hms": "17:40.29",
+        "text": "То есть, как говорится, вероятительность кварти shouting на них возложена."
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "17:40.31–17:49.11",
+          "start": 1060.31,
+          "end": 1069.113,
+          "latin_ratio": 0.933,
+          "junk_words": [
+            {
+              "token": "grinding,",
+              "start_hms": "17:40.41",
+              "end_hms": "17:41.27",
+              "start": 1060.41,
+              "end": 1061.27
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:41.29",
+              "end_hms": "17:41.77",
+              "start": 1061.29,
+              "end": 1061.771
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:41.79",
+              "end_hms": "17:42.11",
+              "start": 1061.791,
+              "end": 1062.111
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:42.17",
+              "end_hms": "17:42.59",
+              "start": 1062.171,
+              "end": 1062.591
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:42.61",
+              "end_hms": "17:43.33",
+              "start": 1062.611,
+              "end": 1063.331
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:43.35",
+              "end_hms": "17:43.63",
+              "start": 1063.351,
+              "end": 1063.631
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:43.67",
+              "end_hms": "17:43.95",
+              "start": 1063.671,
+              "end": 1063.951
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:43.97",
+              "end_hms": "17:44.83",
+              "start": 1063.971,
+              "end": 1064.832
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:44.85",
+              "end_hms": "17:45.25",
+              "start": 1064.852,
+              "end": 1065.252
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:45.27",
+              "end_hms": "17:45.61",
+              "start": 1065.272,
+              "end": 1065.612
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:45.65",
+              "end_hms": "17:46.33",
+              "start": 1065.652,
+              "end": 1066.332
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:46.35",
+              "end_hms": "17:46.59",
+              "start": 1066.352,
+              "end": 1066.592
+            },
+            {
+              "token": "grinding,",
+              "start_hms": "17:46.61",
+              "end_hms": "17:47.75",
+              "start": 1066.612,
+              "end": 1067.753
+            },
+            {
+              "token": "grinding.",
+              "start_hms": "17:47.77",
+              "end_hms": "17:49.11",
+              "start": 1067.773,
+              "end": 1069.113
+            }
+          ],
+          "text": "Суть grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding, grinding."
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "17:49.17",
+        "end_hms": "17:58.24",
+        "text": "Суть в том, что сейчас,celand на тOUTующий момент, как раз таки нет того grabs, как раз таки нет того, что можно было сказать, carrots, carrots, carrots,"
+      }
+    },
+    {
+      "play": "18:05.89 – 18:06.47",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "18:04.42",
+        "end_hms": "18:05.87",
+        "text": "посадочные квартиры."
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "18:05.89–18:06.47",
+          "start": 1085.886,
+          "end": 1086.466,
+          "latin_ratio": 0.5,
+          "junk_words": [
+            {
+              "token": "cries",
+              "start_hms": "18:05.97",
+              "end_hms": "18:06.23",
+              "start": 1085.966,
+              "end": 1086.226
+            }
+          ],
+          "text": "Но cries [...]"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "18:35.35",
+        "end_hms": "18:38.33",
+        "text": "Суть в том, что cries [...]"
+      }
+    },
+    {
+      "play": "21:36.50 – 21:38.24",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "21:26.92",
+        "end_hms": "21:29.12",
+        "text": "Ну, давайте я сейчас отправлю, вы посмотрите."
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_00",
+          "play": "21:36.50–21:38.24",
+          "start": 1296.5,
+          "end": 1298.241,
+          "latin_ratio": 0.5,
+          "junk_words": [
+            {
+              "token": "uhhh",
+              "start_hms": "21:37.96",
+              "end_hms": "21:38.24",
+              "start": 1297.961,
+              "end": 1298.241
+            }
+          ],
+          "text": ")( РАДИОСИГНАЛЮКОВЫЙ uhhh"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_01",
+        "start_hms": "22:12.40",
+        "end_hms": "22:16.47",
+        "text": "У нас пока нет вопросов."
+      }
+    },
+    {
+      "play": "23:39.06 – 23:39.70",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "23:32.74",
+        "end_hms": "23:39.04",
+        "text": "конечно, что они за это смотрят, но есть как бы разные стадии проектирования, соответственно, давайте им следуем."
+      },
+      "asr": [
+        {
+          "speaker": "UNLABELED",
+          "play": "23:39.06–23:39.38",
+          "start": 1419.06,
+          "end": 1419.38,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "maintain.",
+              "start_hms": "23:39.06",
+              "end_hms": "23:39.38",
+              "start": 1419.06,
+              "end": 1419.38
+            }
+          ],
+          "text": "maintain."
+        },
+        {
+          "speaker": "SPEAKER_03",
+          "play": "23:39.40–23:39.70",
+          "start": 1419.4,
+          "end": 1419.7,
+          "latin_ratio": 0.5,
+          "junk_words": [
+            {
+              "token": "volumes.",
+              "start_hms": "23:39.54",
+              "end_hms": "23:39.70",
+              "start": 1419.54,
+              "end": 1419.7
+            }
+          ],
+          "text": "Вот, volumes."
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "23:39.74",
+        "end_hms": "23:52.55",
+        "text": "Вот, а в части вот именно продаваемости по терроризации я думаю, к сожалению, это сейчас, потому что без этого дальше стартануть вообще не получится., да."
+      }
+    },
+    {
+      "play": "23:52.59 – 23:53.74",
+      "kind": "junk_only",
+      "why": "реплика целиком из мусорных слов",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "23:39.74",
+        "end_hms": "23:52.55",
+        "text": "Вот, а в части вот именно продаваемости по терроризации я думаю, к сожалению, это сейчас, потому что без этого дальше стартануть вообще не получится., да."
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "23:52.59–23:53.74",
+          "start": 1432.585,
+          "end": 1433.745,
+          "latin_ratio": 0.4,
+          "junk_words": [
+            {
+              "token": "forbidden...\"",
+              "start_hms": "23:52.66",
+              "end_hms": "23:53.03",
+              "start": 1432.665,
+              "end": 1433.025
+            },
+            {
+              "token": "exaggerated.",
+              "start_hms": "23:53.38",
+              "end_hms": "23:53.74",
+              "start": 1433.385,
+              "end": 1433.745
+            }
+          ],
+          "text": "Ну forbidden...\" Ну, да, exaggerated."
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "23:53.77",
+        "end_hms": "23:56.43",
+        "text": "Ну, да, предлагаю все."
+      }
+    },
+    {
+      "play": "01:35.26 – 01:36.88",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_01",
+        "start_hms": "01:03.16",
+        "end_hms": "01:15.74",
+        "text": "cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "01:35.26–01:36.88",
+          "start": 95.257,
+          "end": 96.878,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "cooked",
+              "start_hms": "01:35.26",
+              "end_hms": "01:35.64",
+              "start": 95.257,
+              "end": 95.637
+            },
+            {
+              "token": "by",
+              "start_hms": "01:35.68",
+              "end_hms": "01:35.76",
+              "start": 95.677,
+              "end": 95.757
+            },
+            {
+              "token": "the",
+              "start_hms": "01:35.80",
+              "end_hms": "01:36.40",
+              "start": 95.797,
+              "end": 96.397
+            },
+            {
+              "token": "enjoying",
+              "start_hms": "01:36.42",
+              "end_hms": "01:36.88",
+              "start": 96.417,
+              "end": 96.878
+            }
+          ],
+          "text": "cooked by the enjoying"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "04:01.66",
+        "end_hms": "04:03.31",
+        "text": "Мы в принципе уже endure дали."
+      }
+    },
+    {
+      "play": "02:04.27 – 02:05.15",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_01",
+        "start_hms": "01:03.16",
+        "end_hms": "01:15.74",
+        "text": "cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "02:04.27–02:05.15",
+          "start": 124.268,
+          "end": 125.149,
+          "latin_ratio": 0.25,
+          "junk_words": [
+            {
+              "token": "hurting",
+              "start_hms": "02:04.27",
+              "end_hms": "02:04.61",
+              "start": 124.268,
+              "end": 124.608
+            }
+          ],
+          "text": "hurting – а – а – а"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "04:01.66",
+        "end_hms": "04:03.31",
+        "text": "Мы в принципе уже endure дали."
+      }
+    },
+    {
+      "play": "02:32.72 – 02:33.03",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_01",
+        "start_hms": "01:03.16",
+        "end_hms": "01:15.74",
+        "text": "cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_01",
+          "play": "02:32.72–02:33.03",
+          "start": 152.725,
+          "end": 153.025,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "hurt",
+              "start_hms": "02:32.72",
+              "end_hms": "02:32.84",
+              "start": 152.725,
+              "end": 152.845
+            }
+          ],
+          "text": "hurt –- – – –"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "04:01.66",
+        "end_hms": "04:03.31",
+        "text": "Мы в принципе уже endure дали."
+      }
+    },
+    {
+      "play": "03:02.07 – 03:03.25",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_01",
+        "start_hms": "01:03.16",
+        "end_hms": "01:15.74",
+        "text": "cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "03:02.07–03:03.25",
+          "start": 182.071,
+          "end": 183.251,
+          "latin_ratio": 0.2,
+          "junk_words": [
+            {
+              "token": "hurt,",
+              "start_hms": "03:02.07",
+              "end_hms": "03:02.37",
+              "start": 182.071,
+              "end": 182.371
+            }
+          ],
+          "text": "hurt, – а, а, а, а,"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "04:01.66",
+        "end_hms": "04:03.31",
+        "text": "Мы в принципе уже endure дали."
+      }
+    },
+    {
+      "play": "03:32.05 – 03:32.99",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_01",
+        "start_hms": "01:03.16",
+        "end_hms": "01:15.74",
+        "text": "cooked а скаж enjoying что а в технических условиях на ливневку refractor там будет прописано что можно подключаться к сети у dsda изначально"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "03:32.05–03:32.99",
+          "start": 212.047,
+          "end": 212.988,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "hurt",
+              "start_hms": "03:32.05",
+              "end_hms": "03:32.43",
+              "start": 212.047,
+              "end": 212.427
+            }
+          ],
+          "text": "hurt –- – – – –"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "04:01.66",
+        "end_hms": "04:03.31",
+        "text": "Мы в принципе уже endure дали."
+      }
+    },
+    {
+      "play": "11:36.40 – 11:38.62",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "10:15.25",
+        "end_hms": "10:20.59",
+        "text": "хотел уточнить staff сказал что там всеving"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_01",
+          "play": "11:36.40–11:38.62",
+          "start": 696.402,
+          "end": 698.624,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "relatives-",
+              "start_hms": "11:36.40",
+              "end_hms": "11:36.88",
+              "start": 696.402,
+              "end": 696.883
+            },
+            {
+              "token": "handing",
+              "start_hms": "11:36.90",
+              "end_hms": "11:38.62",
+              "start": 696.903,
+              "end": 698.624
+            }
+          ],
+          "text": "relatives- handing"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "13:19.64",
+        "end_hms": "13:39.76",
+        "text": "внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+      }
+    },
+    {
+      "play": "12:01.67 – 12:02.55",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "10:15.25",
+        "end_hms": "10:20.59",
+        "text": "хотел уточнить staff сказал что там всеving"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_02",
+          "play": "12:01.67–12:02.55",
+          "start": 721.672,
+          "end": 722.553,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "relatives-",
+              "start_hms": "12:01.67",
+              "end_hms": "12:02.15",
+              "start": 721.672,
+              "end": 722.152
+            },
+            {
+              "token": "handing",
+              "start_hms": "12:02.17",
+              "end_hms": "12:02.55",
+              "start": 722.172,
+              "end": 722.553
+            }
+          ],
+          "text": "relatives- handing"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "13:19.64",
+        "end_hms": "13:39.76",
+        "text": "внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+      }
+    },
+    {
+      "play": "12:33.38 – 12:35.39",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "10:15.25",
+        "end_hms": "10:20.59",
+        "text": "хотел уточнить staff сказал что там всеving"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_03",
+          "play": "12:33.38–12:35.39",
+          "start": 753.385,
+          "end": 755.39,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "relatives",
+              "start_hms": "12:33.38",
+              "end_hms": "12:34.67",
+              "start": 753.385,
+              "end": 754.668
+            },
+            {
+              "token": "of",
+              "start_hms": "12:34.79",
+              "end_hms": "12:35.03",
+              "start": 754.789,
+              "end": 755.029
+            },
+            {
+              "token": "handing",
+              "start_hms": "12:35.05",
+              "end_hms": "12:35.39",
+              "start": 755.049,
+              "end": 755.39
+            }
+          ],
+          "text": "relatives of handing"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "13:19.64",
+        "end_hms": "13:39.76",
+        "text": "внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+      }
+    },
+    {
+      "play": "12:50.97 – 12:52.25",
+      "kind": "alignment_burst",
+      "why": "короткая вставка alignment, не фраза совещания",
+      "heard": null,
+      "before": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "10:15.25",
+        "end_hms": "10:20.59",
+        "text": "хотел уточнить staff сказал что там всеving"
+      },
+      "asr": [
+        {
+          "speaker": "SPEAKER_02",
+          "play": "12:50.97–12:52.25",
+          "start": 770.97,
+          "end": 772.251,
+          "latin_ratio": 1.0,
+          "junk_words": [
+            {
+              "token": "relatives",
+              "start_hms": "12:50.97",
+              "end_hms": "12:51.81",
+              "start": 770.97,
+              "end": 771.81
+            },
+            {
+              "token": "of",
+              "start_hms": "12:51.93",
+              "end_hms": "12:52.03",
+              "start": 771.93,
+              "end": 772.03
+            },
+            {
+              "token": "handing",
+              "start_hms": "12:52.05",
+              "end_hms": "12:52.25",
+              "start": 772.05,
+              "end": 772.251
+            }
+          ],
+          "text": "relatives of handing"
+        }
+      ],
+      "after": {
+        "speaker": "SPEAKER_03",
+        "start_hms": "13:19.64",
+        "end_hms": "13:39.76",
+        "text": "внимание arose да так ну дальше постоянно точно управлять chopsticks 2 в формате планировочное решение по аналогу посмотрите у вас putting вас есть есть там плюс минус транс такой же часто"
+      }
+    }
+  ]
+}

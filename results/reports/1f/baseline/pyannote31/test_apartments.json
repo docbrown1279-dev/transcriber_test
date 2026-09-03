@@ -1,0 +1,142 @@
+{
+  "audio": "data/test_apartments.m4a",
+  "duration_sec": 85.0,
+  "model": "pyannote/speaker-diarization-3.1",
+  "provider": "pyannote.audio",
+  "execution_mode": "local",
+  "runtime_sec": 38.533,
+  "merged_turns": [
+    {
+      "start": 0.030969,
+      "end": 5.549094,
+      "speaker": "SPEAKER_02",
+      "id": 0,
+      "rms_dbfs": -39.553,
+      "peak_dbfs": -19.113,
+      "gain_db": 16.553
+    },
+    {
+      "start": 5.549094,
+      "end": 14.290344,
+      "speaker": "SPEAKER_01",
+      "id": 1,
+      "rms_dbfs": -28.24,
+      "peak_dbfs": -8.565,
+      "gain_db": 0.0
+    },
+    {
+      "start": 13.919094,
+      "end": 17.125344,
+      "speaker": "SPEAKER_02",
+      "id": 2,
+      "rms_dbfs": -36.241,
+      "peak_dbfs": -12.204,
+      "gain_db": 11.204
+    },
+    {
+      "start": 16.956594,
+      "end": 23.402844,
+      "speaker": "SPEAKER_01",
+      "id": 3,
+      "rms_dbfs": -30.654,
+      "peak_dbfs": -8.794,
+      "gain_db": 7.654
+    },
+    {
+      "start": 24.854094,
+      "end": 25.917219,
+      "speaker": "SPEAKER_01",
+      "id": 4,
+      "rms_dbfs": -32.136,
+      "peak_dbfs": -13.076,
+      "gain_db": 9.136
+    },
+    {
+      "start": 24.904719,
+      "end": 30.962844,
+      "speaker": "SPEAKER_02",
+      "id": 5,
+      "rms_dbfs": -36.418,
+      "peak_dbfs": -12.87,
+      "gain_db": 11.87
+    },
+    {
+      "start": 40.969719,
+      "end": 46.251594,
+      "speaker": "SPEAKER_02",
+      "id": 6,
+      "rms_dbfs": -37.449,
+      "peak_dbfs": -14.697,
+      "gain_db": 13.697
+    },
+    {
+      "start": 47.095344,
+      "end": 53.372844,
+      "speaker": "SPEAKER_02",
+      "id": 7,
+      "rms_dbfs": -35.409,
+      "peak_dbfs": -14.486,
+      "gain_db": 12.409
+    },
+    {
+      "start": 53.372844,
+      "end": 60.207219,
+      "speaker": "SPEAKER_00",
+      "id": 8,
+      "rms_dbfs": -23.71,
+      "peak_dbfs": -6.549,
+      "gain_db": 0.0
+    },
+    {
+      "start": 53.389719,
+      "end": 65.522844,
+      "speaker": "SPEAKER_02",
+      "id": 9,
+      "rms_dbfs": -26.058,
+      "peak_dbfs": -6.495,
+      "gain_db": 0.0
+    },
+    {
+      "start": 65.522844,
+      "end": 70.163469,
+      "speaker": "SPEAKER_00",
+      "id": 10,
+      "rms_dbfs": -22.298,
+      "peak_dbfs": -5.712,
+      "gain_db": 0.0
+    },
+    {
+      "start": 71.429094,
+      "end": 75.023469,
+      "speaker": "SPEAKER_02",
+      "id": 11,
+      "rms_dbfs": -42.089,
+      "peak_dbfs": -23.989,
+      "gain_db": 18.0
+    }
+  ],
+  "holes_ge_0_5_sec": [
+    {
+      "start": 23.402844,
+      "end": 24.854094
+    },
+    {
+      "start": 30.962844,
+      "end": 40.969719
+    },
+    {
+      "start": 46.251594,
+      "end": 47.095344
+    },
+    {
+      "start": 70.163469,
+      "end": 71.429094
+    },
+    {
+      "start": 75.023469,
+      "end": 85.0
+    }
+  ],
+  "copied_from": "results/asr/eval_clips/pyannote/test_apartments.json",
+  "note": "Stage 1e pyannote 3.1 etalon for 1f label compare. Not human gold."
+}

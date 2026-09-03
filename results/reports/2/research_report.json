@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "stage": 2,
+    "substage": "2",
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "CPU 4 vCPU, RAM 15 GiB, без GPU",
+    "created_at": "2026-08-30T00:05:00Z",
+    "diarization_model": "pyannote/speaker-diarization-3.1",
+    "diarization_runtime_sec": 769.26,
+    "audio_duration_sec": 1468.6621315192745,
+    "merge_stats": {
+      "raw_turns": 368,
+      "merged_rows": 177,
+      "gained_rows": 138,
+      "untouched_rows": 39,
+      "holes_ge_0_5_sec": 99,
+      "rows_over_25s": 5
+    }
+  },
+  "asr_results": [
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "gigaam",
+      "input_artifact": "data/fixtures/meeting_sample.m4a",
+      "failure_kind": "none",
+      "sample_check": "ok",
+      "meaning_check": "n/a",
+      "diarization": "pyannote/speaker-diarization-3.1",
+      "speakers": 4,
+      "attempt": 1,
+      "runtime_sec": 160.91,
+      "artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "notes": "Полный файл; linear gain; куски >25 с только по времени; 183 сегмента, 4 пустых оставлены пустыми. Латиницы нет."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Этап 2: denoise запрещён и не выполнялся."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "adjacent-cosine whole-speaker-turns",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "fail",
+      "threshold": 0.8,
+      "num_chunks": 95,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2/attempt_1.json",
+      "notes": "Попытка 1: unit 20–50 слов, порог 0.80, embed 0.267 с, accepted cosine min/med/max 0.811/0.833/0.939 (n=6)."
+    },
+    {
+      "method": "adjacent-cosine whole-speaker-turns",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "fail",
+      "threshold": 0.7,
+      "num_chunks": 63,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2/attempt_2.json",
+      "notes": "Попытка 2: unit 40–80 слов, порог 0.70, embed 0.297 с, accepted cosine min/med/max 0.708/0.754/0.939 (n=24)."
+    },
+    {
+      "method": "adjacent-cosine whole-speaker-turns",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "fail",
+      "threshold": 0.65,
+      "num_chunks": 48,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2/attempt_3.json",
+      "notes": "Попытка 3: unit 60–120 слов, порог 0.65, embed 0.337 с, accepted cosine min/med/max 0.654/0.755/0.939 (n=31). Ближе всех к 5–30, всё ещё 48."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2/attempt_2_chunks.json",
+      "runtime_sec": 416.159,
+      "hallucination_flag": false,
+      "artifact": "results/llm/2/titles.json",
+      "notes": "Дозапрос: 63 заголовка попытки 2, все ≤10 слов. CPU 4 потока."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/llm/2/titles.json",
+      "runtime_sec": 116.615,
+      "hallucination_flag": false,
+      "artifact": "results/llm/2/title_merge.json",
+      "notes": "Склейка соседних названий дала 4 главы (нужно 5–30). Хвост 44 исходных чанка склеен в одну главу."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "fail",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/llm/2/title_merge.json",
+      "runtime_sec": 415.977,
+      "hallucination_flag": false,
+      "artifact": "results/llm/2/title_merge_refined.json",
+      "notes": "Одна правка широких групп: 49 глав, снова вне 5–30. Третий промпт не запускали."
+    }
+  ],
+  "recommendations": "ASR для MVP без изменений: GigaAM v3_rnnt + pyannote 3.1 + linear gain. На попытке 2 (63 чанка) Qwen3-8B даёт короткие уместные заголовки (~6.6 с/чанк на CPU). Склейка только названий пока не попадает в 5–30: один проход даёт 4 грубые главы (хвост слишком большой), правка раздувает до 49. Имеет смысл в следующем этапе дать модели явный потолок размера группы (например не больше 6–8 соседних пунктов) или склеивать скользящим окном, а не одним списком из 63 строк."
+}
