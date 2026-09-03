@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "stage": 3,
+    "substage": "3b",
+    "fixture": "data/3b_data/chunks_d/D00.md … D11.md (from results/asr/2/gigaam_v3_rnnt/meeting_sample.json)",
+    "host": "CPU 4 vCPU, RAM 15 GiB, без GPU",
+    "created_at": "2026-08-31T23:10:00Z",
+    "chunking": "2b-D jinaai/jina-embeddings-v3-hf, 12 chapters",
+    "hybrid_asr_gold": false,
+    "api_verdict": "not_usable"
+  },
+  "asr_results": [
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "frozen-stage2",
+      "input_artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "failure_kind": "none",
+      "sample_check": "n/a",
+      "meaning_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": null,
+      "artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "notes": "Этап 3b: ASR заморожен. Markdown собран asr_json_to_md.py без --gold."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Этап 3b: denoise запрещён."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "late_chunking",
+      "embedding_model": "jinaai/jina-embeddings-v3-hf",
+      "status": "skipped",
+      "threshold": null,
+      "num_chunks": 12,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_d_chapters.json",
+      "notes": "Замороженный каркас D. C не запускался. Новая нарезка не считалась."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "gemini-api",
+      "model": "gemini-2.5-flash",
+      "status": "success",
+      "execution_mode": "api",
+      "provider": "Google Gemini",
+      "input_artifact": "data/3b_data/chunks_d/D00.md",
+      "runtime_sec": 102.662,
+      "hallucination_flag": true,
+      "artifact": "results/llm/3b/insights_d/",
+      "notes": "12 extract + assemble. clock_json скопирован из чанков. 138 src совпали с метками. D10 сначала потерялся (формат - question:); восстановлен из raw. Риск: «пятидесятому» из ASR «пятьдесят»."
+    },
+    {
+      "runtime": "gemini-api",
+      "model": "gemini-2.5-flash",
+      "status": "success",
+      "execution_mode": "api",
+      "provider": "Google Gemini",
+      "input_artifact": "results/llm/3b/insights_d/",
+      "runtime_sec": 12.414,
+      "hallucination_flag": false,
+      "artifact": "results/llm/3b/report.md",
+      "notes": "Один assemble. 12 глав, clock из insight-файлов = манифест. Решения: не зафиксированы. Дальше раздут."
+    },
+    {
+      "runtime": "gemini-api",
+      "model": "gemini-2.5-flash",
+      "status": "fail",
+      "execution_mode": "api",
+      "provider": "Google Gemini",
+      "input_artifact": "results/llm/3b/report.md + data/3b_data/full_asr.md",
+      "runtime_sec": 21.539,
+      "hallucination_flag": null,
+      "artifact": "results/llm/3b/self_check.md",
+      "notes": "verdict: not_usable. Судья трижды мимо groundedness (стиль; пустой D10; utterance vs chapter clock). NVIDIA 0. Локальный 8B не запускался."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "data/3b_data/chunks_d/D00.md",
+      "runtime_sec": 1659.0,
+      "hallucination_flag": true,
+      "artifact": "results/llm/3b/local_smoke.md",
+      "notes": "Дым: D00 extract parse_ok (7 fact, title «Подключение к сетям»). Assemble Gemini insights parse_ok, n_ctx=16384, 1455 с, RSS 13.2 GiB; 5 секций, 8/12 глав. insights_d и report.md не перезаписывались."
+    }
+  ],
+  "recommendations": "Для инсайтов по готовым главам D: Gemini 2.5 Flash текстом, один чанк = один вызов, clock_json и src копировать из markdown (не из головы модели). Парсер обязан принимать и `- kind: fact`, и `- question:`. Title-retry не должен затирать инсайты. Сборку отчёта тем же Flash можно оставлять, но «Дальше» фильтровать по kind=action. Self-check тем же API как судья стиля не годится: сверять clock только со строками `clock:` / манифестом, числа — со стенограммой. Локальный 8B в этом прогоне не подтверждён (правило usable). NVIDIA не понадобился. Каркас C и 14B — не этот этап. ASR MVP без изменений: GigaAM v3_rnnt + линейный gain; диаризация демки — Silero+TEN / WeSpeaker."
+}

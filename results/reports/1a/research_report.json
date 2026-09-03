@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "stage": 1,
+    "substage": "1a",
+    "status": "completed",
+    "fixture": "data/fixtures/meeting_sample.m4a",
+    "host": "Linux x86_64, 4 CPU, 15 GiB RAM, без GPU",
+    "created_at": "2026-08-29T00:45:00Z",
+    "execution_mode": "local-first",
+    "effective_egress": "allow-all"
+  },
+  "asr_results": [
+    {
+      "lib": "faster-whisper",
+      "model": "medium (int8)",
+      "status": "success",
+      "rw_ratio": 0.962963,
+      "oo_words": [
+        "й",
+        "левневку",
+        "агк",
+        "удс",
+        "убрикнуть",
+        "латчатке",
+        "дз",
+        "рд",
+        "цветильников",
+        "энерго",
+        "стабилей",
+        "эксперти",
+        "корреспублика",
+        "жилплощадей",
+        "кам",
+        "обоихнем",
+        "садовка",
+        "тп",
+        "ру",
+        "колоколого",
+        "отрисовываться",
+        "сработы",
+        "ц",
+        "непон",
+        "кварти",
+        "площад",
+        "квартирография",
+        "масель",
+        "лоджами",
+        "посылано",
+        "некомыслия",
+        "чертовщик",
+        "обсуде",
+        "сят",
+        "трехкомнатных",
+        "квартирографии",
+        "аппетектором",
+        "задрочит",
+        "нибудь"
+      ],
+      "sample_check": "ok",
+      "attempt": 1,
+      "runtime_sec": 201.165,
+      "artifact": "results/asr/faster_whisper_medium_attempt1.json",
+      "execution_mode": "local",
+      "provider": "faster-whisper",
+      "input_artifact": "data/fixtures/meeting_sample.m4a",
+      "failure_kind": null,
+      "notes": "Порог 0,9 пройден. Четыре распределённых фрагмента осмысленны, но в стенограмме есть локальные ошибки и редкие вставки символов других письменностей. Повтор с large-v3 не выполнялся, потому что medium прошёл заданные ворота качества."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "ffmpeg highpass=80 Hz + afftdn nf=-25 dB",
+      "status": "success",
+      "asr_before_rw_ratio": 0.962963,
+      "asr_after_rw_ratio": 0.972973,
+      "quality_delta": "worse",
+      "artifacts": "results/denoise/ffmpeg_afftdn_after.json; results/denoise/ffmpeg_afftdn_after_metrics.json",
+      "recommend": false,
+      "execution_mode": "local",
+      "provider": "ffmpeg 6.1.1 + faster-whisper medium int8",
+      "input_artifact": "data/fixtures/meeting_sample.m4a",
+      "notes": "Единственный A/B для метода. Формальный словарный коэффициент вырос, но число кириллических слов упало с 1188 до 518, а VAD пропустил длительные интервалы речи. Метод в этой конфигурации ухудшил полноту."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "косинусное сходство соседних ASR-сегментов",
+      "embedding_model": "intfloat/multilingual-e5-small",
+      "status": "fail",
+      "threshold": 0.8,
+      "num_chunks": 13,
+      "spot_check": "bad",
+      "artifact": "results/chunking/multilingual_e5_small_threshold_080.json",
+      "execution_mode": "local",
+      "provider": "sentence-transformers",
+      "input_artifact": "results/asr/faster_whisper_medium_attempt1.json",
+      "notes": "Исходный порог 0,7 дал один чанк и был явно непригоден; разрешённый единичный сдвиг до 0,8 дал 13 чанков. Часть границ совпала со сменой тем (сети связи, инженерные сети, квартирография), но несколько границ разрезают одну мысль, поэтому качество семантического разбиения не прошло выборочную проверку."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen2.5-7B-Instruct GGUF Q4_K_M",
+      "status": "fail",
+      "runtime_sec": 126.4,
+      "hallucination_flag": true,
+      "artifact": "results/llm/qwen2.5_7b_q4_k_m_summary.md",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/asr/faster_whisper_medium_attempt1.txt",
+      "notes": "Темы изложены связно и лимит времени соблюдён, но модель необоснованно назначила «Разработчика» ответственным почти за все действия, нарушив прямое ограничение промпта."
+    },
+    {
+      "runtime": "api",
+      "model": "gemini-2.5-flash",
+      "status": "fail",
+      "runtime_sec": 5.071,
+      "hallucination_flag": null,
+      "artifact": "results/llm/gemini_2.5_flash_summary.md",
+      "execution_mode": "api",
+      "provider": "Google Gemini",
+      "input_artifact": "results/asr/faster_whisper_medium_attempt1.txt",
+      "notes": "Один разрешённый текстовый fallback-вызов; аудио не передавалось. Ответ оборвался после 39 выходных токенов, поскольку 981 токен бюджета ушёл на внутреннее рассуждение. Повтор не выполнялся."
+    }
+  ],
+  "api_usage": {
+    "gemini_calls": 1,
+    "nvidia_calls": 0,
+    "audio_uploaded": false
+  },
+  "recommendations": "Для минимального локального контура пригоден faster-whisper medium в int8 на исходном аудио: он прошёл заданный порог и работал примерно в 7,3 раза быстрее реального времени. Проверенный ffmpeg-шумодав по умолчанию не применять из-за потери речи. Связка multilingual-e5-small над короткими соседними ASR-сегментами с фиксированным порогом пока не готова для MVP: перед следующим этапом нужны укрупнение реплик и калибровка границ. Qwen2.5-7B Q4_K_M достаточно быстр для чернового тематического обзора на CPU, но извлечение решений и ответственных требует строгой верификации; единственный API fallback также не дал пригодного результата. Полностью надёжная связка ASR + denoise + chunking + summary на этом образце не подтверждена."
+}

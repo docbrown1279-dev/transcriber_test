@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "stage": 1,
+    "substage": "1d",
+    "fixture": "data/processed/meeting_sample_loudnorm.wav",
+    "host": "Linux-6.12.94+-x86_64-with-glibc2.39",
+    "created_at": "2026-08-29T18:10:00Z"
+  },
+  "hf_gate": {
+    "status": "success",
+    "token_present": true,
+    "repositories": {
+      "pyannote/speaker-diarization-3.1/config.yaml": 200,
+      "pyannote/segmentation-3.0/config.yaml": 200
+    },
+    "failure_kind": "none"
+  },
+  "diarization_result": {
+    "status": "success",
+    "execution_mode": "local",
+    "provider": "pyannote.audio",
+    "model": "pyannote/speaker-diarization-3.1",
+    "input_artifact": "data/processed/meeting_sample_loudnorm.wav",
+    "artifact": "results/asr/pyannote_diarization.json",
+    "turns": 413,
+    "speakers": 5,
+    "runtime_sec": 783.848
+  },
+  "asr_results": [
+    {
+      "lib": "gigaam",
+      "model": "v2_rnnt",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "SberDevices/gigaam",
+      "input_artifact": "data/processed/meeting_sample_loudnorm.wav",
+      "failure_kind": "none",
+      "rw_ratio": 0.975419,
+      "latin_ratio": 0.001951,
+      "oo_words": [
+        "грушек",
+        "агк",
+        "доложно",
+        "ресурсника",
+        "ливневке",
+        "абс",
+        "экспертнизу",
+        "ливневку",
+        "удс",
+        "гс",
+        "продолж",
+        "проветировании",
+        "тдс",
+        "плацман",
+        "автомишем",
+        "птп",
+        "энерго",
+        "ресурсников",
+        "кондиратов",
+        "погружку"
+      ],
+      "sample_check": "ok",
+      "meaning_check": "n/a",
+      "diarization": "results/asr/pyannote_diarization.json",
+      "speakers": 5,
+      "attempt": 1,
+      "runtime_sec": 81.02,
+      "artifact": "results/asr/gigaam_v2_rnnt/meeting_sample_loudnorm_after_retry.json",
+      "segments": 415,
+      "dictionary_gate": {
+        "failed_before_retry": 159,
+        "retried": 15,
+        "passed_after_retry_among_retried": 10,
+        "failed_after_retry": 149,
+        "skipped_due_to_cap": 144
+      },
+      "notes": "Глобальный порог русского словаря пройден; 146 коротких/пустых сегментов до fallback объясняют большую долю сегментных отказов. Все 15 замен были локальными interval-only."
+    },
+    {
+      "lib": "transformers",
+      "model": "bond005/whisper-podlodka-turbo",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "Hugging Face transformers",
+      "input_artifact": "data/processed/meeting_sample_loudnorm.wav",
+      "failure_kind": "none",
+      "rw_ratio": 0.961427,
+      "latin_ratio": 0.002893,
+      "oo_words": [
+        "извание",
+        "обължение",
+        "уга",
+        "удс",
+        "кам",
+        "агк",
+        "нибудь",
+        "измечание",
+        "пеналовский",
+        "подходовым",
+        "присурсника",
+        "днёмки",
+        "аристируется",
+        "оставиться",
+        "сошнёмся",
+        "спертизы",
+        "ливнёвку",
+        "уэс",
+        "увс",
+        "срочкой"
+      ],
+      "sample_check": "ok",
+      "meaning_check": "n/a",
+      "diarization": "results/asr/pyannote_diarization.json",
+      "speakers": 5,
+      "attempt": 1,
+      "runtime_sec": 2226.824,
+      "artifact": "results/asr/whisper_podlodka_turbo/meeting_sample_loudnorm_after_retry.json",
+      "segments": 415,
+      "dictionary_gate": {
+        "failed_before_retry": 51,
+        "retried": 15,
+        "passed_after_retry_among_retried": 6,
+        "failed_after_retry": 45,
+        "skipped_due_to_cap": 36
+      },
+      "notes": "Turbo-модель загрузилась и выполнилась; fallback на bond005/whisper-large-v3-ru-podlodka не использовался. Все 15 замен были локальными interval-only."
+    }
+  ],
+  "denoise_results": [],
+  "chunking_results": [],
+  "llm_summary_results": [],
+  "recommendations": "Для Stage 1d предпочтителен bond005/whisper-podlodka-turbo с отдельной pyannote-диаризацией: на тех же 415 срезах у него 51 словарный отказ против 159 у GigaAM v2_rnnt, а известные английские откаты и циклы исчезли уже до fallback. Обоим стекам всё ещё нужен interval-only large-v3 fallback, но лимит 15 оставляет 149 и 45 проблемных сегментов соответственно; короткие pyannote-реплики следует отдельно учитывать в будущей продуктовой политике."
+}

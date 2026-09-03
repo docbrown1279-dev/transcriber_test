@@ -1,0 +1,313 @@
+{
+  "frame_sec": 0.01,
+  "reference": "results/reports/1f/baseline/pyannote31 (union of merged_turns; not human gold)",
+  "systems": [
+    "pyannote31",
+    "silero",
+    "ten_vad",
+    "fsmn_vad"
+  ],
+  "gap_merge_sec": 0.3,
+  "clips": {
+    "test_voice": {
+      "duration_sec": 83.0,
+      "pairwise_speech_iou": {
+        "pyannote31__silero": 0.7769,
+        "pyannote31__ten_vad": 0.7585,
+        "pyannote31__fsmn_vad": 0.7613,
+        "silero__ten_vad": 0.8349,
+        "silero__fsmn_vad": 0.746,
+        "ten_vad__fsmn_vad": 0.8043
+      },
+      "coverage": {
+        "pyannote31": {
+          "speech_sec": 63.1,
+          "only_this_vs_all_others_sec": 0.59,
+          "this_not_pyannote_sec": 0.0,
+          "pyannote_not_this_sec": 0.0
+        },
+        "silero": {
+          "speech_sec": 64.36,
+          "only_this_vs_all_others_sec": 0.63,
+          "this_not_pyannote_sec": 8.63,
+          "pyannote_not_this_sec": 7.37
+        },
+        "ten_vad": {
+          "speech_sec": 72.43,
+          "only_this_vs_all_others_sec": 2.11,
+          "this_not_pyannote_sec": 13.97,
+          "pyannote_not_this_sec": 4.64
+        },
+        "fsmn_vad": {
+          "speech_sec": 66.99,
+          "only_this_vs_all_others_sec": 1.2,
+          "this_not_pyannote_sec": 10.76,
+          "pyannote_not_this_sec": 6.87
+        }
+      },
+      "n_regions": {
+        "pyannote31": 4,
+        "silero": 16,
+        "ten_vad": 19,
+        "fsmn_vad": 12
+      },
+      "test_voice_windows": {
+        "0-10s": {
+          "pyannote31": {
+            "speech_sec": 0.03,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 9.970344,
+                "end": 10.0
+              }
+            ]
+          },
+          "silero": {
+            "speech_sec": 8.364,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 0.876,
+                "end": 3.828
+              },
+              {
+                "start": 4.588,
+                "end": 10.0
+              }
+            ]
+          },
+          "ten_vad": {
+            "speech_sec": 7.792,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 0.064,
+                "end": 0.08
+              },
+              {
+                "start": 0.896,
+                "end": 3.632
+              },
+              {
+                "start": 4.544,
+                "end": 9.52
+              },
+              {
+                "start": 9.936,
+                "end": 10.0
+              }
+            ]
+          },
+          "fsmn_vad": {
+            "speech_sec": 5.64,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 0.58,
+                "end": 2.29
+              },
+              {
+                "start": 4.71,
+                "end": 6.1
+              },
+              {
+                "start": 6.6,
+                "end": 9.14
+              }
+            ]
+          }
+        },
+        "75-83s": {
+          "pyannote31": {
+            "speech_sec": 0.0,
+            "covered": false,
+            "intervals": []
+          },
+          "silero": {
+            "speech_sec": 0.092,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 75.0,
+                "end": 75.092
+              }
+            ]
+          },
+          "ten_vad": {
+            "speech_sec": 5.904,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 75.0,
+                "end": 75.488
+              },
+              {
+                "start": 76.768,
+                "end": 77.168
+              },
+              {
+                "start": 77.488,
+                "end": 78.032
+              },
+              {
+                "start": 78.528,
+                "end": 83.0
+              }
+            ]
+          },
+          "fsmn_vad": {
+            "speech_sec": 3.88,
+            "covered": true,
+            "intervals": [
+              {
+                "start": 75.0,
+                "end": 75.27
+              },
+              {
+                "start": 78.51,
+                "end": 79.67
+              },
+              {
+                "start": 80.54,
+                "end": 82.99
+              }
+            ]
+          }
+        }
+      }
+    },
+    "test_apartments": {
+      "duration_sec": 85.0,
+      "pairwise_speech_iou": {
+        "pyannote31__silero": 0.7278,
+        "pyannote31__ten_vad": 0.7656,
+        "pyannote31__fsmn_vad": 0.7187,
+        "silero__ten_vad": 0.8779,
+        "silero__fsmn_vad": 0.8243,
+        "ten_vad__fsmn_vad": 0.8334
+      },
+      "coverage": {
+        "pyannote31": {
+          "speech_sec": 61.44,
+          "only_this_vs_all_others_sec": 1.1,
+          "this_not_pyannote_sec": 0.0,
+          "pyannote_not_this_sec": 0.0
+        },
+        "silero": {
+          "speech_sec": 65.64,
+          "only_this_vs_all_others_sec": 0.24,
+          "this_not_pyannote_sec": 12.11,
+          "pyannote_not_this_sec": 7.91
+        },
+        "ten_vad": {
+          "speech_sec": 70.06,
+          "only_this_vs_all_others_sec": 0.58,
+          "this_not_pyannote_sec": 13.04,
+          "pyannote_not_this_sec": 4.42
+        },
+        "fsmn_vad": {
+          "speech_sec": 67.48,
+          "only_this_vs_all_others_sec": 1.46,
+          "this_not_pyannote_sec": 13.57,
+          "pyannote_not_this_sec": 7.53
+        }
+      },
+      "n_regions": {
+        "pyannote31": 5,
+        "silero": 17,
+        "ten_vad": 18,
+        "fsmn_vad": 15
+      },
+      "test_voice_windows": null
+    },
+    "test_transformers": {
+      "duration_sec": 85.0,
+      "pairwise_speech_iou": {
+        "pyannote31__silero": 0.8475,
+        "pyannote31__ten_vad": 0.8247,
+        "pyannote31__fsmn_vad": 0.8711,
+        "silero__ten_vad": 0.9193,
+        "silero__fsmn_vad": 0.8386,
+        "ten_vad__fsmn_vad": 0.8376
+      },
+      "coverage": {
+        "pyannote31": {
+          "speech_sec": 72.8,
+          "only_this_vs_all_others_sec": 1.53,
+          "this_not_pyannote_sec": 0.0,
+          "pyannote_not_this_sec": 0.0
+        },
+        "silero": {
+          "speech_sec": 67.63,
+          "only_this_vs_all_others_sec": 0.13,
+          "this_not_pyannote_sec": 3.21,
+          "pyannote_not_this_sec": 8.38
+        },
+        "ten_vad": {
+          "speech_sec": 67.01,
+          "only_this_vs_all_others_sec": 0.25,
+          "this_not_pyannote_sec": 3.82,
+          "pyannote_not_this_sec": 9.61
+        },
+        "fsmn_vad": {
+          "speech_sec": 72.1,
+          "only_this_vs_all_others_sec": 1.34,
+          "this_not_pyannote_sec": 4.64,
+          "pyannote_not_this_sec": 5.34
+        }
+      },
+      "n_regions": {
+        "pyannote31": 6,
+        "silero": 18,
+        "ten_vad": 24,
+        "fsmn_vad": 11
+      },
+      "test_voice_windows": null
+    },
+    "test_ninth": {
+      "duration_sec": 85.0,
+      "pairwise_speech_iou": {
+        "pyannote31__silero": 0.8841,
+        "pyannote31__ten_vad": 0.8966,
+        "pyannote31__fsmn_vad": 0.8783,
+        "silero__ten_vad": 0.9298,
+        "silero__fsmn_vad": 0.8566,
+        "ten_vad__fsmn_vad": 0.8719
+      },
+      "coverage": {
+        "pyannote31": {
+          "speech_sec": 74.54,
+          "only_this_vs_all_others_sec": 3.42,
+          "this_not_pyannote_sec": 0.0,
+          "pyannote_not_this_sec": 0.0
+        },
+        "silero": {
+          "speech_sec": 66.3,
+          "only_this_vs_all_others_sec": 0.02,
+          "this_not_pyannote_sec": 0.21,
+          "pyannote_not_this_sec": 8.45
+        },
+        "ten_vad": {
+          "speech_sec": 67.78,
+          "only_this_vs_all_others_sec": 0.37,
+          "this_not_pyannote_sec": 0.5,
+          "pyannote_not_this_sec": 7.26
+        },
+        "fsmn_vad": {
+          "speech_sec": 69.86,
+          "only_this_vs_all_others_sec": 2.11,
+          "this_not_pyannote_sec": 2.34,
+          "pyannote_not_this_sec": 7.02
+        }
+      },
+      "n_regions": {
+        "pyannote31": 8,
+        "silero": 17,
+        "ten_vad": 19,
+        "fsmn_vad": 14
+      },
+      "test_voice_windows": null
+    }
+  }
+}

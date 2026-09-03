@@ -1,12 +1,19 @@
 {
   "meta": {
     "stage": 1,
-    "status": "not_started",
-    "fixture": "data/fixtures/meeting_sample.m4a"
-  },
-  "asr_results": [],
-  "denoise_results": [],
-  "chunking_results": [],
-  "llm_summary_results": [],
-  "recommendations": ""
+    "note": "Отчёты разнесены по подэтапам. Этот файл — указатель, не полный прогон.",
+    "reports": {
+      "1a": "results/reports/1a/research_report.json",
+      "1b": "results/reports/1b/research_report.json",
+      "1c": "results/reports/1c/research_report.json",
+      "1d": "results/reports/1d/research_report.json",
+      "1e": "results/reports/1e/research_report.json",
+      "2": "results/reports/2/research_report.json",
+      "2b": "results/reports/2b/research_report.json",
+      "3": "results/reports/3/research_report.json",
+      "1f": "results/reports/1f/research_report.json",
+      "1f2": "results/reports/1f2/research_report.json",
+      "1f2_conclusions": "results/reports/1f2/conclusions.md"
+    }
+  }
 }

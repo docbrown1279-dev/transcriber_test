@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "stage": 1,
+    "substage": "2b",
+    "fixture": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+    "host": "CPU 4 vCPU, RAM 15 GiB, без GPU",
+    "created_at": "2026-08-30T08:38:00Z",
+    "audio_duration_sec": 1468.6621315192745,
+    "winner_selected": false
+  },
+  "asr_results": [
+    {
+      "lib": "gigaam",
+      "model": "v3_rnnt",
+      "status": "skipped",
+      "execution_mode": "local",
+      "provider": "frozen-stage2",
+      "input_artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "failure_kind": "none",
+      "sample_check": "n/a",
+      "meaning_check": "n/a",
+      "attempt": 1,
+      "runtime_sec": null,
+      "artifact": "results/asr/2/gigaam_v3_rnnt/meeting_sample.json",
+      "notes": "Этап 2b: ASR заморожен, не пересчитывался. Использован готовый локальный артефакт этапа 2."
+    }
+  ],
+  "denoise_results": [
+    {
+      "method": "none",
+      "status": "skipped",
+      "quality_delta": "unknown",
+      "recommend": false,
+      "notes": "Этап 2b: denoise запрещён и не выполнялся."
+    }
+  ],
+  "chunking_results": [
+    {
+      "method": "title_embed_adjacent",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "success",
+      "threshold": 0.85,
+      "num_chunks": 63,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_a_t085.json",
+      "notes": "Опыт A, порог 0.85: 0 merge, coverage ok. Капы 8 листьев / 180 с. LLM при группировке не вызывался."
+    },
+    {
+      "method": "title_embed_adjacent",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "success",
+      "threshold": 0.8,
+      "num_chunks": 63,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_a_t080.json",
+      "notes": "Опыт A, порог 0.80: 0 merge. Соседние cosine названий med 0.595."
+    },
+    {
+      "method": "title_embed_adjacent",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "success",
+      "threshold": 0.75,
+      "num_chunks": 62,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_a_chapters.json",
+      "notes": "Опыт A, выбранный порог (ближайший к 12–18 среди валидных): 1 merge листьев 30–31. Цель 8–20 не взята."
+    },
+    {
+      "method": "pairwise_llm",
+      "embedding_model": null,
+      "status": "success",
+      "threshold": null,
+      "num_chunks": 43,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_b_chapters.json",
+      "notes": "Опыт B: два прохода Qwen3-8B по соседним парам. 63→45→43. 102 LLM-вызова, 20 merge. Капы 8/180 с. В 8–20 не попали."
+    },
+    {
+      "method": "pack_across_speakers",
+      "embedding_model": "cointegrated/rubert-tiny2",
+      "status": "success",
+      "threshold": 0.7,
+      "num_chunks": 14,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_c_chapters.json",
+      "notes": "Опыт C: gap≤2 с между разными спикерами, pack 40–80, tiny2 0.70. 180 pieces → 37 units → 14 глав. В предпочтительном 12–18. Title-embed второй проход не применялся."
+    },
+    {
+      "method": "late_chunking",
+      "embedding_model": "jinaai/jina-embeddings-v3-hf",
+      "status": "success",
+      "threshold": null,
+      "num_chunks": 12,
+      "spot_check": "n/a",
+      "artifact": "results/chunking/2b/exp_d_chapters.json",
+      "notes": "После апрува einops 0.8.2. Официальный jina-embeddings-v3 (flash) не грузится на transformers 5.16.1; взят нативный порт той же модели jina-embeddings-v3-hf. Окна 240/60 с, 12 глав по 81–144 с, coverage ok. Альтернативы gte/bge/Qwen3-Embedding не запускались."
+    }
+  ],
+  "llm_summary_results": [
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_a_chapters.json",
+      "runtime_sec": null,
+      "hallucination_flag": null,
+      "artifact": "results/llm/2b/exp_a_titles.json",
+      "notes": "Не саммари. Один новый заголовок для единственной склейки опыта A; 61 название этапа 2 переиспользованы."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_b_chapters.json",
+      "runtime_sec": 1608.339,
+      "hallucination_flag": null,
+      "artifact": "results/llm/2b/exp_b_pair_decisions.json",
+      "notes": "Не саммари. Попарные да/нет + короткий title из двух старых названий. 102 вызова. Полное саммари — этап 3."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_c_chapters.json",
+      "runtime_sec": 216.177,
+      "hallucination_flag": null,
+      "artifact": "results/llm/2b/exp_c_titles.json",
+      "notes": "Не саммари. 14 коротких русских названий после фиксации границ опыта C."
+    },
+    {
+      "runtime": "llama.cpp",
+      "model": "Qwen3-8B-Q5_K_M.gguf",
+      "status": "success",
+      "execution_mode": "local",
+      "provider": "llama.cpp",
+      "input_artifact": "results/chunking/2b/exp_d_chapters.json",
+      "runtime_sec": 178.854,
+      "hallucination_flag": null,
+      "artifact": "results/llm/2b/exp_d_titles.json",
+      "notes": "Не саммари. 12 коротких русских названий после фиксации границ late chunking."
+    }
+  ],
+  "recommendations": "Победителя 2b без человеческой оценки не выбираем. Автоматически валидны A (62), B (43), C (14) и D (12). В целевых 8–20 и предпочтительных 12–18 — C (cross-speaker + tiny2) и D (late chunking jina-v3-hf). A почти не склеивает названия (med cosine 0.595). B: 63→43. D доустановлен в этой сессии: einops 0.8.2; официальный flash-чекпоинт несовместим с transformers 5.16.1, взят нативный порт той же модели. Этап 3 не начинать, пока человек не разметит review_sheet в eval/2b_chapter_review.json. MVP ASR без изменений: GigaAM v3_rnnt + pyannote 3.1 + linear gain."
+}

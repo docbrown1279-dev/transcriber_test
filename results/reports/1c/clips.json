@@ -1,0 +1,32 @@
+{
+  "audio_source": "docs/Голос 002.m4a",
+  "note": "Клипы из исходной записи, без loudnorm всего файла. Pad 0.35 с. Спикеры — из WhisperX 1b, на другие модели копируются.",
+  "pad_sec": 0.35,
+  "clips": [
+    {
+      "id": "english_09m39",
+      "speaker": "SPEAKER_02",
+      "start": 579.614,
+      "end": 590.896,
+      "why": "large уехал в английский; medium по записи верный"
+    },
+    {
+      "id": "english_14m51",
+      "speaker": "SPEAKER_02",
+      "speakers": [
+        {"speaker": "SPEAKER_02", "start": 885.176, "end": 898.587},
+        {"speaker": "SPEAKER_03", "start": 898.647, "end": 909.591}
+      ],
+      "start": 885.176,
+      "end": 909.591,
+      "why": "14:45 русская фраза + chopsticks / yes-yes; medium схлопнул «И, соответственно, мы»"
+    },
+    {
+      "id": "loop_staff",
+      "speaker": "SPEAKER_03",
+      "start": 645.247,
+      "end": 648.35,
+      "why": "staff staff staff; medium этот кусок не транскрибировал"
+    }
+  ]
+}

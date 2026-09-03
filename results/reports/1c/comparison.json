@@ -1,0 +1,233 @@
+{
+  "fixture": "data/fixtures/meeting_sample.m4a",
+  "clip_format": "PCM s16le, 16000 Hz, mono, padding 0.35 s",
+  "gemini_calls": 0,
+  "audio_uploaded_to_api": false,
+  "comparisons": [
+    {
+      "clip_id": "english_09m39",
+      "start": 579.614,
+      "end": 590.896,
+      "speakers": [
+        "SPEAKER_02"
+      ],
+      "verdict": "systematic",
+      "baselines": {
+        "stage1b_whisperx": {
+          "input_artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+          "segments": [
+            {
+              "start": 579.614,
+              "end": 590.896,
+              "speaker": "SPEAKER_02",
+              "text": " будет точно известно staff we are waiting to bet with the apartment and then it is clear that we will participate in the cook but again I say that if you maintain 300 megawatts, I don't remember how much you can make less split"
+            }
+          ],
+          "text": "будет точно известно staff we are waiting to bet with the apartment and then it is clear that we will participate in the cook but again I say that if you maintain 300 megawatts, I don't remember how much you can make less split"
+        },
+        "stage1a_medium": {
+          "input_artifact": "results/asr/faster_whisper_medium_attempt1.json",
+          "segments": [
+            {
+              "start": 575.76,
+              "end": 582.76,
+              "text": "Количество квартир на сегодня уже точно известно, или оно еще может поменяться?"
+            },
+            {
+              "start": 582.76,
+              "end": 584.76,
+              "text": "Это наш вопрос.�에."
+            },
+            {
+              "start": 586.76,
+              "end": 591.76,
+              "text": "Ну вот все, значит мы тогда с точки зрения инженерии ждем согласования."
+            }
+          ],
+          "text": "Количество квартир на сегодня уже точно известно, или оно еще может поменяться? Это наш вопрос.�에. Ну вот все, значит мы тогда с точки зрения инженерии ждем согласования."
+        }
+      },
+      "new_runs": {
+        "whisperx_large_v3": {
+          "execution_mode": "local",
+          "provider": "WhisperX",
+          "model": "large-v3",
+          "text": "будет точно известно или оно еще может помен delighted ну вот все значит мы тогда с точки зрения инженерии ждем",
+          "artifact": "results/asr/isolated_clips/english_09m39_whisperx_large_v3.json"
+        },
+        "faster_whisper_large_v3": {
+          "execution_mode": "local",
+          "provider": "faster-whisper",
+          "model": "large-v3",
+          "text": "Ну, как бы точно известно, или оно еще может помен kill? Наш вопрос, конечно. Еще может поменять. Ну вот все, значит, мы тогда с точки зрения инженерии ждем согласования.",
+          "artifact": "results/asr/isolated_clips/english_09m39_faster_whisper_large_v3.json"
+        },
+        "qwen2_5_omni_3b": {
+          "execution_mode": "local",
+          "provider": "Hugging Face Transformers",
+          "model": "Qwen/Qwen2.5-Omni-3B",
+          "text": "будет ну как бы точно известно или она еще может поменяться на что наша прошлость может поменяться ну вот все значит мы тогда с точки зрения инженерии ждем согласование",
+          "artifact": "results/asr/isolated_clips/english_09m39_qwen2_5_omni_3b.json"
+        }
+      },
+      "stack_verdicts": {
+        "whisperx_large_v3": "systematic",
+        "faster_whisper_large_v3": "systematic",
+        "qwen2_5_omni_3b": "local_glitch"
+      }
+    },
+    {
+      "clip_id": "english_14m51",
+      "start": 885.176,
+      "end": 909.591,
+      "speakers": [
+        "SPEAKER_02 до 898.587",
+        "SPEAKER_03 после 898.587"
+      ],
+      "verdict": "systematic",
+      "baselines": {
+        "stage1b_whisperx": {
+          "input_artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+          "segments": [
+            {
+              "start": 885.176,
+              "end": 890.598,
+              "speaker": "SPEAKER_02",
+              "text": "Если у нас мощность корпусу 9 совпадает с 8 или с каким-то,"
+            },
+            {
+              "start": 891.725,
+              "end": 898.587,
+              "speaker": "SPEAKER_02",
+              "text": " Мы arose that we, we say that we have the chopsticks the same."
+            },
+            {
+              "start": 898.647,
+              "end": 909.591,
+              "speaker": "SPEAKER_03",
+              "text": "Yes, yes, yes, yes, yes, yes, yes, yes, putting it this way, you look, yes, indeed, we have the same, everything is the same in height, in size, distance drain,"
+            }
+          ],
+          "text": "Если у нас мощность корпусу 9 совпадает с 8 или с каким-то, Мы arose that we, we say that we have the chopsticks the same. Yes, yes, yes, yes, yes, yes, yes, yes, putting it this way, you look, yes, indeed, we have the same, everything is the same in height, in size, distance drain,"
+        },
+        "stage1a_medium": {
+          "input_artifact": "results/asr/faster_whisper_medium_attempt1.json",
+          "segments": [
+            {
+              "start": 866.84,
+              "end": 896.84,
+              "text": "И, соответственно, мы"
+            },
+            {
+              "start": 896.84,
+              "end": 916.84,
+              "text": "Если это так, вы смотрите, что по высоте, по габаритам прошло, расстояние!'"
+            }
+          ],
+          "text": "И, соответственно, мы Если это так, вы смотрите, что по высоте, по габаритам прошло, расстояние!'"
+        }
+      },
+      "new_runs": {
+        "whisperx_large_v3": {
+          "execution_mode": "local",
+          "provider": "WhisperX",
+          "model": "large-v3",
+          "text": "Если у нас мощность корпуса 9-го сов repairs совпадает с, с 8-ым или с каким-то, мы говорим, bumped-up, мы говорим, что у нас все то же самое. Если... Ну, да.",
+          "artifact": "results/asr/isolated_clips/english_14m51_whisperx_large_v3.json"
+        },
+        "faster_whisper_large_v3": {
+          "execution_mode": "local",
+          "provider": "faster-whisper",
+          "model": "large-v3",
+          "text": "Если у нас мощность корпуса 9-го совпадает с 8-м или с каким-то, мы говорим, что у нас все то же самое. Ну да, если трансформ chilling могут отличаться по мощности, по массе габаритных характеристик, они будут одинаковые, например. Просто там катушек больше будет, или габаритных характеристик, по массе вряд ли. Вот, если это так...",
+          "artifact": "results/asr/isolated_clips/english_14m51_faster_whisper_large_v3.json"
+        },
+        "qwen2_5_omni_3b": {
+          "execution_mode": "local",
+          "provider": "Hugging Face Transformers",
+          "model": "Qwen/Qwen2.5-Omni-3B",
+          "text": "если у нас мощность условно там корпусу там девятого совпадает там с восьмым или с каким-то да мы говорим что у нас все то же самое если ну да если нет трансформаторы могут отличаться по мощности по массе и по конструкции они будут одинаковы вопрос там какую штуковину выбрать сама себе вот если это так",
+          "artifact": "results/asr/isolated_clips/english_14m51_qwen2_5_omni_3b.json"
+        }
+      },
+      "stack_verdicts": {
+        "whisperx_large_v3": "systematic",
+        "faster_whisper_large_v3": "systematic",
+        "qwen2_5_omni_3b": "local_glitch"
+      }
+    },
+    {
+      "clip_id": "loop_staff",
+      "start": 645.247,
+      "end": 648.35,
+      "speakers": [
+        "SPEAKER_03"
+      ],
+      "verdict": "systematic",
+      "baselines": {
+        "stage1b_whisperx": {
+          "input_artifact": "results/asr/whisperx_large_v3_loudnorm/meeting_sample_loudnorm.json",
+          "segments": [
+            {
+              "start": 645.247,
+              "end": 645.407,
+              "speaker": "SPEAKER_03",
+              "text": " Ну?"
+            },
+            {
+              "start": 645.527,
+              "end": 645.627,
+              "speaker": "SPEAKER_03",
+              "text": "Ну?"
+            },
+            {
+              "start": 645.707,
+              "end": 648.35,
+              "speaker": "SPEAKER_03",
+              "text": "staff staff staff staff staff staff staff"
+            }
+          ],
+          "text": "Ну? Ну? staff staff staff staff staff staff staff"
+        },
+        "stage1a_medium": {
+          "input_artifact": "results/asr/faster_whisper_medium_attempt1.json",
+          "segments": [],
+          "text": ""
+        }
+      },
+      "new_runs": {
+        "whisperx_large_v3": {
+          "execution_mode": "local",
+          "provider": "WhisperX",
+          "model": "large-v3",
+          "text": "или какой-то ретро взяток.",
+          "artifact": "results/asr/isolated_clips/loop_staff_whisperx_large_v3.json"
+        },
+        "faster_whisper_large_v3": {
+          "execution_mode": "local",
+          "provider": "faster-whisper",
+          "model": "large-v3",
+          "text": "ى ى ى ى ى ى ى ى",
+          "artifact": "results/asr/isolated_clips/loop_staff_faster_whisper_large_v3.json"
+        },
+        "qwen2_5_omni_3b": {
+          "execution_mode": "local",
+          "provider": "Hugging Face Transformers",
+          "model": "Qwen/Qwen2.5-Omni-3B",
+          "text": "очень маленький такой где вот здесь вот здесь",
+          "artifact": "results/asr/isolated_clips/loop_staff_qwen2_5_omni_3b.json"
+        }
+      },
+      "stack_verdicts": {
+        "whisperx_large_v3": "local_glitch",
+        "faster_whisper_large_v3": "systematic",
+        "qwen2_5_omni_3b": "local_glitch"
+      }
+    }
+  ],
+  "overall": {
+    "whisperx_large_v3": "Не годится как единственный retry: на обоих English-интервалах сохраняются новые английские вставки; loop_staff без цикла, но текст отличается от Qwen.",
+    "faster_whisper_large_v3": "Не годится для retry: английские вставки остаются, а loop_staff превращается в длинный цикл вне длительности клипа.",
+    "qwen2_5_omni_3b": "Пригоден как ограниченный retry-кандидат для этих трёх интервалов: все ответы русские и без циклов; нужна человеческая проверка дословности."
+  }
+}
