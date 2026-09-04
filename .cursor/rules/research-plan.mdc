@@ -1,0 +1,20 @@
+---
+description: >-
+  Cursor Cloud RESEARCH only — plan a research stage, criteria, cloud prompt.
+  Use for ASR/LLM experiment stages with cloud handoff. Do not use for general
+  product/app planning (normal planner).
+alwaysApply: false
+---
+
+# Plan a research stage (Cursor Cloud research)
+
+**Scope:** план **исследовательского** этапа под Cloud Agent. Не заменяет общий planner продукта.
+
+1. Read `progress/plan.md` (and `docs/` if present). Do not invent closed-stage facts.
+2. Propose: goal, done criteria, libraries/models in scope, what runs **cloud** vs **local** (eval/review stays local).
+3. Ask user approval before writing files.
+4. After ✅: set `CURRENT` in `progress/plan.md`; append one line to `progress/log.md`.
+5. Draft stage prompt in English for the cloud agent (self-contained: why, inputs under `cloud_in/`, outputs under `cloud_out/`, stop-list). Keep a local copy path in mind (`prompts/{stage}_….md` on archive).
+6. Before first handoff (or after env change): run skill **cloud-agent-setup**; only then pack (`cloud-handoff` rule).
+
+**Do not:** pack `cloud_in/` in this phase; put gold answers in the prompt; rewrite `data/` originals.
