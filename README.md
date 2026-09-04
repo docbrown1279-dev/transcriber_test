@@ -17,7 +17,7 @@ Agent entrypoint: [`AGENTS.md`](AGENTS.md)
 Example meeting audio:
 
 - `docs/Голос 002.m4a`
-- `data/fixtures/meeting_sample.m4a` (symlink)
+
 
 ## Launch cloud / Cursor agent (Stage 1)
 

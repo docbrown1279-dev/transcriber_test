@@ -1,21 +1,21 @@
 # Secrets
 .env
-.env.*
-!.env.example
+
+.trash/
 
 # Local Cursor research orchestrator (not product)
 .cursor/
 
-# Virtualenvs / cache
+# Virtualenvs 
 .venv/
 .venv-*/
+# Python cache
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
 .cache/
 .DS_Store
-.trash/
 .worktrees/
 
 # Raw audio and working data (cut clips on demand from full file)
@@ -35,4 +35,8 @@ cloud_in/
 cloud_out/
 prompts/
 
-# Gold JSON in eval/ stays tracked — do not ignore eval/
+# Gold JSON in eval
+eval/
+!eval/.gitkeep
+
+
