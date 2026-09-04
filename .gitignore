@@ -1,31 +1,38 @@
+# Secrets
 .env
 .env.*
 !.env.example
+
+# Local Cursor research orchestrator (not product)
+.cursor/
+
+# Virtualenvs / cache
 .venv/
+.venv-*/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
-.trash/
+.cache/
 .DS_Store
+.trash/
+.worktrees/
 
-# Large / regenerated audio (keep fixtures in docs/)
-data/processed/*
-!data/processed/.gitkeep
-data/raw/*
-!data/raw/.gitkeep
+# Raw audio and working data (cut clips on demand from full file)
+data/
+!data/.gitkeep
 
-# Heavy model caches
+# Models
 models/
 *.gguf
-.cache/
 
-# Intermediate run artifacts (reports are tracked)
-results/asr/*
-!results/asr/.gitkeep
-results/denoise/*
-!results/denoise/.gitkeep
-results/chunking/*
-!results/chunking/.gitkeep
-results/llm/*
-!results/llm/.gitkeep
+# Run artifacts (decisions live under docs/research_results/)
+results/*
+!results/.gitkeep
+
+# Future exchange / draft prompts (when used)
+cloud_in/
+cloud_out/
+prompts/
+
+# Gold JSON in eval/ stays tracked — do not ignore eval/
