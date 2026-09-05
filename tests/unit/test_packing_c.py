@@ -99,28 +99,30 @@ def test_d2_pck_03_empty_segment_attaches_and_non_empty_coverage_is_complete() -
 
 def test_d2_mrg_01_high_similarity_under_cap_merges() -> None:
     """[D2-MRG-01] Similar adjacent units merge below the duration cap."""
+    merge_cfg = _cfg().model_copy(update={"packing_target_words": [4, 4]})
     units = pack_speaker_pieces(
         [
             _segment("s0001", 1, 3, "A", "один два три четыре"),
             _segment("s0002", 4, 6, "A", "пять шесть семь восемь"),
         ],
-        _cfg(),
+        merge_cfg,
     )
-    merged = merge_similar_units(units, np.asarray([[1, 0], [0.9, 0.1]]), _cfg())
+    merged = merge_similar_units(units, np.asarray([[1, 0], [0.9, 0.1]]), merge_cfg)
     assert len(merged) == 1
 
 
 def test_d2_mrg_02_low_similarity_and_duration_cap_keep_boundaries() -> None:
     """[D2-MRG-02] Low similarity and excessive duration independently block merging."""
+    merge_cfg = _cfg().model_copy(update={"packing_target_words": [4, 4]})
     units = pack_speaker_pieces(
         [
             _segment("s0001", 1, 3, "A", "один два три четыре"),
             _segment("s0002", 4, 6, "A", "пять шесть семь восемь"),
         ],
-        _cfg(),
+        merge_cfg,
     )
-    assert len(merge_similar_units(units, np.asarray([[1, 0], [0, 1]]), _cfg())) == 2
-    capped_cfg = _cfg().model_copy(update={"merge_max_duration_sec": 4})
+    assert len(merge_similar_units(units, np.asarray([[1, 0], [0, 1]]), merge_cfg)) == 2
+    capped_cfg = merge_cfg.model_copy(update={"merge_max_duration_sec": 4})
     assert len(merge_similar_units(units, np.asarray([[1, 0], [1, 0]]), capped_cfg)) == 2
 
 
@@ -134,7 +136,7 @@ def test_d2_tim_01_chapter_times_equal_source_bounds() -> None:
     )
     artifact = PackingCChunker().chunk(
         transcript,
-        FakeEmbedder([[1, 0], [1, 0]]),
+        FakeEmbedder([[1, 0]]),
         _cfg(),
     )
     assert artifact.chapters[0].start == transcript.segments[0].start

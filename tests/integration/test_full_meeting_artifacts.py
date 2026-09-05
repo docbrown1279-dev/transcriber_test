@@ -27,6 +27,8 @@ def test_d1_int_02_full_meeting_artifacts_valid() -> None:
             "Full-meeting artifacts not yet produced in cloud_out/artifacts/voice_002. "
             "Skipping during unit-only CI."
         )
+    if not (artifacts_dir / "audio.json").is_file():
+        pytest.skip("D1 speech artifacts are absent from the D2 text-only stage pack")
 
     # 1. Валидация TranscriptArtifact
     transcript = load_artifact(transcript_path, TranscriptArtifact)
