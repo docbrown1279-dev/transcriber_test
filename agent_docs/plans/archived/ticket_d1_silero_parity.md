@@ -1,9 +1,9 @@
 # Тикет: D1 — parity с исследованием 1f (Silero без компрессора) + альтернативы
 
-**Статус:** READY TO OPEN  
-**Ветка:** от свежего `main` → `cursor/d1-silero-parity`  
-  (не продолжать `cursor/d1-asr-coherence` / не копить тюны на main; remote `d1-silero-tune` — другая история, не брать)  
-**Зачем:** текущий demo-текст (`data/voice_002`, C3 dynaudnorm + merge agg) сильно хуже и Stage 2 (pyannote), и **1f Silero на сыром клипе**. Нужно сначала **повторить 1f**, потом слегка улучшить, потом осознанно глянуть альтернативы из отчётов — не маскировать крошки компрессией всего файла.
+**Статус:** CLOSED (2026-09-06)  
+**Ветка:** `cursor/d1-silero-parity`  
+**Итог:** snakers4 Silero + v5 context; T0 = 1f parity; T2 (min_silence=350, premerge=0.5) — лучшая читаемость на 4 gold (`eval/d1/5/`). Компрессор не нужен. Sherpa/pyannote-onnx — отложено. Follow-up: `ticket_d1_gigaam_missing.md`.  
+**Зачем было:** demo (`voice_002`, C3+agg) хуже 1f Silero на сыром клипе.
 
 ---
 

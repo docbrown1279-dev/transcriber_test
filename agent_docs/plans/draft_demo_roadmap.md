@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0 закрыт. D1 speech-stack на `main` (dual-path VAD + merge agg); локальный полный hyp — `data/voice_002/` (gitignored). Дальше: ручной `HUMAN_GATE` D1 → этап **D2** (чанкинг C + titles P1).
+**Статус:** D0 закрыт. D1 Silero parity закрыт (snakers4+context; T2 на gold читаем — `eval/d1/5/`). Тикеты coherence/parity → `plans/archived/`. Backlog ASR: `ticket_d1_gigaam_missing.md`. `base.yaml` пока ещё C3+agg, пока явно не переключим на T2. Дальше: D2 (чанкинг C + titles) и/или GigaAM missing spans.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 

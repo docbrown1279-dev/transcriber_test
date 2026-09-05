@@ -74,3 +74,17 @@
 - Report: agent_docs/reports/d1_silero_parity.md
 - Hyp: results/d1_parity_1f/, results/d1_parity_tune/
 - Next: human gate T0 vs T2; defer sherpa/pyannote-onnx bakeoff unless asked
+
+## 2026-09-06 — T2 gold eval (attempt 5)
+- STATUS: T2_GOLD_DIFF_READY
+- Stack: T2 (no dynaudnorm, min_silence=350, premerge=0.5) + fixed snakers4 Silero
+- Hyp: results/d1_parity_t2_gold/
+- Diff: eval/d1/5/transcript_diff.md (readability / window token-recall)
+- Window recall: voice 0.73, apartments 0.75, transformers 0.81, ninth 0.89; missing_hyp=0 all clips
+
+## 2026-09-06 — close Silero/coherence tickets; open GigaAM backlog
+- STATUS: SILERO_PARITY_CLOSED; COHERENCE_TICKET_ARCHIVED; NEXT=GIGAAM_MISSING (backlog)
+- Archived: agent_docs/plans/archived/ticket_d1_silero_parity.md, ticket_d1_asr_coherence.md
+- New backlog: agent_docs/plans/ticket_d1_gigaam_missing.md (missing/truncated spans; dictionary later for касторография)
+- Human: narrative readable enough to move on; do not retune Silero without new evidence
+- Note: base.yaml still C3+agg until explicit apply of T2 defaults
