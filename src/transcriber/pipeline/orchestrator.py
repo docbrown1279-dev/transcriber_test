@@ -150,7 +150,14 @@ def run_job(
     if until not in valid_stages:
         raise ValueError(f"Invalid 'until' stage '{until}'. Valid stages: {valid_stages}")
 
+    transcript_valid = _has_valid_artifact(paths.transcript, TranscriptArtifact)
+    pre_asr_stages = {"normalize", "vad", "diarize", "asr"}
     for step in PIPELINE_STEPS:
+        if transcript_valid and step.stage in pre_asr_stages:
+            executed[step.stage] = paths.transcript
+            if step.stage == until:
+                break
+            continue
         target_file = paths.path(step.produces)
         if _is_step_done(step, paths):
             executed[step.stage] = target_file

@@ -6,7 +6,7 @@ import pytest
 
 from transcriber.errors import StageNotImplementedError
 from transcriber.models.artifacts import TranscriptArtifact, TranscriptSegment, dump_artifact
-from transcriber.pipeline.orchestrator import plan_job, run_stage
+from transcriber.pipeline.orchestrator import plan_job, run_job, run_stage
 from transcriber.pipeline.steps import PIPELINE_STEPS
 
 CONTRACT_ORDER: list[str] = [
@@ -147,6 +147,32 @@ def test_d2_pln_01_transcript_then_chapters_update_plan(tmp_job_dir: Path) -> No
     completed = {item.stage: item.status for item in plan_job(tmp_job_dir)}
     assert completed["chunk"] == "done"
     assert completed["titles"] == "done"
+
+
+def test_d2_pln_02_transcript_seed_skips_audio_stages(tmp_job_dir: Path) -> None:
+    """[D2-PLN-02] Running from transcript does not require or execute audio stages."""
+    transcript = TranscriptArtifact(
+        schema_version="1",
+        job_id=tmp_job_dir.name,
+        engine="gigaam_v3_rnnt",
+        segments=[
+            TranscriptSegment(
+                id="s0001",
+                turn_id="t0001",
+                start=1,
+                end=3,
+                speaker="A",
+                text="готовая стенограмма",
+            )
+        ],
+        max_segment_sec=25,
+        runtime_sec=1,
+    )
+    dump_artifact(transcript, tmp_job_dir / "transcript.json")
+    executed = run_job(tmp_job_dir, until="correction_suggest")
+    assert executed["normalize"] == tmp_job_dir / "transcript.json"
+    assert (tmp_job_dir / "suggestions.json").is_file()
+    assert not (tmp_job_dir / "audio.json").exists()
 
 
 def test_d1_pln_01_fixture_chain_reports_stages_done(tmp_job_dir: Path) -> None:
