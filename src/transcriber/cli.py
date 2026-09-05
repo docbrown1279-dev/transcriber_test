@@ -18,6 +18,7 @@ from transcriber.models.artifacts import (
     SuggestionsArtifact,
     TranscriptArtifact,
     TurnsArtifact,
+    dump_artifact,
     load_artifact,
 )
 from transcriber.models.legacy import convert_legacy_transcript
@@ -98,6 +99,10 @@ def cmd_run(
         Path | None,
         typer.Option("--audio", "-a", help="Путь к исходному аудиофайлу"),
     ] = None,
+    transcript: Annotated[
+        Path | None,
+        typer.Option("--transcript", "-t", help="Готовый transcript.json для возобновления"),
+    ] = None,
     until: Annotated[
         str, typer.Option("--until", "-u", help="Стадия конвейера, до которой выполнять обработку")
     ] = "correction_suggest",
@@ -110,6 +115,10 @@ def cmd_run(
     from transcriber.pipeline.orchestrator import run_job
 
     try:
+        if transcript is not None:
+            seeded = load_artifact(transcript, TranscriptArtifact)
+            job.mkdir(parents=True, exist_ok=True)
+            dump_artifact(seeded, job / "transcript.json")
         executed = run_job(
             job_dir=job,
             source_audio=audio,
