@@ -81,9 +81,11 @@ def pack_speaker_pieces(
         current_speaker = current.segments[-1].speaker
         next_speaker = piece.segments[0].speaker
         combined_words = current.word_count + piece.word_count
+        cross_speaker_gap_ok = (
+            current_speaker == next_speaker or gap <= cfg.packing_max_gap_sec
+        )
         should_pack = (
-            current_speaker != next_speaker
-            and gap <= cfg.packing_max_gap_sec
+            cross_speaker_gap_ok
             and current.word_count < target_min
             and combined_words <= target_max
         )
