@@ -90,7 +90,7 @@ def test_d2_pck_03_empty_segment_attaches_and_non_empty_coverage_is_complete() -
     ]
     artifact = PackingCChunker().chunk(
         _transcript(segments),
-        FakeEmbedder([[1, 0], [0, 1]]),
+        FakeEmbedder([[1, 0]]),
         _cfg(),
     )
     covered = [source_id for chapter in artifact.chapters for source_id in chapter.source_ids]
