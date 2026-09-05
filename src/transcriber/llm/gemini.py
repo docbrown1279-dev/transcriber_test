@@ -52,6 +52,12 @@ class GeminiLlmClient:
                     max_output_tokens=max_tokens,
                     temperature=temperature,
                     response_mime_type="application/json",
+                    response_json_schema={
+                        "type": "object",
+                        "properties": {"title": {"type": "string"}},
+                        "required": ["title"],
+                        "additionalProperties": False,
+                    },
                 ),
             )
         except Exception as exc:
