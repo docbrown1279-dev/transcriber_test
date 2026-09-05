@@ -1,0 +1,32 @@
+# demo overlay — public demo limits and light ONNX stack
+app:
+  profile: demo
+
+vad:
+  fallback: disabled
+
+diarization:
+  engine: wespeaker_onnx
+  device: cpu
+  onnx_threads: 2
+
+llm:
+  mode: api
+  provider: gemini
+  model: gemini-2.5-flash
+  api_key_env: GEMINI_API_KEY
+  timeout_sec: 60
+  max_calls_per_job: 20
+
+limits:
+  requests_per_ip_per_day: 1
+  max_concurrent_jobs: 1
+  result_ttl_hours: 24
+  queue_max_size: 4
+
+ui:
+  type: jinja
+  show_progress: true
+  allow_editing: false
+  allow_player: false
+  draft_warning: true

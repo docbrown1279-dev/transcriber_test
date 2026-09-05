@@ -4,13 +4,14 @@
 
 ## Какой файл за что отвечает
 
-| Файл | Профиль | Когда |
-|---|---|---|
-| `config/demo.yaml` | `demo` | облачная демка, лимиты, Gemini API |
-| `config/dev.yaml` | `dev` | локальная разработка, local LLM, без жёстких лимитов |
-| `config/prod.yaml` | `prod` | контур заказчика (часть движков пока заглушки) |
+| Путь | Роль |
+|---|---|
+| `config/base.yaml` | общие дефолты (speech / chunking / runtime) |
+| `config/profiles/demo.yaml` | дельты публичной демки |
+| `config/profiles/dev.yaml` | дельты разработки |
+| `config/profiles/prod.yaml` | дельты боевого контура |
 
-Загрузка: `src/transcriber/config/loader.py` читает `config/{profile}.yaml` из cwd или корня репо.
+Загрузка: `load_config` делает deep-merge `base ← profiles/{APP_PROFILE}.yaml`, затем валидирует `AppConfig`.
 
 ## Как выбрать профиль
 
@@ -36,16 +37,16 @@ export APP_PROFILE=prod
 
 | Ситуация | Куда смотреть |
 |---|---|
-| Укоротить лимит аудио демки | `config/demo.yaml` → `audio.max_minutes` |
-| Лимит запросов с IP / TTL результата | `demo.yaml` → `limits.*` |
-| Сменить облачную LLM | `demo.yaml` → `llm.provider` / `model` / `api_key_env` |
-| Локальный Qwen вместо API | `APP_PROFILE=dev` (там `llm.mode: local`, `local_llama`) |
-| Включить late chunking / pyannote | только `dev`/`prod` yaml + реальная реализация; в `demo` недоступно |
+| Укоротить лимит аудио демки | `profiles/demo.yaml` или `base` → `audio.max_minutes` |
+| Пороги Silero VAD | `base.yaml` → `vad.threshold` / `neg_threshold` / `min_*` |
+| Лимит запросов с IP / TTL | `profiles/demo.yaml` → `limits.*` |
+| Сменить облачную LLM | `profiles/demo.yaml` → `llm.*` |
+| Локальный Qwen вместо API | `APP_PROFILE=dev` |
+| Включить late chunking / pyannote | `dev`/`prod` overlay + реальная реализация |
 | Путь хранения job-артефактов | `app.storage_root` (по умолчанию `./var`) |
 
 Не хардкодьте пороги в `src/` — меняйте YAML.
 
 ## Секции внутри файла (обзор)
 
-Одинаковая структура во всех профилях: `app`, `audio`, `vad`, `diarization`, `asr`, `correction`, `chunking`, `llm`, `limits`, `ui`.  
-Значения по умолчанию для демки: ~15 минут аудио, Gemini, 1 задача/IP/сутки, UI Jinja (веб появится на D4).
+Одинаковая структура: `app`, `audio` (+ `gain`), `vad`, `diarization` (+ `merge` / `embed`), `asr`, `correction`, `chunking`, `llm`, `limits`, `ui`.

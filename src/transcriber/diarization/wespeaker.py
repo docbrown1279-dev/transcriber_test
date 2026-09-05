@@ -90,10 +90,10 @@ class WeSpeakerDiarizer(Diarizer):
                 diarizer="wespeaker_onnx",
                 speaker_count=0,
                 turns=[],
-                holes=find_holes([], total_duration, cfg.min_hole_sec),
+                holes=find_holes([], total_duration, cfg.merge.min_hole_sec),
                 merge=TurnMergeInfo(
-                    same_speaker_gap_sec=cfg.merge_same_speaker_gap_sec,
-                    absorb_shorter_than_sec=cfg.absorb_turn_shorter_than_sec,
+                    same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
+                    absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
                 ),
                 runtime_sec=round(time.time() - t0, 3),
             )
@@ -108,17 +108,17 @@ class WeSpeakerDiarizer(Diarizer):
         vad_intervals = [Interval(start=r.start, end=r.end) for r in speech.regions]
         speech_islands = merge_speech_regions(
             vad_intervals,
-            max_gap_sec=cfg.vad_premerge_gap_sec,
-            min_duration_sec=cfg.min_embed_sec,
+            max_gap_sec=cfg.merge.vad_premerge_gap_sec,
+            min_duration_sec=cfg.embed.min_sec,
         )
 
         embedder = self._get_embedder()
         segments: list[tuple[float, float]] = []
         embeddings: list[np.ndarray] = []
 
-        window_sec = cfg.embed_window_sec
-        step_sec = cfg.embed_step_sec
-        min_embed = cfg.min_embed_sec
+        window_sec = cfg.embed.window_sec
+        step_sec = cfg.embed.step_sec
+        min_embed = cfg.embed.min_sec
 
         for island in speech_islands:
             dur = island.duration
@@ -159,10 +159,10 @@ class WeSpeakerDiarizer(Diarizer):
                 diarizer="wespeaker_onnx",
                 speaker_count=0,
                 turns=[],
-                holes=find_holes([], total_duration, cfg.min_hole_sec),
+                holes=find_holes([], total_duration, cfg.merge.min_hole_sec),
                 merge=TurnMergeInfo(
-                    same_speaker_gap_sec=cfg.merge_same_speaker_gap_sec,
-                    absorb_shorter_than_sec=cfg.absorb_turn_shorter_than_sec,
+                    same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
+                    absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
                 ),
                 runtime_sec=round(time.time() - t0, 3),
             )
@@ -176,7 +176,7 @@ class WeSpeakerDiarizer(Diarizer):
             clusterer = AgglomerativeClustering(
                 metric="cosine",
                 linkage="average",
-                distance_threshold=cfg.cluster_distance_threshold,
+                distance_threshold=cfg.embed.cluster_distance_threshold,
                 n_clusters=None,
             )
             labels = clusterer.fit_predict(x).tolist()
@@ -193,8 +193,8 @@ class WeSpeakerDiarizer(Diarizer):
 
         merged = merge_turns(
             raw_turns,
-            same_speaker_gap_sec=cfg.merge_same_speaker_gap_sec,
-            absorb_shorter_than_sec=cfg.absorb_turn_shorter_than_sec,
+            same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
+            absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
         )
 
         for i in range(len(merged) - 1):
@@ -209,7 +209,7 @@ class WeSpeakerDiarizer(Diarizer):
                     )
 
         merged = _renumber_speakers(merged)
-        holes = find_holes(merged, total_duration, min_hole_sec=cfg.min_hole_sec)
+        holes = find_holes(merged, total_duration, min_hole_sec=cfg.merge.min_hole_sec)
         unique_speakers = len({t.speaker for t in merged})
 
         artifact = TurnsArtifact(
@@ -220,8 +220,8 @@ class WeSpeakerDiarizer(Diarizer):
             turns=merged,
             holes=holes,
             merge=TurnMergeInfo(
-                same_speaker_gap_sec=cfg.merge_same_speaker_gap_sec,
-                absorb_shorter_than_sec=cfg.absorb_turn_shorter_than_sec,
+                same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
+                absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
             ),
             runtime_sec=round(time.time() - t0, 3),
         )

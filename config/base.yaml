@@ -1,53 +1,68 @@
+# Shared defaults for all profiles (speech + chunking + runtime).
+# Profile overlays live in config/profiles/{demo,dev,prod}.yaml.
+
 app:
   profile: demo
-  storage_root: ./var            # jobs, uploads, artifacts
+  storage_root: ./var
   log_level: INFO
 
+# --- audio (format + gain) ---
 audio:
   max_minutes: 15
   max_file_size_mb: 250
   sample_rate: 16000
   channels: 1
-  gain_rms_threshold_dbfs: -30.0   # 1e: gain only below this RMS
-  gain_target_dbfs: -23.0
-  gain_max_db: 18.0
-  gain_peak_ceiling_dbfs: -1.0
+  gain:
+    rms_threshold_dbfs: -30.0
+    target_dbfs: -23.0
+    max_db: 18.0
+    peak_ceiling_dbfs: -1.0
 
+# --- vad ---
 vad:
-  engine: silero                   # registry key
+  engine: silero
+  threshold: 0.5
+  neg_threshold: 0.35
   min_speech_ms: 200
-  fallback: disabled               # ten_fallback | disabled (licence, off by default)
+  min_silence_ms: 200
+  fallback: disabled
 
+# --- diarization ---
 diarization:
   engine: wespeaker_onnx
   device: cpu
-  onnx_threads: 2                  # demo host is 2-3 vCPU
-  merge_same_speaker_gap_sec: 0.3
-  absorb_turn_shorter_than_sec: 1.0
-  min_hole_sec: 0.5
-  vad_premerge_gap_sec: 0.3        # 1f2: glue Silero crumbs before embed windows
-  min_embed_sec: 0.4               # 1f2: drop chunks shorter than 0.4 s
-  embed_window_sec: 1.5
-  embed_step_sec: 0.75
-  cluster_distance_threshold: 0.80 # 0.5 was for ~85s clips (1f); full meeting needs higher merge
+  onnx_threads: 2
+  merge:
+    same_speaker_gap_sec: 0.3
+    absorb_turn_shorter_than_sec: 1.0
+    min_hole_sec: 0.5
+    vad_premerge_gap_sec: 0.3
+  embed:
+    min_sec: 0.4
+    window_sec: 1.5
+    step_sec: 0.75
+    cluster_distance_threshold: 0.80
 
+# --- asr ---
 asr:
   engine: gigaam_v3_rnnt
   device: cpu
   max_segment_seconds: 25
-  subprocess: true                 # release torch memory after the stage
+  subprocess: true
 
+# --- correction ---
 correction:
   enabled: true
-  mode: suggest_only               # demo never rewrites transcript.json
+  mode: suggest_only
   base_ru_dictionary: true
   domain_dictionary: false
   levenshtein_auto_replace: false
   manual_review: false
   min_confidence: 0.6
 
+# --- chunking ---
 chunking:
-  default_mode: speaker_similarity     # spec name for research variant C
+  default_mode: speaker_similarity
   chunker: packing_c
   embedding_model: rubert_tiny2
   similarity_threshold: 0.70
@@ -58,9 +73,10 @@ chunking:
     enabled: false
     provider: disabled
 
+# --- llm (defaults; profiles override provider/model) ---
 llm:
   mode: api
-  provider: gemini                 # demo and cloud gates use gemini only
+  provider: gemini
   model: gemini-2.5-flash
   api_key_env: GEMINI_API_KEY
   timeout_sec: 60
@@ -72,6 +88,7 @@ llm:
     extract: extract_v1
     report: report_v1
 
+# --- runtime ---
 limits:
   requests_per_ip_per_day: 1
   max_concurrent_jobs: 1
@@ -81,7 +98,7 @@ limits:
 ui:
   type: jinja
   show_progress: true
-  progress_transport: polling      # polling | sse
+  progress_transport: polling
   allow_editing: false
   allow_player: false
   draft_warning: true

@@ -84,10 +84,10 @@ class FfmpegAudioNormalizer(AudioNormalizer):
             gain_res = calculate_gain(
                 rms_dbfs=rms_dbfs,
                 peak_dbfs=peak_dbfs,
-                threshold_dbfs=cfg.gain_rms_threshold_dbfs,
-                target_dbfs=cfg.gain_target_dbfs,
-                max_gain_db=cfg.gain_max_db,
-                peak_ceiling_dbfs=cfg.gain_peak_ceiling_dbfs,
+                threshold_dbfs=cfg.gain.rms_threshold_dbfs,
+                target_dbfs=cfg.gain.target_dbfs,
+                max_gain_db=cfg.gain.max_db,
+                peak_ceiling_dbfs=cfg.gain.peak_ceiling_dbfs,
             )
 
             # Шаг 4: Применение линейного усиления если требуется
