@@ -36,3 +36,24 @@
 - Branch: cursor/demo-d1-speech
 - Re-ran ASR on fixed turns (5 speakers); results/d1/transcript.json refreshed
 - Quality: ru_ratio=1.0, latin=0, 48 segments, ~502 tokens; report eval/d1/2/
+
+## 2026-09-05 — d1 ASR coherence (N2)
+- STATUS: COHERENCE_TUNE_DONE
+- Branch: cursor/d1-asr-coherence
+- Config: min_speech_ms=400, vad_premerge=0.8, same_speaker_gap=0.6, absorb=2.0
+- Hyp: results/d1_coherence/ (d1_dual kept)
+- Report: agent_docs/reports/d1_asr_coherence.md
+- Metrics vs dual: turns 347→216, median 2.0→4.2s, ≤3words 132→23, speech_sec 826→783
+
+## 2026-09-05 — compress×merge grid
+- STATUS: GRID_DONE
+- Script: scripts/tune_coherence_grid.py
+- Report: agent_docs/reports/d1_coherence_grid.md
+- 3 compress (C1/C3/C3s) × 3 merge (mild/n2/agg) × 10 windows
+- Verdict: keep C3+n2; diarization already on normalized.wav; C1 loses rescue cover; agg glues speakers on voice_long_b
+
+## 2026-09-05 — coherence final (C3+agg → main)
+- STATUS: COHERENCE_MERGED
+- Chosen: keep dynaudnorm C3; merge agg (gap=0.8 absorb=2.5 premerge=1.0); min_speech_ms=400
+- Gold check on 10 windows: agg no extra speaker glue vs n2 (only apt_flats rapid overlap, same)
+- Reports: d1_asr_coherence.md, d1_coherence_grid.md, d1_coherence_text_compare.md

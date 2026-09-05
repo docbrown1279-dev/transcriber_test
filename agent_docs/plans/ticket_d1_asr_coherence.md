@@ -1,7 +1,7 @@
 # Тикет: D1 — связность ASR (дробление / обрывки фраз)
 
-**Статус:** READY TO OPEN  
-**Ветка:** от `main` → `cursor/d1-asr-coherence`  
+**Статус:** DONE (C3 + merge agg in `config/base.yaml`; merged to main)  
+**Ветка:** `cursor/d1-asr-coherence`  
   (старая `cursor/d1-silero-tune` уже смержена в PR #18; remote ещё может висеть — не продолжать её, брать свежий main)  
 **Контекст:** после dual-path (`vad_input` dynaudnorm + per-turn gain) дыры почти закрыты, но текст часто рваный. Читать: `results/d1_dual/transcript.md`.  
 **Eval:** `eval/d1/4/transcript_diff.md` (pad ±2s).
