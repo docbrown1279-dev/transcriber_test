@@ -16,6 +16,27 @@ class AppSectionConfig(BaseModel):
     log_level: str = "INFO"
 
 
+class AudioGainConfig(BaseModel):
+    """Линейное усиление громкости (без компрессии)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    rms_threshold_dbfs: float = Field(default=-30.0, le=0.0)
+    target_dbfs: float = Field(default=-23.0, le=0.0)
+    max_db: float = Field(default=18.0, ge=0.0)
+    peak_ceiling_dbfs: float = Field(default=-1.0, le=0.0)
+
+
+class AudioVadPreprocessConfig(BaseModel):
+    """VAD-only preprocess (compressor). Never fed to ASR."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    enabled: bool = True
+    # C3 from eval/d1/4: strong leveling for quiet far-mic speech
+    ffmpeg_af: str = "dynaudnorm=f=150:g=7:p=0.9"
+
+
 class AudioConfig(BaseModel):
     """Параметры нормализации и валидации входного аудио."""
 
@@ -25,10 +46,12 @@ class AudioConfig(BaseModel):
     max_file_size_mb: int | None = Field(default=None, gt=0)
     sample_rate: int = Field(default=16000, gt=0)
     channels: int = Field(default=1, gt=0)
-    gain_rms_threshold_dbfs: float = Field(default=-30.0, le=0.0)
-    gain_target_dbfs: float = Field(default=-23.0, le=0.0)
-    gain_max_db: float = Field(default=18.0, ge=0.0)
-    gain_peak_ceiling_dbfs: float = Field(default=-1.0, le=0.0)
+    gain: AudioGainConfig = Field(default_factory=AudioGainConfig)
+    # Per-turn linear gain inside ASR extracts (research 1e/2)
+    asr_per_turn_gain: bool = True
+    vad_preprocess: AudioVadPreprocessConfig = Field(
+        default_factory=AudioVadPreprocessConfig
+    )
 
 
 class VadConfig(BaseModel):
@@ -37,8 +60,34 @@ class VadConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     engine: str = "silero"
+    threshold: float = Field(default=0.5, ge=0.0, le=1.0)
+    neg_threshold: float = Field(default=0.35, ge=0.0, le=1.0)
     min_speech_ms: int = Field(default=200, ge=0)
+    min_silence_ms: int = Field(default=200, ge=0)
+    # disabled | ten_fallback | fsmn_fallback (engines may be stubs until implemented)
     fallback: str = "disabled"
+
+
+class DiarizationMergeConfig(BaseModel):
+    """Склейка VAD-фрагментов и реплик после кластеризации."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    same_speaker_gap_sec: float = Field(default=0.3, ge=0.0)
+    absorb_turn_shorter_than_sec: float = Field(default=1.0, ge=0.0)
+    min_hole_sec: float = Field(default=0.5, ge=0.0)
+    vad_premerge_gap_sec: float = Field(default=0.3, ge=0.0)
+
+
+class DiarizationEmbedConfig(BaseModel):
+    """Окна эмбеддинга и порог кластеризации спикеров."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    min_sec: float = Field(default=0.4, ge=0.0)
+    window_sec: float = Field(default=1.5, gt=0.0)
+    step_sec: float = Field(default=0.75, gt=0.0)
+    cluster_distance_threshold: float = Field(default=0.5, gt=0.0)
 
 
 class DiarizationConfig(BaseModel):
@@ -49,15 +98,8 @@ class DiarizationConfig(BaseModel):
     engine: str
     device: str = "cpu"
     onnx_threads: int = Field(default=2, ge=1)
-    merge_same_speaker_gap_sec: float = Field(default=0.3, ge=0.0)
-    absorb_turn_shorter_than_sec: float = Field(default=1.0, ge=0.0)
-    min_hole_sec: float = Field(default=0.5, ge=0.0)
-    # Research 1f/1f2 embedding + cluster (no magic numbers in src/)
-    vad_premerge_gap_sec: float = Field(default=0.3, ge=0.0)
-    min_embed_sec: float = Field(default=0.4, ge=0.0)
-    embed_window_sec: float = Field(default=1.5, gt=0.0)
-    embed_step_sec: float = Field(default=0.75, gt=0.0)
-    cluster_distance_threshold: float = Field(default=0.5, gt=0.0)
+    merge: DiarizationMergeConfig = Field(default_factory=DiarizationMergeConfig)
+    embed: DiarizationEmbedConfig = Field(default_factory=DiarizationEmbedConfig)
 
 
 class AsrConfig(BaseModel):

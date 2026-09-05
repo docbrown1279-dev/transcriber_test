@@ -17,7 +17,7 @@
 | 2b | закрыт | четыре гипотезы чанкинга; **рабочие C и D** |
 | 3 | закрыт | Qwen3-8B: P1 one-shot vs P2 two-pass на D; на C ушёл P1 (лучше title, не эталон инсайтов) |
 | **1f** | закрыт | ONNX-диаризация: vad_wespeaker (Silero+WeSpeaker) vs sherpa; эталон pyannote 3.1 |
-| **1f2** | закрыт | 3 VAD + 3 эмбеддера; Silero + TEN fallback, WeSpeaker |
+| **1f2** | закрыт | 3 VAD + 3 эмбеддера; Silero + fallback в дырах (TEN или FSMN), WeSpeaker |
 | **1f2b** | закрыт | GigaAM v3 на масках TEN и FSMN (хвост `test_voice`) |
 | шумодавы | **пропуск** | 1a afftdn резал речь; 1b DeepFilterNet / RNNoise бесполезны |
 | **3b** | закрыт | инсайты D + `report.md` (Gemini); локальный assemble тех же инсайтов; API self-check сломан — [`3b/notes.md`](../results/reports/3b/notes.md) |
@@ -43,7 +43,7 @@
 
 Это гипотеза, не человеческий эталон. Пустые сегменты остаются пустыми. Не гонять заново полный файл, Whisper, Podlodka, gain, извлечение. Ошибки вроде «касторозительно» / «дальневосрочная» — вход, не повод чинить JSON.
 
-**Диаризация демки.** Silero VAD + TEN только в дырах Silero + WeSpeaker ResNet34. ERes2Net-base и TitaNet-small на 4 клипах дали те же 2/3/2/2 — можно заменить WeSpeaker, в демке не тащим. Не sherpa-full, не pyannote 3.1 на клиентской машине.
+**Диаризация демки.** Silero VAD (основной) + WeSpeaker ResNet34. Fallback **только в дырах** Silero: в исследовании выбран TEN (лучше хвост `test_voice`); для **коммерции TEN платный** (Agora non-compete / лицензия) — допустимая замена **FSMN** (FunASR ONNX; в 1f2b тоже давал текст в дырах Silero, чуть слабее TEN). Для внутренней/публичной **демо** TEN ок. В текущем коде demo fallback в дырах **ещё не подключён** (`vad.fallback: disabled`, движок-заглушка). ERes2Net-base и TitaNet-small на 4 клипах дали те же 2/3/2/2 — можно заменить WeSpeaker, в демке не тащим. Не sherpa-full, не pyannote 3.1 на клиентской машине.
 
 **Фильтрация / шумодавы.** Не применяем. Linear gain этапа 2 остаётся единственной обработкой громкости.
 
@@ -136,7 +136,7 @@ VAD без спикеров в **1f** не кандидат (нужны id дл�
 
 «Дыры» в 1f считались относительно pyannote. Второй VAD нужен, чтобы увидеть, кто кого пропускает (начало/хвост `test_voice`). 1f не разделил wall Silero и WeSpeaker.
 
-Те же 4 клипа. Промпт: [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md). Таблицы: [`results/reports/1f2/notes.md`](../results/reports/1f2/notes.md). Решение: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md) — **Silero + TEN fallback, WeSpeaker**.
+Те же 4 клипа. Промпт: [`docs/prompts/stage1f2_vad.md`](prompts/stage1f2_vad.md). Таблицы: [`results/reports/1f2/notes.md`](../results/reports/1f2/notes.md). Решение: [`results/reports/1f2/conclusions.md`](../results/reports/1f2/conclusions.md) — **Silero + fallback в дырах (TEN; коммерчески — FSMN) + WeSpeaker**. Пороги Silero в 1f2 не крутили.
 
 **A — речь/тишина**
 

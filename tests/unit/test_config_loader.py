@@ -7,7 +7,7 @@ import tempfile
 import pytest
 import yaml
 
-from transcriber.config.loader import load_config
+from transcriber.config.loader import deep_merge, load_config
 from transcriber.errors import ConfigError
 
 
@@ -28,16 +28,20 @@ def test_d0_cfg_01_profiles_load_and_app_profile_selection(monkeypatch: pytest.M
 
 def test_d0_cfg_02_unknown_key_fails_with_path() -> None:
     """[D0-CFG-02] unknown key in a config section fails with the key path in the message."""
-    with open("config/demo.yaml", "r", encoding="utf-8") as f:
-        raw_data = yaml.safe_load(f)
-
-    # Добавляем неизвестный ключ в секцию audio
+    with open("config/base.yaml", "r", encoding="utf-8") as f:
+        base = yaml.safe_load(f)
+    with open("config/profiles/demo.yaml", "r", encoding="utf-8") as f:
+        overlay = yaml.safe_load(f)
+    raw_data = deep_merge(base, overlay)
     raw_data["audio"]["unknown_parameter"] = 123
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_cfg = Path(tmpdir) / "demo.yaml"
-        with open(tmp_cfg, "w", encoding="utf-8") as f:
+        root = Path(tmpdir)
+        (root / "profiles").mkdir()
+        with open(root / "base.yaml", "w", encoding="utf-8") as f:
             yaml.dump(raw_data, f)
+        with open(root / "profiles" / "demo.yaml", "w", encoding="utf-8") as f:
+            yaml.dump({"app": {"profile": "demo"}}, f)
 
         with pytest.raises(ConfigError) as exc_info:
             load_config("demo", config_dir=tmpdir)
@@ -54,6 +58,11 @@ def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
     assert demo_config.limits.requests_per_ip_per_day == 1
     assert demo_config.limits.result_ttl_hours == 24
     assert demo_config.llm.provider == "gemini"
+    assert demo_config.vad.threshold == 0.5
+    assert demo_config.vad.neg_threshold == 0.35
+    assert demo_config.vad.min_silence_ms == 200
+    assert demo_config.audio.gain.rms_threshold_dbfs == -30.0
+    assert demo_config.diarization.embed.cluster_distance_threshold == 0.80
 
 
 def test_d0_cfg_04_profile_selections_and_secrets(dev_config, prod_config) -> None:
@@ -62,14 +71,23 @@ def test_d0_cfg_04_profile_selections_and_secrets(dev_config, prod_config) -> No
     assert dev_config.llm.model_path is not None
     assert "GEMINI_API_KEY" not in str(dev_config.model_dump())
 
-    # Prod selects local components
     assert prod_config.diarization.engine in ["pyannote31", "wespeaker_onnx"]
     assert prod_config.correction.domain_dictionary is True
     assert prod_config.ui.type == "interactive"
 
-    # Secrets check across all YAMLs
-    for config_file in Path("config").glob("*.yaml"):
+    for config_file in list(Path("config").glob("*.yaml")) + list(
+        Path("config/profiles").glob("*.yaml")
+    ):
         content = config_file.read_text(encoding="utf-8")
-        # Убеждаемся, что реальные секреты не записаны в yaml, а только имена переменных
-        assert "AIza" not in content  # Префикс ключей Google API
-        assert "hf_" not in content    # Префикс токенов HuggingFace
+        assert "AIza" not in content
+        assert "hf_" not in content
+
+
+def test_d0_cfg_05_deep_merge_overlay_wins() -> None:
+    """Profile overlay replaces nested scalars without dropping sibling keys."""
+    merged = deep_merge(
+        {"vad": {"threshold": 0.5, "min_speech_ms": 200}, "app": {"profile": "demo"}},
+        {"vad": {"threshold": 0.35}},
+    )
+    assert merged["vad"]["threshold"] == 0.35
+    assert merged["vad"]["min_speech_ms"] == 200

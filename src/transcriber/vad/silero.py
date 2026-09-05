@@ -90,11 +90,11 @@ class SileroVadDetector(VoiceActivityDetector):
             out, state = session.run(None, {"input": chunk, "state": state, "sr": sr_tensor})
             probs.append(float(out[0, 0]))
 
-        # Извлечение интервалов
-        threshold = 0.5
-        neg_threshold = 0.35
+        # Извлечение интервалов (пороги только из конфига)
+        threshold = cfg.threshold
+        neg_threshold = cfg.neg_threshold
         min_speech_ms = cfg.min_speech_ms
-        min_silence_ms = 200
+        min_silence_ms = cfg.min_silence_ms
 
         min_speech_chunks = max(1, int(min_speech_ms / (chunk_sec * 1000)))
         min_silence_chunks = max(1, int(min_silence_ms / (chunk_sec * 1000)))

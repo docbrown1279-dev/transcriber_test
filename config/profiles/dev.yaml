@@ -1,0 +1,41 @@
+# dev overlay — flexible experiments, local LLM
+app:
+  profile: dev
+  log_level: DEBUG
+
+audio:
+  max_minutes: null
+  max_file_size_mb: null
+
+vad:
+  fallback: ten_fallback
+
+diarization:
+  engine: pyannote31
+
+correction:
+  manual_review: true
+
+chunking:
+  default_mode: both
+
+llm:
+  mode: local
+  provider: local_llama
+  model: null
+  model_path: ./models/Qwen3-8B-Q5_K_M.gguf
+  api_key_env: null
+  timeout_sec: null
+  max_calls_per_job: null
+  n_ctx: 8192
+  threads: 4
+
+limits:
+  requests_per_ip_per_day: null
+  max_concurrent_jobs: null
+  result_ttl_hours: null
+  queue_max_size: null
+
+ui:
+  type: api_only
+  show_progress: false

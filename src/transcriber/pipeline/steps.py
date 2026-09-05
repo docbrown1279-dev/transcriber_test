@@ -67,7 +67,7 @@ class StepDefinition:
                     f
                     for f in job_dir.iterdir()
                     if f.is_file()
-                    and f.name != "normalized.wav"
+                    and f.name not in {"normalized.wav", "vad_input.wav"}
                     and not f.name.endswith(".json")
                     and not f.name.startswith(".")
                     and not f.name.startswith("_")
@@ -83,7 +83,11 @@ class StepDefinition:
             return job_dir / self.produces
 
         if self.stage == "vad":
-            wav_path = job_dir / "normalized.wav"
+            audio_art = load_artifact(job_dir / "audio.json", AudioArtifact)
+            vad_name = audio_art.vad_input.path if audio_art.vad_input.path else "vad_input.wav"
+            wav_path = job_dir / vad_name
+            if not wav_path.is_file():
+                wav_path = job_dir / "normalized.wav"
             detector = build("vad", cfg.vad.engine, cfg.app.profile)
             detector.detect(wav_path, cfg.vad, job_id=job_id)
             return job_dir / self.produces
