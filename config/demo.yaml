@@ -1,0 +1,82 @@
+app:
+  profile: demo
+  storage_root: ./var            # jobs, uploads, artifacts
+  log_level: INFO
+
+audio:
+  max_minutes: 15
+  max_file_size_mb: 250
+  sample_rate: 16000
+  channels: 1
+  gain_rms_threshold_dbfs: -30.0   # 1e: gain only below this RMS
+  gain_target_dbfs: -23.0
+  gain_max_db: 18.0
+  gain_peak_ceiling_dbfs: -1.0
+
+vad:
+  engine: silero                   # registry key
+  min_speech_ms: 200
+  fallback: disabled               # ten_fallback | disabled (licence, off by default)
+
+diarization:
+  engine: wespeaker_onnx
+  device: cpu
+  onnx_threads: 2                  # demo host is 2-3 vCPU
+  merge_same_speaker_gap_sec: 0.3
+  absorb_turn_shorter_than_sec: 1.0
+  min_hole_sec: 0.5
+
+asr:
+  engine: gigaam_v3_rnnt
+  device: cpu
+  max_segment_seconds: 25
+  subprocess: true                 # release torch memory after the stage
+
+correction:
+  enabled: true
+  mode: suggest_only               # demo never rewrites transcript.json
+  base_ru_dictionary: true
+  domain_dictionary: false
+  levenshtein_auto_replace: false
+  manual_review: false
+  min_confidence: 0.6
+
+chunking:
+  default_mode: speaker_similarity     # spec name for research variant C
+  chunker: packing_c
+  embedding_model: rubert_tiny2
+  similarity_threshold: 0.70
+  packing_max_gap_sec: 2.0
+  target_chapter_sec: [45, 180]
+  target_chapters_per_minute: [0.4, 0.8]
+  late_chunking:
+    enabled: false
+    provider: disabled
+
+llm:
+  mode: api
+  provider: gemini                 # demo and cloud gates use gemini only
+  model: gemini-2.5-flash
+  api_key_env: GEMINI_API_KEY
+  timeout_sec: 60
+  max_calls_per_job: 20
+  temperature: 0.2
+  debug_reasoning: false
+  prompts:
+    title: title_p1_v1
+    extract: extract_v1
+    report: report_v1
+
+limits:
+  requests_per_ip_per_day: 1
+  max_concurrent_jobs: 1
+  result_ttl_hours: 24
+  queue_max_size: 4
+
+ui:
+  type: jinja
+  show_progress: true
+  progress_transport: polling      # polling | sse
+  allow_editing: false
+  allow_player: false
+  draft_warning: true

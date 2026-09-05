@@ -1,0 +1,71 @@
+[project]
+name = "transcriber"
+version = "0.1.0"
+description = "Meeting transcriber demo"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "jinja2",
+    "python-multipart",
+    "pydantic>=2",
+    "pydantic-settings",
+    "pyyaml",
+    "numpy",
+    "typer",
+]
+
+[project.optional-dependencies]
+asr = []
+diarize = []
+embed = []
+llm-local = []
+
+[project.scripts]
+transcriber = "transcriber.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "httpx",
+    "ruff",
+    "mypy",
+    "bandit",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/transcriber"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "W"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["yaml.*"]
+ignore_missing_imports = true
+
+[tool.bandit]
+targets = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "requires_inputs: tests requiring packed cloud_in/inputs data",
+    "requires_llm: tests requiring LLM access or cassettes",
+    "slow: tests running heavy processing or long audio",
+]

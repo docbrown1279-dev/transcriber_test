@@ -1,24 +1,34 @@
 # Secrets
 .env
-.env.*
-!.env.example
 
-# Local Cursor research orchestrator (not product)
-.cursor/
+.trash/
 
-# Virtualenvs / cache
+# Local Cursor (orchestrator, hooks, skills) — keep slash-commands + permissions in git
+.cursor/*
+!.cursor/commands/
+!.cursor/commands/**
+!.cursor/permissions.json
+
+# Virtualenvs 
 .venv/
 .venv-*/
+# Python cache
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 .cache/
 .DS_Store
-.trash/
 .worktrees/
 
-# Raw audio and working data (cut clips on demand from full file)
+# Logs
+logs/
+*.log
+!logs/.gitkeep
+
+# working data 
+docs/
 data/
 !data/.gitkeep
 
@@ -30,9 +40,14 @@ models/
 results/*
 !results/.gitkeep
 
-# Future exchange / draft prompts (when used)
-cloud_in/
-cloud_out/
+# Exchange with cloud agents is tracked (cloud_in/ -> cloud_out/); prompt archive is local
 prompts/
 
-# Gold JSON in eval/ stays tracked — do not ignore eval/
+# App runtime data (jobs, uploads, artifacts)
+var/
+
+# Gold JSON in eval
+eval/
+!eval/.gitkeep
+
+

@@ -1,0 +1,43 @@
+{
+  "stage": "D0",
+  "branch": "cursor/demo-d0-skeleton",
+  "base_commit": "c5cb4dd128f1c3d07c04906d25ecba66a2754e6c",
+  "host_inventory": {
+    "os": "Linux 6.12.94+",
+    "cpu_count": 4,
+    "memory_total": "15Gi",
+    "disk_available": "247G",
+    "python_version": "3.12.3",
+    "uv_version": "0.12.10",
+    "ffmpeg_version": "6.1.1-3ubuntu5",
+    "ffprobe_version": "6.1.1-3ubuntu5"
+  },
+  "package_versions": {
+    "fastapi": "0.141.1",
+    "uvicorn": "0.52.4",
+    "jinja2": "3.1.6",
+    "python-multipart": "0.0.32",
+    "pydantic": "2.13.5",
+    "pydantic-settings": "2.15.0",
+    "pyyaml": "6.0.3",
+    "numpy": "2.5.2",
+    "typer": "0.27.2",
+    "pytest": "9.1.1",
+    "ruff": "0.16.6",
+    "mypy": "2.3.1",
+    "bandit": "1.9.4"
+  },
+  "tests": {
+    "total": 27,
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0
+  },
+  "quality_gate": {
+    "id": "G0",
+    "verdict": "PASS"
+  },
+  "llm_calls": 0,
+  "wall_time_sec": 600,
+  "peak_rss_mb": 150
+}
