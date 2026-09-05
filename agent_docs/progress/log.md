@@ -10,3 +10,6 @@
 - 2026-09-05T11:42:00+03:00 handoff D1 cursor/demo-d1-speech aea2ea9 pushed
 - 2026-09-05T12:29:26+03:00 pull-reports D1 cursor/demo-d1-speech f449439
 - 2026-09-05T12:29:26+03:00 pull-code D1 cursor/demo-d1-speech f449439 PASS_WITH_WARNINGS
+- 2026-09-06T02:05:00+03:00 D1 HUMAN_GATE PASS (T2 narrative); GigaAM missing → backlog
+- 2026-09-06T02:05:00+03:00 D2 INSTRUCTIONS_READY coder_D2.md tester_D2.md; pack transcript voice_002; await ✅ handoff cursor/demo-d2-chapters
+- 2026-09-06T02:13:00+03:00 D2 deps approved (sentence-transformers, google-genai); cloud_push cursor/demo-d2-chapters

@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0 закрыт. D1 Silero parity закрыт (snakers4+context; T2 на gold читаем — `eval/d1/5/`). Тикеты coherence/parity → `plans/archived/`. Backlog ASR: `ticket_d1_gigaam_missing.md`. `base.yaml` пока ещё C3+agg, пока явно не переключим на T2. Дальше: D2 (чанкинг C + titles) и/или GigaAM missing spans.
+**Статус:** D0 закрыт. D1 HUMAN_GATE PASS (Silero T2). Транскрипт: `data/voice_002/`. Backlog ASR: `ticket_d1_gigaam_missing.md`. **Текущий:** D2 (чанкинг C + titles P1) — инструкции готовы, handoff pack в `cloud_in/`.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 
@@ -16,10 +16,10 @@
 
 | Слой | Решение | Откуда |
 |---|---|---|
-| Нормализация | ffmpeg → 16 кГц mono WAV; linear `volume=` на `normalized.wav` если RMS < −30 dBFS; **VAD-only** `vad_input.wav` = `dynaudnorm=f=150:g=7:p=0.9` (C3) | 1e, 2b, D1 dual-path |
+| Нормализация | ffmpeg → 16 кГц mono WAV; linear `volume=` на `normalized.wav` если RMS < −30 dBFS; **VAD** `vad_input.wav` = сырой 16 kHz (без dynaudnorm) | 1e, 1f, D1 Silero T2 |
 | Шумоподавление | **не применяем** | 1a/1b — пропуск |
-| VAD | Silero VAD ONNX на `vad_input`; `min_speech_ms=400`; TEN-VAD fallback в дырах по умолчанию **выключен** | 1f2, D1 coherence |
-| Диаризация | WeSpeaker на `normalized.wav` (без компрессии); premerge gap ≤1,0 с; same-speaker gap ≤0,8 с; absorb turn <2,5 с | 1f, 1f2, D1 C3+agg |
+| VAD | Silero VAD ONNX (snakers4 + context) на `vad_input`; thr 0.45 / neg 0.30; `min_speech_ms=200`; `min_silence_ms=350`; TEN-VAD fallback **выключен** | 1f, D1 T2 |
+| Диаризация | WeSpeaker на `normalized.wav`; premerge gap ≤0,5 с; same-speaker gap ≤0,3 с; absorb turn <1,0 с | 1f, D1 T2 |
 | ASR | GigaAM `v3_rnnt` (CPU torch), ≤25 с/сегмент; **per-turn** linear gain на срезах | 1e, 2b, D1 dual-path |
 | Словарь | только **предложения** замен, без молчаливой правки; в демке пустой базовый словарь | 2b, план §«Потом — словарь» |
 | Чанкинг | вариант **C**: packing разных спикеров (gap ≤2 с) + эмбеддинги `rubert-tiny2`, порог 0,70 | 2b conclusions |

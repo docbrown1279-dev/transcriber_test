@@ -1,25 +1,27 @@
-# Stage D1 — voice → full transcript
+# Stage D2 — chunking + chapter titles
 
 You are the product development cloud agent. Read `cloud_in/agent/AGENTS.md` and
 `cloud_in/agent/rules.md` first, then this prompt. The run is unattended: do not ask for approval,
-install what the stage needs, finish with a gate report, full-meeting artifacts, and a branch push
+install what the stage needs, finish with a gate report, `chapters.json`, and a branch push
 (no PR).
 
 ## Why this stage
 
-D0 delivered the skeleton (ports, stubs, CLI, health). D1 implements the speech chain and must
-return a **complete text transcript** of the packed full meeting (~24.5 min), plus automated
-checks (no Latin in segments, Russian word ratio, schema). Human listening happens later, locally.
+D1 delivered a full-meeting transcript (Silero T2 hyp packed here). D2 must turn that transcript
+into a **table of contents**: semantic chapters (packing C + `rubert-tiny2` 0.70) and LLM titles
+(prompt P1 / `title_p1_v1` via Gemini 2.5 Flash).
 
-Roadmap stages are `D0 → D1 → D2 → …`. The name **G1** in contracts is only the auto-check list
-*inside* D1 — not a separate stage.
+**Replicate the closed research path first.** Do not bakeoff late chunking (D), pairwise LLM (B),
+or prompt P2. Improvements are a later local ticket after the human gate — not this run.
+
+Roadmap stages are `D0 → D1 → D2 → …`. The name **G2** is only the auto-check list *inside* D2.
 
 ## Task
 
-1. Follow `agent_docs/instructions/coder_D1.md` step by step.
-2. Follow `agent_docs/instructions/tester_D1.md` for tests and `[TEST-ID]`s.
-3. Run the full pipeline on the packed full meeting (required).
-4. Write `cloud_out/gate_D1.md` for checks G1.0–G1.7.
+1. Follow `agent_docs/instructions/coder_D2.md` step by step.
+2. Follow `agent_docs/instructions/tester_D2.md` for tests and `[TEST-ID]`s.
+3. Run chunking + titles on the packed transcript (required). **No ASR. No audio.**
+4. Write `cloud_out/gate_D2.md` for checks G2.0–G2.8.
 
 If instruction files and this prompt disagree, the instruction files win; note the discrepancy in
 the gate report.
@@ -31,57 +33,56 @@ Packed for this stage (must pass preflight):
 | Path | What |
 |---|---|
 | `cloud_in/inputs/STACK.md` | frozen demo stack — do not reopen bakeoffs |
-| `cloud_in/inputs/audio/voice_002.m4a` | **primary** full meeting (~24.5 min, ~23 MiB) — required ASR run |
-| `cloud_in/inputs/audio/test_voice.m4a` | ~83 s clip — optional fast smoke within ASR budget |
-| `cloud_in/inputs/artifacts/baseline_transformers.json` | legacy fixture (keep working `convert-legacy`) |
-| `cloud_in/inputs/artifacts/baseline_ninth.json` | legacy fixture |
+| `cloud_in/inputs/artifacts/voice_002/transcript.json` | **primary** T2 full-meeting transcript (~24.5 min) |
+| `cloud_in/inputs/artifacts/voice_002/transcript.md` | human-readable dump for G2.8 judgement only |
 
 Also in git:
 
 | Path | What |
 |---|---|
-| `agent_docs/instructions/coder_D1.md`, `tester_D1.md` | implementation and test specs |
-| `agent_docs/contracts/*.md` | schemas, ports, configs, gate G1 |
-| `src/`, `config/`, `tests/` | D0 skeleton already on `main` — extend it |
+| `agent_docs/instructions/coder_D2.md`, `tester_D2.md` | implementation and test specs |
+| `agent_docs/contracts/*.md` | schemas, ports, configs, gate G2 |
+| `src/`, `config/`, `tests/` | D0/D1 code on `main` — extend it |
 
 Do **not** open `docs/research_results/`, `docs/dev_specs.md`, `eval/`, `data/`, or `.env`.
 
 ## Approved dependencies
 
-`onnxruntime`, `soundfile`, `scikit-learn`, CPU `torch`, CPU `torchaudio`,
-`gigaam` from `git+https://github.com/salute-developers/GigaAM.git`, `speakeronnx` (WeSpeaker).
-Install only via `uv add` / documented extras. Anything else needs a written justification in the
-gate report.
+`sentence-transformers` (model `cointegrated/rubert-tiny2`), CPU `torch` if required by the
+embedder, and the official Gemini SDK (`google-genai` or the current Google GenAI package —
+record the exact name in the gate). Install only via `uv add` / documented extras. Anything else
+needs a written justification in the gate report.
 
-Secret: `HF_TOKEN` for Hub downloads. No Gemini on this stage.
+Secrets: `GEMINI_API_KEY` (titles), `HF_TOKEN` (Hub download for tiny2). Never send audio to an API.
 
-## Gate D1 (must pass before push)
+## Gate D2 (must pass before push)
 
-Checks G1.0–G1.7 from `agent_docs/contracts/quality_gates.md`, measured on the **full-meeting**
-`transcript.json`:
+Checks G2.0–G2.8 from `agent_docs/contracts/quality_gates.md`, measured on
+`cloud_out/artifacts/voice_002/chapters.json` vs the packed transcript:
 
-- G1.0 preflight (pack + token)
-- G1.1 Russian word ratio ≥ 0.90
-- G1.2 Latin characters in segment text == 0
-- G1.3 schemas valid
-- G1.4 times monotonic / inside duration
-- G1.5 holes and empty segments listed
-- G1.6 wall time + peak RSS recorded
-- G1.7 agent judgement: 3–5 coherent Russian fragments
+- G2.0 preflight (pack + secrets)
+- G2.1 chapter times = segment bounds
+- G2.2 chapters_per_minute band
+- G2.3 short/long chapter WARN list
+- G2.4 title ≤ 10 words
+- G2.5 no stamp prefix
+- G2.6 unique non-empty titles
+- G2.7 non-empty `source_ids` cover exactly once
+- G2.8 agent judgement hit/generic/miss
 
 Also: `uv run pytest tests/ -v`, `ruff`, `mypy`, `bandit` exit 0.
 
 ## Deliverables
 
 1. Code under `src/` / `config/` / `pyproject.toml`; tests under `tests/`
-2. `cloud_out/artifacts/voice_002/` — at least `transcript.json`, `quality.json`, plus
-   `audio.json`, `speech.json`, `turns.json`, `suggestions.json`
-3. `cloud_out/gate_D1.md` + `cloud_out/run_meta.json`
-4. Progress lines in `agent_docs/progress/stage_D1.md`
-5. Commit and **push** branch `cursor/demo-d1-speech`. Do **not** open a pull request.
+2. `cloud_out/artifacts/voice_002/chapters.json`
+3. `cloud_out/gate_D2.md` + `cloud_out/run_meta.json`
+4. Progress lines in `agent_docs/progress/stage_D2.md`
+5. Commit and **push** branch `cursor/demo-d2-chapters`. Do **not** open a pull request.
 
 ## Stop-list
 
-Do not: read `eval/` or `.env`; send audio to any API; implement chunking / LLM titles / insights /
-web upload; use Whisper or pyannote; weaken gate thresholds; force-push; open a PR; process audio
-from outside `cloud_in/inputs/`.
+Do not: read `eval/` or `.env`; process or send audio; re-run ASR/VAD/diarization; implement
+insights / report / web upload; bakeoff Jina late chunking or P2; weaken gate thresholds;
+force-push; open a PR; read files outside `cloud_in/inputs/` for meeting text (use the packed
+transcript only).

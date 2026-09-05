@@ -39,7 +39,7 @@ export APP_PROFILE=prod
 |---|---|
 | Укоротить лимит аудио демки | `profiles/demo.yaml` или `base` → `audio.max_minutes` |
 | Пороги Silero VAD | `base.yaml` → `vad.threshold` / `neg_threshold` / `min_*` |
-| VAD-only компрессия (дыры тихой речи) | `base.yaml` → `audio.vad_preprocess` (`dynaudnorm` C3); ASR путь не трогает |
+| VAD preprocess (опционально) | `base.yaml` → `audio.vad_preprocess` (по умолчанию **выкл.**; C3 dynaudnorm оставлен только как строка-заготовка) |
 | Склейка фраз / absorb спикеров | `base.yaml` → `diarization.merge` (`vad_premerge_gap_sec`, `same_speaker_gap_sec`, `absorb_turn_shorter_than_sec`) |
 | Per-turn gain перед GigaAM | `base.yaml` → `audio.asr_per_turn_gain` + `audio.gain.*` |
 | Лимит запросов с IP / TTL | `profiles/demo.yaml` → `limits.*` |
@@ -54,4 +54,4 @@ export APP_PROFILE=prod
 
 Одинаковая структура: `app`, `audio` (+ `gain`, `vad_preprocess`, `asr_per_turn_gain`), `vad`, `diarization` (+ `merge` / `embed`), `asr`, `correction`, `chunking`, `llm`, `limits`, `ui`.
 
-Актуальные дефолты speech после D1 coherence (C3+agg): `vad.min_speech_ms=400`, `merge.vad_premerge_gap_sec=1.0`, `same_speaker_gap_sec=0.8`, `absorb_turn_shorter_than_sec=2.5`, VAD preprocess = dynaudnorm C3. Источник правды — `config/base.yaml`, не этот абзац.
+Актуальные дефолты speech после D1 Silero T2: `vad.threshold=0.45`, `neg_threshold=0.30`, `min_speech_ms=200`, `min_silence_ms=350`, `merge.vad_premerge_gap_sec=0.5`, `same_speaker_gap_sec=0.3`, `absorb_turn_shorter_than_sec=1.0`, `audio.vad_preprocess.enabled=false`. Источник правды — `config/base.yaml`, не этот абзац.

@@ -80,13 +80,19 @@ D0 CLOSED (merge) → D1 облако (G1) → ручной шлюз D1 → merg
 
 ### Локальная сверка с gold (`eval/d1`)
 
-Актуальный полный hyp после тюнинга связности (C3+agg): **`data/voice_002/`** (`transcript.json` / `transcript.md`, gitignored). Старые прогоны: `results/d1/`, `results/d1_dual/`.
+Актуальный полный hyp после Silero T2: **`data/voice_002/`** — только `transcript.json` + `transcript.md` (gitignored). Полный job (wav / speech / turns): **`var/jobs/voice_002_t2/`**. Старый C3+agg: `.trash/voice_002_c3_agg/`.
 
 ```bash
-# eval-скрипт по умолчанию читает results/d1 — скопируйте ядро или укажите путь вручную
-cp data/voice_002/{transcript,turns,speech,audio}.json results/d1/
-python3 scripts/eval_d1_manual.py          # attempt 1
-EVAL_D1_ATTEMPT=5 python3 scripts/eval_d1_manual.py
+# полный прогон (~25 мин аудио) до suggestions — в var, не в data/
+export HF_HUB_OFFLINE=1
+.venv/bin/python -m transcriber.cli run \
+  -j var/jobs/voice_002_t2 -a "data/voice 002.m4a" -p demo -u correction_suggest
+cp var/jobs/voice_002_t2/transcript.json data/voice_002/
+
+# eval-скрипт по умолчанию читает results/d1
+mkdir -p results/d1
+cp data/voice_002/transcript.json var/jobs/voice_002_t2/{turns,speech,audio}.json results/d1/
+EVAL_D1_ATTEMPT=6 python3 scripts/eval_d1_manual.py
 ```
 
 Проверки пишутся в `eval/d1/{N}/` (`transcript_diff.md`, summary). Спикеров сопоставляет человек: кластеры WeSpeaker и буквы A/B/C в gold **не** совпадают 1:1.

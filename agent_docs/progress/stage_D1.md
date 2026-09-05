@@ -88,3 +88,17 @@
 - New backlog: agent_docs/plans/ticket_d1_gigaam_missing.md (missing/truncated spans; dictionary later for касторография)
 - Human: narrative readable enough to move on; do not retune Silero without new evidence
 - Note: base.yaml still C3+agg until explicit apply of T2 defaults
+
+## 2026-09-06 — apply T2 defaults + full hyp refresh
+- STATUS: T2_IN_BASE; FULL_HYP_T2_READY
+- config/base.yaml: vad_preprocess off; thr 0.45/0.30; min_silence=350; premerge=0.5; merge mild 0.3/1.0
+- Archived C3+agg hyp: .trash/voice_002_c3_agg/
+- Publishable transcript: data/voice_002/{transcript.json,transcript.md}
+- Full job intermediates: var/jobs/voice_002_t2/
+- Docs: manuals, STACK, AGENTS, draft_demo_roadmap aligned to T2
+
+## 2026-09-06 — Human gate (narrative)
+- STATUS: HUMAN_GATE: PASS
+- Basis: T2 gold window diffs (eval/d1/5) + readable full transcript; Silero/coherence tickets closed; GigaAM missing spans → backlog only
+- Unblocks: D2 chunking + titles on data/voice_002 (packed copy for cloud)
+

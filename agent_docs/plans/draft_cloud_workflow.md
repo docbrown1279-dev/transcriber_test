@@ -25,6 +25,29 @@ cloud_in/
 
 Код и тесты при этом остаются на своих местах (`src/`, `tests/`) — их облачный агент коммитит и **пушит ветку**; PR открывает локальный `./scripts/cloud_pr.sh`. `cloud_out/` — только отчёты прогона. Операционный гайд: [`manuals/cloud_flow.md`](../../manuals/cloud_flow.md).
 
+## 1.1. Локальные артефакты: `data/` vs `var/`
+
+`app.storage_root` в `config/base.yaml` по умолчанию **`./var`**. Это рабочий корень приложения (jobs store в `src/transcriber/jobs/store.py`: `var/jobs/<job_id>/`). Каталог **уже в `.gitignore`** — в git не коммитим.
+
+| Куда | Что кладём | Что не кладём |
+|---|---|---|
+| **`var/jobs/<id>/`** | Полный прогон пайплайна: `normalized.wav`, `vad_input.wav`, `audio.json`, `speech.json`, `turns.json`, `transcript.json`, `suggestions.json`, … | Не «публикуем» как эталон этапа |
+| **`data/<clip>/`** | Только **готовая** расшифровка для человека/следующего этапа: `transcript.json` (+ `transcript.md` / `.txt` по желанию) | Сырые wav, промежуточные JSON, дубли всего job |
+| **`results/`** | Локальные eval/smoke (тоже в ignore), не путать с `data/` | — |
+| **`cloud_out/`** | Отчёты шлюза этапа | Тяжёлые wav / полный job |
+
+Правило для локальных прогонов (D1 hyp, D2 chunking input):
+
+```bash
+# job целиком → var
+.venv/bin/python -m transcriber.cli run \
+  -j var/jobs/voice_002_t2 -a "data/voice 002.m4a" -p demo -u correction_suggest
+# в data/ — только копия транскрипта
+cp var/jobs/voice_002_t2/transcript.json data/voice_002/
+```
+
+Облачный агент пишет отчёты в `cloud_out/`; если ему нужен временный job на клипах из `cloud_in/inputs/`, тоже использовать **`var/jobs/…`** (или путь из `storage_root`), а не раздувать `cloud_out/` и не писать промежуточное в `data/`.
+
 ## 2. Цикл одного этапа
 
 ```
@@ -98,7 +121,7 @@ cloud_in/
 
 ## 7. Локальный ручной шлюз
 
-Человек проверяет на своей машине (16 ядер, 27 ГБ) и на полной записи `data/voice 002.m4a` (24,5 мин), которой в облаке нет:
+Человек проверяет на своей машине (16 ядер, 27 ГБ) и на полной записи `data/voice 002.m4a` (24,5 мин), которой в облаке нет. Job — в `var/jobs/…`; для чтения — `data/voice_002/transcript.{json,md}`:
 
 1. **D1** — послушать 2–3 фрагмента (включая тихие) и прочитать транскрипт; при желании WER/CER против `eval/`.
 2. **D2** — прочитать оглавление: можно ли по нему найти нужный момент встречи.

@@ -19,18 +19,18 @@ audio:
     peak_ceiling_dbfs: -1.0
   asr_per_turn_gain: true
   vad_preprocess:
-    enabled: true
-    # VAD-only (eval/d1/4 C3); ASR uses normalized.wav without this filter
+    # D1 Silero parity T2: raw 16 kHz into Silero (no file-level dynaudnorm)
+    enabled: false
     ffmpeg_af: "dynaudnorm=f=150:g=7:p=0.9"
 
 # --- vad ---
 vad:
   engine: silero
-  threshold: 0.5
-  neg_threshold: 0.35
-  # D1 coherence (ticket H1): drop sub-phrase crumbs from dynaudnorm
-  min_speech_ms: 400
-  min_silence_ms: 200
+  # Stage 1f speech_timestamps defaults (snakers4 Silero v5 + context)
+  threshold: 0.45
+  neg_threshold: 0.30
+  min_speech_ms: 200
+  min_silence_ms: 350
   fallback: disabled
 
 # --- diarization ---
@@ -39,11 +39,11 @@ diarization:
   device: cpu
   onnx_threads: 2
   merge:
-    # D1 coherence C3+agg: prefer phrase readability over speaker purity
-    same_speaker_gap_sec: 0.8
-    absorb_turn_shorter_than_sec: 2.5
+    # T2 soft glue (eval/d1/5): mild absorb, slightly wider VAD premerge
+    same_speaker_gap_sec: 0.3
+    absorb_turn_shorter_than_sec: 1.0
     min_hole_sec: 0.5
-    vad_premerge_gap_sec: 1.0
+    vad_premerge_gap_sec: 0.5
   embed:
     min_sec: 0.4
     window_sec: 1.5

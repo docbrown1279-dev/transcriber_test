@@ -29,8 +29,13 @@ diarize = [
     "soundfile>=0.14.0",
     "speakeronnx>=0.0.1",
 ]
-embed = []
+embed = [
+    "sentence-transformers>=6.0.1",
+]
 llm-local = []
+llm = [
+    "google-genai>=2.22.0",
+]
 
 [project.scripts]
 transcriber = "transcriber.cli:app"

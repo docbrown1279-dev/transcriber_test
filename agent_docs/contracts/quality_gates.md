@@ -57,8 +57,13 @@ Numbers and punctuation are excluded from both sides. Empty segments contribute 
 
 ## G2 — chapters and titles (stage D2)
 
+`G2` is the automated check list for development stage **D2**. Primary cloud input:
+`cloud_in/inputs/artifacts/voice_002/transcript.json` (T2 publishable hyp; no audio, no ASR).
+Deliverable: `cloud_out/artifacts/voice_002/chapters.json`. Do not reopen chunking bakeoffs.
+
 | id | Check | Threshold |
 |---|---|---|
+| G2.0 | Preflight: packed transcript + `STACK.md`; `GEMINI_API_KEY` for titles; `HF_TOKEN` for embedder download; no `eval/` / audio required | missing inputs → `BLOCKED.md`; missing Gemini key → cannot complete titles, `FAIL`/`BLOCKED`; missing HF token → skip download path only if weights already cached, else record and block |
 | G2.1 | Chapter times copied from segment boundaries (`start` of first, `end` of last `source_ids`) | exact match, FAIL otherwise |
 | G2.2 | `chapters_per_minute` | inside `[0.4, 0.8]` → pass; `[0.3, 1.0]` → WARN; outside → FAIL |
 | G2.3 | Chapters shorter than 45 s / longer than 180 s | listed, WARN |
@@ -116,12 +121,15 @@ a reporting bar for the human gate, not a claim of solved quality.
 - Inputs come from `cloud_in/inputs/` only; outputs of the gate go to `cloud_out/gate_D{N}.md`
   plus `cloud_out/run_meta.json` (branch, commit, wall time, LLM calls, versions).
   Stage D1 also returns the full-meeting artifacts under `cloud_out/artifacts/voice_002/`.
+  Stage D2 returns `cloud_out/artifacts/voice_002/chapters.json` from a packed transcript
+  (no audio required).
 - `eval/` must not be read, copied, or referenced in any gate, prompt, or report. Neither must
   `.env`.
 - Audio under `data/` is never read directly. Only files packed into `cloud_in/inputs/` may be
   processed. For stage D1 the packed full meeting (`voice_002.m4a`, ~24.5 min) **is** the primary
-  ASR input; short clips remain allowed for fast tests. Stage D5 may additionally use a 15-minute
-  slice for the hardware gate.
+  ASR input; short clips remain allowed for fast tests. For stage **D2** the primary input is the
+  packed `transcript.json` (no ASR). Stage D5 may additionally use a 15-minute slice for the
+  hardware gate.
 - Audio is never sent to an LLM API — text only, as in the research stages.
 - LLM in the cloud is `gemini` only; `local_llama` is never run there. Calls per cloud run:
   `<= 20`, each recorded in the gate report as provider + purpose, never the key.
