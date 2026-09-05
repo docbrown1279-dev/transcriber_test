@@ -30,3 +30,9 @@
 - Tests: tests/unit/test_gain.py, tests/unit/test_turn_merge.py, tests/unit/test_segment_split.py, tests/unit/test_holes.py, tests/unit/test_dictionary_suggest.py, tests/unit/test_quality_g1.py, tests/unit/test_registry.py, tests/unit/test_pipeline_plan.py, tests/contract/test_speech_chain_artifacts.py, tests/integration/test_run_short_clip.py, tests/integration/test_full_meeting_artifacts.py
 - Executed: pytest tests/ -v (42 passed, exit 0), ruff (0), mypy (0), bandit (0), check-transcript (0)
 - Report: agent_docs/reports/test_D1.md
+
+## 2026-09-05 — Local ASR re-run (attempt 2)
+- STATUS: AWAITING_HUMAN_GATE
+- Branch: cursor/demo-d1-speech
+- Re-ran ASR on fixed turns (5 speakers); results/d1/transcript.json refreshed
+- Quality: ru_ratio=1.0, latin=0, 48 segments, ~502 tokens; report eval/d1/2/

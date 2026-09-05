@@ -78,19 +78,20 @@ D0 CLOSED (merge) → D1 облако (G1) → ручной шлюз D1 → merg
 
 **Критерий выхода:** `agent_docs/reports/D1/gate_D1.md` = PASS/PASS_WITH_WARNINGS **и** `HUMAN_GATE: PASS` в progress.
 
-### После ingest
-
-Артефакты полного прогона: `agent_docs/reports/D1/` (gate) и копия/путь к `transcript.json` из `cloud_out/artifacts/voice_002/` (после pull).
+### Локальная сверка с gold (`eval/d1`)
 
 ```bash
-uv run python -m transcriber.quality check-transcript path/to/transcript.json
+# в results/d1/ только ядро: transcript.json, turns.json, speech.json, audio.json
+python3 scripts/eval_d1_manual.py          # attempt 1
+EVAL_D1_ATTEMPT=2 python3 scripts/eval_d1_manual.py
 ```
+
+Проверки пишутся в `eval/d1/{N}/` (`transcript_diff.md`, summary). Спикеров сопоставляет человек: в облаке ~26 кластеров, в gold на клипе 2–3 буквы A/B/C — числа **не** совпадают.
 
 ### Человеческий шлюз D1
 
 - [ ] Gate G1 в отчёте — PASS или PASS_WITH_WARNINGS  
-- [ ] Прослушать 2–3 участка полной записи, включая тихие  
-- [ ] Сверить с облачным `transcript.json`  
+- [ ] Просмотреть `eval/d1/transcript_diff.md`, послушать `eval/d1/voice/…`  
 - [ ] Опционально: WER/CER vs `eval/`  
 - [ ] Записать в `agent_docs/progress/stage_D1.md`: `HUMAN_GATE: PASS|FAIL` + одна фраза  
 

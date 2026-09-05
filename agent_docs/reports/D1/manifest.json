@@ -1,0 +1,8 @@
+{
+  "stage": "D1",
+  "branch": "cursor/demo-d1-speech",
+  "commit": "f449439a5eeabe563d605541c046725173cb0cf6",
+  "pulled_at": "2026-09-05T12:29:26+03:00",
+  "phase": "code",
+  "verdict": "PASS_WITH_WARNINGS"
+}

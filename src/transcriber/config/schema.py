@@ -52,6 +52,12 @@ class DiarizationConfig(BaseModel):
     merge_same_speaker_gap_sec: float = Field(default=0.3, ge=0.0)
     absorb_turn_shorter_than_sec: float = Field(default=1.0, ge=0.0)
     min_hole_sec: float = Field(default=0.5, ge=0.0)
+    # Research 1f/1f2 embedding + cluster (no magic numbers in src/)
+    vad_premerge_gap_sec: float = Field(default=0.3, ge=0.0)
+    min_embed_sec: float = Field(default=0.4, ge=0.0)
+    embed_window_sec: float = Field(default=1.5, gt=0.0)
+    embed_step_sec: float = Field(default=0.75, gt=0.0)
+    cluster_distance_threshold: float = Field(default=0.5, gt=0.0)
 
 
 class AsrConfig(BaseModel):

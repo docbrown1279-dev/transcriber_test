@@ -1,0 +1,92 @@
+{
+  "stage": "D1",
+  "branch": "cursor/demo-d1-speech",
+  "base_commit": "aea2ea9454e97828d4fb2d32e92d800d9a7234a7",
+  "host_inventory": {
+    "os": "Linux 6.12.94+",
+    "cpu_count": 4,
+    "memory_total": "15Gi",
+    "disk_available": "246G",
+    "python_version": "3.12.3",
+    "uv_version": "0.12.10",
+    "ffmpeg_version": "6.1.1-3ubuntu5",
+    "ffprobe_version": "6.1.1-3ubuntu5"
+  },
+  "package_versions": {
+    "fastapi": "0.141.1",
+    "uvicorn": "0.52.4",
+    "jinja2": "3.1.6",
+    "python-multipart": "0.0.32",
+    "pydantic": "2.13.5",
+    "pydantic-settings": "2.15.0",
+    "pyyaml": "6.0.3",
+    "numpy": "2.5.2",
+    "typer": "0.27.2",
+    "pytest": "9.1.1",
+    "ruff": "0.16.6",
+    "mypy": "2.3.1",
+    "bandit": "1.9.4",
+    "onnxruntime": "1.23.2",
+    "soundfile": "0.14.0",
+    "scikit-learn": "1.9.0",
+    "torch": "2.14.0+cpu",
+    "torchaudio": "2.11.0+cpu",
+    "gigaam": "0.2.0",
+    "speakeronnx": "0.0.1"
+  },
+  "stage_metrics": {
+    "normalize": {
+      "runtime_sec": 1.836,
+      "produces": "audio.json"
+    },
+    "vad": {
+      "runtime_sec": 3.156,
+      "detector": "silero",
+      "produces": "speech.json"
+    },
+    "diarize": {
+      "runtime_sec": 4.303,
+      "diarizer": "wespeaker_onnx",
+      "produces": "turns.json"
+    },
+    "asr": {
+      "runtime_sec": 11.936,
+      "engine": "gigaam_v3_rnnt",
+      "subprocess": true,
+      "produces": "transcript.json"
+    },
+    "correction_suggest": {
+      "runtime_sec": 0.01,
+      "strategy": "dictionary_suggest",
+      "applied": false,
+      "produces": "suggestions.json"
+    }
+  },
+  "full_meeting": {
+    "source_audio": "cloud_in/inputs/audio/voice_002.m4a",
+    "duration_sec": 1468.602,
+    "size_bytes": 23993730,
+    "total_wall_time_sec": 23.55,
+    "peak_rss_mb": 1799.2,
+    "segments_count": 54,
+    "words_count": 430,
+    "russian_word_ratio": 1.0,
+    "latin_chars": 0
+  },
+  "tests": {
+    "total": 42,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0
+  },
+  "quality_gate": {
+    "id": "G1",
+    "verdict": "PASS_WITH_WARNINGS",
+    "warnings": [
+      "G1.5: Total holes duration 1259.8s on 24.5 min recording"
+    ]
+  },
+  "llm_calls": 0,
+  "wall_time_sec": 23.55,
+  "peak_rss_mb": 1799.2
+}

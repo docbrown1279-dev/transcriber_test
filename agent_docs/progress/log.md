@@ -7,3 +7,6 @@
 - 2026-09-05T11:30:00+03:00 D1 pack note: voice_002.m4a ~23MiB OK for git; G1 on test_voice; gold local; demo dictionary empty suggest-only
 - 2026-09-05T11:37:00+03:00 D1 clarified: full ASR in cloud on voice_002; G1=auto checks of stage D1; then human local; G≠roadmap stage
 - 2026-09-05T11:41:00+03:00 D1 INSTRUCTIONS_READY coder_D1.md tester_D1.md; pack voice_002; handoff cursor/demo-d1-speech
+- 2026-09-05T11:42:00+03:00 handoff D1 cursor/demo-d1-speech aea2ea9 pushed
+- 2026-09-05T12:29:26+03:00 pull-reports D1 cursor/demo-d1-speech f449439
+- 2026-09-05T12:29:26+03:00 pull-code D1 cursor/demo-d1-speech f449439 PASS_WITH_WARNINGS

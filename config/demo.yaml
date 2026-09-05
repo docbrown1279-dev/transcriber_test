@@ -25,6 +25,11 @@ diarization:
   merge_same_speaker_gap_sec: 0.3
   absorb_turn_shorter_than_sec: 1.0
   min_hole_sec: 0.5
+  vad_premerge_gap_sec: 0.3        # 1f2: glue Silero crumbs before embed windows
+  min_embed_sec: 0.4               # 1f2: drop chunks shorter than 0.4 s
+  embed_window_sec: 1.5
+  embed_step_sec: 0.75
+  cluster_distance_threshold: 0.80 # 0.5 was for ~85s clips (1f); full meeting needs higher merge
 
 asr:
   engine: gigaam_v3_rnnt
