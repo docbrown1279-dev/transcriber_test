@@ -100,20 +100,24 @@ if [[ "$CURRENT" != "$BRANCH" ]]; then
   fi
 fi
 
-# Stage relevant paths (never .env / eval gold)
-git add -A -- \
-  cloud_in \
-  cloud_out \
-  agent_docs \
-  manuals \
-  scripts/cloud_*.sh \
-  config \
-  pyproject.toml \
-  src \
-  tests \
-  .gitignore \
-  README.md \
-  2>/dev/null || true
+# Stage relevant paths that exist (missing paths must not abort the whole add)
+ADD_PATHS=(
+  cloud_in
+  cloud_out
+  agent_docs
+  manuals
+  .gitignore
+  README.md
+  .cursor/commands
+  .cursor/permissions.json
+)
+for p in scripts/cloud_*.sh config pyproject.toml src tests; do
+  # shellcheck disable=SC2086
+  for f in $p; do
+    [[ -e "$f" ]] && ADD_PATHS+=("$f")
+  done
+done
+git add -- "${ADD_PATHS[@]}"
 
 # Explicitly avoid secrets if somehow staged
 git reset -q -- .env 2>/dev/null || true
