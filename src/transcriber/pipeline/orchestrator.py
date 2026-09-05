@@ -12,7 +12,7 @@ from typing import Literal
 
 from transcriber.config.loader import load_config
 from transcriber.config.schema import AppConfig
-from transcriber.models.artifacts import TranscriptArtifact, load_artifact
+from transcriber.models.artifacts import ChaptersArtifact, TranscriptArtifact, load_artifact
 from transcriber.pipeline.artifacts import JobArtifactPaths
 from transcriber.pipeline.steps import PIPELINE_STEPS, StepDefinition
 from transcriber.registry import available
@@ -60,6 +60,16 @@ def _has_valid_artifact(file_path: Path, model_cls: type) -> bool:
         return False
 
 
+def _is_step_done(step: StepDefinition, paths: JobArtifactPaths) -> bool:
+    artifact_file = paths.path(step.produces)
+    if not _has_valid_artifact(artifact_file, step.model_cls):
+        return False
+    if step.stage == "titles":
+        chapters = load_artifact(artifact_file, ChaptersArtifact)
+        return all(chapter.title.strip() for chapter in chapters.chapters)
+    return True
+
+
 def plan_job(job_dir: Path | str, cfg: AppConfig | None = None) -> list[StagePlan]:
     """Формирует упорядоченный план стадий для задачи с текущими статусами.
 
@@ -79,8 +89,7 @@ def plan_job(job_dir: Path | str, cfg: AppConfig | None = None) -> list[StagePla
             plans.append(StagePlan(stage=step.stage, status="done", produces=step.produces))
             continue
 
-        artifact_file = paths.path(step.produces)
-        is_done = _has_valid_artifact(artifact_file, step.model_cls)
+        is_done = _is_step_done(step, paths)
 
         if is_done:
             status: StageStatus = "done"
@@ -143,7 +152,7 @@ def run_job(
 
     for step in PIPELINE_STEPS:
         target_file = paths.path(step.produces)
-        if _has_valid_artifact(target_file, step.model_cls):
+        if _is_step_done(step, paths):
             executed[step.stage] = target_file
         else:
             produced_path = step.run(ctx, resolved_cfg)

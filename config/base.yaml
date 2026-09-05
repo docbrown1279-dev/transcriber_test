@@ -74,8 +74,11 @@ chunking:
   embedding_model: rubert_tiny2
   similarity_threshold: 0.70
   packing_max_gap_sec: 2.0
+  packing_target_words: [40, 80]
+  merge_max_duration_sec: 180
   target_chapter_sec: [45, 180]
   target_chapters_per_minute: [0.4, 0.8]
+  warning_chapters_per_minute: [0.3, 1.0]
   late_chunking:
     enabled: false
     provider: disabled
@@ -88,6 +91,9 @@ llm:
   api_key_env: GEMINI_API_KEY
   timeout_sec: 60
   max_calls_per_job: 20
+  title_max_tokens: 1024
+  title_max_attempts: 2
+  title_max_words: 10
   temperature: 0.2
   debug_reasoning: false
   prompts:

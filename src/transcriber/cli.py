@@ -94,7 +94,10 @@ def cmd_run(
     job: Annotated[
         Path, typer.Option("--job", "-j", help="Каталог задачи для сохранения артефактов")
     ],
-    audio: Annotated[Path, typer.Option("--audio", "-a", help="Путь к исходному аудиофайлу")],
+    audio: Annotated[
+        Path | None,
+        typer.Option("--audio", "-a", help="Путь к исходному аудиофайлу"),
+    ] = None,
     until: Annotated[
         str, typer.Option("--until", "-u", help="Стадия конвейера, до которой выполнять обработку")
     ] = "correction_suggest",
@@ -102,7 +105,7 @@ def cmd_run(
         str | None, typer.Option("--profile", "-p", help="Профиль конфигурации")
     ] = None,
 ) -> None:
-    """Выполняет конвейер обработки аудио до заданной стадии."""
+    """Выполняет конвейер из аудио или возобновляет его из готовой стенограммы."""
     cfg = load_config(profile)
     from transcriber.pipeline.orchestrator import run_job
 

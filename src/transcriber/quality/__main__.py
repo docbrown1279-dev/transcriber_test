@@ -4,12 +4,14 @@ import argparse
 import sys
 from pathlib import Path
 
+from transcriber.config.loader import load_config
 from transcriber.models.artifacts import (
+    ChaptersArtifact,
     TranscriptArtifact,
     dump_artifact,
     load_artifact,
 )
-from transcriber.quality.checks import build_quality_artifact
+from transcriber.quality.checks import build_quality_artifact, check_chapters
 
 
 def main() -> None:
@@ -22,6 +24,13 @@ def main() -> None:
         "--audio-duration", type=float, default=None, help="Audio duration in seconds"
     )
     check_parser.add_argument("--out", type=str, default=None, help="Path to write quality.json")
+
+    chapter_parser = subparsers.add_parser("check-chapters", help="Check chapter quality")
+    chapter_parser.add_argument("chapters", type=str, help="Path to chapters.json")
+    chapter_parser.add_argument(
+        "--transcript", type=str, required=True, help="Path to transcript.json"
+    )
+    chapter_parser.add_argument("--profile", type=str, default="demo", help="Config profile")
 
     args = parser.parse_args()
 
@@ -56,6 +65,24 @@ def main() -> None:
             print(f"  [{c.status.upper()}] {c.id}: {c.message}")
 
         if quality.verdict == "fail":
+            sys.exit(1)
+
+    if args.command == "check-chapters":
+        chapters_path = Path(args.chapters)
+        transcript_path = Path(args.transcript)
+        if not chapters_path.is_file() or not transcript_path.is_file():
+            print("Error: chapters or transcript file not found", file=sys.stderr)
+            sys.exit(1)
+        chapters = load_artifact(chapters_path, ChaptersArtifact)
+        transcript = load_artifact(transcript_path, TranscriptArtifact)
+        report = check_chapters(chapters, transcript, load_config(args.profile))
+        print(f"Quality verdict: {report.verdict.upper()}")
+        for check in report.checks:
+            print(
+                f"  [{check.status.upper()}] {check.id}: "
+                f"value={check.value}; threshold={check.threshold}"
+            )
+        if report.verdict == "fail":
             sys.exit(1)
 
 

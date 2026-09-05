@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from transcriber.audio.normalize import FfmpegAudioNormalizer
 from transcriber.config.schema import AppConfig
 from transcriber.errors import StageNotImplementedError
+from transcriber.llm.titles import apply_titles
 from transcriber.models.artifacts import (
     AudioArtifact,
     ChaptersArtifact,
@@ -112,6 +113,24 @@ class StepDefinition:
             suggestions = suggester.suggest(transcript, cfg.correction, job_id=job_id)
             out_file = job_dir / self.produces
             dump_artifact(suggestions, out_file)
+            return out_file
+
+        if self.stage == "chunk":
+            transcript = load_artifact(job_dir / "transcript.json", TranscriptArtifact)
+            embedder = build("embeddings", cfg.chunking.embedding_model, cfg.app.profile)
+            chunker = build("chunking", cfg.chunking.chunker, cfg.app.profile)
+            chapters = chunker.chunk(transcript, embedder, cfg.chunking)
+            out_file = job_dir / self.produces
+            dump_artifact(chapters, out_file)
+            return out_file
+
+        if self.stage == "titles":
+            transcript = load_artifact(job_dir / "transcript.json", TranscriptArtifact)
+            chapters = load_artifact(job_dir / "chapters.json", ChaptersArtifact)
+            client = build("llm", cfg.llm.provider, cfg.app.profile)
+            titled_chapters, _calls = apply_titles(chapters, transcript, client, cfg.llm)
+            out_file = job_dir / self.produces
+            dump_artifact(titled_chapters, out_file)
             return out_file
 
         raise StageNotImplementedError(stage=self.stage)

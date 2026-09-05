@@ -10,7 +10,7 @@ from typing import Any
 
 from transcriber.config.loader import load_config
 from transcriber.config.schema import AppConfig
-from transcriber.registry import available
+from transcriber.registry import available, build
 
 
 @dataclass
@@ -173,5 +173,36 @@ def run_self_check(
             status="ok",
             details={"silero_vad_onnx": str(silero_file)},
         )
+
+    # 8. D2 component construction only; no model load and no live LLM request.
+    if active_cfg is not None:
+        try:
+            embedder = build(
+                "embeddings",
+                active_cfg.chunking.embedding_model,
+                active_cfg.app.profile,
+            )
+            components["embedder"] = ComponentHealth(
+                status="ok",
+                details={"engine": embedder.name},
+            )
+        except Exception as exc:
+            is_healthy = False
+            components["embedder"] = ComponentHealth(status="error", message=str(exc))
+
+        try:
+            llm = build("llm", active_cfg.llm.provider, active_cfg.app.profile)
+            key_present = bool(
+                active_cfg.llm.api_key_env
+                and os.environ.get(active_cfg.llm.api_key_env)
+            )
+            components["llm"] = ComponentHealth(
+                status="ok" if key_present else "unavailable",
+                message=None if key_present else "Configured API key variable is missing",
+                details={"provider": llm.name},
+            )
+        except Exception as exc:
+            is_healthy = False
+            components["llm"] = ComponentHealth(status="error", message=str(exc))
 
     return is_healthy, components

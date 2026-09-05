@@ -66,16 +66,20 @@ def test_d0_reg_02_prod_only_keys_raise_in_demo() -> None:
         assert "profile" in err.hint.lower() or "available" in err.hint.lower()
 
 
-def test_d0_reg_03_allowed_demo_keys_raise_stage_not_implemented() -> None:
-    """[D0-REG-03] keys allowed in demo but arriving in later stages (D2+) raise StageNotImplementedError."""
-    later_demo_keys = [
-        ("embeddings", "rubert_tiny2"),
-        ("chunking", "packing_c"),
-        ("llm", "gemini"),
-    ]
-    for area, key in later_demo_keys:
-        with pytest.raises(StageNotImplementedError):
-            build(area, key, profile="demo")
+def test_d2_reg_01_d2_demo_components_are_implemented() -> None:
+    """[D2-REG-01] D2 demo factories build real components while late chunking stays unavailable."""
+    from transcriber.chunking.embeddings import RubertTiny2EmbeddingBackend
+    from transcriber.chunking.packing_c import PackingCChunker
+    from transcriber.llm.gemini import GeminiLlmClient
+
+    assert isinstance(
+        build("embeddings", "rubert_tiny2", profile="demo"),
+        RubertTiny2EmbeddingBackend,
+    )
+    assert isinstance(build("chunking", "packing_c", profile="demo"), PackingCChunker)
+    assert isinstance(build("llm", "gemini", profile="demo"), GeminiLlmClient)
+    with pytest.raises(ComponentUnavailableError):
+        build("chunking", "late_chunking_jina", profile="demo")
 
 
 def test_d1_reg_01_implemented_engines_under_demo() -> None:

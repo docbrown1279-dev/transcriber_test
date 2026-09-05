@@ -10,3 +10,8 @@
 - Branch: cursor/demo-d2-chapters
 - Approved deps: sentence-transformers (+ CPU torch if needed), google-genai; secrets GEMINI_API_KEY + HF_TOKEN
 - Next: cloud_handoff push; human launches Cloud Agent with PASTE; after cloud → /cloud_pull → HUMAN_GATE
+
+## 2026-09-05 — Coder
+- STATUS: READY_FOR_TEST
+- Implemented: packing C, rubert-tiny2 embeddings, Gemini titles, G2 checks, and resumable D2 pipeline
+- Inputs: packed `voice_002` transcript only; no audio or speech stages run
