@@ -3,7 +3,7 @@ name = "transcriber"
 version = "0.1.0"
 description = "Meeting transcriber demo"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12, <3.13"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",
@@ -17,8 +17,18 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-asr = []
-diarize = []
+asr = [
+    "gigaam",
+    "soundfile>=0.14.0",
+    "torch",
+    "torchaudio",
+]
+diarize = [
+    "onnxruntime~=1.23.0",
+    "scikit-learn>=1.9.0",
+    "soundfile>=0.14.0",
+    "speakeronnx>=0.0.1",
+]
 embed = []
 llm-local = []
 
@@ -56,7 +66,7 @@ warn_return_any = true
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["yaml.*"]
+module = ["yaml.*", "soundfile.*", "gigaam.*", "speakeronnx.*", "onnxruntime.*", "sklearn.*"]
 ignore_missing_imports = true
 
 [tool.bandit]
@@ -69,3 +79,14 @@ markers = [
     "requires_llm: tests requiring LLM access or cassettes",
     "slow: tests running heavy processing or long audio",
 ]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchaudio = { index = "pytorch-cpu" }
+gigaam = { git = "https://github.com/salute-developers/GigaAM.git" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+

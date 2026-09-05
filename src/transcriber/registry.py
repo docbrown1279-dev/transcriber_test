@@ -81,38 +81,94 @@ def _make_stub_factory(area: str, key: str) -> Callable[[], Any]:
     return stub
 
 
+# Реальные фабрики для компонентов этапа D1
+def _build_silero_vad() -> Any:
+    from transcriber.vad.silero import SileroVadDetector
+
+    return SileroVadDetector()
+
+
+def _build_disabled_vad() -> Any:
+    from transcriber.vad.disabled import DisabledVadDetector
+
+    return DisabledVadDetector()
+
+
+def _build_wespeaker_diarizer() -> Any:
+    from transcriber.diarization.wespeaker import WeSpeakerDiarizer
+
+    return WeSpeakerDiarizer()
+
+
+def _build_gigaam_asr() -> Any:
+    from transcriber.asr.gigaam import GigaAmAsrEngine
+
+    return GigaAmAsrEngine()
+
+
+def _build_dictionary_suggester() -> Any:
+    from transcriber.correction.dictionary_suggest import DictionaryTermSuggester
+
+    return DictionaryTermSuggester()
+
+
 # Регистрация всех компонентов согласно контракту module_interfaces.md §3
-_CONTRACT_COMPONENTS: list[tuple[str, str, tuple[str, ...]]] = [
+_CONTRACT_COMPONENTS: list[tuple[str, str, Callable[[], Any], tuple[str, ...]]] = [
     # vad
-    ("vad", "silero", ("demo", "dev", "prod")),
-    ("vad", "ten_fallback", ("dev", "prod")),
-    ("vad", "disabled", ("dev",)),
+    ("vad", "silero", _build_silero_vad, ("demo", "dev", "prod")),
+    ("vad", "ten_fallback", _make_stub_factory("vad", "ten_fallback"), ("dev", "prod")),
+    ("vad", "disabled", _build_disabled_vad, ("dev",)),
     # diarization
-    ("diarization", "wespeaker_onnx", ("demo", "dev", "prod")),
-    ("diarization", "pyannote31", ("dev", "prod")),
+    ("diarization", "wespeaker_onnx", _build_wespeaker_diarizer, ("demo", "dev", "prod")),
+    ("diarization", "pyannote31", _make_stub_factory("diarization", "pyannote31"), ("dev", "prod")),
     # asr
-    ("asr", "gigaam_v3_rnnt", ("demo", "dev", "prod")),
-    ("asr", "gigaam_e2e_rnnt", ("dev",)),
+    ("asr", "gigaam_v3_rnnt", _build_gigaam_asr, ("demo", "dev", "prod")),
+    ("asr", "gigaam_e2e_rnnt", _make_stub_factory("asr", "gigaam_e2e_rnnt"), ("dev",)),
     # correction
-    ("correction", "dictionary_suggest", ("demo", "dev", "prod")),
-    ("correction", "domain_dictionaries", ("prod",)),
+    ("correction", "dictionary_suggest", _build_dictionary_suggester, ("demo", "dev", "prod")),
+    (
+        "correction",
+        "domain_dictionaries",
+        _make_stub_factory("correction", "domain_dictionaries"),
+        ("prod",),
+    ),
     # embeddings
-    ("embeddings", "rubert_tiny2", ("demo", "dev", "prod")),
-    ("embeddings", "bge_small_onnx", ("dev", "prod")),
-    ("embeddings", "jina_v3", ("dev", "prod")),
+    (
+        "embeddings",
+        "rubert_tiny2",
+        _make_stub_factory("embeddings", "rubert_tiny2"),
+        ("demo", "dev", "prod"),
+    ),
+    (
+        "embeddings",
+        "bge_small_onnx",
+        _make_stub_factory("embeddings", "bge_small_onnx"),
+        ("dev", "prod"),
+    ),
+    ("embeddings", "jina_v3", _make_stub_factory("embeddings", "jina_v3"), ("dev", "prod")),
     # chunking
-    ("chunking", "packing_c", ("demo", "dev", "prod")),
-    ("chunking", "late_chunking_jina", ("dev", "prod")),
-    ("chunking", "hybrid_c_then_d", ("dev",)),
+    (
+        "chunking",
+        "packing_c",
+        _make_stub_factory("chunking", "packing_c"),
+        ("demo", "dev", "prod"),
+    ),
+    (
+        "chunking",
+        "late_chunking_jina",
+        _make_stub_factory("chunking", "late_chunking_jina"),
+        ("dev", "prod"),
+    ),
+    ("chunking", "hybrid_c_then_d", _make_stub_factory("chunking", "hybrid_c_then_d"), ("dev",)),
     # llm
-    ("llm", "gemini", ("demo", "dev")),
-    ("llm", "local_llama", ("dev", "prod")),
-    ("llm", "openai_compat", ("dev", "prod")),
+    ("llm", "gemini", _make_stub_factory("llm", "gemini"), ("demo", "dev")),
+    ("llm", "local_llama", _make_stub_factory("llm", "local_llama"), ("dev", "prod")),
+    ("llm", "openai_compat", _make_stub_factory("llm", "openai_compat"), ("dev", "prod")),
     # export
-    ("export", "json", ("demo", "dev", "prod")),
-    ("export", "markdown", ("demo", "dev", "prod")),
-    ("export", "pdf", ("prod",)),
+    ("export", "json", _make_stub_factory("export", "json"), ("demo", "dev", "prod")),
+    ("export", "markdown", _make_stub_factory("export", "markdown"), ("demo", "dev", "prod")),
+    ("export", "pdf", _make_stub_factory("export", "pdf"), ("prod",)),
 ]
 
-for _area, _key, _profiles in _CONTRACT_COMPONENTS:
-    register(_area, _key, _make_stub_factory(_area, _key), _profiles)
+for _area, _key, _factory, _profiles in _CONTRACT_COMPONENTS:
+    register(_area, _key, _factory, _profiles)

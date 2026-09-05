@@ -165,4 +165,13 @@ def run_self_check(
             is_healthy = False
             components["audio_probe"] = ComponentHealth(status="error", message=str(exc))
 
+    # 7. Model files / ONNX readiness when weights present (no ASR executed)
+    models_dir = Path("models")
+    silero_file = models_dir / "silero_vad.onnx"
+    if silero_file.is_file():
+        components["models"] = ComponentHealth(
+            status="ok",
+            details={"silero_vad_onnx": str(silero_file)},
+        )
+
     return is_healthy, components

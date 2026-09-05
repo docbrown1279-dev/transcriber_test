@@ -67,19 +67,38 @@ def test_d0_reg_02_prod_only_keys_raise_in_demo() -> None:
 
 
 def test_d0_reg_03_allowed_demo_keys_raise_stage_not_implemented() -> None:
-    """[D0-REG-03] keys allowed in demo but arriving later raise StageNotImplementedError."""
-    demo_keys = [
-        ("vad", "silero"),
-        ("diarization", "wespeaker_onnx"),
-        ("asr", "gigaam_v3_rnnt"),
-        ("correction", "dictionary_suggest"),
+    """[D0-REG-03] keys allowed in demo but arriving in later stages (D2+) raise StageNotImplementedError."""
+    later_demo_keys = [
         ("embeddings", "rubert_tiny2"),
         ("chunking", "packing_c"),
         ("llm", "gemini"),
     ]
-    for area, key in demo_keys:
+    for area, key in later_demo_keys:
         with pytest.raises(StageNotImplementedError):
             build(area, key, profile="demo")
+
+
+def test_d1_reg_01_implemented_engines_under_demo() -> None:
+    """[D1-REG-01] under demo, build returns real engine objects for D1 stages; pyannote31 still unavailable."""
+    from transcriber.asr.gigaam import GigaAmAsrEngine
+    from transcriber.correction.dictionary_suggest import DictionaryTermSuggester
+    from transcriber.diarization.wespeaker import WeSpeakerDiarizer
+    from transcriber.vad.silero import SileroVadDetector
+
+    asr_engine = build("asr", "gigaam_v3_rnnt", profile="demo")
+    assert isinstance(asr_engine, GigaAmAsrEngine)
+
+    vad_engine = build("vad", "silero", profile="demo")
+    assert isinstance(vad_engine, SileroVadDetector)
+
+    diar_engine = build("diarization", "wespeaker_onnx", profile="demo")
+    assert isinstance(diar_engine, WeSpeakerDiarizer)
+
+    corr_engine = build("correction", "dictionary_suggest", profile="demo")
+    assert isinstance(corr_engine, DictionaryTermSuggester)
+
+    with pytest.raises(ComponentUnavailableError):
+        build("diarization", "pyannote31", profile="demo")
 
 
 def test_d0_reg_04_unknown_key_and_availability() -> None:

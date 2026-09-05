@@ -1,7 +1,6 @@
 """Тесты планирования стадий конвейера и разрешения статусов."""
 
 from pathlib import Path
-import shutil
 
 import pytest
 
@@ -85,9 +84,117 @@ def test_d0_pln_04_calling_unimplemented_stage_raises_and_writes_nothing(tmp_job
     """[D0-PLN-04] calling an unimplemented stage raises StageNotImplementedError and writes no artifact file."""
     initial_files = set(tmp_job_dir.iterdir())
 
-    for stage in CONTRACT_ORDER:
+    unimplemented_stages = ["chunk", "titles", "insights_extract", "report"]
+    for stage in unimplemented_stages:
         with pytest.raises(StageNotImplementedError):
             run_stage(stage, tmp_job_dir)
 
     current_files = set(tmp_job_dir.iterdir())
     assert current_files == initial_files
+
+
+def test_d1_pln_01_fixture_chain_reports_stages_done(tmp_job_dir: Path) -> None:
+    """[D1-PLN-01] after writing audio, speech, turns, transcript, suggestions artifacts, plan reports normalize..correction_suggest as done."""
+    from transcriber.models.artifacts import (
+        AudioArtifact,
+        AudioLoudness,
+        AudioNormalized,
+        AudioSource,
+        SpeechArtifact,
+        SuggestionsArtifact,
+        TimeInterval,
+        TranscriptArtifact,
+        TranscriptSegment,
+        TurnItem,
+        TurnMergeInfo,
+        TurnsArtifact,
+    )
+
+    # 1. audio.json
+    dump_artifact(
+        AudioArtifact(
+            schema_version="1",
+            job_id=tmp_job_dir.name,
+            source=AudioSource(filename="audio.wav", size_bytes=1000, duration_sec=5.0),
+            normalized=AudioNormalized(path="normalized.wav", sample_rate=16000, channels=1),
+            loudness=AudioLoudness(rms_dbfs=-20.0, peak_dbfs=-1.0, gain_db=0.0, gain_applied=False),
+            runtime_sec=0.1,
+        ),
+        tmp_job_dir / "audio.json",
+    )
+
+    # 2. speech.json
+    dump_artifact(
+        SpeechArtifact(
+            schema_version="1",
+            job_id=tmp_job_dir.name,
+            detector="silero",
+            fallback_used=False,
+            regions=[TimeInterval(start=0.0, end=4.0)],
+            speech_sec=4.0,
+            runtime_sec=0.1,
+        ),
+        tmp_job_dir / "speech.json",
+    )
+
+    # 3. turns.json
+    dump_artifact(
+        TurnsArtifact(
+            schema_version="1",
+            job_id=tmp_job_dir.name,
+            diarizer="wespeaker_onnx",
+            speaker_count=1,
+            turns=[TurnItem(id="t0001", start=0.0, end=4.0, speaker="SPEAKER_00")],
+            holes=[],
+            merge=TurnMergeInfo(same_speaker_gap_sec=0.3, absorb_shorter_than_sec=1.0),
+            runtime_sec=0.1,
+        ),
+        tmp_job_dir / "turns.json",
+    )
+
+    # 4. transcript.json
+    dump_artifact(
+        TranscriptArtifact(
+            schema_version="1",
+            job_id=tmp_job_dir.name,
+            engine="gigaam_v3_rnnt",
+            language="ru",
+            segments=[
+                TranscriptSegment(
+                    id="s0001",
+                    turn_id="t0001",
+                    start=0.0,
+                    end=4.0,
+                    speaker="SPEAKER_00",
+                    text="Привет",
+                    gain_db=0.0,
+                    empty=False,
+                )
+            ],
+            holes=[],
+            max_segment_sec=25,
+            runtime_sec=0.1,
+        ),
+        tmp_job_dir / "transcript.json",
+    )
+
+    # 5. suggestions.json
+    dump_artifact(
+        SuggestionsArtifact(
+            schema_version="1",
+            job_id=tmp_job_dir.name,
+            dictionaries=[],
+            applied=False,
+            suggestions=[],
+        ),
+        tmp_job_dir / "suggestions.json",
+    )
+
+    plans = plan_job(tmp_job_dir)
+    plan_dict = {p.stage: p.status for p in plans}
+
+    for completed in ["normalize", "vad", "diarize", "asr", "correction_suggest"]:
+        assert plan_dict[completed] == "done", f"Stage {completed} was expected to be done"
+
+    for pending_or_unavail in ["chunk", "titles", "insights_extract", "report"]:
+        assert plan_dict[pending_or_unavail] in ["pending", "unavailable"]

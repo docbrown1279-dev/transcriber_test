@@ -89,6 +89,37 @@ def _detect_and_validate(path: Path) -> tuple[bool, str]:
     return False, "Does not match any known artifact schema"
 
 
+@app.command("run")
+def cmd_run(
+    job: Annotated[
+        Path, typer.Option("--job", "-j", help="Каталог задачи для сохранения артефактов")
+    ],
+    audio: Annotated[Path, typer.Option("--audio", "-a", help="Путь к исходному аудиофайлу")],
+    until: Annotated[
+        str, typer.Option("--until", "-u", help="Стадия конвейера, до которой выполнять обработку")
+    ] = "correction_suggest",
+    profile: Annotated[
+        str | None, typer.Option("--profile", "-p", help="Профиль конфигурации")
+    ] = None,
+) -> None:
+    """Выполняет конвейер обработки аудио до заданной стадии."""
+    cfg = load_config(profile)
+    from transcriber.pipeline.orchestrator import run_job
+
+    try:
+        executed = run_job(
+            job_dir=job,
+            source_audio=audio,
+            until=until,
+            cfg=cfg,
+        )
+        for stage, path in executed.items():
+            typer.echo(f"Done: {stage} -> {path}")
+    except Exception as exc:
+        typer.echo(f"Job execution failed: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+
 @app.command("plan")
 def cmd_plan(
     job: Annotated[Path, typer.Option("--job", "-j", help="Каталог задачи с артефактами")],

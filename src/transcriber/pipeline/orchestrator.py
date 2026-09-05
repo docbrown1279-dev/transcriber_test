@@ -2,10 +2,12 @@
 
 Планирует выполнение стадий, проверяет валидность существующих артефактов
 и вычисляет статус каждой стадии (done / pending / unavailable).
+Управляет пошаговым выполнением задач (resumable pipeline execution).
 """
 
 from dataclasses import dataclass
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Literal
 
 from transcriber.config.loader import load_config
@@ -91,17 +93,63 @@ def plan_job(job_dir: Path | str, cfg: AppConfig | None = None) -> list[StagePla
     return plans
 
 
-def run_stage(stage_name: str, job_dir: Path | str, cfg: AppConfig | None = None) -> Path:
-    """Запускает конкретную стадию конвейера.
-
-    На этапе D0 все нереализованные стадии возбуждают StageNotImplementedError.
-    """
+def run_stage(
+    stage_name: str,
+    job_dir: Path | str,
+    cfg: AppConfig | None = None,
+    source_audio: Path | str | None = None,
+) -> Path:
+    """Запускает конкретную стадию конвейера."""
     resolved_cfg = cfg or load_config()
     paths = JobArtifactPaths(job_dir)
+    ctx = SimpleNamespace(
+        job_id=paths.job_dir.name,
+        job_dir=paths.job_dir,
+        source_audio=Path(source_audio) if source_audio else None,
+    )
 
     for step in PIPELINE_STEPS:
         if step.stage == stage_name:
-            # step.run возбуждает StageNotImplementedError в D0
-            return step.run(paths, resolved_cfg)
+            return step.run(ctx, resolved_cfg)
 
     raise ValueError(f"Unknown stage: {stage_name}")
+
+
+def run_job(
+    job_dir: Path | str,
+    source_audio: Path | str | None = None,
+    until: str = "correction_suggest",
+    cfg: AppConfig | None = None,
+) -> dict[str, Path]:
+    """Последовательно выполняет конвейер задачи до указанной стадии.
+
+    Пропускает стадии, чьи артефакты уже существуют и валидны (resumable).
+    """
+    resolved_cfg = cfg or load_config()
+    job_path = Path(job_dir)
+    job_path.mkdir(parents=True, exist_ok=True)
+    paths = JobArtifactPaths(job_path)
+
+    ctx = SimpleNamespace(
+        job_id=job_path.name,
+        job_dir=job_path,
+        source_audio=Path(source_audio) if source_audio else None,
+    )
+
+    executed: dict[str, Path] = {}
+    valid_stages = [s.stage for s in PIPELINE_STEPS]
+    if until not in valid_stages:
+        raise ValueError(f"Invalid 'until' stage '{until}'. Valid stages: {valid_stages}")
+
+    for step in PIPELINE_STEPS:
+        target_file = paths.path(step.produces)
+        if _has_valid_artifact(target_file, step.model_cls):
+            executed[step.stage] = target_file
+        else:
+            produced_path = step.run(ctx, resolved_cfg)
+            executed[step.stage] = produced_path
+
+        if step.stage == until:
+            break
+
+    return executed

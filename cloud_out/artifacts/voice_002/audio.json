@@ -1,0 +1,21 @@
+{
+  "job_id": "voice_002",
+  "loudness": {
+    "gain_applied": false,
+    "gain_db": 0.0,
+    "peak_dbfs": -0.201,
+    "rms_dbfs": -33.507
+  },
+  "normalized": {
+    "channels": 1,
+    "path": "normalized.wav",
+    "sample_rate": 16000
+  },
+  "runtime_sec": 1.836,
+  "schema_version": "1",
+  "source": {
+    "duration_sec": 1468.602,
+    "filename": "voice_002.m4a",
+    "size_bytes": 23993730
+  }
+}

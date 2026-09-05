@@ -6,6 +6,7 @@ from typing import Any, Protocol
 
 from pydantic import BaseModel
 
+from transcriber.audio.normalize import FfmpegAudioNormalizer
 from transcriber.config.schema import AppConfig
 from transcriber.errors import StageNotImplementedError
 from transcriber.models.artifacts import (
@@ -17,7 +18,10 @@ from transcriber.models.artifacts import (
     SuggestionsArtifact,
     TranscriptArtifact,
     TurnsArtifact,
+    dump_artifact,
+    load_artifact,
 )
+from transcriber.registry import build
 
 
 class JobContext(Protocol):
@@ -25,6 +29,7 @@ class JobContext(Protocol):
 
     job_id: str
     job_dir: Path
+    source_audio: Path | None
 
 
 class PipelineStep(Protocol):
@@ -34,7 +39,7 @@ class PipelineStep(Protocol):
     produces: str
     requires: tuple[str, ...]
 
-    def run(self, ctx: JobContext, cfg: AppConfig) -> Path:
+    def run(self, ctx: Any, cfg: AppConfig) -> Path:
         """Запускает выполнение шага конвейера."""
         ...
 
@@ -50,7 +55,61 @@ class StepDefinition:
     model_cls: type[BaseModel]
 
     def run(self, ctx: Any, cfg: AppConfig) -> Path:
-        """В версии D0 вызывает StageNotImplementedError без создания артефакта."""
+        """Выполняет шаг конвейера."""
+        job_dir = Path(getattr(ctx, "job_dir", ctx))
+        job_id = getattr(ctx, "job_id", job_dir.name)
+
+        if self.stage == "normalize":
+            source_audio = getattr(ctx, "source_audio", None)
+            if source_audio is None:
+                # Поиск исходного аудиофайла в job_dir
+                candidates = [
+                    f
+                    for f in job_dir.iterdir()
+                    if f.is_file()
+                    and f.name != "normalized.wav"
+                    and not f.name.endswith(".json")
+                    and not f.name.startswith(".")
+                    and not f.name.startswith("_")
+                ]
+                if not candidates:
+                    raise FileNotFoundError(f"No source audio file found in {job_dir}")
+                source_path = candidates[0]
+            else:
+                source_path = Path(source_audio)
+
+            normalizer = FfmpegAudioNormalizer()
+            normalizer.normalize(source=source_path, dest=job_dir, cfg=cfg.audio, job_id=job_id)
+            return job_dir / self.produces
+
+        if self.stage == "vad":
+            wav_path = job_dir / "normalized.wav"
+            detector = build("vad", cfg.vad.engine, cfg.app.profile)
+            detector.detect(wav_path, cfg.vad, job_id=job_id)
+            return job_dir / self.produces
+
+        if self.stage == "diarize":
+            wav_path = job_dir / "normalized.wav"
+            speech_artifact = load_artifact(job_dir / "speech.json", SpeechArtifact)
+            diarizer = build("diarization", cfg.diarization.engine, cfg.app.profile)
+            diarizer.diarize(wav_path, speech_artifact, cfg.diarization, job_id=job_id)
+            return job_dir / self.produces
+
+        if self.stage == "asr":
+            wav_path = job_dir / "normalized.wav"
+            turns_artifact = load_artifact(job_dir / "turns.json", TurnsArtifact)
+            engine = build("asr", cfg.asr.engine, cfg.app.profile)
+            engine.transcribe(wav_path, turns_artifact, cfg.asr, job_id=job_id)
+            return job_dir / self.produces
+
+        if self.stage == "correction_suggest":
+            transcript = load_artifact(job_dir / "transcript.json", TranscriptArtifact)
+            suggester = build("correction", "dictionary_suggest", cfg.app.profile)
+            suggestions = suggester.suggest(transcript, cfg.correction, job_id=job_id)
+            out_file = job_dir / self.produces
+            dump_artifact(suggestions, out_file)
+            return out_file
+
         raise StageNotImplementedError(stage=self.stage)
 
 
@@ -108,7 +167,7 @@ PIPELINE_STEPS: list[StepDefinition] = [
     StepDefinition(
         stage="insights_extract",
         produces="insights.json",
-        requires=("chapters.json", "transcript.json"),
+        requires=("chapters.json",),
         area="llm",
         model_cls=InsightsArtifact,
     ),
@@ -116,7 +175,7 @@ PIPELINE_STEPS: list[StepDefinition] = [
         stage="report",
         produces="report.json",
         requires=("insights.json", "chapters.json"),
-        area="llm",
+        area="export",
         model_cls=ReportArtifact,
     ),
 ]
