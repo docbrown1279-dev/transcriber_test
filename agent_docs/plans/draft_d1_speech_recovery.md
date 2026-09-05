@@ -146,10 +146,56 @@ Baseline = текущий demo:
 
 ---
 
-## 6. Утверждено
+## 8. Dual-path audio (после провала крутки Silero)
 
-1. Скоуп = **только Silero-пороги** на коротких окнах.  
-2. Сетка **B0 → B1 → B2** (+ B3–B5 по необходимости).  
-3. Сначала rescue, потом regression.  
-4. TEN (демо) / FSMN (коммерция) — только если Silero упирается.  
-5. Эксперимент — **отдельная ветка**; в продукт — только итоговые значения конфига.
+### Как сейчас
+
+```text
+source → 16 kHz mono → optional whole-file linear gain → normalized.wav
+                              ↓
+              VAD + diarize + ASR  (один и тот же файл)
+```
+
+Gain **не после** VAD, а **до**. На `voice_002` gain = 0: RMS −33.5 &lt; −30, но peak −0.2 &gt; ceiling −1 → линейно поднять тихую речь нельзя без клипа.
+
+Исследование 1e/2: gain был **по extract’ам реплик** после диаризации, не одним проходом по встрече.
+
+### Предложение (как вы описали)
+
+Два файла после normalize; таймкоды общие (одна шкала времени):
+
+| Файл | Обработка | Кто читает |
+|---|---|---|
+| `normalized.wav` | только 16 kHz mono, **без** компрессии; опционально later per-turn linear gain при extract | **ASR** (и ideally diarization embeddings, если не мешает) |
+| `vad_input.wav` | тот же PCM + **лёгкий компрессор / loudnorm** только чтобы Silero слышал тихих | **VAD** (маски → turns по времени) |
+
+```text
+source
+  ├─► normalized.wav     ──► (turns timestamps) ──► ASR extracts + per-turn linear gain
+  └─► vad_input.wav      ──► Silero VAD ──► speech regions
+                              └─► WeSpeaker на normalized.wav (предпочтительно) или на vad_input
+```
+
+**Важно:** компрессия **не** должна попадать в GigaAM. Маски VAD — только интервалы `[start,end]`; куски для ASR режутся из `normalized.wav` (+ linear `volume=` на куске, как 1e).
+
+Компрессор на полном файле — нормальный способ обойти «тихий RMS + громкий peak» именно для детекции речи; для ASR качество тембра/динамики сохраняем.
+
+### Минимальный эксперимент (до кода в demo)
+
+На тех же 5 rescue / 5 regression окнах:
+
+1. B0: текущий `*_full.wav` (как есть).  
+2. **C1:** ffmpeg лёгкий компрессор на окно → Silero B0-пороги → cover.  
+   Пример фильтра (стартовая точка, не догма):  
+   `acompressor=threshold=-30dB:ratio=3:attack=20:release=200`  
+   или мягкий `dynaudnorm=f=150:g=7` (осторожнее — сильнее «качает»).  
+3. Сравнить cover vs B0; regression не должен раздувать шум до сплошной «речи».
+
+Если C1 поднимает rescue cover существенно — тогда Phase B: два артефакта в normalize + ASR path без компрессии + per-turn gain.
+
+### Не смешивать
+
+- Не включать компрессор в единственный `normalized.wav`.  
+- Не ждать, что whole-file linear gain заработает на этом файле без лимитера.  
+- Silero-пороги B1/B2 можно оставить как есть (пользы мало); главный рычаг теперь **вход VAD**, не threshold.
+
