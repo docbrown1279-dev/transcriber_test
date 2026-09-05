@@ -40,8 +40,8 @@ data/
 results/*
 !results/.gitkeep
 
-# Exchange with cloud agents is tracked (cloud_in/ -> cloud_out/); prompt archive is local
-prompts/
+# Exchange with cloud agents is tracked (cloud_in/ -> cloud_out/); root prompt archive is local
+/prompts/
 
 # App runtime data (jobs, uploads, artifacts)
 var/
