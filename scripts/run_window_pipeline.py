@@ -2,7 +2,7 @@
 """Run full speech pipeline (normalize→…→ASR) on the 10 tune windows.
 
 Uses dual-path from config (vad_input compress + ASR on normalized + per-turn gain).
-Writes eval/d1/5/ and agent_docs/reports/d1_window_pipeline.md.
+Writes eval/d1/partial_windows_dual/ and agent_docs/reports/d1_window_pipeline.md.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from tune_silero_vad import WINDOWS, VOICE  # noqa: E402
 from transcriber.models.artifacts import TranscriptArtifact, load_artifact  # noqa: E402
 from transcriber.pipeline.orchestrator import run_job  # noqa: E402
 
-OUT = ROOT / "eval" / "d1" / "5"
+OUT = ROOT / "eval" / "d1" / "partial_windows_dual"
 GOLD_DIR = ROOT / "eval" / "d1" / "transcribe"
 
 
@@ -126,8 +126,9 @@ def main() -> None:
     )
 
     lines = [
-        "# Window pipeline (dual-path) — eval/d1/5",
+        "# Window pipeline (dual-path) — eval/d1/partial_windows_dual",
         "",
+        "Partial smoke only (10 short windows), not a numbered human-eval attempt.",
         "Full chain normalize→VAD(dynaudnorm)→diarize→ASR(GigaAM, per-turn gain) "
         "on the same 10 windows as Silero/compressor tunes.",
         "",

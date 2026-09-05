@@ -25,6 +25,11 @@ TEST_VOICE = ROOT / "data" / "test_voice.m4a"
 ATTEMPT = int(os.environ.get("EVAL_D1_ATTEMPT", "1"))
 EVAL_ATTEMPT = ROOT / "eval" / "d1" / str(ATTEMPT)
 DIFF_PATH = EVAL_ATTEMPT / "transcript_diff.md"
+# Extra seconds on each side of gold when pulling hyp text (default 2.0).
+# Gold collar_sec stays for cuts; this widens context for reading coherence.
+MATCH_PAD_SEC = float(os.environ.get("EVAL_D1_MATCH_PAD_SEC", "2.0"))
+# Also widen the clip window when collecting hyp from the full meeting.
+WINDOW_PAD_SEC = float(os.environ.get("EVAL_D1_WINDOW_PAD_SEC", "2.0"))
 
 # Clip id → how to locate audio for cutting segment-relative times
 CLIP_META = {
@@ -162,11 +167,11 @@ def hyp_in_window(hyp: list[dict], t0: float, t1: float) -> list[dict]:
 
 
 def join_hyp_for_gold(
-    g: dict, hyp_rel: list[dict], mapping: dict[str, str], collar: float
+    g: dict, hyp_rel: list[dict], mapping: dict[str, str], pad_sec: float
 ) -> tuple[list[dict], str]:
     hits = []
     for h in hyp_rel:
-        if overlap(g["start"] - collar, g["end"] + collar, h["start"], h["end"]) > 0:
+        if overlap(g["start"] - pad_sec, g["end"] + pad_sec, h["start"], h["end"]) > 0:
             hits.append(h)
     hits.sort(key=lambda x: x["start"])
     text = " ".join(h["text"].strip() for h in hits if h.get("text"))
@@ -186,7 +191,10 @@ def process_clip(clip_id: str, gold: dict, hyp_full: list[dict]) -> dict:
     offset = float(gold.get("source_start", meta["offset"]) or meta["offset"])
     duration = float(gold.get("duration_sec") or (gold.get("source_end", offset) - offset))
     t0, t1 = offset, offset + duration
-    collar = float(gold.get("collar_sec", 0.25))
+    # Widen hyp harvest slightly beyond gold window edges
+    t0_pad = max(0.0, t0 - WINDOW_PAD_SEC)
+    t1_pad = t1 + WINDOW_PAD_SEC
+    pad_sec = MATCH_PAD_SEC
 
     # Audio source for segment cuts
     if clip_id == "test_voice":
@@ -199,7 +207,11 @@ def process_clip(clip_id: str, gold: dict, hyp_full: list[dict]) -> dict:
         cut_src = FULL_AUDIO
         cut_base = offset
 
-    hyp_rel = hyp_in_window(hyp_full, t0, t1)
+    hyp_rel = hyp_in_window(hyp_full, t0_pad, t1_pad)
+    # Shift so gold segment times (0..duration) still align; pad starts before 0
+    for h in hyp_rel:
+        h["start"] = h["start"] - (t0 - t0_pad)
+        h["end"] = h["end"] - (t0 - t0_pad)
     mapping = build_speaker_map(gold["segments"], hyp_rel)
 
     # Persist mapped hyp for this window
@@ -245,7 +257,7 @@ def process_clip(clip_id: str, gold: dict, hyp_full: list[dict]) -> dict:
 
     pairs: list[Pair] = []
     for g in gold["segments"]:
-        hits, hyp_text = join_hyp_for_gold(g, hyp_rel, mapping, collar)
+        hits, hyp_text = join_hyp_for_gold(g, hyp_rel, mapping, pad_sec)
         raw_sp = [h["speaker"] for h in hits]
         mapped_sp = [mapping.get(s, s) for s in raw_sp]
         if not hits:
@@ -293,6 +305,11 @@ def render_diff(reports: list[dict]) -> str:
     lines.append("Hyp (core only): `results/d1/transcript.json` + `turns.json`.")
     lines.append("Gold: `eval/d1/transcribe/*.json`. Audio cuts: `eval/d1/voice/<clip>/`.")
     lines.append(f"This attempt folder: `eval/d1/{ATTEMPT}/`.")
+    lines.append("")
+    lines.append(
+        f"Match pad: ±{MATCH_PAD_SEC:.1f}s around each gold segment when joining hyp text; "
+        f"window pad: ±{WINDOW_PAD_SEC:.1f}s (env `EVAL_D1_MATCH_PAD_SEC` / `EVAL_D1_WINDOW_PAD_SEC`)."
+    )
     lines.append("")
     lines.append(
         "Auto speaker map is heuristic only — prefer human mapping when labels disagree."

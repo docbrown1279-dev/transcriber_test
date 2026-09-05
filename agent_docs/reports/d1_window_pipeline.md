@@ -1,4 +1,4 @@
-# Window pipeline (dual-path) — eval/d1/5
+# Window pipeline (dual-path) — eval/d1/partial_windows_dual
 
 Full chain normalize→VAD(dynaudnorm)→diarize→ASR(GigaAM, per-turn gain) on the same 10 windows as Silero/compressor tunes.
 
