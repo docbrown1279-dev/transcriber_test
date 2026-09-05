@@ -14,9 +14,15 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
 .cache/
 .DS_Store
 .worktrees/
+
+# Logs
+logs/
+*.log
+!logs/.gitkeep
 
 # Raw audio and working data (cut clips on demand from full file)
 data/
@@ -30,10 +36,11 @@ models/
 results/*
 !results/.gitkeep
 
-# Future exchange / draft prompts (when used)
-cloud_in/
-cloud_out/
+# Exchange with cloud agents is tracked (cloud_in/ -> cloud_out/); prompt archive is local
 prompts/
+
+# App runtime data (jobs, uploads, artifacts)
+var/
 
 # Gold JSON in eval
 eval/
