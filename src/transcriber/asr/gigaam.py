@@ -32,9 +32,8 @@ def transcribe_slices_with_model(
     job_id: str | None = None,
 ) -> TranscriptArtifact:
     """Выполняет распознавание речи по репликам с помощью модели GigaAM v3 RNNT."""
-    import numpy as np
-
     import gigaam
+    import numpy as np
 
     from transcriber.audio.gain import calculate_gain
 

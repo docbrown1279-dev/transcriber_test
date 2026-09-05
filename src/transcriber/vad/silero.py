@@ -38,8 +38,7 @@ def get_silero_model_path(models_dir: Path | str = "models") -> Path:
     model_path = dir_path / DEFAULT_MODEL_FILE
 
     if not model_path.is_file():
-        # nosec B310 — fixed GitHub raw URL for upstream Silero weights
-        urllib.request.urlretrieve(SILERO_VAD_URL, model_path)  # noqa: S310
+        urllib.request.urlretrieve(SILERO_VAD_URL, model_path)  # nosec B310  # noqa: S310
 
     return model_path
 

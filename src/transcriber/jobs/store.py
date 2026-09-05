@@ -12,7 +12,7 @@ from pathlib import Path
 from transcriber.errors import PreflightError
 from transcriber.models.artifacts import (
     JobArtifact,
-    JobStageState,
+    JobStageItem,
     dump_artifact,
     load_artifact,
 )
@@ -107,7 +107,7 @@ def append_stage_event(
 
     if not updated:
         job.stages.append(
-            JobStageState(
+            JobStageItem(
                 stage=event.stage,
                 status=event.status,
                 pct=event.pct,

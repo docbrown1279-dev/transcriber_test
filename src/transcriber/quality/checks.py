@@ -3,14 +3,14 @@
 from dataclasses import dataclass, field
 from typing import Any
 
+from transcriber.config.schema import AppConfig
+from transcriber.llm.titles import STAMP_PREFIXES
 from transcriber.models.artifacts import (
     ChaptersArtifact,
     QualityArtifact,
     QualityCheckItem,
     TranscriptArtifact,
 )
-from transcriber.config.schema import AppConfig
-from transcriber.llm.titles import STAMP_PREFIXES
 from transcriber.quality.chapter_metrics import calculate_chapter_metrics
 from transcriber.quality.ru_ratio import RatioResult, russian_word_ratio
 

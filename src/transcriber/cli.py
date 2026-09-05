@@ -171,9 +171,8 @@ def cmd_convert_legacy(
     ] = None,
 ) -> None:
     """Конвертирует исследовательский JSON стенограммы в канонический TranscriptArtifact."""
-    cfg = load_config(profile)
     try:
-        convert_legacy_transcript(src, dest, cfg=cfg)
+        convert_legacy_transcript(src, dest)
         typer.echo(f"Converted {src} -> {dest}")
     except Exception as exc:
         typer.echo(f"Conversion failed: {exc}", err=True)
