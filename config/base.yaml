@@ -17,6 +17,11 @@ audio:
     target_dbfs: -23.0
     max_db: 18.0
     peak_ceiling_dbfs: -1.0
+  asr_per_turn_gain: true
+  vad_preprocess:
+    enabled: true
+    # VAD-only (eval/d1/4 C3); ASR uses normalized.wav without this filter
+    ffmpeg_af: "dynaudnorm=f=150:g=7:p=0.9"
 
 # --- vad ---
 vad:

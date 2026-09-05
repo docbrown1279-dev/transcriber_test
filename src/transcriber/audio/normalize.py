@@ -1,4 +1,4 @@
-"""Нормализация аудио: передискретизация в 16 кГц моно WAV и расчет/применение усиления."""
+"""Нормализация аудио: 16 кГц mono + dual-path (ASR clean / VAD preprocess)."""
 
 import subprocess
 import time
@@ -15,6 +15,7 @@ from transcriber.models.artifacts import (
     AudioLoudness,
     AudioNormalized,
     AudioSource,
+    AudioVadInput,
     dump_artifact,
 )
 from transcriber.web.health import probe_audio_file
@@ -30,7 +31,7 @@ class FfmpegAudioNormalizer(AudioNormalizer):
         cfg: AudioConfig,
         job_id: str | None = None,
     ) -> AudioArtifact:
-        """Нормализует исходный аудиофайл в 16 кГц моно WAV и применяет линейное усиление."""
+        """Пишет normalized.wav (для ASR) и vad_input.wav (для Silero)."""
         t0 = time.time()
         source_path = Path(source)
         if not source_path.is_file():
@@ -45,13 +46,12 @@ class FfmpegAudioNormalizer(AudioNormalizer):
 
         dest_wav.parent.mkdir(parents=True, exist_ok=True)
         resolved_job_id = job_id or job_dir.name
+        vad_wav = job_dir / "vad_input.wav"
 
-        # Получаем метаданные исходного файла
         probe = probe_audio_file(source_path)
         source_duration = float(probe["duration_sec"])
         source_size = int(probe["size_bytes"])
 
-        # Шаг 1: Конвертация во временный 16 кГц моно WAV
         tmp_wav = job_dir / "_temp_raw_16k.wav"
         cmd_convert = [
             "ffmpeg",
@@ -69,8 +69,7 @@ class FfmpegAudioNormalizer(AudioNormalizer):
         subprocess.run(cmd_convert, check=True)
 
         try:
-            # Шаг 2: Измерение RMS и пикового уровня
-            data, sr = sf.read(str(tmp_wav))
+            data, _sr = sf.read(str(tmp_wav))
             if len(data) == 0:
                 peak_dbfs = -100.0
                 rms_dbfs = -100.0
@@ -80,7 +79,7 @@ class FfmpegAudioNormalizer(AudioNormalizer):
                 rms = float(np.sqrt(np.mean(data**2)))
                 rms_dbfs = float(20.0 * np.log10(rms)) if rms > 0 else -100.0
 
-            # Шаг 3: Расчет линейного усиления
+            # Whole-file linear gain for ASR wav (often blocked by peaks — OK)
             gain_res = calculate_gain(
                 rms_dbfs=rms_dbfs,
                 peak_dbfs=peak_dbfs,
@@ -90,7 +89,6 @@ class FfmpegAudioNormalizer(AudioNormalizer):
                 peak_ceiling_dbfs=cfg.gain.peak_ceiling_dbfs,
             )
 
-            # Шаг 4: Применение линейного усиления если требуется
             if gain_res.gain_applied and gain_res.gain_db > 0:
                 cmd_gain = [
                     "ffmpeg",
@@ -105,7 +103,59 @@ class FfmpegAudioNormalizer(AudioNormalizer):
                 ]
                 subprocess.run(cmd_gain, check=True)
             else:
-                tmp_wav.replace(dest_wav)
+                # copy without replacing while still needed for vad_input
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-y",
+                        "-v",
+                        "error",
+                        "-i",
+                        str(tmp_wav),
+                        "-c",
+                        "copy",
+                        str(dest_wav),
+                    ],
+                    check=True,
+                )
+
+            # VAD-only preprocess from raw 16 kHz (not from gained ASR wav)
+            vad_filter = cfg.vad_preprocess.ffmpeg_af if cfg.vad_preprocess.enabled else None
+            vad_applied = bool(vad_filter)
+            if vad_applied and vad_filter:
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-y",
+                        "-v",
+                        "error",
+                        "-i",
+                        str(tmp_wav),
+                        "-af",
+                        vad_filter,
+                        "-ar",
+                        str(cfg.sample_rate),
+                        "-ac",
+                        str(cfg.channels),
+                        str(vad_wav),
+                    ],
+                    check=True,
+                )
+            else:
+                subprocess.run(
+                    [
+                        "ffmpeg",
+                        "-y",
+                        "-v",
+                        "error",
+                        "-i",
+                        str(tmp_wav),
+                        "-c",
+                        "copy",
+                        str(vad_wav),
+                    ],
+                    check=True,
+                )
         finally:
             if tmp_wav.exists():
                 tmp_wav.unlink(missing_ok=True)
@@ -131,9 +181,14 @@ class FfmpegAudioNormalizer(AudioNormalizer):
                 gain_db=round(gain_res.gain_db, 3),
                 gain_applied=gain_res.gain_applied,
             ),
+            vad_input=AudioVadInput(
+                path="vad_input.wav",
+                filter=vad_filter if vad_applied else None,
+                applied=vad_applied,
+            ),
+            asr_per_turn_gain=cfg.asr_per_turn_gain,
             runtime_sec=runtime_sec,
         )
 
-        artifact_path = job_dir / "audio.json"
-        dump_artifact(artifact, artifact_path)
+        dump_artifact(artifact, job_dir / "audio.json")
         return artifact

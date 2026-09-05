@@ -27,6 +27,16 @@ class AudioGainConfig(BaseModel):
     peak_ceiling_dbfs: float = Field(default=-1.0, le=0.0)
 
 
+class AudioVadPreprocessConfig(BaseModel):
+    """VAD-only preprocess (compressor). Never fed to ASR."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    enabled: bool = True
+    # C3 from eval/d1/4: strong leveling for quiet far-mic speech
+    ffmpeg_af: str = "dynaudnorm=f=150:g=7:p=0.9"
+
+
 class AudioConfig(BaseModel):
     """Параметры нормализации и валидации входного аудио."""
 
@@ -37,6 +47,11 @@ class AudioConfig(BaseModel):
     sample_rate: int = Field(default=16000, gt=0)
     channels: int = Field(default=1, gt=0)
     gain: AudioGainConfig = Field(default_factory=AudioGainConfig)
+    # Per-turn linear gain inside ASR extracts (research 1e/2)
+    asr_per_turn_gain: bool = True
+    vad_preprocess: AudioVadPreprocessConfig = Field(
+        default_factory=AudioVadPreprocessConfig
+    )
 
 
 class VadConfig(BaseModel):

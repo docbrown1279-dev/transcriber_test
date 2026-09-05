@@ -19,6 +19,7 @@ def run_asr_subprocess(
     out_path: Path,
     max_segment_sec: int = 25,
     gain_db: float = 0.0,
+    per_turn_gain: bool = True,
     job_id: str | None = None,
 ) -> TranscriptArtifact:
     """Запускает процесс транскрибации через subprocess и читает результирующий артефакт."""
@@ -36,6 +37,8 @@ def run_asr_subprocess(
         str(max_segment_sec),
         "--gain-db",
         str(gain_db),
+        "--per-turn-gain",
+        "1" if per_turn_gain else "0",
     ]
     if job_id:
         cmd.extend(["--job-id", job_id])
@@ -63,7 +66,13 @@ def main() -> None:
     parser.add_argument(
         "--max-segment-sec", type=int, default=25, help="Max segment length in seconds"
     )
-    parser.add_argument("--gain-db", type=float, default=0.0, help="Gain applied in dB")
+    parser.add_argument("--gain-db", type=float, default=0.0, help="Legacy whole-file gain dB")
+    parser.add_argument(
+        "--per-turn-gain",
+        type=str,
+        default="1",
+        help="1/0: apply linear gain per ASR slice",
+    )
     parser.add_argument("--job-id", type=str, default=None, help="Job ID")
 
     args = parser.parse_args()
@@ -76,6 +85,7 @@ def main() -> None:
         turns=turns,
         max_segment_sec=args.max_segment_sec,
         gain_db=args.gain_db,
+        per_turn_gain=args.per_turn_gain not in {"0", "false", "False"},
         job_id=args.job_id,
     )
 

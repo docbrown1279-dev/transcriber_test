@@ -24,10 +24,19 @@ def transcribe_slices_with_model(
     turns: TurnsArtifact,
     max_segment_sec: int = 25,
     gain_db: float = 0.0,
+    per_turn_gain: bool = True,
+    gain_rms_threshold_dbfs: float = -30.0,
+    gain_target_dbfs: float = -23.0,
+    gain_max_db: float = 18.0,
+    gain_peak_ceiling_dbfs: float = -1.0,
     job_id: str | None = None,
 ) -> TranscriptArtifact:
     """Выполняет распознавание речи по репликам с помощью модели GigaAM v3 RNNT."""
+    import numpy as np
+
     import gigaam
+
+    from transcriber.audio.gain import calculate_gain
 
     t0 = time.time()
     resolved_job_id = job_id or turns.job_id
@@ -48,10 +57,28 @@ def transcribe_slices_with_model(
             s_idx = max(0, int(s.start * sr))
             e_idx = min(len(audio), int(s.end * sr))
 
-            seg_audio = audio[s_idx:e_idx]
+            seg_audio = np.asarray(audio[s_idx:e_idx], dtype=np.float64)
+            slice_gain = float(gain_db)
             text = ""
             if len(seg_audio) >= int(0.1 * sr):  # минимум 100 мс
-                sf.write(str(slice_wav), seg_audio, sr)
+                if per_turn_gain and len(seg_audio) > 0:
+                    peak = float(np.max(np.abs(seg_audio)))
+                    rms = float(np.sqrt(np.mean(seg_audio**2)))
+                    peak_dbfs = float(20.0 * np.log10(peak)) if peak > 0 else -100.0
+                    rms_dbfs = float(20.0 * np.log10(rms)) if rms > 0 else -100.0
+                    gain_res = calculate_gain(
+                        rms_dbfs=rms_dbfs,
+                        peak_dbfs=peak_dbfs,
+                        threshold_dbfs=gain_rms_threshold_dbfs,
+                        target_dbfs=gain_target_dbfs,
+                        max_gain_db=gain_max_db,
+                        peak_ceiling_dbfs=gain_peak_ceiling_dbfs,
+                    )
+                    slice_gain = float(gain_res.gain_db)
+                    if gain_res.gain_applied and slice_gain > 0:
+                        seg_audio = seg_audio * (10.0 ** (slice_gain / 20.0))
+
+                sf.write(str(slice_wav), seg_audio.astype(np.float32), sr)
                 res = model.transcribe(str(slice_wav))
                 text = str(res.text or "").strip()
 
@@ -64,7 +91,7 @@ def transcribe_slices_with_model(
                     end=s.end,
                     speaker=s.speaker,
                     text=text,
-                    gain_db=round(gain_db, 3),
+                    gain_db=round(slice_gain, 3),
                     empty=empty,
                 )
             )
@@ -104,15 +131,18 @@ class GigaAmAsrEngine(AsrEngine):
         resolved_job_id = job_id or turns.job_id or job_dir.name
         out_path = job_dir / "transcript.json"
 
-        # Извлекаем gain_db из audio.json если файл существует
+        # Gain policy from audio.json (per-turn preferred; whole-file gain is metadata only)
         gain_db = 0.0
+        per_turn_gain = True
         audio_json_path = job_dir / "audio.json"
         if audio_json_path.is_file():
             try:
                 audio_art = load_artifact(audio_json_path, AudioArtifact)
                 gain_db = audio_art.loudness.gain_db
+                per_turn_gain = bool(audio_art.asr_per_turn_gain)
             except Exception:
                 gain_db = 0.0
+                per_turn_gain = True
 
         if cfg.subprocess:
             from transcriber.asr.subprocess_runner import run_asr_subprocess
@@ -123,6 +153,7 @@ class GigaAmAsrEngine(AsrEngine):
                 out_path=out_path,
                 max_segment_sec=cfg.max_segment_seconds,
                 gain_db=gain_db,
+                per_turn_gain=per_turn_gain,
                 job_id=resolved_job_id,
             )
         else:
@@ -131,6 +162,7 @@ class GigaAmAsrEngine(AsrEngine):
                 turns=turns,
                 max_segment_sec=cfg.max_segment_seconds,
                 gain_db=gain_db,
+                per_turn_gain=per_turn_gain,
                 job_id=resolved_job_id,
             )
             dump_artifact(artifact, out_path)

@@ -66,6 +66,16 @@ class AudioLoudness(BaseModel):
     gain_applied: bool
 
 
+class AudioVadInput(BaseModel):
+    """Separate WAV used only by VAD (may be compressed)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    path: str = "vad_input.wav"
+    filter: str | None = None
+    applied: bool = False
+
+
 class AudioArtifact(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -74,6 +84,8 @@ class AudioArtifact(BaseModel):
     source: AudioSource
     normalized: AudioNormalized
     loudness: AudioLoudness
+    vad_input: AudioVadInput = Field(default_factory=AudioVadInput)
+    asr_per_turn_gain: bool = True
     runtime_sec: float = Field(ge=0)
 
     @field_validator("schema_version")
