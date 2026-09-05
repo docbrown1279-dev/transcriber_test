@@ -28,7 +28,8 @@ vad:
   engine: silero
   threshold: 0.5
   neg_threshold: 0.35
-  min_speech_ms: 200
+  # D1 coherence (ticket H1): drop sub-phrase crumbs from dynaudnorm
+  min_speech_ms: 400
   min_silence_ms: 200
   fallback: disabled
 
@@ -38,10 +39,11 @@ diarization:
   device: cpu
   onnx_threads: 2
   merge:
-    same_speaker_gap_sec: 0.3
-    absorb_turn_shorter_than_sec: 1.0
+    # D1 coherence C3+agg: prefer phrase readability over speaker purity
+    same_speaker_gap_sec: 0.8
+    absorb_turn_shorter_than_sec: 2.5
     min_hole_sec: 0.5
-    vad_premerge_gap_sec: 0.3
+    vad_premerge_gap_sec: 1.0
   embed:
     min_sec: 0.4
     window_sec: 1.5
