@@ -1,0 +1,8 @@
+{
+  "stage": "D0",
+  "branch": "cursor/demo-d0-skeleton",
+  "commit": "31865ba569738448f6d29ef5e3576ea0a0e8f8fd",
+  "pulled_at": "2026-09-05T10:35:27+03:00",
+  "phase": "code",
+  "verdict": "PASS"
+}

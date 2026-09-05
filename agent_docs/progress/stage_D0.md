@@ -65,3 +65,9 @@
 - Executed: uv run pytest tests/ -v (exit 0, 27/27 passed)
 - Report: cloud_out/gate_D0.md
 
+## 2026-09-05 — Planner (close)
+- STATUS: CLOSED
+- Gate: PASS (agent_docs/reports/D0/gate_D0.md)
+- Merged: PR #16 → main (e2c125e)
+- Next stage: D1 (agent_docs/progress/stage_D1.md, plan draft_D1_scope.md)
+

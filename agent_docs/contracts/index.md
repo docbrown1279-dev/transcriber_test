@@ -12,6 +12,7 @@ stays `docs/` (read-only): `docs/dev_specs.md` and `docs/research_results/`.
 | [`quality_gates.md`](quality_gates.md) | Automated cloud gates G0–G5 with check ids and thresholds, and the cloud restrictions during a gate run |
 
 Plans (Russian, for humans): [`../plans/draft_demo_roadmap.md`](../plans/draft_demo_roadmap.md),
+[`../plans/draft_D1_scope.md`](../plans/draft_D1_scope.md) (current stage),
 [`../plans/draft_architecture.md`](../plans/draft_architecture.md),
 [`../plans/draft_cloud_workflow.md`](../plans/draft_cloud_workflow.md),
 [`../plans/draft_test_strategy.md`](../plans/draft_test_strategy.md).

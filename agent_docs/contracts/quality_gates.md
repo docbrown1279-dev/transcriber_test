@@ -31,14 +31,24 @@ complete. Packed audio is for probe/smoke only — no ASR/VAD/diarization in D0.
 
 ## G1 — speech recognised (stage D1)
 
+`G1` is the **automated check list for development stage D1** (not a separate roadmap step).
+Roadmap stages stay `D0 → D1 → D2 → …`. After a cloud `PASS` / `PASS_WITH_WARNINGS`, the human
+runs the local gate from `manuals/manual_testing.md` and records `HUMAN_GATE` in
+`agent_docs/progress/stage_D1.md` before merge. Stage D2 must not start until that line is `PASS`.
+
+Primary cloud input for G1 metrics: the packed full meeting
+`cloud_in/inputs/audio/voice_002.m4a`. Deliverables include
+`cloud_out/artifacts/voice_002/transcript.json` and `quality.json`.
+
 | id | Check | Threshold |
 |---|---|---|
-| G1.1 | Russian word ratio over all `transcript.json` text | `>= 0.90` — **FAIL** below |
+| G1.0 | Preflight: packed audio (`voice_002.m4a`, optional short clip), `STACK.md`, `HF_TOKEN` present for Hub downloads; no `eval/` in the pack | missing inputs → `BLOCKED.md`; missing token → skip model download path, finish what remains, record in gate |
+| G1.1 | Russian word ratio over all `transcript.json` text (full meeting) | `>= 0.90` — **FAIL** below |
 | G1.2 | Latin characters inside segment text | `== 0` — FAIL otherwise (stage 1e: whisper artefact, GigaAM gives 0) |
 | G1.3 | `transcript.json` / `quality.json` validate against models | valid |
 | G1.4 | Segment times monotonic, inside audio duration, `end > start` | all |
 | G1.5 | Holes `>= min_hole_sec` and empty segments enumerated in the artifact | present (WARN only if many) |
-| G1.6 | Wall time and peak RSS per stage recorded | present |
+| G1.6 | Wall time and peak RSS per stage recorded (full meeting run) | present |
 | G1.7 | Agent judgement: 3–5 random ~2-sentence fragments are coherent Russian speech | agent verdict `pass` |
 
 Ratio definition: tokens are `\w+` sequences with `>= 2` characters, lowercased, `ё → е`;
@@ -105,10 +115,13 @@ a reporting bar for the human gate, not a claim of solved quality.
 
 - Inputs come from `cloud_in/inputs/` only; outputs of the gate go to `cloud_out/gate_D{N}.md`
   plus `cloud_out/run_meta.json` (branch, commit, wall time, LLM calls, versions).
+  Stage D1 also returns the full-meeting artifacts under `cloud_out/artifacts/voice_002/`.
 - `eval/` must not be read, copied, or referenced in any gate, prompt, or report. Neither must
   `.env`.
-- The full 24-minute recording is not processed in the cloud; the packed clips and one
-  15-minute slice (D5 only) are the allowed inputs.
+- Audio under `data/` is never read directly. Only files packed into `cloud_in/inputs/` may be
+  processed. For stage D1 the packed full meeting (`voice_002.m4a`, ~24.5 min) **is** the primary
+  ASR input; short clips remain allowed for fast tests. Stage D5 may additionally use a 15-minute
+  slice for the hardware gate.
 - Audio is never sent to an LLM API — text only, as in the research stages.
 - LLM in the cloud is `gemini` only; `local_llama` is never run there. Calls per cloud run:
   `<= 20`, each recorded in the gate report as provider + purpose, never the key.

@@ -9,7 +9,7 @@ schemas; this file wins for which engine to implement.
 | Loudness | 16 kHz mono WAV; linear `volume=` only if RMS < −30 dBFS | denoise / afftdn / DeepFilterNet / RNNoise |
 | VAD | Silero ONNX; TEN only as optional hole fill, **off by default** | FSMN as primary |
 | Diarization | WeSpeaker ResNet34-LM ONNX + cluster; merge gap ≤0.3 s, absorb <1.0 s | pyannote 3.1, sherpa-full |
-| ASR | GigaAM `v3_rnnt` (CPU torch runtime); split segments on time to ≤25 s | Whisper family, Podlodka |
+| ASR | GigaAM `v3_rnnt` (CPU torch runtime); split segments on time to ≤25 s; **D1 cloud run: full packed meeting `voice_002.m4a`** | Whisper family, Podlodka |
 | Terms | suggestions only; never rewrite transcript | silent auto-replace |
 | Chunking | packing C + `rubert-tiny2` threshold 0.70; speaker packing gap ≤2 s | late chunking Jina (D), hybrid C→D |
 | Titles | prompt `title_p1_v1`, ≤10 words, no stamp phrases | prompt P2 |

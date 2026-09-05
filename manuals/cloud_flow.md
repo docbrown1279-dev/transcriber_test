@@ -124,7 +124,11 @@ Draft PR открывает `/cloud_pull` (через `scripts/cloud_pr.sh`) и�
 | `NO_REPORTS` | облако ещё не закончило — подождать, снова `/cloud_pull` |
 | `FAIL` / `BLOCKED` без кода | так задумано; править промпт/посылку, новый push |
 | системный Ask на Shell | подтвердить git/network; hooks `allow` в Cursor пока ненадёжны |
-| нет `gh` | `gh auth login` или PR вручную |
+| нет `gh` | поставить в `~/.local/bin` (без sudo) или через apt; затем `gh auth login -h github.com -p ssh -w` (код — в терминале, не на сайте) |
+
+## [UPDATED] После merge D0
+
+Этап D0 влит в `main` (PR #16). Локальный smoke каркаса: [`manual_testing.md`](manual_testing.md) § Stage D0. Профили YAML: [`configuration_guide.md`](configuration_guide.md).
 
 ## Сопровождение
 

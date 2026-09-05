@@ -62,8 +62,10 @@ for cloud runs**. They exist as registry stubs only.
 1. **Never read** `eval/`, `.env`, `.credentials`, any secret file, or `docs/research_results/`.
    Gold and research archives stay with the local planner; gates never need them.
 2. **Never send audio to an API.** LLM calls are text-only.
-3. **Never process** the full 24-minute recording or anything under `data/` — only what is packed
-   in `cloud_in/inputs/`.
+3. **Never read** anything under `data/` or paths outside the pack. Process **only** files under
+   `cloud_in/inputs/`. If the stage pack includes the full meeting audio (e.g. D1
+   `voice_002.m4a`), running ASR on that packed file is required and allowed. Do not invent
+   extra audio sources.
 4. **Never print or commit secret values.** Log a call as "provider + purpose".
 5. **Never weaken a gate.** A failing threshold is a `FAIL` report, not a new threshold.
 6. **Never fabricate data.** No fixture, placeholder or model-invented value in a production
@@ -77,10 +79,10 @@ for cloud runs**. They exist as registry stubs only.
 | Block | Cap |
 |---|---|
 | Package installs | ≤2 attempts per tool family, then record a blocker and skip that path |
-| ASR runs on packed clips | ≤3 per stage |
+| ASR runs | ≤3 per stage total (D1: 1× full packed meeting required + optional short-clip runs within the remaining budget) |
 | Gemini calls | ≤20 per run, cached into artifacts |
 | Local LLM | not run in the cloud at all |
-| 15-minute slice run | stage D5 only, ≤2 runs |
+| 15-minute hardware slice | stage D5 only, ≤2 runs |
 | Gate retries | ≤2 honest fix attempts, then `FAIL` report + PR |
 
 Prefer a thin, honest, complete stage over an exhausted budget on one detail.
