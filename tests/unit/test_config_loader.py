@@ -59,8 +59,8 @@ def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
     assert demo_config.limits.result_ttl_hours == 24
     assert demo_config.llm.provider == "gemini"
     assert demo_config.vad.threshold == 0.45
-    assert demo_config.vad.neg_threshold == 0.35
-    assert demo_config.vad.min_silence_ms == 200
+    assert demo_config.vad.neg_threshold == 0.30
+    assert demo_config.vad.min_silence_ms == 350
     assert demo_config.audio.gain.rms_threshold_dbfs == -30.0
     assert demo_config.diarization.embed.cluster_distance_threshold == 0.80
 
