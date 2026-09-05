@@ -76,7 +76,8 @@ Checks G0.0–G0.7 from `agent_docs/contracts/quality_gates.md`:
 2. `cloud_out/gate_D0.md` — the check table plus deviations
 3. `cloud_out/run_meta.json` — branch, commit, host inventory, package versions, wall time
 4. Appended status lines in `agent_docs/progress/stage_D0.md`
-5. Commit and open a PR from branch `cursor/demo-d0-skeleton`
+5. Commit and **push** branch `cursor/demo-d0-skeleton`. Do **not** open a pull request
+   (local `./scripts/cloud_pr.sh` after ingest).
 
 ## Stop-list
 

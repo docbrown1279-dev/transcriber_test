@@ -93,7 +93,8 @@ Prefer a thin, honest, complete stage over an exhausted budget on one detail.
 3. `cloud_out/run_meta.json` — branch, commit, host inventory, package versions, wall time,
    peak RSS, LLM call count
 4. Appended status lines in `agent_docs/progress/stage_D{N}.md` (append-only)
-5. Commit + PR from the branch named in `HANDOFF.md`; never force-push `main`
+5. Commit + push the branch named in `HANDOFF.md`. **Do not open a PR** — the local operator
+   creates a draft PR with `scripts/cloud_pr.sh` after ingest. Never force-push `main`.
 
 ## Language
 

@@ -3,8 +3,11 @@
 
 .trash/
 
-# Local Cursor research orchestrator (not product)
-.cursor/
+# Local Cursor (orchestrator, hooks, skills) — keep slash-commands + permissions in git
+.cursor/*
+!.cursor/commands/
+!.cursor/commands/**
+!.cursor/permissions.json
 
 # Virtualenvs 
 .venv/
@@ -24,7 +27,8 @@ logs/
 *.log
 !logs/.gitkeep
 
-# Raw audio and working data (cut clips on demand from full file)
+# working data 
+docs/
 data/
 !data/.gitkeep
 

@@ -39,3 +39,17 @@
 - Packed cloud_in/inputs/audio/test_voice.m4a (copy of data/test_voice.m4a, ~83 s)
 - D0 uses audio for ffprobe/health smoke only; ASR still starts at D1
 - Pack checklist: agent/, HANDOFF, prompt, STACK, audio, baseline artifacts ×2; product specs remain in agent_docs/
+
+## 2026-09-05 — Planner (cloud flow automation)
+- STATUS: INSTRUCTIONS_READY
+- Added manuals/cloud_flow.md + manuals/index.md
+- Scripts: cloud_status, cloud_handoff, cloud_ingest, cloud_pr, cloud_cleanup
+- Policy: cloud agent pushes branch only; local cloud_pr.sh opens draft PR
+- Human: review instructions before handoff; review gate+PR after ingest
+
+## 2026-09-05 — Planner (Cursor commands)
+- Added .cursor/commands/cloud_push.md and cloud_pull.md (tracked via gitignore exception)
+- Added scripts/cloud_pull.sh: reports first, full code only on gate PASS/PASS_WITH_WARNINGS
+- cloud_handoff paste block now prints branch + points to per-stage cloud_in/prompt.md
+- manuals/cloud_flow.md updated for slash commands
+- Note: Cursor hooks cannot reliably auto-approve Shell; commands instruct agent not to ask user

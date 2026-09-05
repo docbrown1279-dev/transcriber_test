@@ -1,0 +1,32 @@
+{
+  // Product cloud handoff scripts — prefix match (not folder wildcards).
+  // Docs: https://cursor.com/docs/reference/permissions
+  //
+  // NOTE (Cursor bug, mid-2026): project-level terminalAllowlist is often NOT
+  // applied; copy the same prefixes into ~/.cursor/permissions.json to be safe.
+  // Settings → Agents → Approvals & Execution → Run Mode = Allowlist
+  // (or Auto-review; then autoRun hints below also help).
+  "terminalAllowlist": [
+    "./scripts/cloud_status.sh",
+    "./scripts/cloud_handoff.sh",
+    "./scripts/cloud_pull.sh",
+    "./scripts/cloud_ingest.sh",
+    "./scripts/cloud_pr.sh",
+    "./scripts/cloud_cleanup.sh",
+    "bash ./scripts/cloud_status.sh",
+    "bash ./scripts/cloud_handoff.sh",
+    "bash ./scripts/cloud_pull.sh",
+    "bash ./scripts/cloud_ingest.sh",
+    "bash ./scripts/cloud_pr.sh",
+    "bash ./scripts/cloud_cleanup.sh"
+  ],
+  "autoRun": {
+    "allow_instructions": [
+      "Auto-approve ./scripts/cloud_*.sh handoff/pull/status/pr/cleanup when invoked by /cloud_push or /cloud_pull.",
+      "These scripts only pack cloud_in, push the handoff branch, pull cloud_out reports, or open a draft PR."
+    ],
+    "block_instructions": [
+      "Do not auto-approve rm -rf, git push --force, or reading .env / eval/."
+    ]
+  }
+}
