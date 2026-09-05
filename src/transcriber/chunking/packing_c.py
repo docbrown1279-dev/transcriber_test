@@ -73,7 +73,7 @@ def pack_speaker_pieces(
     if not pieces:
         return []
 
-    target_min, target_max = cfg.packing_target_words
+    target_max = cfg.packing_target_words[1]
     packed: list[PackUnit] = [pieces[0]]
     for piece in pieces[1:]:
         current = packed[-1]
@@ -86,7 +86,6 @@ def pack_speaker_pieces(
         )
         should_pack = (
             cross_speaker_gap_ok
-            and current.word_count < target_min
             and combined_words <= target_max
         )
         if should_pack:
