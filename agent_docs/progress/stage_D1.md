@@ -57,3 +57,20 @@
 - Chosen: keep dynaudnorm C3; merge agg (gap=0.8 absorb=2.5 premerge=1.0); min_speech_ms=400
 - Gold check on 10 windows: agg no extra speaker glue vs n2 (only apt_flats rapid overlap, same)
 - Reports: d1_asr_coherence.md, d1_coherence_grid.md, d1_coherence_text_compare.md
+
+## 2026-09-05 — full re-run C3+agg → data/voice_002
+- STATUS: FULL_HYP_READY
+- Job: data/voice_002/ (gitignored); config = base.yaml C3+agg
+- Docs updated: draft_demo_roadmap, STACK.md, AGENTS.md, manuals/{configuration_guide,manual_testing}
+- Next: HUMAN_GATE D1 (read transcript / eval attempt), then plan D2 chunking+titles
+
+## 2026-09-05 — d1 Silero parity (1f)
+- STATUS: PARITY_T0_OK + TUNE_GRID_DONE
+- Branch: cursor/d1-silero-parity
+- Root cause: wrong ONNX (deepghs≠snakers4) + missing Silero v5 context window
+- Fix: src/transcriber/vad/silero.py; models/silero_vad.onnx → snakers4 sha 1a153a22…
+- T0: VAD regions exact match 1f raw_turns on test_voice (62.376s / 29)
+- Tunes: T1 alimiter worse; T2 min_silence=350 + premerge=0.5 best readability
+- Report: agent_docs/reports/d1_silero_parity.md
+- Hyp: results/d1_parity_1f/, results/d1_parity_tune/
+- Next: human gate T0 vs T2; defer sherpa/pyannote-onnx bakeoff unless asked

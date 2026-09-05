@@ -80,13 +80,16 @@ D0 CLOSED (merge) → D1 облако (G1) → ручной шлюз D1 → merg
 
 ### Локальная сверка с gold (`eval/d1`)
 
+Актуальный полный hyp после тюнинга связности (C3+agg): **`data/voice_002/`** (`transcript.json` / `transcript.md`, gitignored). Старые прогоны: `results/d1/`, `results/d1_dual/`.
+
 ```bash
-# в results/d1/ только ядро: transcript.json, turns.json, speech.json, audio.json
+# eval-скрипт по умолчанию читает results/d1 — скопируйте ядро или укажите путь вручную
+cp data/voice_002/{transcript,turns,speech,audio}.json results/d1/
 python3 scripts/eval_d1_manual.py          # attempt 1
-EVAL_D1_ATTEMPT=2 python3 scripts/eval_d1_manual.py
+EVAL_D1_ATTEMPT=5 python3 scripts/eval_d1_manual.py
 ```
 
-Проверки пишутся в `eval/d1/{N}/` (`transcript_diff.md`, summary). Спикеров сопоставляет человек: в облаке ~26 кластеров, в gold на клипе 2–3 буквы A/B/C — числа **не** совпадают.
+Проверки пишутся в `eval/d1/{N}/` (`transcript_diff.md`, summary). Спикеров сопоставляет человек: кластеры WeSpeaker и буквы A/B/C в gold **не** совпадают 1:1.
 
 ### Человеческий шлюз D1
 

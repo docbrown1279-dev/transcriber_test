@@ -42,11 +42,11 @@ Check and report before installing anything:
 
 | Layer | Decision | Source |
 |---|---|---|
-| Loudness | ffmpeg → 16 kHz mono WAV; linear `volume=` only when RMS < −30 dBFS | `reports/1e` |
+| Loudness | Dual-path: `normalized.wav` (+ linear gain if RMS < −30 dBFS); VAD-only `vad_input.wav` = dynaudnorm C3 | `reports/1e`, D1 dual-path |
 | Denoise | **none** — measured harmful or useless | `reports/1a`, `1b` |
-| VAD | Silero VAD ONNX; TEN-VAD only as an optional hole-filling fallback, disabled by default | `reports/1f2/conclusions.md` |
-| Diarization | WeSpeaker ResNet34-LM ONNX + clustering; merge same-speaker gap ≤0.3 s, absorb turns <1.0 s | `reports/1f`, `1f2` |
-| ASR | GigaAM `v3_rnnt` (CPU torch is its runtime), segments split on time to ≤25 s | `reports/1e`, `2b` |
+| VAD | Silero on `vad_input`; `min_speech_ms=400`; TEN hole-fill disabled by default | `reports/1f2`, D1 coherence |
+| Diarization | WeSpeaker on `normalized.wav`; premerge ≤1.0 s; same-speaker gap ≤0.8 s; absorb <2.5 s | `reports/1f`, D1 C3+agg |
+| ASR | GigaAM `v3_rnnt` (CPU torch runtime); ≤25 s splits; per-turn linear gain | `reports/1e`, D1 dual-path |
 | Terms | suggestions only, never a silent rewrite of the transcript | `reports/2b` |
 | Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2`, threshold 0.70 | `reports/2b/conclusions.md` |
 | Titles | prompt P1, ≤10 words, no "обсуждение …" stamps | `reports/3` |

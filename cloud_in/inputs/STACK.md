@@ -6,10 +6,10 @@ schemas; this file wins for which engine to implement.
 
 | Layer | Use in demo | Do not use |
 |---|---|---|
-| Loudness | 16 kHz mono WAV; linear `volume=` only if RMS < −30 dBFS | denoise / afftdn / DeepFilterNet / RNNoise |
-| VAD | Silero ONNX; TEN only as optional hole fill, **off by default** | FSMN as primary |
-| Diarization | WeSpeaker ResNet34-LM ONNX + cluster; merge gap ≤0.3 s, absorb <1.0 s | pyannote 3.1, sherpa-full |
-| ASR | GigaAM `v3_rnnt` (CPU torch runtime); split segments on time to ≤25 s; **D1 cloud run: full packed meeting `voice_002.m4a`** | Whisper family, Podlodka |
+| Loudness | 16 kHz mono → `normalized.wav` (+ linear gain if RMS < −30 dBFS); VAD-only `vad_input.wav` = `dynaudnorm=f=150:g=7:p=0.9` | denoise / afftdn / DeepFilterNet / RNNoise; compressor on ASR path |
+| VAD | Silero ONNX on `vad_input`; `min_speech_ms=400`; TEN hole-fill **off by default** | FSMN as primary |
+| Diarization | WeSpeaker on `normalized.wav`; premerge ≤1.0 s; same-speaker gap ≤0.8 s; absorb <2.5 s | pyannote 3.1, sherpa-full; compressed wav for embeddings |
+| ASR | GigaAM `v3_rnnt` (CPU torch); ≤25 s splits; per-turn linear gain on slices; full meeting `voice_002.m4a` | Whisper family, Podlodka |
 | Terms | suggestions only; never rewrite transcript | silent auto-replace |
 | Chunking | packing C + `rubert-tiny2` threshold 0.70; speaker packing gap ≤2 s | late chunking Jina (D), hybrid C→D |
 | Titles | prompt `title_p1_v1`, ≤10 words, no stamp phrases | prompt P2 |
