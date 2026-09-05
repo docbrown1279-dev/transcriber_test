@@ -53,3 +53,15 @@
 - cloud_handoff paste block now prints branch + points to per-stage cloud_in/prompt.md
 - manuals/cloud_flow.md updated for slash commands
 - Note: Cursor hooks cannot reliably auto-approve Shell; commands instruct agent not to ask user
+
+## 2026-09-05 — Coder
+- STATUS: READY_FOR_TEST
+- Files: pyproject.toml, config/demo.yaml, config/dev.yaml, config/prod.yaml, src/transcriber/**
+- Verified: ruff check exit 0, mypy exit 0, bandit exit 0, cli probe-audio exit 0, convert-legacy exit 0, plan exit 0, validate exit 0, healthcheck exit 0
+
+## 2026-09-05 — Tester
+- STATUS: TEST_PASS
+- Tests: tests/conftest.py, tests/unit/*.py, tests/contract/*.py, tests/fixtures/artifacts/*.min.json
+- Executed: uv run pytest tests/ -v (exit 0, 27/27 passed)
+- Report: cloud_out/gate_D0.md
+
