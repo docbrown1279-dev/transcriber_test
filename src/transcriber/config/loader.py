@@ -1,6 +1,7 @@
 """Загрузчик конфигурационных профилей приложения.
 
 Читает base.yaml, base_llm.yaml и profiles/{profile}.yaml, затем валидирует AppConfig.
+Опционально подгружает `.env` в окружение процесса (без логирования значений).
 """
 
 from __future__ import annotations
@@ -20,7 +21,8 @@ def _repo_config_dir() -> Path:
     return Path(__file__).resolve().parent.parent.parent.parent / "config"
 
 
-def _find_config_dir(config_dir: Path | str | None = None) -> Path:
+def find_config_dir(config_dir: Path | str | None = None) -> Path:
+    """Возвращает каталог config/ с base.yaml."""
     if config_dir is not None:
         path = Path(config_dir)
         if path.is_dir():
@@ -33,6 +35,30 @@ def _find_config_dir(config_dir: Path | str | None = None) -> Path:
             return candidate
 
     raise ConfigError(f"Config directory with base.yaml not found in candidates: {candidates}")
+
+
+# Backward-compatible private alias used by older call sites.
+_find_config_dir = find_config_dir
+
+
+def _load_dotenv_into_environ(config_root: Path) -> None:
+    """Подставляет переменные из `.env`, не перезаписывая уже заданные в окружении.
+
+    Значения секретов не логируются и не возвращаются.
+    """
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+
+    candidates = (
+        Path.cwd() / ".env",
+        config_root.parent / ".env",
+    )
+    for env_path in candidates:
+        if env_path.is_file():
+            load_dotenv(env_path, override=False)
+            return
 
 
 def deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
@@ -70,8 +96,9 @@ def load_config(profile: str | None = None, config_dir: Path | str | None = None
     Если профиль не передан явно, значение считывается из переменной окружения
     APP_PROFILE (по умолчанию 'demo').
     """
-    resolved_profile = profile or os.environ.get("APP_PROFILE", "demo")
     root = _find_config_dir(config_dir=config_dir)
+    _load_dotenv_into_environ(root)
+    resolved_profile = profile or os.environ.get("APP_PROFILE", "demo")
 
     base_path = root / "base.yaml"
     if not base_path.is_file():

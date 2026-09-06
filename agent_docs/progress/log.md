@@ -23,3 +23,6 @@
 - 2026-09-06T10:02:00+03:00 D3 PLAN_DRAFT rev2: API-only base_llm.yaml; gemini/nvidia/qwen env names; schemas split; local mode reserved
 - 2026-09-06T10:26:00+03:00 D3 PLAN_DRAFT rev3: backend.base_url; extra_config unique-only; tasks=chapter_titles then meeting_insights
 - 2026-09-06T10:59:00+03:00 D3 INSTRUCTIONS_READY coder_D3.md tester_D3.md manuals/llm.md; pack voice_002 transcript+chapters; branch cursor/demo-d3-insights
+- 2026-09-06T11:58:53+03:00 pull-reports D3 cursor/demo-d3-insights e409ee1
+- 2026-09-06T11:58:53+03:00 pull-code D3 cursor/demo-d3-insights e409ee1 PASS
+- 2026-09-06T12:20:00+03:00 D3 HUMAN_GATE PASS (report.md OK; speaker oversplit deferred to diarization/source refresh); polish: extra_config+.env load; close → merge main

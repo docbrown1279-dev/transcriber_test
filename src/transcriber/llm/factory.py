@@ -3,12 +3,27 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
+import yaml
+
+from transcriber.config.loader import find_config_dir
 from transcriber.config.schema import LlmConfig, LlmTaskConfig
 from transcriber.llm.base import LlmClient, LlmResponse
 from transcriber.llm.gemini import GeminiLlmClient
 from transcriber.llm.openai_compat import OpenAiCompatLlmClient
+
+__all__ = [
+    "LlmCallOptions",
+    "OpenAiCompatLlmClient",
+    "complete_json",
+    "load_backend_extra",
+    "make_client",
+    "resolve_call_options",
+]
+
+_OPTION_KEYS = frozenset({"temperature", "max_tokens", "response_format", "timeout_sec"})
 
 
 @dataclass(frozen=True)
@@ -22,20 +37,65 @@ class LlmCallOptions:
     extra: dict[str, object] | None
 
 
-def resolve_call_options(cfg: LlmConfig, task: LlmTaskConfig) -> LlmCallOptions:
-    """Объединяет общие параметры генерации с переопределениями задачи."""
+def load_backend_extra(cfg: LlmConfig, config_dir: Path | str | None = None) -> dict[str, Any]:
+    """Читает yaml из backends.*.extra_config относительно каталога config/."""
+    path = cfg.active_backend.extra_config
+    if not path:
+        return {}
+    root = find_config_dir(config_dir=config_dir)
+    extra_path = (root / path).resolve()
+    if not str(extra_path).startswith(str(root.resolve())):
+        raise ValueError(f"extra_config path escapes config dir: {path}")
+    if not extra_path.is_file():
+        raise FileNotFoundError(f"LLM extra_config not found: {extra_path}")
+    raw = yaml.safe_load(extra_path.read_text(encoding="utf-8"))
+    if raw is None:
+        return {}
+    if not isinstance(raw, dict):
+        raise ValueError(f"LLM extra_config must be a mapping: {extra_path}")
+    return raw
+
+
+def resolve_call_options(
+    cfg: LlmConfig,
+    task: LlmTaskConfig,
+    *,
+    config_dir: Path | str | None = None,
+) -> LlmCallOptions:
+    """Объединяет base_llm ← backend.extra_config ← переопределения задачи."""
+    temperature = cfg.base_llm.temperature
+    max_tokens = cfg.base_llm.max_tokens
+    response_format = cfg.base_llm.response_format
+    timeout_sec = cfg.base_llm.timeout_sec
+    extra: dict[str, object] = {}
+
+    backend_extra = load_backend_extra(cfg, config_dir=config_dir)
+    for key, value in backend_extra.items():
+        if key in _OPTION_KEYS:
+            if key == "temperature":
+                temperature = value
+            elif key == "max_tokens":
+                max_tokens = value
+            elif key == "response_format":
+                response_format = value
+            elif key == "timeout_sec":
+                timeout_sec = value
+        else:
+            extra[key] = value
+
+    if task.max_tokens is not None:
+        max_tokens = task.max_tokens
+    if task.temperature is not None:
+        temperature = task.temperature
+    if task.response_format is not None:
+        response_format = task.response_format
+
     return LlmCallOptions(
-        max_tokens=task.max_tokens
-        if task.max_tokens is not None
-        else cfg.base_llm.max_tokens,
-        temperature=task.temperature
-        if task.temperature is not None
-        else cfg.base_llm.temperature,
-        response_format=task.response_format
-        if task.response_format is not None
-        else cfg.base_llm.response_format,
-        timeout_sec=cfg.base_llm.timeout_sec,
-        extra=None,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        response_format=response_format,
+        timeout_sec=timeout_sec,
+        extra=extra or None,
     )
 
 

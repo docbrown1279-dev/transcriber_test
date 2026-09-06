@@ -207,4 +207,6 @@ NVIDIA_API_KEY=…    # если backend: nvidia
 QWEN_API_KEY=…      # если backend: qwen
 ```
 
-Приложение читает значение по имени. В логи пишется имя переменной, не значение. `.env` не коммитить. Агентам запрещено открывать `.env`.
+`load_config` вызывает `python-dotenv` для файла `.env` в cwd или рядом с `config/` (`override=false`). Приложение читает значение по имени. В логи пишется имя переменной, не значение. `.env` не коммитить. Агентам запрещено открывать `.env` и печатать секреты.
+
+`backends.*.extra_config` читается при вызове (`base_llm ← extra ← task`). Пример: `config/llm_extra/no_temperature.yaml`.

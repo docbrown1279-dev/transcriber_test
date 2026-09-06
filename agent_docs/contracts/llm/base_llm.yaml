@@ -49,8 +49,8 @@ llm:
       extract:
         prompt: prompts/meeting_insights/v1_extract.md
         schema: schemas/chapter_extract.json
-        max_tokens: 2048
+        max_tokens: 4096
       report:
         prompt: prompts/meeting_insights/v1_report.md
         schema: schemas/meeting_report.json
-        max_tokens: 3072         # raise here for a longer full summary
+        max_tokens: 4096         # raise here for a longer full summary
