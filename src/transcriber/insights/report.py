@@ -99,20 +99,22 @@ def generate_report(
                 allowed[(chapter.id, source.segment_id)] = source
 
     moments: list[ReportKeyMoment] = []
-    for item in payload.key_moments:
-        source = allowed.get((item.chapter_id, item.segment_id))
-        if source is None:
+    for moment_payload in payload.key_moments:
+        moment_source = allowed.get(
+            (moment_payload.chapter_id, moment_payload.segment_id)
+        )
+        if moment_source is None:
             raise ValueError(
                 "Report references source absent from insights: "
-                f"{item.chapter_id}/{item.segment_id}"
+                f"{moment_payload.chapter_id}/{moment_payload.segment_id}"
             )
         moments.append(
             ReportKeyMoment(
-                text=item.text,
-                start=source.start,
-                end=source.end,
-                speaker=source.speaker,
-                chapter_id=item.chapter_id,
+                text=moment_payload.text,
+                start=moment_source.start,
+                end=moment_source.end,
+                speaker=moment_source.speaker,
+                chapter_id=moment_payload.chapter_id,
             )
         )
 

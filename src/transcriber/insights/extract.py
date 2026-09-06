@@ -12,6 +12,7 @@ from transcriber.llm.base import LlmClient, LlmResponse
 from transcriber.llm.factory import complete_json
 from transcriber.llm.prompts import load_prompt, load_schema, render_prompt
 from transcriber.models.artifacts import (
+    AsrNote,
     ChapterItem,
     ChaptersArtifact,
     InsightChapter,
@@ -212,7 +213,7 @@ def extract_insights(
                 key_points=key_points,
                 actions=actions,
                 open_questions=questions,
-                asr_notes=[note.model_dump() for note in payload.asr_notes],
+                asr_notes=[AsrNote(text=note.text) for note in payload.asr_notes],
             )
         )
 
