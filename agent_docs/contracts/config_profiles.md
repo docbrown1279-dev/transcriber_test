@@ -10,15 +10,22 @@ Profile is selected with `APP_PROFILE` (`dev | demo | prod`); default is `demo`.
 - Unknown keys fail validation loudly at startup (pydantic `extra="forbid"`).
 - `prod`-only components are valid config values, but selecting them under `demo` raises
   `ComponentUnavailableError` at startup, not mid-job.
-- Load order: `config/base.yaml` ← deep-merge `config/profiles/{profile}.yaml` → `AppConfig`.
+- Load order: `config/base.yaml` ← `config/base_llm.yaml` ← `config/profiles/{profile}.yaml`
+  → `AppConfig`.
+- LLM **prompts** and **schemas** are files under `src/transcriber/llm/{prompts,schemas}/`.
+  Paths live in `llm.tasks`. Backends (model id, `api_key_env`, `base_url`) live in
+  `llm.backends`. Unique client keys: `extra_config` path on the **backend** or `null`.
+  `agent_docs/plans/draft_llm_wrapper.md` and `agent_docs/contracts/llm/base_llm.yaml`.
 
 ## 2. Layout
 
 ```text
 config/
-  base.yaml                      # shared speech + chunking + runtime defaults
+  base.yaml                      # speech + chunking + runtime
+  base_llm.yaml                  # mode, backend, base_llm, backends, tasks
+  llm_extra/                     # optional unique API keys (not base_url)
   profiles/
-    demo.yaml                    # demo deltas only
+    demo.yaml                    # llm.mode: api, llm.backend: gemini
     dev.yaml
     prod.yaml
 ```
@@ -44,11 +51,15 @@ See `config/base.yaml`: `audio.gain`, `diarization.merge`, `diarization.embed`.
 | Variable | Used by | Required in demo | Provisioned in cloud |
 |---|---|---|---|
 | `APP_PROFILE` | config loader | yes (default `demo`) | yes |
-| `GEMINI_API_KEY` | `llm.provider: gemini` | yes | yes |
+| `GEMINI_API_KEY` | `llm.backend: gemini` | yes (default backend) | yes when backend is gemini |
+| `NVIDIA_API_KEY` | `llm.backend: nvidia` | only if that backend is selected | optional |
+| `QWEN_API_KEY` | `llm.backend: qwen` | only if that backend is selected | optional |
 | `HF_TOKEN` | model download at environment setup | build/setup time only | yes |
 | `JOB_IP_SALT` | hashing client IP for per-IP limits | yes | yes |
 | `TRANSCRIBER_FIXTURES_DIR` | tests, default `cloud_in/inputs/` | no | yes |
-| `QWEN_API_KEY` / `OPENAI_API_KEY` | `llm.provider: openai_compat` | no | **no — stays local** |
+
+YAML stores the **name** of the key variable (`api_key_env`), never the value. The process reads
+the value from the environment or `.env`. Only the active backend’s variable is required.
 
 ## 6. Startup self-check
 

@@ -79,9 +79,16 @@ P1 producing one `обсуждение` title.
 
 ## G3 — insights and report (stage D3)
 
+`G3` is the automated check list for development stage **D3**. Primary cloud inputs:
+`cloud_in/inputs/artifacts/voice_002/transcript.json` and
+`cloud_in/inputs/artifacts/voice_002/chapters.json` (D2 HUMAN_GATE PASS titles; no audio, no ASR,
+no re-chunk). Deliverables: `cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}`.
+Do not reopen extract-filter bakeoffs from research 3c.
+
 | id | Check | Threshold |
 |---|---|---|
-| G3.1 | Clock-gate: every `start`/`end` in `insights.json` and `report.json` exists in `chapters.json` or in the referenced segment | `mismatch == 0`, FAIL otherwise |
+| G3.0 | Preflight: packed transcript + chapters + `STACK.md`; env var named by `llm.backends[backend].api_key_env` (default `GEMINI_API_KEY`); no `eval/` / audio / GGUF | missing inputs → `BLOCKED.md`; missing active-backend key → `FAIL`/`BLOCKED` |
+| G3.1 | Clock-gate **after hydration**: every `start`/`end` in `insights.json` and `report.json` equals the referenced segment (or chapter bounds if the field is a chapter time) | `mismatch == 0`, FAIL otherwise |
 | G3.2 | Every `src.segment_id` exists and belongs to the same chapter | FAIL otherwise |
 | G3.3 | Every `key_point` has non-empty `src` | FAIL otherwise |
 | G3.4 | Digit groups in `key_points` occur in the chapter source text | FAIL on invented numbers |
@@ -92,7 +99,8 @@ P1 producing one `обсуждение` title.
 | G3.9 | Agent judgement: share of key points that are verifiable facts (decision, number, condition, agreement) vs filler | `>= 60%` verifiable |
 
 G3.9 exists because stage 3c could not tune the "insight bar" with prompt text alone; the number is
-a reporting bar for the human gate, not a claim of solved quality.
+a reporting bar for the human gate, not a claim of solved quality. Empty `key_points` on short
+chapters is allowed; G3.3 only requires `src` when a key point exists.
 
 ## G4 — web demo (stage D4)
 
@@ -122,7 +130,8 @@ a reporting bar for the human gate, not a claim of solved quality.
   plus `cloud_out/run_meta.json` (branch, commit, wall time, LLM calls, versions).
   Stage D1 also returns the full-meeting artifacts under `cloud_out/artifacts/voice_002/`.
   Stage D2 returns `cloud_out/artifacts/voice_002/chapters.json` from a packed transcript
-  (no audio required).
+  (no audio required). Stage D3 returns insights/report artifacts from packed transcript +
+  chapters (no audio, no ASR, no local GGUF).
 - `eval/` must not be read, copied, or referenced in any gate, prompt, or report. Neither must
   `.env`.
 - Audio under `data/` is never read directly. Only files packed into `cloud_in/inputs/` may be
@@ -131,5 +140,7 @@ a reporting bar for the human gate, not a claim of solved quality.
   packed `transcript.json` (no ASR). Stage D5 may additionally use a 15-minute slice for the
   hardware gate.
 - Audio is never sent to an LLM API — text only, as in the research stages.
-- LLM in the cloud is `gemini` only; `local_llama` is never run there. Calls per cloud run:
-  `<= 20`, each recorded in the gate report as provider + purpose, never the key.
+- Cloud LLM is **API only** (`llm.mode: api`). Default backend is `gemini`. NVIDIA/Qwen are
+  allowed if `llm.backend` points at them and the named env var is set. `local_llama` / GGUF
+  are never run in the cloud. Calls per job: `<= llm.max_calls_per_job` (D3: 40), recorded as
+  provider + purpose, never the key. Exceeding the budget is FAIL, not a silent trim.

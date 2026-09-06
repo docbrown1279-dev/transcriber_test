@@ -1,27 +1,28 @@
-# Stage D2 — chunking + chapter titles
+# Stage D3 — insights + LLM report
 
 You are the product development cloud agent. Read `cloud_in/agent/AGENTS.md` and
 `cloud_in/agent/rules.md` first, then this prompt. The run is unattended: do not ask for approval,
-install what the stage needs, finish with a gate report, `chapters.json`, and a branch push
+install what the stage lists, finish with a gate report, insight artifacts, and a branch push
 (no PR).
 
 ## Why this stage
 
-D1 delivered a full-meeting transcript (Silero T2 hyp packed here). D2 must turn that transcript
-into a **table of contents**: semantic chapters (packing C + `rubert-tiny2` 0.70) and LLM titles
-(prompt P1 / `title_p1_v1` via Gemini 2.5 Flash).
+D2 delivered `chapters.json` (packing C + P1 titles). D3 must produce **insights + a draft
+report**: per-chapter extract, one report call, markdown render. LLM is **API-only**; default
+backend Gemini 2.5 Flash. NVIDIA/Qwen are the same prompts via `openai_compat` + `base_url` in
+`config/base_llm.yaml` — implement the client, do not live-call them in this gate.
 
-**Replicate the closed research path first.** Do not bakeoff late chunking (D), pairwise LLM (B),
-or prompt P2. Improvements are a later local ticket after the human gate — not this run.
+Do not bakeoff extract filters or new prompt wording. Copy frozen files from
+`agent_docs/contracts/llm/`. Human manual already exists: `manuals/llm.md` (do not rewrite).
 
-Roadmap stages are `D0 → D1 → D2 → …`. The name **G2** is only the auto-check list *inside* D2.
+Roadmap stages are `D0 → D1 → D2 → D3 → …`. **G3** is only the auto-check list inside D3.
 
 ## Task
 
-1. Follow `agent_docs/instructions/coder_D2.md` step by step.
-2. Follow `agent_docs/instructions/tester_D2.md` for tests and `[TEST-ID]`s.
-3. Run chunking + titles on the packed transcript (required). **No ASR. No audio.**
-4. Write `cloud_out/gate_D2.md` for checks G2.0–G2.8.
+1. Follow `agent_docs/instructions/coder_D3.md` step by step.
+2. Follow `agent_docs/instructions/tester_D3.md` for tests and `[TEST-ID]`s.
+3. Run extract + report on the packed transcript and chapters (required). **No ASR. No audio.**
+4. Write `cloud_out/gate_D3.md` for checks G3.0–G3.9.
 
 If instruction files and this prompt disagree, the instruction files win; note the discrepancy in
 the gate report.
@@ -33,56 +34,57 @@ Packed for this stage (must pass preflight):
 | Path | What |
 |---|---|
 | `cloud_in/inputs/STACK.md` | frozen demo stack — do not reopen bakeoffs |
-| `cloud_in/inputs/artifacts/voice_002/transcript.json` | **primary** T2 full-meeting transcript (~24.5 min) |
-| `cloud_in/inputs/artifacts/voice_002/transcript.md` | human-readable dump for G2.8 judgement only |
+| `cloud_in/inputs/artifacts/voice_002/transcript.json` | D1 T2 full-meeting transcript |
+| `cloud_in/inputs/artifacts/voice_002/chapters.json` | D2 HUMAN_GATE PASS chapters (14) |
+| `cloud_in/inputs/artifacts/voice_002/transcript.md` | human-readable dump for G3.5 / G3.9 only |
 
 Also in git:
 
 | Path | What |
 |---|---|
-| `agent_docs/instructions/coder_D2.md`, `tester_D2.md` | implementation and test specs |
-| `agent_docs/contracts/*.md` | schemas, ports, configs, gate G2 |
-| `src/`, `config/`, `tests/` | D0/D1 code on `main` — extend it |
+| `agent_docs/instructions/coder_D3.md`, `tester_D3.md` | implementation and test specs |
+| `agent_docs/contracts/*.md` and `agent_docs/contracts/llm/` | schemas, `base_llm.yaml`, prompts |
+| `src/`, `config/`, `tests/` | D0–D2 code on the branch — extend it |
 
 Do **not** open `docs/research_results/`, `docs/dev_specs.md`, `eval/`, `data/`, or `.env`.
 
 ## Approved dependencies
 
-`sentence-transformers` (model `cointegrated/rubert-tiny2`), CPU `torch` if required by the
-embedder, and the official Gemini SDK (`google-genai` or the current Google GenAI package —
-record the exact name in the gate). Install only via `uv add` / documented extras. Anything else
-needs a written justification in the gate report.
+`httpx` in extra `llm` (OpenAI-compat). `google-genai` is already present. Install only via
+`uv add` / documented extras. Do **not** add `openai`, `llama-cpp-python`, or GGUF downloads.
 
-Secrets: `GEMINI_API_KEY` (titles), `HF_TOKEN` (Hub download for tiny2). Never send audio to an API.
+Secrets: `GEMINI_API_KEY` for the default backend. Never send audio to an API. Never print key
+values.
 
-## Gate D2 (must pass before push)
+## Gate D3 (must pass before push)
 
-Checks G2.0–G2.8 from `agent_docs/contracts/quality_gates.md`, measured on
-`cloud_out/artifacts/voice_002/chapters.json` vs the packed transcript:
+Checks G3.0–G3.9 from `agent_docs/contracts/quality_gates.md`, on
+`cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}` vs packed chapters +
+transcript:
 
-- G2.0 preflight (pack + secrets)
-- G2.1 chapter times = segment bounds
-- G2.2 chapters_per_minute band
-- G2.3 short/long chapter WARN list
-- G2.4 title ≤ 10 words
-- G2.5 no stamp prefix
-- G2.6 unique non-empty titles
-- G2.7 non-empty `source_ids` cover exactly once
-- G2.8 agent judgement hit/generic/miss
+- G3.0 preflight (pack + `GEMINI_API_KEY`)
+- G3.1 clock-gate after hydration
+- G3.2 src segment belongs to the chapter
+- G3.3 every key_point has src
+- G3.4 digit groups occur in chapter text
+- G3.5 agent: no invented owners/tasks
+- G3.6 key_moments 5–12 (WARN outside)
+- G3.7 no stamp prefixes
+- G3.8 draft_warning true in demo
+- G3.9 agent: ≥60% verifiable key_points
 
 Also: `uv run pytest tests/ -v`, `ruff`, `mypy`, `bandit` exit 0.
 
 ## Deliverables
 
 1. Code under `src/` / `config/` / `pyproject.toml`; tests under `tests/`
-2. `cloud_out/artifacts/voice_002/chapters.json`
-3. `cloud_out/gate_D2.md` + `cloud_out/run_meta.json`
-4. Progress lines in `agent_docs/progress/stage_D2.md`
-5. Commit and **push** branch `cursor/demo-d2-chapters`. Do **not** open a pull request.
+2. `cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}`
+3. `cloud_out/gate_D3.md` + `cloud_out/run_meta.json`
+4. Progress lines in `agent_docs/progress/stage_D3.md`
+5. Commit and **push** branch `cursor/demo-d3-insights`. Do **not** open a pull request.
 
 ## Stop-list
 
-Do not: read `eval/` or `.env`; process or send audio; re-run ASR/VAD/diarization; implement
-insights / report / web upload; bakeoff Jina late chunking or P2; weaken gate thresholds;
-force-push; open a PR; read files outside `cloud_in/inputs/` for meeting text (use the packed
-transcript only).
+Do not: read `eval/` or `.env`; process or send audio; re-run ASR/VAD/chunking; implement
+local llama.cpp; bakeoff prompts; weaken gate thresholds; force-push; open a PR; read meeting
+text from `data/` (use the packed files only).

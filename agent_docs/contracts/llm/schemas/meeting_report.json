@@ -1,0 +1,23 @@
+{
+  "$id": "meeting_report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "key_moments"],
+  "properties": {
+    "summary": { "type": "string" },
+    "key_moments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text", "chapter_id", "segment_id"],
+        "properties": {
+          "text": { "type": "string" },
+          "chapter_id": { "type": "string" },
+          "segment_id": { "type": "string" }
+        }
+      }
+    }
+  }
+}

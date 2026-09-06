@@ -132,6 +132,10 @@ start with a stamp phrase (see `quality_gates.md`).
 
 ## 8. `insights.json` (per-chapter extract)
 
+The `insights_extract` step **requires** `chapters.json` **and** `transcript.json` (chapter text
+and the allowed-source catalog are built from `source_ids`). The model reply is not stored raw:
+callers parse `extract_v1` JSON (`text` + `segment_ids`) and **hydrate** `src` from the transcript.
+
 ```json
 {
   "schema_version": "1", "job_id": "…",
@@ -148,9 +152,11 @@ start with a stamp phrase (see `quality_gates.md`).
 ```
 
 `key_points`: 2–6 concrete statements (decision, number, condition, agreement) or an empty list.
-`actions` and `open_questions` only when present in the text, otherwise `[]`. `asr_notes` are
-observations about probable ASR errors and never modify `transcript.json`. Every `src` entry must
-reference an existing `segment_id` of the same chapter.
+`actions` and `open_questions` are arrays of `{text, src}` (same `src` shape as key points) and
+stay `[]` unless the chapter text states them. `asr_notes` are `{text}` observations about
+probable ASR errors and never modify `transcript.json`. Every `src` entry must reference an
+existing `segment_id` of the same chapter. `start` / `end` / `speaker` in `src` are copied from
+that segment — never taken from the model.
 
 ## 9. `report.json` + `report.md`
 
@@ -166,6 +172,12 @@ reference an existing `segment_id` of the same chapter.
   "draft_warning": true, "runtime_sec": 17.2
 }
 ```
+
+The `report` step requires `insights.json`, `chapters.json`, and `transcript.json`. The model
+(`report_v1`) returns only `summary` plus `key_moments: [{text, chapter_id, segment_id}]`.
+Callers copy `start` / `end` / `speaker` from the referenced insight `src` or segment.
+`speakers[]` is computed from the transcript (all speaker ids, `label: null`). `chapters[]` is
+copied from `chapters.json` (id, title, start, end).
 
 `key_moments` holds 5–12 items; each `start`/`end` must be present in `insights.json` `src` or in
 `chapters.json` (clock-gate). `speakers[].label` stays `null` in the demo — no name guessing.

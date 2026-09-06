@@ -19,7 +19,10 @@
 ```
 pyproject.toml                # uv, зависимости профиля demo + dev-группа
 config/
-  demo.yaml  dev.yaml  prod.yaml
+  base.yaml
+  base_llm.yaml                         # D3: mode/backend/tasks (not per-model files)
+  llm_extra/                            # optional: backend-only unique API keys
+  profiles/{demo,dev,prod}.yaml
 src/transcriber/
   config/        loader.py, schema.py        # pydantic-модели конфига, профиль из env
   models/        artifacts.py                # pydantic-модели всех JSON-артефактов
@@ -29,8 +32,9 @@ src/transcriber/
   asr/           base.py, gigaam.py, splitter.py, holes.py
   correction/    base.py, suggester.py, dictionaries/
   chunking/      base.py, packing_c.py, embeddings.py, late_chunking_stub.py
-  llm/           base.py, gemini.py, local_llama.py, openai_compat_stub.py, prompts/
-  insights/      titles.py, extract.py, report.py, clock_gate.py
+  llm/           base.py, factory.py, gemini.py, openai_compat.py, local_llama stub; prompts/<purpose>/; schemas/
+  insights/      extract.py, report.py, clock_gate.py
+  export/        json.py, markdown.py, pdf_stub.py
   pipeline/      orchestrator.py, steps.py, artifacts.py, events.py
   jobs/          store.py, queue.py, ttl.py
   web/           app.py, routes.py, limits.py, templates/, static/
@@ -61,7 +65,7 @@ upload → normalize → vad → diarize → merge_turns → asr → correction_
 | `TermSuggester` | `dictionary_suggest` с пустым словарём | доменные словари, авто-Левенштейн, обучение |
 | `Chunker` | `packing_c` | `late_chunking_jina`, `hybrid_c_then_d` |
 | `EmbeddingBackend` | `rubert_tiny2` | `bge_small_onnx`, `jina_v3` |
-| `LlmClient` | `gemini` (облако и демка) | `local_llama` — реальная реализация для локальных прогонов (D3); `openai_compat` — заглушка |
+| `LlmClient` | `gemini` (default API) + `openai_compat` (NVIDIA/Qwen API) | `local_llama` — заглушка до `llm.mode: local`; в demo не включаем |
 | `Exporter` | `json`, `markdown` | `pdf` |
 | UI-возможности | просмотр результата | `allow_editing`, `allow_player` — флаги конфига, шаблоны-заготовки |
 
@@ -88,8 +92,8 @@ upload → normalize → vad → diarize → merge_turns → asr → correction_
 
 ## 7. Конфигурация и секреты
 
-`config/{profile}.yaml` повторяет структуру ТЗ §6 без переименований; профиль выбирается `APP_PROFILE`. Секреты — только из окружения (`HF_TOKEN`, `GEMINI_API_KEY`, `JOB_IP_SALT`), никогда из yaml и никогда в логах. `.env` не читаем и не коммитим; для облака ключи задаются в дашборде Cursor, `QWEN_API_KEY` в облако не передаётся (локальная модель ключа не требует).
+`config/base.yaml` + `config/base_llm.yaml` + `config/profiles/{profile}.yaml`. Промпты и схемы — файлы пакета; yaml хранит пути и **имена** переменных ключей. Значения секретов — окружение / `.env` (файл не коммитим). В облаке LLM только API; локальный инференс в demo не включаем.
 
 ## 8. Что сознательно не делаем в демке
 
-Шумоподавление, late chunking, ручное редактирование, плеер, диаризация pyannote, PDF-экспорт, дообучение словарей, повторный прогон полного 24-минутного файла в облаке. Локальная LLM в демке не работает (2 vCPU не хватит), но код для неё есть — она включается профилем `dev` на машине человека.
+Шумоподавление, late chunking, ручное редактирование, плеер, диаризация pyannote, PDF-экспорт, дообучение словарей, повторный прогон полного 24-минутного файла в облаке, локальный GGUF в демке (`llm.mode: local` зарезервирован).
