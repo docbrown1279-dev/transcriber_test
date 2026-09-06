@@ -1,7 +1,13 @@
 """D3 source hydration tests."""
 
-from transcriber.insights.extract import ExtractItemPayload, hydrate_items
-from transcriber.models.artifacts import ChapterItem, TranscriptArtifact, TranscriptSegment
+from transcriber.insights.extract import ExtractItemPayload, filter_digit_verified_key_points, hydrate_items
+from transcriber.models.artifacts import (
+    ChapterItem,
+    InsightSource,
+    KeyPoint,
+    TranscriptArtifact,
+    TranscriptSegment,
+)
 
 
 def _inputs() -> tuple[ChapterItem, TranscriptArtifact]:
@@ -63,3 +69,36 @@ def test_d3_hyd_02_unknown_segment_writes_no_times() -> None:
     )
     assert items == []
     assert unknown == ["s9999"]
+
+
+def test_d3_hyd_03_digit_groups_must_match_chapter_text() -> None:
+    """[D3-HYD-03] Key points with unverified digit groups are dropped."""
+    verified = filter_digit_verified_key_points(
+        [
+            KeyPoint(
+                text="Срок два три месяца",
+                src=[
+                    InsightSource(
+                        segment_id="s0001",
+                        start=1.0,
+                        end=2.0,
+                        speaker="A",
+                    )
+                ],
+            ),
+            KeyPoint(
+                text="Срок 2-3 месяца",
+                src=[
+                    InsightSource(
+                        segment_id="s0001",
+                        start=1.0,
+                        end=2.0,
+                        speaker="A",
+                    )
+                ],
+            ),
+        ],
+        "минимум два три месяца",
+    )
+    assert len(verified) == 1
+    assert verified[0].text.startswith("Срок два")

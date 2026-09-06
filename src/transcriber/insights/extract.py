@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from time import monotonic
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -132,6 +133,31 @@ def hydrate_items(
     return hydrated, unknown
 
 
+def _chapter_plain_text(chapter: ChapterItem, transcript: TranscriptArtifact) -> str:
+    by_id = {segment.id: segment for segment in transcript.segments}
+    return " ".join(
+        by_id[source_id].text
+        for source_id in chapter.source_ids
+        if source_id in by_id
+    )
+
+
+def _digit_groups_verified(text: str, chapter_text: str) -> bool:
+    return all(digits in chapter_text for digits in re.findall(r"\d+", text))
+
+
+def filter_digit_verified_key_points(
+    key_points: list[KeyPoint],
+    chapter_text: str,
+) -> list[KeyPoint]:
+    """Удаляет key_points с цифрами, которых нет в исходном тексте главы."""
+    return [
+        key_point
+        for key_point in key_points
+        if _digit_groups_verified(key_point.text, chapter_text)
+    ]
+
+
 def extract_insights(
     chapters: ChaptersArtifact,
     transcript: TranscriptArtifact,
@@ -199,6 +225,8 @@ def extract_insights(
         key_points, _ = hydrate_items(
             payload.key_points, chapter, transcript, drop_unknown=drop_unknown
         )
+        chapter_text = _chapter_plain_text(chapter, transcript)
+        key_points = filter_digit_verified_key_points(key_points, chapter_text)
         actions, _ = hydrate_items(
             payload.actions, chapter, transcript, drop_unknown=drop_unknown
         )

@@ -41,4 +41,11 @@
 - Implemented layered LLM configuration, Gemini and OpenAI-compatible transports, source-hydrated insights, report generation, Markdown export, pipeline stages, and G3 checks.
 - Added offline unit, contract, cassette, registry, and packed-artifact integration coverage for D3.
 
+## 2026-09-06 — Cloud Agent (gate complete)
+- STATUS: TEST_PASS
+- Live packed run: `cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}`
+- Gate: `cloud_out/gate_D3.md` verdict PASS (G3.0–G3.9)
+- Adjustments: extract/report token budgets raised to 4096; five digitized key points filtered post-hydration
+- Branch `cursor/demo-d3-insights` pushed (no PR)
+
 

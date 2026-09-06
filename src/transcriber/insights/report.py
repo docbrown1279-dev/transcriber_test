@@ -79,18 +79,27 @@ def generate_report(
             "insights_json": _insights_for_prompt(insights),
         },
     )
-    response = complete_json(
-        client,
-        prompt=prompt,
-        prompt_id="meeting_insights/v1_report",
-        schema=load_schema(task.schema_),
-        cfg=cfg.llm,
-        task=task,
-    )
-    try:
-        payload = ReportPayload.model_validate(json.loads(response.text))
-    except (json.JSONDecodeError, ValidationError) as exc:
-        raise RuntimeError(f"Invalid report response: {exc}") from exc
+    schema = load_schema(task.schema_)
+    payload: ReportPayload | None = None
+    response = None
+    for attempt in range(2):
+        response = complete_json(
+            client,
+            prompt=prompt,
+            prompt_id="meeting_insights/v1_report",
+            schema=schema,
+            cfg=cfg.llm,
+            task=task,
+        )
+        try:
+            payload = ReportPayload.model_validate(json.loads(response.text))
+            break
+        except (json.JSONDecodeError, ValidationError) as exc:
+            if attempt == 0:
+                continue
+            raise RuntimeError(f"Invalid report response: {exc}") from exc
+    if payload is None or response is None:
+        raise RuntimeError("No valid report response")
 
     allowed: dict[tuple[str, str], InsightSource] = {}
     for chapter in insights.chapters:

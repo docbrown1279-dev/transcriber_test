@@ -38,7 +38,7 @@ def test_d3_cfg_03_task_generation_values_override_base() -> None:
     extract_options = resolve_call_options(cfg.llm, extract_task)
     report_options = resolve_call_options(cfg.llm, report_task)
     assert extract_options.max_tokens == extract_task.max_tokens == 4096
-    assert report_options.max_tokens == report_task.max_tokens == 3072
+    assert report_options.max_tokens == report_task.max_tokens == 4096
     assert extract_options.temperature == cfg.llm.base_llm.temperature
     assert "extra_config" not in type(extract_task).model_fields
 
