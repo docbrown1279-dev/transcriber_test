@@ -1,0 +1,18 @@
+{
+  "mode": "a",
+  "titles_llm_calls": 1,
+  "titles_wall_sec": 6.863,
+  "time_to_first_titled_chapter_sec": 6.863,
+  "time_to_all_titles_sec": 6.863,
+  "chapters": 6,
+  "titles": [
+    "Подключение ливневой канализации к сети УДС",
+    "Учёт нагрузок от ливневых стоков в проекте",
+    "Проверка решений по ливневой канализации",
+    "Размещение светильников и магистральные сети",
+    "Согласование изменений в технических условиях с Оборонэнерго",
+    "Расчёт нагрузок на жилые помещения"
+  ],
+  "peak_rss_mb": 57.7,
+  "notes": "titles-only on existing transcript/chapters; speech stages not re-run"
+}

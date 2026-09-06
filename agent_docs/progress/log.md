@@ -35,4 +35,12 @@
 - 2026-09-06T15:00:00+03:00 D4 Coder READY_FOR_TEST local Jinja UI + limits/queue/TTL (no cloud)
 - 2026-09-06T18:29:00+03:00 D4 UI merged main 8371a79 (cursor/demo-d4-web); live summary/titles/player; tickets parked
 - 2026-09-06T18:45:00+03:00 docs sync on main: README D0–D4 status; manuals D4 UI flow; demo LLM=qwen; ui.summary_max_calls
-
+- 2026-09-06T19:05:00+03:00 D4 CLOSED (UI main 8371a79); tickets parked; next perf before Docker
+- 2026-09-06T19:05:00+03:00 D4.1 PLAN_DRAFT agent_docs/plans/draft_D4_1_scope.md (await ✅ → Phase B); insert before D5
+- 2026-09-06T19:15:00+03:00 D4.1 PLAN_DRAFT rev2: research timings → sequential heavy stages; P0 batch titles; rubert keep; no ASR parallel
+- 2026-09-06T21:20:00+03:00 D4.1 rev3: pipeline B (ASR slice→glue→async title) viable with provisional tail; A/B both
+- 2026-09-06T21:20:00+03:00 D4.1 INSTRUCTIONS_READY coder_D4_1.md tester_D4_1.md (Phase0 baseline unconstrained first)
+- 2026-09-06T21:35:00+03:00 D4.1 Phase0 baseline 10min voice_002 on cursor/demo-d4-1-perf; reports/d4_1/baseline_unconstrained.*; ASR~56s diar~78s titles 6calls~15s peakRSS~1.65GiB
+- 2026-09-07T01:55:00+03:00 D4.1 Phase1 A/B: A batch 1call/6.9s; B TTFT~24s total~105s but 14 LLM calls; compare_a_b.md PASS_WITH_WARNINGS
+- 2026-09-07T02:10:00+03:00 D4.1 B fix: title only when next chapter appears (slot-based); backlog ticket_d4_1_title_batch2.md
+- 2026-09-07T02:25:00+03:00 D4.1 wire pipeline.toc_mode b default (a=batch fallback); commit+merge main

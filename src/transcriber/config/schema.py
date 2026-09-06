@@ -68,6 +68,7 @@ class VadConfig(BaseModel):
     min_silence_ms: int = Field(default=200, ge=0)
     # disabled | ten_fallback | fsmn_fallback (engines may be stubs until implemented)
     fallback: str = "disabled"
+    onnx_threads: int = Field(default=2, ge=1)
 
 
 class DiarizationMergeConfig(BaseModel):
@@ -223,6 +224,8 @@ class LlmConfig(BaseModel):
     tasks: LlmTasksConfig
     title_max_attempts: int = Field(default=2, ge=1)
     title_max_words: int = Field(default=10, ge=1)
+    # sequential = one LLM call per chapter; batch = one call for all (mode A)
+    titles_mode: Literal["sequential", "batch"] = "sequential"
 
     @property
     def active_backend(self) -> LlmBackendConfig:
@@ -263,6 +266,15 @@ class UiConfig(BaseModel):
     summary_max_calls: int = Field(default=2, ge=0)
 
 
+class PipelineConfig(BaseModel):
+    """How TOC titles are produced relative to ASR."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    # a = full ASR then batch titles; b = slice ASR + title when next chapter closes
+    toc_mode: Literal["a", "b"] = "b"
+
+
 class AppConfig(BaseModel):
     """Полная конфигурация приложения для активного профиля."""
 
@@ -275,6 +287,7 @@ class AppConfig(BaseModel):
     asr: AsrConfig
     correction: CorrectionConfig
     chunking: ChunkingConfig
+    pipeline: PipelineConfig = Field(default_factory=PipelineConfig)
     llm: LlmConfig
     limits: LimitsConfig
     ui: UiConfig

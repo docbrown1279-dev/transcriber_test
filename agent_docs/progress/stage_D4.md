@@ -59,3 +59,7 @@
 - README + `manuals/{manual_testing,configuration_guide,llm,index}.md` synced to shipped UI (Qwen demo backend, edit/restore/speakers/titles, player persist, digest summary).
 - Contract comment: `profiles/demo.yaml` backend is qwen, not gemini.
 
+## 2026-09-06 — Planner (close)
+- STATUS: CLOSED
+- Merged UI on main; formal close → **D4.1** perf before D5 Docker
+- Plan: `agent_docs/plans/draft_D4_1_scope.md` (PLAN_DRAFT, await ✅)

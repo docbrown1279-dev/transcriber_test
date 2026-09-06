@@ -8,6 +8,7 @@ llm:
   mode: api                    # api | local  (local is reserved; unused in demo)
   backend: gemini              # gemini | nvidia | qwen
   max_calls_per_job: 40        # 14 extract + 1 report + retries
+  titles_mode: sequential      # sequential | batch; orchestrator forces batch when toc_mode=a
 
   # Shared generation defaults. A task may override temperature / max_tokens / response_format.
   base_llm:
