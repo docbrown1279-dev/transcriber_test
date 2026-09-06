@@ -48,7 +48,7 @@ Check and report before installing anything:
 | Diarization | WeSpeaker on `normalized.wav`; premerge ≤0.5 s; same-speaker gap ≤0.3 s; absorb <1.0 s | `reports/1f`, D1 T2 |
 | ASR | GigaAM `v3_rnnt` (CPU torch runtime); ≤25 s splits; per-turn linear gain | `reports/1e`, D1 dual-path |
 | Terms | suggestions only, never a silent rewrite of the transcript | `reports/2b` |
-| Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2`, threshold 0.70 | `reports/2b/conclusions.md` |
+| Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2` 0.70; absorb chapters &lt;5 s | `reports/2b/conclusions.md`, D2 close |
 | Titles | prompt P1, ≤10 words, no "обсуждение …" stamps | `reports/3` |
 | Insights / report | per-chapter extract, then one summary/report call after merge | `reports/3b`, `3c` |
 | LLM in the cloud | Gemini 2.5 Flash, text only | `reports/3c` |

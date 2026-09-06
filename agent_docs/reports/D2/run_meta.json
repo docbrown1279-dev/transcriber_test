@@ -1,0 +1,48 @@
+{
+  "artifact": {
+    "chapters": 16,
+    "chapters_per_minute": 0.654,
+    "long_chapters": 0,
+    "path": "cloud_out/artifacts/voice_002/chapters.json",
+    "short_chapters": 7
+  },
+  "branch": "cursor/demo-d2-chapters",
+  "commit": "d7fdd09",
+  "host": {
+    "cpu_count": 4,
+    "disk_available_gib": 247,
+    "ffmpeg": "6.1.1",
+    "memory_total_gib": 15,
+    "os": "linux 6.12.94+",
+    "python": "3.12.3"
+  },
+  "llm": {
+    "call_count": 18,
+    "model": "gemini-2.5-flash",
+    "provider": "gemini",
+    "purpose": "chapter titles",
+    "text_only": true
+  },
+  "packages": {
+    "google-genai": "2.22.0",
+    "numpy": "2.5.2",
+    "pydantic": "2.13.5",
+    "sentence-transformers": "6.0.1",
+    "torch": "2.14.0+cpu",
+    "transcriber": "0.1.0"
+  },
+  "peak_rss_kib": 605792,
+  "stage": "D2",
+  "testing": {
+    "bandit": "pass",
+    "mypy": "pass",
+    "pytest": {
+      "passed": 58,
+      "skipped": 5,
+      "status": "pass"
+    },
+    "quality_gate": "pass_with_warnings",
+    "ruff": "pass"
+  },
+  "wall_time_sec": 73.702
+}

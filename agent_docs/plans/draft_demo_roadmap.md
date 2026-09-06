@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0 закрыт. D1 HUMAN_GATE PASS (Silero T2). Транскрипт: `data/voice_002/`. Backlog ASR: `ticket_d1_gigaam_missing.md`. **Текущий:** D2 (чанкинг C + titles P1) — инструкции готовы, handoff pack в `cloud_in/`.
+**Статус:** D0–D1 закрыты. D2 HUMAN_GATE PASS (packing C + P1 titles; absorb &lt;5 с). Дальше: **D3** (insights + report). Backlog ASR: `ticket_d1_gigaam_missing.md`.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 

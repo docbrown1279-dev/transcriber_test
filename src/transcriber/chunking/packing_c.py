@@ -144,6 +144,25 @@ def merge_similar_units(
     return merged
 
 
+def absorb_short_units(units: list[PackUnit], cfg: ChunkingConfig) -> list[PackUnit]:
+    """Приклеивает слишком короткие единицы к предыдущей (или к следующей, если это первая)."""
+    if not units or cfg.absorb_shorter_than_sec <= 0:
+        return units
+
+    absorbed: list[PackUnit] = []
+    for unit in units:
+        if absorbed and unit.duration < cfg.absorb_shorter_than_sec:
+            absorbed[-1].segments.extend(unit.segments)
+            continue
+        absorbed.append(PackUnit(list(unit.segments)))
+
+    # Leading fragment shorter than the floor → fold into the following chapter.
+    while len(absorbed) >= 2 and absorbed[0].duration < cfg.absorb_shorter_than_sec:
+        first = absorbed.pop(0)
+        absorbed[0] = PackUnit([*first.segments, *absorbed[0].segments])
+    return absorbed
+
+
 class PackingCChunker:
     """Реализует packing C с семантическим слиянием соседних блоков."""
 
@@ -176,7 +195,10 @@ class PackingCChunker:
             )
 
         vectors = embedder.encode([unit.text for unit in non_empty_units])
-        merged = merge_similar_units(non_empty_units, vectors, cfg)
+        merged = absorb_short_units(
+            merge_similar_units(non_empty_units, vectors, cfg),
+            cfg,
+        )
         chapters: list[ChapterItem] = []
         short_limit, long_limit = cfg.target_chapter_sec
         for index, unit in enumerate(merged):

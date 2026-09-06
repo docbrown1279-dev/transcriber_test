@@ -6,6 +6,8 @@ import numpy as np
 
 from transcriber.chunking.packing_c import (
     PackingCChunker,
+    PackUnit,
+    absorb_short_units,
     merge_similar_units,
     pack_speaker_pieces,
 )
@@ -141,3 +143,28 @@ def test_d2_tim_01_chapter_times_equal_source_bounds() -> None:
     )
     assert artifact.chapters[0].start == transcript.segments[0].start
     assert artifact.chapters[0].end == transcript.segments[-1].end
+
+
+def test_d2_abs_01_tiny_unit_absorbed_into_previous() -> None:
+    """[D2-ABS-01] Units shorter than absorb_shorter_than_sec fold into the previous chapter."""
+    units = [
+        PackUnit([_segment("s0001", 0.0, 20.0, "A", "длинный блок текста здесь")]),
+        PackUnit([_segment("s0002", 20.5, 23.0, "B", "крошка")]),
+    ]
+    cfg = _cfg().model_copy(update={"absorb_shorter_than_sec": 5.0})
+    absorbed = absorb_short_units(units, cfg)
+    assert len(absorbed) == 1
+    assert [segment.id for segment in absorbed[0].segments] == ["s0001", "s0002"]
+    assert absorbed[0].end == 23.0
+
+
+def test_d2_abs_02_leading_tiny_unit_folds_forward() -> None:
+    """[D2-ABS-02] A leading tiny unit folds into the following chapter."""
+    units = [
+        PackUnit([_segment("s0001", 0.0, 2.0, "A", "крошка")]),
+        PackUnit([_segment("s0002", 3.0, 30.0, "B", "основной блок текста")]),
+    ]
+    cfg = _cfg().model_copy(update={"absorb_shorter_than_sec": 5.0})
+    absorbed = absorb_short_units(units, cfg)
+    assert len(absorbed) == 1
+    assert [segment.id for segment in absorbed[0].segments] == ["s0001", "s0002"]

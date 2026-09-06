@@ -21,3 +21,8 @@
 - Tests: D2 unit, contract, cassette, packed-transcript integration, and retained D0/D1 suite
 - Executed: `pytest` (58 passed, 5 stage-pack skips), `ruff`, `mypy`, `bandit`, G2 CLI (all blocking checks passed)
 - Report: `cloud_out/gate_D2.md`
+## 2026-09-06 — Human close
+- STATUS: HUMAN_GATE: PASS; STAGE_CLOSED
+- Verdict: titles adequate; packing C OK; absorb_shorter_than_sec=5.0 added (tiny fragments fold into previous)
+- Artifact refreshed: cloud_out/artifacts/voice_002/chapters.json → 14 chapters (was 16)
+- Next: merge branch into main

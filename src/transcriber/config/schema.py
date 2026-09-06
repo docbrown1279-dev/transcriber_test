@@ -148,6 +148,7 @@ class ChunkingConfig(BaseModel):
     packing_max_gap_sec: float = Field(default=2.0, ge=0.0)
     packing_target_words: list[int] = Field(default_factory=lambda: [40, 80])
     merge_max_duration_sec: float = Field(default=180.0, gt=0.0)
+    absorb_shorter_than_sec: float = Field(default=5.0, ge=0.0)
     target_chapter_sec: list[int] = Field(default_factory=lambda: [45, 180])
     target_chapters_per_minute: list[float] = Field(default_factory=lambda: [0.4, 0.8])
     warning_chapters_per_minute: list[float] = Field(default_factory=lambda: [0.3, 1.0])

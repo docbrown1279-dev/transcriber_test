@@ -11,7 +11,7 @@ schemas; this file wins for which engine to implement.
 | Diarization | WeSpeaker on `normalized.wav`; premerge ≤0.5 s; same-speaker gap ≤0.3 s; absorb <1.0 s | pyannote 3.1, sherpa-full; merge agg 0.8/2.5 |
 | ASR | GigaAM `v3_rnnt` (CPU torch); ≤25 s splits; per-turn linear gain on slices | Whisper family, Podlodka |
 | Terms | suggestions only; never rewrite transcript | silent auto-replace |
-| Chunking | packing C + `rubert-tiny2` threshold 0.70; speaker packing gap ≤2 s; pack target ~40–80 words; merge cap 180 s | late chunking Jina (D), hybrid C→D, pairwise LLM (B) |
+| Chunking | packing C + `rubert-tiny2` threshold 0.70; speaker packing gap ≤2 s; pack target ~40–80 words; merge cap 180 s; absorb chapters &lt;5 s into neighbour | late chunking Jina (D), hybrid C→D, pairwise LLM (B) |
 | Titles | prompt `title_p1_v1` (P1), ≤10 words, no stamp phrases; Gemini 2.5 Flash in cloud | prompt P2; local LLM in cloud |
 | Insights / report | extract per chapter, then one report call after merge (**D3 — not this stage**) | inventing timestamps |
 | LLM (cloud / demo) | Gemini 2.5 Flash, text only | local LLM in cloud, audio to API |
