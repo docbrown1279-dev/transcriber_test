@@ -122,7 +122,7 @@ def main() -> None:
         report_artifact = load_artifact(args.report, ReportArtifact)
         insights = load_artifact(args.insights, InsightsArtifact)
         chapters = load_artifact(args.chapters, ChaptersArtifact)
-        transcript = (
+        report_transcript = (
             load_artifact(args.transcript, TranscriptArtifact)
             if args.transcript is not None
             else None
@@ -131,7 +131,7 @@ def main() -> None:
             report_artifact,
             insights,
             chapters,
-            transcript,
+            report_transcript,
             profile=args.profile,
         )
         print(f"Quality verdict: {report.verdict.upper()}")

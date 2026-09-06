@@ -1,10 +1,11 @@
 """Проверки качества артефактов и формирования отчетов шлюзов."""
 
-from dataclasses import dataclass, field
 import re
+from dataclasses import dataclass, field
 from typing import Any
 
 from transcriber.config.schema import AppConfig
+from transcriber.insights.clock_gate import clock_gate
 from transcriber.llm.titles import STAMP_PREFIXES
 from transcriber.models.artifacts import (
     ChaptersArtifact,
@@ -14,7 +15,6 @@ from transcriber.models.artifacts import (
     ReportArtifact,
     TranscriptArtifact,
 )
-from transcriber.insights.clock_gate import clock_gate
 from transcriber.quality.chapter_metrics import calculate_chapter_metrics
 from transcriber.quality.ru_ratio import RatioResult, russian_word_ratio
 

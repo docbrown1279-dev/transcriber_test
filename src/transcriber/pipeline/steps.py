@@ -6,7 +6,6 @@ from typing import Any, Protocol
 
 from pydantic import BaseModel
 
-from transcriber.audio.normalize import FfmpegAudioNormalizer
 from transcriber.config.schema import AppConfig
 from transcriber.errors import StageNotImplementedError
 from transcriber.export.markdown import MarkdownExporter
@@ -65,6 +64,8 @@ class StepDefinition:
         job_id = getattr(ctx, "job_id", job_dir.name)
 
         if self.stage == "normalize":
+            from transcriber.audio.normalize import FfmpegAudioNormalizer
+
             source_audio = getattr(ctx, "source_audio", None)
             if source_audio is None:
                 # Поиск исходного аудиофайла в job_dir

@@ -13,8 +13,8 @@ from transcriber.llm.factory import complete_json
 from transcriber.llm.prompts import load_prompt, load_schema, render_prompt
 from transcriber.models.artifacts import (
     ChaptersArtifact,
-    InsightSource,
     InsightsArtifact,
+    InsightSource,
     ReportArtifact,
     ReportChapterRef,
     ReportKeyMoment,

@@ -1,10 +1,9 @@
 """Loading and rendering of immutable, package-owned LLM resources."""
 
 import json
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import Any
-
 
 _PLACEHOLDER = re.compile(r"\{\{[A-Za-z_][A-Za-z0-9_]*\}\}")
 _PACKAGE_ROOT = Path(__file__).resolve().parent
