@@ -12,7 +12,7 @@
 ```text
 config/base.yaml                 # речь, чанкинг, лимиты — не трогать ради смены модели
 config/base_llm.yaml             # всё про LLM: mode, backend, backends, tasks
-config/profiles/demo.yaml        # обычно только llm.backend: gemini и llm.mode: api
+config/profiles/demo.yaml        # llm.mode: api, llm.backend: qwen (не gemini)
 config/llm_extra/*.yaml          # редко: ключи, которые есть у одного API и нет у другого
 src/transcriber/llm/prompts/     # тексты промптов, папка = таска
 src/transcriber/llm/schemas/     # JSON Schema ответа, отдельно от промптов
@@ -30,10 +30,10 @@ src/transcriber/llm/schemas/     # JSON Schema ответа, отдельно о
 ```yaml
 llm:
   mode: api          # api | local   (local зарезервирован, в demo не включаем)
-  backend: gemini    # gemini | nvidia | qwen
+  backend: qwen      # demo overlay; в base_llm.yaml дефолт gemini | nvidia | qwen
 ```
 
-Сменить провайдера — одна строка `backend:` (и ключ этого бэкенда в окружении). Промпты те же.
+Профиль **demo** переопределяет backend на **qwen** (`config/profiles/demo.yaml`). Сменить провайдера — одна строка `backend:` (и ключ этого бэкенда в окружении). Промпты те же.
 
 | backend | Переменная ключа | Клиент | `base_url` |
 |---|---|---|---|
@@ -185,6 +185,7 @@ tasks:
 | Хочу | Куда |
 |---|---|
 | Gemini → NVIDIA | `llm.backend: nvidia` + `NVIDIA_API_KEY` в окружении |
+| Демо с Qwen (как сейчас) | `profiles/demo.yaml` уже `backend: qwen` + `QWEN_API_KEY` |
 | Другая модель Qwen | `backends.qwen.model` |
 | Другой endpoint Qwen | `backends.qwen.base_url` |
 | Длиннее финальный отчёт | `tasks.meeting_insights.report.max_tokens` |
@@ -198,15 +199,26 @@ tasks:
 
 ## 7. Секреты и `.env`
 
-В yaml: `api_key_env: GEMINI_API_KEY`.  
+В yaml: `api_key_env: QWEN_API_KEY` (demo) или `GEMINI_API_KEY` / `NVIDIA_API_KEY`.  
 В `.env` (локально) или в дашборде Cloud Agent:
 
 ```text
-GEMINI_API_KEY=…
+QWEN_API_KEY=…      # demo overlay (активный backend)
+GEMINI_API_KEY=…    # если backend: gemini
 NVIDIA_API_KEY=…    # если backend: nvidia
-QWEN_API_KEY=…      # если backend: qwen
 ```
 
 `load_config` вызывает `python-dotenv` для файла `.env` в cwd или рядом с `config/` (`override=false`). Приложение читает значение по имени. В логи пишется имя переменной, не значение. `.env` не коммитить. Агентам запрещено открывать `.env` и печатать секреты.
 
 `backends.*.extra_config` читается при вызове (`base_llm ← extra ← task`). Пример: `config/llm_extra/no_temperature.yaml`.
+
+---
+
+## 8. Кнопка саммари в демо-UI
+
+Веб-воркер останавливается на `titles`. Кнопка на оглавлении **не** гоняет полный D3-пайплайн (extract по каждой главе). Код: `src/transcriber/insights/web_summary.py`.
+
+- Дайджест текста глав (~700 символов на главу) + **один** вызов report-промпта (`tasks.meeting_insights.report`).
+- Бюджет: `ui.summary_max_calls` (в `base.yaml` и `profiles/demo.yaml` = **2**), sidecar `summary_usage.json`. Это **не** `llm.max_calls_per_job` (40 — для полного extract+report).
+- Шаблон «Протокол встречи» включён; «Вопросы и ответы» выключен.
+- Нужен ключ **активного** backend (для demo — `QWEN_API_KEY`).

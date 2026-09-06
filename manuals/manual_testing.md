@@ -65,10 +65,10 @@ uv run uvicorn transcriber.web.app:app --host 127.0.0.1 --port 8000
 ## Порядок после D0
 
 ```text
-D0 CLOSED (merge) → D1 облако (G1) → ручной шлюз D1 → merge → D2 …
+D0 CLOSED → D1 (G1 + HUMAN_GATE) → D2 → D3 → D4 локальный UI (HUMAN_GATE в браузере) → D5
 ```
 
-Не переходить к D2, пока в `agent_docs/progress/stage_D1.md` нет строки `HUMAN_GATE: PASS`.
+D1–D3 уже в `main` с `HUMAN_GATE: PASS`. D4 влит в `main`; человеческий шлюз — прогон демки в браузере (раздел ниже).
 
 ---
 
@@ -141,4 +141,74 @@ uv run transcriber quality check-insights \
 
 Смена модели для локальной сверки: `llm.backend` в `config/base_llm.yaml` (NVIDIA/Qwen API), те же промпты. Локальный GGUF на D3 не включаем.
 
-**Не делать на D3:** веб-загрузка (D4), правка транскрипта, новый чанкинг.
+**Не делать на D3:** веб-загрузка (это уже D4), правка транскрипта, новый чанкинг.
+
+---
+
+## Stage D4 — демо UI (локально)
+
+**Смысл этапа:** Jinja-демка без cloud handoff. Загрузка файла → прогресс → оглавление глав → страница главы. Воркер веб-задачи идёт **до стадии `titles`** (названия глав). Полный extract+report пайплайна **не** запускается сам: саммари — кнопка на оглавлении.
+
+**Критерий выхода:** локальный smoke + человеческий прогон в браузере; `HUMAN_GATE` записать в `agent_docs/progress/stage_D4.md`. Playwright нет.
+
+### Запуск
+
+Нужны `JOB_IP_SALT` и `QWEN_API_KEY` (профиль `demo` → `llm.backend: qwen`). Профиль не класть в `.env`.
+
+```bash
+export JOB_IP_SALT=local-dev-salt
+uv run transcriber serve --reload
+# http://127.0.0.1:8000/
+```
+
+Либо `uv run uvicorn transcriber.web.app:app --host 127.0.0.1 --port 8000 --reload`.
+
+### Поток в браузере
+
+```text
+/                        загрузка файла (поле URL — только классификация youtube/yandex/unknown, файл всё равно нужен)
+→ /jobs/{id}             прогресс: полоса + прошедшее время
+→ /jobs/{id}/result      оглавление (id глав C00…) + плеер
+→ /jobs/{id}/chapters/{cid}  текст главы, правки, prev/next
+```
+
+Старые HTML-макеты: `/stubs/upload`, `/stubs/result`, `/stubs/chapter`.
+
+### Лимиты и ошибки
+
+- `audio.max_minutes=30`: длиннее → предупреждение и обрезка, не отказ.
+- Слишком большой файл (`audio.max_file_size_mb`) → отказ.
+- Лимит запросов с IP/сутки **не** действует на loopback (`127.0.0.1` / `::1`); лимит одновременных задач — действует.
+- Контейнер снифается; mux в `.bin` нет. mp3 обычно проходит через ffmpeg; мусор/txt падает на ffprobe.
+- Пользователю: лимиты как есть, прочие сбои — общая фраза. Детали в логах.
+- Время на прогрессе после `done` заморожено (`finished_at`); без него — сумма `runtime_sec` стадий (не «created_at → сейчас»).
+
+### Правки, спикеры, названия
+
+- Сохранение главы пишет `transcript.json`. Первая правка копирует ASR в `transcript.asr.json`.
+- Спикер в главе — выпадающий список id диаризации. Человеческие имена — sidecar `speakers.json` (`Имя · SPEAKER_00`); переименование **не** меняет id кластеров. На оглавлении — длительность речи по кластеру.
+- Восстановить главу / весь job из ASR. Полный restore ещё **удаляет** `speakers.json`.
+- Отчёт не удаляется: если он есть, появляется `report.stale.json`.
+- Названия глав правятся на оглавлении (`POST /jobs/{id}/actions/titles`); смена названий тоже помечает отчёт неактуальным.
+
+### Саммари и словарь
+
+- Кнопка **«Протокол встречи»** вызывает Qwen: дайджест текста глав + **один** report-промпт (без extract по каждой главе). Лимит: `ui.summary_max_calls` (demo = **2**), счётчик `summary_usage.json`.
+- Шаблон «Вопросы и ответы» выключен.
+- Словарь — заглушка: не переписывает транскрипт.
+
+### Плеер
+
+Позиция (время + playing) в `sessionStorage` на job: переход оглавление ↔ глава не сбрасывает место. На странице главы — prev/next.
+
+### Человеческий шлюз D4
+
+- [ ] Короткий клип (`data/test_voice.m4a`) или `voice_002`: upload → прогресс → оглавление → глава
+- [ ] Правка реплики / спикера, restore главы, rename спикера, правка названия
+- [ ] Кнопка саммари: появляется `report.md`, повтор до лимита 2, дальше отказ бюджета
+- [ ] Reload страницы прогресса на готовой задаче: время не «накручивается»
+- [ ] Записать `HUMAN_GATE: PASS|FAIL` + одна фраза в `stage_D4.md`
+
+Известные ограничения (не блокер UI): короткие главы — [`ticket_d2_short_chapters.md`](../agent_docs/plans/ticket_d2_short_chapters.md); 5 кластеров vs 4 человека — [`ticket_d1_speaker_clusters.md`](../agent_docs/plans/ticket_d1_speaker_clusters.md); ingest-gate форматов — [`ticket_d4_audio_formats.md`](../agent_docs/plans/ticket_d4_audio_formats.md).
+
+**Не делать на D4:** Playwright, cloud handoff, реальный fetch YouTube/Yandex, пересборка chapters/report `voice_002`.

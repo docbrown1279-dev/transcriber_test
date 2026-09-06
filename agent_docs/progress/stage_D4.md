@@ -51,3 +51,11 @@
 - Full ASR restore also deletes `speakers.json`. Index lists cluster id + speech duration; chapter labels keep `Имя · SPEAKER_00`.
 - Backlog (не в этой ветке): `agent_docs/plans/ticket_d1_speaker_clusters.md` — 5 id vs 4 человека (SPEAKER_00 ≈ 87% + крошки); порог кластеризации, клипы с известным N, OTHER для 2–3 реплик.
 
+## 2026-09-06 — Merge
+- STATUS: IN_MAIN (`8371a79`); HUMAN_GATE still browser (not recorded)
+- Merged `cursor/demo-d4-web` into `main`. Worker until `titles`; on-demand Qwen summary (`ui.summary_max_calls=2`).
+
+## 2026-09-06 — Docs
+- README + `manuals/{manual_testing,configuration_guide,llm,index}.md` synced to shipped UI (Qwen demo backend, edit/restore/speakers/titles, player persist, digest summary).
+- Contract comment: `profiles/demo.yaml` backend is qwen, not gemini.
+

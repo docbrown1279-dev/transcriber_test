@@ -33,10 +33,10 @@ app:
 
 | Переменная | Зачем |
 |---|---|
-| `JOB_IP_SALT` | хэш IP для лимитов; без неё `/healthz` и `healthcheck` падают |
-| `GEMINI_API_KEY` | активный `llm.backend: gemini` (default demo) |
+| `JOB_IP_SALT` | хэш IP для лимитов; без неё `/healthz`, `healthcheck` и `serve` падают |
+| `QWEN_API_KEY` | активный backend профиля **demo** (`llm.backend: qwen`) |
+| `GEMINI_API_KEY` | только если `llm.backend: gemini` (`base_llm.yaml`, оверлеи `dev`/`prod`) |
 | `NVIDIA_API_KEY` | только если `llm.backend: nvidia` |
-| `QWEN_API_KEY` | только если `llm.backend: qwen` |
 | `HF_TOKEN` | загрузка моделей (с D1), не в yaml |
 
 Имена переменных ключей LLM задаются в `config/base_llm.yaml` (`api_key_env`). Значения — окружение или `.env` в корне репо (не коммитить). `load_config` подхватывает `.env` сам, **не** перезаписывая уже заданные переменные. Значения в логи не пишутся. Подробно: [`llm.md`](llm.md).
@@ -46,12 +46,14 @@ app:
 | Ситуация | Куда смотреть |
 |---|---|
 | Укоротить / удлинить лимит аудио демки | `audio.max_minutes` в `config/base.yaml` или profile overlay. Длиннее лимита → предупреждение и обрезка (не отказ); oversize файла → отказ |
+| Лимит кнопки саммари в UI | `ui.summary_max_calls` (demo = 2); не путать с `llm.max_calls_per_job` (полный extract+report) |
+| Правки / плеер в UI | `ui.allow_editing`, `ui.allow_player` |
 | Пороги Silero VAD | `base.yaml` → `vad.threshold` / `neg_threshold` / `min_*` |
 | VAD preprocess (опционально) | `base.yaml` → `audio.vad_preprocess` (по умолчанию **выкл.**; C3 dynaudnorm оставлен только как строка-заготовка) |
 | Склейка фраз / absorb спикеров | `base.yaml` → `diarization.merge` (`vad_premerge_gap_sec`, `same_speaker_gap_sec`, `absorb_turn_shorter_than_sec`) |
 | Per-turn gain перед GigaAM | `base.yaml` → `audio.asr_per_turn_gain` + `audio.gain.*` |
 | Лимит запросов с IP / TTL | `profiles/demo.yaml` → `limits.*` |
-| Сменить облачную LLM | `config/base_llm.yaml` → `llm.backend` (+ ключ в `.env`); см. [`llm.md`](llm.md) |
+| Сменить облачную LLM | overlay профиля (`profiles/demo.yaml` → `llm.backend`) или `base_llm.yaml`; ключ в `.env`; см. [`llm.md`](llm.md) |
 | Другая модель / URL API | `llm.backends.<name>.model` / `base_url` |
 | Длиннее саммари | `llm.tasks.meeting_insights.report.max_tokens` |
 | Новый текст промпта | новый файл в `src/transcriber/llm/prompts/<таска>/` + путь в yaml |

@@ -33,4 +33,6 @@
 - 2026-09-06T14:25:00+03:00 D4 INSTRUCTIONS_READY coder_D4.md tester_D4.md (local; no Playwright; loopback IP exempt; backend module smoke v0)
 - 2026-09-06T14:50:00+03:00 add soft regression test_voice (VAD IoU, speakers 2-4, RU ASR); WARN≠block unless REGRESSION_STRICT=1
 - 2026-09-06T15:00:00+03:00 D4 Coder READY_FOR_TEST local Jinja UI + limits/queue/TTL (no cloud)
+- 2026-09-06T18:29:00+03:00 D4 UI merged main 8371a79 (cursor/demo-d4-web); live summary/titles/player; tickets parked
+- 2026-09-06T18:45:00+03:00 docs sync on main: README D0–D4 status; manuals D4 UI flow; demo LLM=qwen; ui.summary_max_calls
 
