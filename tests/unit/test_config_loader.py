@@ -66,7 +66,7 @@ def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
     assert demo_config.vad.neg_threshold == 0.30
     assert demo_config.vad.min_silence_ms == 350
     assert demo_config.audio.gain.rms_threshold_dbfs == -30.0
-    assert demo_config.diarization.embed.cluster_distance_threshold == 0.80
+    assert demo_config.diarization.embed.cluster_distance_threshold == 0.85
 
 
 def test_d0_cfg_04_profile_selections_and_secrets(dev_config, prod_config) -> None:
