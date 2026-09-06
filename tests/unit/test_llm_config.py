@@ -4,8 +4,8 @@ import pytest
 
 from transcriber.config.loader import load_config
 from transcriber.errors import ComponentUnavailableError
-from transcriber.llm.gemini import GeminiLlmClient
 from transcriber.llm.factory import OpenAiCompatLlmClient, resolve_call_options
+from transcriber.llm.gemini import GeminiLlmClient
 from transcriber.registry import available, build
 
 
@@ -33,11 +33,14 @@ def test_d3_cfg_02_api_backends_select_openai_compat() -> None:
 def test_d3_cfg_03_task_generation_values_override_base() -> None:
     """[D3-CFG-03] Task token limits override shared defaults."""
     cfg = load_config("demo")
-    task = cfg.llm.tasks.meeting_insights.report
-    options = resolve_call_options(cfg.llm, task)
-    assert options.max_tokens == task.max_tokens == 3072
-    assert options.temperature == cfg.llm.base_llm.temperature
-    assert "extra_config" not in type(task).model_fields
+    extract_task = cfg.llm.tasks.meeting_insights.extract
+    report_task = cfg.llm.tasks.meeting_insights.report
+    extract_options = resolve_call_options(cfg.llm, extract_task)
+    report_options = resolve_call_options(cfg.llm, report_task)
+    assert extract_options.max_tokens == extract_task.max_tokens == 4096
+    assert report_options.max_tokens == report_task.max_tokens == 3072
+    assert extract_options.temperature == cfg.llm.base_llm.temperature
+    assert "extra_config" not in type(extract_task).model_fields
 
 
 def test_d3_reg_01_api_clients_build_while_local_stays_unavailable() -> None:

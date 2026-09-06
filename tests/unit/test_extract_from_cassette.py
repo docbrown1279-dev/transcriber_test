@@ -9,8 +9,11 @@ from transcriber.models.artifacts import (
     ChapterItem,
     ChapterMetrics,
     ChaptersArtifact,
+    InsightsArtifact,
     TranscriptArtifact,
     TranscriptSegment,
+    dump_artifact,
+    load_artifact,
 )
 
 
@@ -41,7 +44,7 @@ class CassetteClient:
         )
 
 
-def test_d3_cas_01_extract_cassette_is_hydrated(demo_config) -> None:
+def test_d3_cas_01_extract_cassette_is_hydrated(demo_config, tmp_path: Path) -> None:
     """[D3-CAS-01] Recorded extract output is hydrated from transcript metadata."""
     transcript = TranscriptArtifact(
         schema_version="1",
@@ -88,4 +91,8 @@ def test_d3_cas_01_extract_cassette_is_hydrated(demo_config) -> None:
         chapters, transcript, CassetteClient(), demo_config
     )
     assert result.chapters[0].key_points[0].src[0].start == 1
+    output = tmp_path / "insights.json"
+    dump_artifact(result, output)
+    reloaded = load_artifact(output, InsightsArtifact)
+    assert reloaded.chapters[0].actions[0].src[0].segment_id == "s0001"
     assert result.llm_calls == 1

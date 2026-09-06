@@ -5,7 +5,12 @@
       "segment_ids": ["s0001"]
     }
   ],
-  "actions": [],
+  "actions": [
+    {
+      "text": "Передать результат после согласования",
+      "segment_ids": ["s0001"]
+    }
+  ],
   "open_questions": [],
   "asr_notes": []
 }

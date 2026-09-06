@@ -49,7 +49,7 @@ llm:
       extract:
         prompt: prompts/meeting_insights/v1_extract.md
         schema: schemas/chapter_extract.json
-        max_tokens: 2048
+        max_tokens: 4096         # includes Gemini thinking tokens plus JSON output
       report:
         prompt: prompts/meeting_insights/v1_report.md
         schema: schemas/meeting_report.json
