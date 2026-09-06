@@ -28,3 +28,4 @@
 - 2026-09-06T12:20:00+03:00 D3 HUMAN_GATE PASS (report.md OK; speaker oversplit deferred to diarization/source refresh); polish: extra_config+.env load; close → merge main
 - 2026-09-06T13:26:00+03:00 diarization fix: cluster_distance_threshold 0.80→0.85 on T2 VAD; voice_002 transcript republished (5 speakers); chapters/report left stale by design
 - 2026-09-06T13:35:00+03:00 diarization 0.85 merged main (PR #21); D4 PLAN_DRAFT agent_docs/plans/draft_D4_scope.md (await ✅ → Phase B)
+- 2026-09-06T13:45:00+03:00 D4 decisions: local-only (no cloud handoff); E2E short clip; audio.max_minutes=30 with warn+trim over limit

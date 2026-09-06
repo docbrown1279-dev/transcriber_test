@@ -41,7 +41,7 @@ export APP_PROFILE=prod
 
 | Ситуация | Куда смотреть |
 |---|---|
-| Укоротить лимит аудио демки | `profiles/demo.yaml` или `base` → `audio.max_minutes` |
+| Укоротить / удлинить лимит аудио демки | `audio.max_minutes` в `config/base.yaml` или profile overlay. Длиннее лимита → предупреждение и обрезка (не отказ); oversize файла → отказ |
 | Пороги Silero VAD | `base.yaml` → `vad.threshold` / `neg_threshold` / `min_*` |
 | VAD preprocess (опционально) | `base.yaml` → `audio.vad_preprocess` (по умолчанию **выкл.**; C3 dynaudnorm оставлен только как строка-заготовка) |
 | Склейка фраз / absorb спикеров | `base.yaml` → `diarization.merge` (`vad_premerge_gap_sec`, `same_speaker_gap_sec`, `absorb_turn_shorter_than_sec`) |

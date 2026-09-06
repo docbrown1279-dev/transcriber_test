@@ -104,13 +104,15 @@ chapters is allowed; G3.3 only requires `src` when a key point exists.
 
 ## G4 — web demo (stage D4)
 
+Stage D4 is developed and gated **locally** (no Cursor Cloud handoff by default).
+
 | id | Check | Threshold |
 |---|---|---|
-| G4.1 | `uv run pytest tests/ -v` incl. E2E upload → progress → result → download on the 85 s clip from `cloud_in/inputs/audio/` | exit 0 |
+| G4.1 | `uv run pytest tests/ -v` incl. E2E upload → progress → result → download on a short clip (~85 s) | exit 0 |
 | G4.2 | `GET /healthz` | 200, lists per-component status from the startup self-check |
 | G4.3 | Second request from the same IP within 24 h | 429 with a human-readable message |
 | G4.4 | Second concurrent job | rejected, queue never exceeds `queue_max_size` |
-| G4.5 | File over `max_file_size_mb` / audio over `max_minutes` | rejected before the pipeline starts |
+| G4.5 | File over `max_file_size_mb` → rejected before the pipeline; audio longer than `audio.max_minutes` → accepted with a **warning** that the clip will be **truncated** to `max_minutes` (value from config) | size reject; duration warn+trim |
 | G4.6 | TTL sweeper removes the job directory including the upload | directory absent after expiry |
 | G4.7 | Logs contain no transcript text and no secret values | grep-based check, FAIL on match |
 | G4.8 | Result page renders summary, key moments with timecodes, chapters, download link | asserted in E2E |
