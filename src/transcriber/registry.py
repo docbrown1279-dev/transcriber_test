@@ -112,6 +112,24 @@ def _build_dictionary_suggester() -> Any:
     return DictionaryTermSuggester()
 
 
+def _build_rubert_tiny2() -> Any:
+    from transcriber.chunking.embeddings import RubertTiny2EmbeddingBackend
+
+    return RubertTiny2EmbeddingBackend()
+
+
+def _build_packing_c() -> Any:
+    from transcriber.chunking.packing_c import PackingCChunker
+
+    return PackingCChunker()
+
+
+def _build_gemini() -> Any:
+    from transcriber.llm.gemini import GeminiLlmClient
+
+    return GeminiLlmClient()
+
+
 # Регистрация всех компонентов согласно контракту module_interfaces.md §3
 _CONTRACT_COMPONENTS: list[tuple[str, str, Callable[[], Any], tuple[str, ...]]] = [
     # vad
@@ -136,7 +154,7 @@ _CONTRACT_COMPONENTS: list[tuple[str, str, Callable[[], Any], tuple[str, ...]]] 
     (
         "embeddings",
         "rubert_tiny2",
-        _make_stub_factory("embeddings", "rubert_tiny2"),
+        _build_rubert_tiny2,
         ("demo", "dev", "prod"),
     ),
     (
@@ -150,7 +168,7 @@ _CONTRACT_COMPONENTS: list[tuple[str, str, Callable[[], Any], tuple[str, ...]]] 
     (
         "chunking",
         "packing_c",
-        _make_stub_factory("chunking", "packing_c"),
+        _build_packing_c,
         ("demo", "dev", "prod"),
     ),
     (
@@ -161,7 +179,7 @@ _CONTRACT_COMPONENTS: list[tuple[str, str, Callable[[], Any], tuple[str, ...]]] 
     ),
     ("chunking", "hybrid_c_then_d", _make_stub_factory("chunking", "hybrid_c_then_d"), ("dev",)),
     # llm
-    ("llm", "gemini", _make_stub_factory("llm", "gemini"), ("demo", "dev")),
+    ("llm", "gemini", _build_gemini, ("demo", "dev")),
     ("llm", "local_llama", _make_stub_factory("llm", "local_llama"), ("dev", "prod")),
     ("llm", "openai_compat", _make_stub_factory("llm", "openai_compat"), ("dev", "prod")),
     # export

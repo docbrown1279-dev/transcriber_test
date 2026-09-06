@@ -57,3 +57,48 @@
 - Chosen: keep dynaudnorm C3; merge agg (gap=0.8 absorb=2.5 premerge=1.0); min_speech_ms=400
 - Gold check on 10 windows: agg no extra speaker glue vs n2 (only apt_flats rapid overlap, same)
 - Reports: d1_asr_coherence.md, d1_coherence_grid.md, d1_coherence_text_compare.md
+
+## 2026-09-05 — full re-run C3+agg → data/voice_002
+- STATUS: FULL_HYP_READY
+- Job: data/voice_002/ (gitignored); config = base.yaml C3+agg
+- Docs updated: draft_demo_roadmap, STACK.md, AGENTS.md, manuals/{configuration_guide,manual_testing}
+- Next: HUMAN_GATE D1 (read transcript / eval attempt), then plan D2 chunking+titles
+
+## 2026-09-05 — d1 Silero parity (1f)
+- STATUS: PARITY_T0_OK + TUNE_GRID_DONE
+- Branch: cursor/d1-silero-parity
+- Root cause: wrong ONNX (deepghs≠snakers4) + missing Silero v5 context window
+- Fix: src/transcriber/vad/silero.py; models/silero_vad.onnx → snakers4 sha 1a153a22…
+- T0: VAD regions exact match 1f raw_turns on test_voice (62.376s / 29)
+- Tunes: T1 alimiter worse; T2 min_silence=350 + premerge=0.5 best readability
+- Report: agent_docs/reports/d1_silero_parity.md
+- Hyp: results/d1_parity_1f/, results/d1_parity_tune/
+- Next: human gate T0 vs T2; defer sherpa/pyannote-onnx bakeoff unless asked
+
+## 2026-09-06 — T2 gold eval (attempt 5)
+- STATUS: T2_GOLD_DIFF_READY
+- Stack: T2 (no dynaudnorm, min_silence=350, premerge=0.5) + fixed snakers4 Silero
+- Hyp: results/d1_parity_t2_gold/
+- Diff: eval/d1/5/transcript_diff.md (readability / window token-recall)
+- Window recall: voice 0.73, apartments 0.75, transformers 0.81, ninth 0.89; missing_hyp=0 all clips
+
+## 2026-09-06 — close Silero/coherence tickets; open GigaAM backlog
+- STATUS: SILERO_PARITY_CLOSED; COHERENCE_TICKET_ARCHIVED; NEXT=GIGAAM_MISSING (backlog)
+- Archived: agent_docs/plans/archived/ticket_d1_silero_parity.md, ticket_d1_asr_coherence.md
+- New backlog: agent_docs/plans/ticket_d1_gigaam_missing.md (missing/truncated spans; dictionary later for касторография)
+- Human: narrative readable enough to move on; do not retune Silero without new evidence
+- Note: base.yaml still C3+agg until explicit apply of T2 defaults
+
+## 2026-09-06 — apply T2 defaults + full hyp refresh
+- STATUS: T2_IN_BASE; FULL_HYP_T2_READY
+- config/base.yaml: vad_preprocess off; thr 0.45/0.30; min_silence=350; premerge=0.5; merge mild 0.3/1.0
+- Archived C3+agg hyp: .trash/voice_002_c3_agg/
+- Publishable transcript: data/voice_002/{transcript.json,transcript.md}
+- Full job intermediates: var/jobs/voice_002_t2/
+- Docs: manuals, STACK, AGENTS, draft_demo_roadmap aligned to T2
+
+## 2026-09-06 — Human gate (narrative)
+- STATUS: HUMAN_GATE: PASS
+- Basis: T2 gold window diffs (eval/d1/5) + readable full transcript; Silero/coherence tickets closed; GigaAM missing spans → backlog only
+- Unblocks: D2 chunking + titles on data/voice_002 (packed copy for cloud)
+

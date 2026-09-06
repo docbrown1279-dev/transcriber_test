@@ -6,7 +6,7 @@ import pytest
 
 from transcriber.errors import StageNotImplementedError
 from transcriber.models.artifacts import TranscriptArtifact, TranscriptSegment, dump_artifact
-from transcriber.pipeline.orchestrator import plan_job, run_stage
+from transcriber.pipeline.orchestrator import plan_job, run_job, run_stage
 from transcriber.pipeline.steps import PIPELINE_STEPS
 
 CONTRACT_ORDER: list[str] = [
@@ -84,13 +84,95 @@ def test_d0_pln_04_calling_unimplemented_stage_raises_and_writes_nothing(tmp_job
     """[D0-PLN-04] calling an unimplemented stage raises StageNotImplementedError and writes no artifact file."""
     initial_files = set(tmp_job_dir.iterdir())
 
-    unimplemented_stages = ["chunk", "titles", "insights_extract", "report"]
+    unimplemented_stages = ["insights_extract", "report"]
     for stage in unimplemented_stages:
         with pytest.raises(StageNotImplementedError):
             run_stage(stage, tmp_job_dir)
 
     current_files = set(tmp_job_dir.iterdir())
     assert current_files == initial_files
+
+
+def test_d2_pln_01_transcript_then_chapters_update_plan(tmp_job_dir: Path) -> None:
+    """[D2-PLN-01] A transcript seeds pending D2 stages, then titled chapters mark both done."""
+    from transcriber.models.artifacts import ChapterItem, ChapterMetrics, ChaptersArtifact
+
+    transcript = TranscriptArtifact(
+        schema_version="1",
+        job_id=tmp_job_dir.name,
+        engine="gigaam_v3_rnnt",
+        segments=[
+            TranscriptSegment(
+                id="s0001",
+                turn_id="t0001",
+                start=1,
+                end=61,
+                speaker="A",
+                text="текст главы",
+            )
+        ],
+        max_segment_sec=60,
+        runtime_sec=1,
+    )
+    dump_artifact(transcript, tmp_job_dir / "transcript.json")
+    initial = {item.stage: item.status for item in plan_job(tmp_job_dir)}
+    assert initial["chunk"] == "pending"
+    assert initial["titles"] == "pending"
+
+    chapters = ChaptersArtifact(
+        schema_version="1",
+        job_id=tmp_job_dir.name,
+        chunker="packing_c",
+        embedding_model="rubert_tiny2",
+        similarity_threshold=0.7,
+        chapters=[
+            ChapterItem(
+                id="C00",
+                start=1,
+                end=61,
+                source_ids=["s0001"],
+                speakers=["A"],
+                title="Заголовок главы",
+                duration_sec=60,
+            )
+        ],
+        metrics=ChapterMetrics(
+            chapters_per_minute=1,
+            short_chapters=0,
+            long_chapters=0,
+        ),
+        runtime_sec=1,
+    )
+    dump_artifact(chapters, tmp_job_dir / "chapters.json")
+    completed = {item.stage: item.status for item in plan_job(tmp_job_dir)}
+    assert completed["chunk"] == "done"
+    assert completed["titles"] == "done"
+
+
+def test_d2_pln_02_transcript_seed_skips_audio_stages(tmp_job_dir: Path) -> None:
+    """[D2-PLN-02] Running from transcript does not require or execute audio stages."""
+    transcript = TranscriptArtifact(
+        schema_version="1",
+        job_id=tmp_job_dir.name,
+        engine="gigaam_v3_rnnt",
+        segments=[
+            TranscriptSegment(
+                id="s0001",
+                turn_id="t0001",
+                start=1,
+                end=3,
+                speaker="A",
+                text="готовая стенограмма",
+            )
+        ],
+        max_segment_sec=25,
+        runtime_sec=1,
+    )
+    dump_artifact(transcript, tmp_job_dir / "transcript.json")
+    executed = run_job(tmp_job_dir, until="correction_suggest")
+    assert executed["normalize"] == tmp_job_dir / "transcript.json"
+    assert (tmp_job_dir / "suggestions.json").is_file()
+    assert not (tmp_job_dir / "audio.json").exists()
 
 
 def test_d1_pln_01_fixture_chain_reports_stages_done(tmp_job_dir: Path) -> None:

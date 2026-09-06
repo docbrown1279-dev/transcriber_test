@@ -35,20 +35,20 @@ Check and report before installing anything:
 |---|---|
 | `cloud_in/agent/{AGENTS.md,rules.md}`, `cloud_in/prompt.md`, `cloud_in/HANDOFF.md` | stop, `cloud_out/BLOCKED.md` |
 | Every file listed under "Inputs" in `cloud_in/prompt.md` | stop, name the missing files exactly |
-| Secrets required by the stage (`GEMINI_API_KEY`, `HF_TOKEN`) | skip only the dependent steps, finish the rest, record it |
+| Secrets required by the stage (`GEMINI_API_KEY`, `HF_TOKEN`) | D2 titles need `GEMINI_API_KEY` — missing key → BLOCKED/FAIL for titles; missing `HF_TOKEN` only if weights not cached. Otherwise skip only the dependent steps, finish the rest, record it |
 | Host inventory (`nproc`, `free -h`, `df -h .`, `ffmpeg -version`, `python3 --version`) | record in `cloud_out/run_meta.json` |
 
 ## Frozen stack (do not reopen)
 
 | Layer | Decision | Source |
 |---|---|---|
-| Loudness | ffmpeg → 16 kHz mono WAV; linear `volume=` only when RMS < −30 dBFS | `reports/1e` |
+| Loudness | Dual-path: `normalized.wav` (+ linear gain if RMS < −30 dBFS); VAD `vad_input.wav` = raw 16 kHz (no dynaudnorm) | `reports/1e`, D1 Silero T2 |
 | Denoise | **none** — measured harmful or useless | `reports/1a`, `1b` |
-| VAD | Silero VAD ONNX; TEN-VAD only as an optional hole-filling fallback, disabled by default | `reports/1f2/conclusions.md` |
-| Diarization | WeSpeaker ResNet34-LM ONNX + clustering; merge same-speaker gap ≤0.3 s, absorb turns <1.0 s | `reports/1f`, `1f2` |
-| ASR | GigaAM `v3_rnnt` (CPU torch is its runtime), segments split on time to ≤25 s | `reports/1e`, `2b` |
+| VAD | Silero on raw `vad_input` (snakers4+context); thr 0.45; `min_silence_ms=350`; TEN hole-fill disabled by default | `reports/1f2`, D1 Silero T2 |
+| Diarization | WeSpeaker on `normalized.wav`; premerge ≤0.5 s; same-speaker gap ≤0.3 s; absorb <1.0 s | `reports/1f`, D1 T2 |
+| ASR | GigaAM `v3_rnnt` (CPU torch runtime); ≤25 s splits; per-turn linear gain | `reports/1e`, D1 dual-path |
 | Terms | suggestions only, never a silent rewrite of the transcript | `reports/2b` |
-| Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2`, threshold 0.70 | `reports/2b/conclusions.md` |
+| Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2` 0.70; absorb chapters &lt;5 s | `reports/2b/conclusions.md`, D2 close |
 | Titles | prompt P1, ≤10 words, no "обсуждение …" stamps | `reports/3` |
 | Insights / report | per-chapter extract, then one summary/report call after merge | `reports/3b`, `3c` |
 | LLM in the cloud | Gemini 2.5 Flash, text only | `reports/3c` |

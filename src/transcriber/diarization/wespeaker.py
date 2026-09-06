@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import soundfile as sf
@@ -37,7 +37,7 @@ def _l2_normalize(matrix: np.ndarray) -> np.ndarray:
     """Построчная L2-нормализация эмбеддингов (устойчивый cosine)."""
     norms = np.linalg.norm(matrix, axis=1, keepdims=True)
     norms = np.maximum(norms, 1e-12)
-    return matrix / norms
+    return cast(np.ndarray[Any, Any], matrix / norms)
 
 
 def _renumber_speakers(turns: list[TurnItem]) -> list[TurnItem]:

@@ -1,0 +1,37 @@
+# Temporary overlay: reproduce Stage 1f Silero+WeSpeaker (no dynaudnorm).
+# Do not merge into base.yaml without explicit approval.
+# Ticket: agent_docs/plans/ticket_d1_silero_parity.md
+#
+# VAD thresholds match scripts/run_stage1f.py speech_timestamps defaults
+# (threshold=0.45, min_silence_ms=50), not the ticket's 0.5/200 sketch.
+app:
+  profile: d1_parity_1f
+
+audio:
+  asr_per_turn_gain: true
+  vad_preprocess:
+    enabled: false
+
+vad:
+  engine: silero
+  threshold: 0.45
+  neg_threshold: 0.30
+  min_speech_ms: 200
+  min_silence_ms: 50
+  fallback: disabled
+
+diarization:
+  engine: wespeaker_onnx
+  device: cpu
+  onnx_threads: 2
+  merge:
+    same_speaker_gap_sec: 0.3
+    absorb_turn_shorter_than_sec: 1.0
+    min_hole_sec: 0.5
+    vad_premerge_gap_sec: 0.3
+
+asr:
+  engine: gigaam_v3_rnnt
+  device: cpu
+  max_segment_seconds: 25
+  subprocess: true

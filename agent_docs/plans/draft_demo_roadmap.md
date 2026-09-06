@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0 закрыт. D1 — Phase B `INSTRUCTIONS_READY`, handoff `cursor/demo-d1-speech` (полный ASR в облаке → человек локально → D2).
+**Статус:** D0–D1 закрыты. D2 HUMAN_GATE PASS (packing C + P1 titles; absorb &lt;5 с). Дальше: **D3** (insights + report). Backlog ASR: `ticket_d1_gigaam_missing.md`.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 
@@ -16,11 +16,11 @@
 
 | Слой | Решение | Откуда |
 |---|---|---|
-| Нормализация | ffmpeg → 16 кГц mono WAV; linear `volume=` только если RMS < −30 dBFS | 1e, 2b |
+| Нормализация | ffmpeg → 16 кГц mono WAV; linear `volume=` на `normalized.wav` если RMS < −30 dBFS; **VAD** `vad_input.wav` = сырой 16 kHz (без dynaudnorm) | 1e, 1f, D1 Silero T2 |
 | Шумоподавление | **не применяем** | 1a/1b — пропуск |
-| VAD | Silero VAD ONNX; TEN-VAD только как опциональный fallback в дырах (по умолчанию **выключен**, лицензия) | 1f2 conclusions |
-| Диаризация | WeSpeaker ResNet34-LM ONNX + кластеризация; склейка gap ≤0,3 с, поглощение turn <1,0 с | 1f, 1f2 |
-| ASR | GigaAM `v3_rnnt` (CPU torch как рантайм), сегменты резать по времени до ≤25 с | 1e, 2b |
+| VAD | Silero VAD ONNX (snakers4 + context) на `vad_input`; thr 0.45 / neg 0.30; `min_speech_ms=200`; `min_silence_ms=350`; TEN-VAD fallback **выключен** | 1f, D1 T2 |
+| Диаризация | WeSpeaker на `normalized.wav`; premerge gap ≤0,5 с; same-speaker gap ≤0,3 с; absorb turn <1,0 с | 1f, D1 T2 |
+| ASR | GigaAM `v3_rnnt` (CPU torch), ≤25 с/сегмент; **per-turn** linear gain на срезах | 1e, 2b, D1 dual-path |
 | Словарь | только **предложения** замен, без молчаливой правки; в демке пустой базовый словарь | 2b, план §«Потом — словарь» |
 | Чанкинг | вариант **C**: packing разных спикеров (gap ≤2 с) + эмбеддинги `rubert-tiny2`, порог 0,70 | 2b conclusions |
 | Заголовки глав | LLM, промпт **P1** (title + пункты одним вызовом), ≤10 слов, без «обсуждение …» | 3 |

@@ -1,0 +1,28 @@
+# Stage D2 — chunking + chapter titles
+
+## 2026-09-06 — Planner (Phase A+B)
+- STATUS: INSTRUCTIONS_READY
+- Predecessor D1: T2 in base.yaml; publishable transcript `data/voice_002/`; human narrative OK → proceed (HUMAN_GATE recorded on stage_D1)
+- Strategy: replicate research packing C + rubert-tiny2 0.70 + title_p1_v1 (Gemini); no C/D or P1/P2 bakeoff in cloud; improvements only after local human gate
+- Plan: agent_docs/plans/draft_D2_scope.md
+- Instructions: agent_docs/instructions/coder_D2.md, tester_D2.md
+- Pack: cloud_in/HANDOFF.md, prompt.md; inputs/artifacts/voice_002/{transcript.json,transcript.md}; STACK.md updated; D1 audio/baselines moved to .trash
+- Branch: cursor/demo-d2-chapters
+- Approved deps: sentence-transformers (+ CPU torch if needed), google-genai; secrets GEMINI_API_KEY + HF_TOKEN
+- Next: cloud_handoff push; human launches Cloud Agent with PASTE; after cloud → /cloud_pull → HUMAN_GATE
+
+## 2026-09-05 — Coder
+- STATUS: READY_FOR_TEST
+- Implemented: packing C, rubert-tiny2 embeddings, Gemini titles, G2 checks, and resumable D2 pipeline
+- Inputs: packed `voice_002` transcript only; no audio or speech stages run
+
+## 2026-09-05 — Tester
+- STATUS: TEST_PASS
+- Tests: D2 unit, contract, cassette, packed-transcript integration, and retained D0/D1 suite
+- Executed: `pytest` (58 passed, 5 stage-pack skips), `ruff`, `mypy`, `bandit`, G2 CLI (all blocking checks passed)
+- Report: `cloud_out/gate_D2.md`
+## 2026-09-06 — Human close
+- STATUS: HUMAN_GATE: PASS; STAGE_CLOSED
+- Verdict: titles adequate; packing C OK; absorb_shorter_than_sec=5.0 added (tiny fragments fold into previous)
+- Artifact refreshed: cloud_out/artifacts/voice_002/chapters.json → 14 chapters (was 16)
+- Next: merge branch into main

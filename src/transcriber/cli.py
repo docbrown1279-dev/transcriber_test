@@ -18,6 +18,7 @@ from transcriber.models.artifacts import (
     SuggestionsArtifact,
     TranscriptArtifact,
     TurnsArtifact,
+    dump_artifact,
     load_artifact,
 )
 from transcriber.models.legacy import convert_legacy_transcript
@@ -94,7 +95,14 @@ def cmd_run(
     job: Annotated[
         Path, typer.Option("--job", "-j", help="Каталог задачи для сохранения артефактов")
     ],
-    audio: Annotated[Path, typer.Option("--audio", "-a", help="Путь к исходному аудиофайлу")],
+    audio: Annotated[
+        Path | None,
+        typer.Option("--audio", "-a", help="Путь к исходному аудиофайлу"),
+    ] = None,
+    transcript: Annotated[
+        Path | None,
+        typer.Option("--transcript", "-t", help="Готовый transcript.json для возобновления"),
+    ] = None,
     until: Annotated[
         str, typer.Option("--until", "-u", help="Стадия конвейера, до которой выполнять обработку")
     ] = "correction_suggest",
@@ -102,11 +110,15 @@ def cmd_run(
         str | None, typer.Option("--profile", "-p", help="Профиль конфигурации")
     ] = None,
 ) -> None:
-    """Выполняет конвейер обработки аудио до заданной стадии."""
+    """Выполняет конвейер из аудио или возобновляет его из готовой стенограммы."""
     cfg = load_config(profile)
     from transcriber.pipeline.orchestrator import run_job
 
     try:
+        if transcript is not None:
+            seeded = load_artifact(transcript, TranscriptArtifact)
+            job.mkdir(parents=True, exist_ok=True)
+            dump_artifact(seeded, job / "transcript.json")
         executed = run_job(
             job_dir=job,
             source_audio=audio,
@@ -168,9 +180,8 @@ def cmd_convert_legacy(
     ] = None,
 ) -> None:
     """Конвертирует исследовательский JSON стенограммы в канонический TranscriptArtifact."""
-    cfg = load_config(profile)
     try:
-        convert_legacy_transcript(src, dest, cfg=cfg)
+        convert_legacy_transcript(src, dest)
         typer.echo(f"Converted {src} -> {dest}")
     except Exception as exc:
         typer.echo(f"Conversion failed: {exc}", err=True)
