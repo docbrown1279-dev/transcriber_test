@@ -1,0 +1,49 @@
+{
+  "mode": "baseline",
+  "audio": "var/bench/d4_1/voice_002_10min.m4a",
+  "duration_sec": 600.0,
+  "host_note": "unconstrained; 16 CPU / 27GiB host; no cgroup",
+  "branch": "cursor/demo-d4-1-perf",
+  "stages": [
+    {
+      "name": "normalize",
+      "wall_sec": 1.595,
+      "peak_rss_mb": null
+    },
+    {
+      "name": "vad",
+      "wall_sec": 3.085,
+      "peak_rss_mb": null
+    },
+    {
+      "name": "diarize",
+      "wall_sec": 77.632,
+      "peak_rss_mb": null
+    },
+    {
+      "name": "asr",
+      "wall_sec": 56.333,
+      "peak_rss_mb": 1693
+    },
+    {
+      "name": "chunk",
+      "wall_sec": 5.876,
+      "peak_rss_mb": 547.2,
+      "note": "offline remeasure; first polluted pass ~190s was HF DNS"
+    },
+    {
+      "name": "titles",
+      "wall_sec": 15.26,
+      "peak_rss_mb": 60,
+      "titles_llm_calls": 6
+    }
+  ],
+  "titles_llm_calls": 6,
+  "chapters": 6,
+  "time_to_first_titled_chapter_sec": null,
+  "time_to_all_titles_sec": 15.26,
+  "total_wall_sec_speech_approx": 138.645,
+  "peak_rss_mb_asr_path": 1693,
+  "notes": "Phase 0 baseline on 10min trim; titles sequential qwen-plus",
+  "total_wall_sec_approx": 159.8
+}

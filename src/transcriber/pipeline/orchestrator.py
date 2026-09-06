@@ -144,8 +144,17 @@ def run_job(
     """Последовательно выполняет конвейер задачи до указанной стадии.
 
     Пропускает стадии, чьи артефакты уже существуют и валидны (resumable).
+
+    ``pipeline.toc_mode``:
+    - ``b`` (default demo): after diarize, fuse ASR+chunk+titles via ``pipeline_b``
+      when ``until`` is ``chunk`` / ``titles`` / insights / report.
+    - ``a``: full ASR then batch titles (``llm.titles_mode=batch``).
     """
     resolved_cfg = cfg or load_config()
+    if resolved_cfg.pipeline.toc_mode == "a":
+        resolved_cfg = resolved_cfg.model_copy(deep=True)
+        resolved_cfg.llm.titles_mode = "batch"
+
     job_path = Path(job_dir)
     job_path.mkdir(parents=True, exist_ok=True)
     paths = JobArtifactPaths(job_path)
@@ -162,6 +171,13 @@ def run_job(
     if until not in valid_stages:
         raise ValueError(f"Invalid 'until' stage '{until}'. Valid stages: {valid_stages}")
 
+    fuse_b = resolved_cfg.pipeline.toc_mode == "b" and until in {
+        "chunk",
+        "titles",
+        "insights_extract",
+        "report",
+    }
+
     transcript_valid = _has_valid_artifact(paths.transcript, TranscriptArtifact)
     pre_asr_stages = {"normalize", "vad", "diarize", "asr"}
     for step in PIPELINE_STEPS:
@@ -174,6 +190,62 @@ def run_job(
             if step.stage == until:
                 break
             continue
+
+        # Mode B: replace asr→titles with streaming pipeline (once)
+        if fuse_b and step.stage == "asr":
+            titles_done = _is_step_done(
+                next(s for s in PIPELINE_STEPS if s.stage == "titles"),
+                paths,
+            )
+            if not titles_done:
+                _emit(events, StageEvent(stage="asr", status="running", pct=0))
+                t0 = monotonic()
+                from transcriber.pipeline.pipeline_b import run_pipeline_b
+
+                run_pipeline_b(job_path, resolved_cfg)
+                runtime = round(monotonic() - t0, 3)
+                for fused in ("asr", "chunk", "titles"):
+                    out = paths.path(
+                        next(s.produces for s in PIPELINE_STEPS if s.stage == fused)
+                    )
+                    executed[fused] = out
+                    _emit(
+                        events,
+                        StageEvent(
+                            stage=fused,
+                            status="done",
+                            pct=100,
+                            runtime_sec=runtime if fused == "asr" else None,
+                            message="toc_mode=b",
+                        ),
+                    )
+            else:
+                for fused in ("asr", "chunk", "titles"):
+                    executed[fused] = paths.path(
+                        next(s.produces for s in PIPELINE_STEPS if s.stage == fused)
+                    )
+                    _emit(
+                        events,
+                        StageEvent(
+                            stage=fused, status="done", pct=100, message="resumed"
+                        ),
+                    )
+            if until in {"asr", "chunk", "titles"}:
+                # still allow correction_suggest if until is later — fall through
+                if until == "asr":
+                    break
+                # continue loop for correction when until is chunk/titles
+                continue
+            continue
+
+        if fuse_b and step.stage in {"chunk", "titles"}:
+            # already handled with asr fuse
+            if step.stage not in executed:
+                executed[step.stage] = paths.path(step.produces)
+            if step.stage == until:
+                break
+            continue
+
         target_file = paths.path(step.produces)
         if _is_step_done(step, paths):
             executed[step.stage] = target_file

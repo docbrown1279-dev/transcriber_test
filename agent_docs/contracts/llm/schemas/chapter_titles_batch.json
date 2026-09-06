@@ -1,0 +1,20 @@
+{
+  "$id": "chapter_titles_batch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["titles"],
+  "properties": {
+    "titles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Черновик этапа D4 — веб-интерфейс демки (Фаза A → B)
 
-**Статус:** INSTRUCTIONS_READY  
+**Статус:** CLOSED (merged main `8371a79`); next → D4.1 perf  
 **Инструкции:** [`../instructions/coder_D4.md`](../instructions/coder_D4.md), [`../instructions/tester_D4.md`](../instructions/tester_D4.md)  
 **Предшественник:** D3 HUMAN_GATE PASS; diarization 0.85 → ~5 speakers (chapters/report **не** пересобираем).  
 **Стратегия:** локальная демка без cloud handoff. HTML-stubs уже есть → wiring к пайплайну.  

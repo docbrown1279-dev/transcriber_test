@@ -10,6 +10,9 @@ diarization:
   device: cpu
   onnx_threads: 2
 
+pipeline:
+  toc_mode: b
+
 llm:
   mode: api
   backend: qwen

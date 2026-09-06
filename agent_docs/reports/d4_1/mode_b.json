@@ -1,0 +1,20 @@
+{
+  "mode": "b",
+  "titles_llm_calls": 6,
+  "asr_wall_sec": 109.444,
+  "glue_wall_sec": 9.8,
+  "time_to_first_titled_chapter_sec": 19.969,
+  "time_to_all_titles_sec": 119.245,
+  "total_wall_sec": 119.247,
+  "chapters": 6,
+  "titles": [
+    "Обратная связь и уточняющие вопросы",
+    "Учет площади застройки и озеленения",
+    "Проверка решений разработчиков",
+    "Ландшафтная концепция и размещение светильников",
+    "Прокладка кабеля и согласование с Оборонэнерго",
+    "Расчет мощности на квартиру"
+  ],
+  "peak_rss_mb": 1956.0,
+  "notes": "title only when next chapter appears; last at EOS"
+}

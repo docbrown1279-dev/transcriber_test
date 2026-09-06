@@ -116,10 +116,14 @@ class SileroVadDetector(VoiceActivityDetector):
         self._model_path = Path(model_path) if model_path else get_silero_model_path()
         self._session: ort.InferenceSession | None = None
 
-    def _get_session(self) -> ort.InferenceSession:
+    def _get_session(self, onnx_threads: int = 2) -> ort.InferenceSession:
         if self._session is None:
+            opts = ort.SessionOptions()
+            opts.intra_op_num_threads = max(1, onnx_threads)
+            opts.inter_op_num_threads = max(1, onnx_threads)
             self._session = ort.InferenceSession(
                 str(self._model_path),
+                sess_options=opts,
                 providers=["CPUExecutionProvider"],
             )
         return self._session
@@ -136,7 +140,7 @@ class SileroVadDetector(VoiceActivityDetector):
         if not wav_path.is_file():
             raise FileNotFoundError(f"WAV file not found: {wav_path}")
 
-        session = self._get_session()
+        session = self._get_session(getattr(cfg, "onnx_threads", 2))
 
         audio_data, sr = sf.read(str(wav_path), dtype="float32")
         if sr != 16000:

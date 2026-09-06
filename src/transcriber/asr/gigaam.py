@@ -2,6 +2,7 @@
 
 import tempfile
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 import soundfile as sf
@@ -30,6 +31,7 @@ def transcribe_slices_with_model(
     gain_max_db: float = 18.0,
     gain_peak_ceiling_dbfs: float = -1.0,
     job_id: str | None = None,
+    on_segment: Callable[[TranscriptSegment], None] | None = None,
 ) -> TranscriptArtifact:
     """Выполняет распознавание речи по репликам с помощью модели GigaAM v3 RNNT."""
     import gigaam
@@ -82,18 +84,19 @@ def transcribe_slices_with_model(
                 text = str(res.text or "").strip()
 
             empty = len(text) == 0
-            segments.append(
-                TranscriptSegment(
-                    id=f"s{idx:04d}",
-                    turn_id=s.turn_id,
-                    start=s.start,
-                    end=s.end,
-                    speaker=s.speaker,
-                    text=text,
-                    gain_db=round(slice_gain, 3),
-                    empty=empty,
-                )
+            segment = TranscriptSegment(
+                id=f"s{idx:04d}",
+                turn_id=s.turn_id,
+                start=s.start,
+                end=s.end,
+                speaker=s.speaker,
+                text=text,
+                gain_db=round(slice_gain, 3),
+                empty=empty,
             )
+            segments.append(segment)
+            if on_segment is not None:
+                on_segment(segment)
 
     runtime_sec = round(time.time() - t0, 3)
 

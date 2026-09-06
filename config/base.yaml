@@ -27,6 +27,7 @@ audio:
 # --- vad ---
 vad:
   engine: silero
+  onnx_threads: 2
   # Stage 1f speech_timestamps defaults (snakers4 Silero v5 + context)
   threshold: 0.45
   neg_threshold: 0.30
@@ -85,6 +86,11 @@ chunking:
   late_chunking:
     enabled: false
     provider: disabled
+
+# --- pipeline TOC (D4.1) ---
+pipeline:
+  # a = ASR all → batch titles; b = ASR slices → title when next chapter appears
+  toc_mode: b
 
 # --- runtime ---
 limits:
