@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Загрузка{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>Новая задача</h1>
+  <form class="upload" action="/jobs" method="post" enctype="multipart/form-data">
+    <label>
+      Аудиофайл
+      <input type="file" name="audio" accept="audio/*,video/*" required />
+    </label>
+    <label>
+      Или ссылка (YouTube / Яндекс Диск)
+      <input type="url" name="url" placeholder="https://…" id="url-input" />
+    </label>
+    <p class="hint" id="url-hint">{{ url_hint }}</p>
+    <p class="hint trim-demo">
+      Если запись длиннее {{ max_minutes or "—" }} мин — предупредим и обрежем.
+      {% if max_file_size_mb %}Максимум {{ max_file_size_mb }} МБ.{% endif %}
+    </p>
+    <button type="submit" class="btn primary">Запустить обработку</button>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/app.js"></script>
+{% endblock %}

@@ -34,7 +34,7 @@ def probe_audio_file(audio_path: Path | str) -> dict[str, Any]:
         "-v",
         "error",
         "-show_entries",
-        "format=duration,size",
+        "format=duration,size,format_name",
         "-of",
         "json",
         str(path_obj),
@@ -45,10 +45,12 @@ def probe_audio_file(audio_path: Path | str) -> dict[str, Any]:
         fmt = data.get("format", {})
         duration = float(fmt.get("duration", 0.0))
         size = int(fmt.get("size", path_obj.stat().st_size))
+        format_name = str(fmt.get("format_name") or "")
         return {
             "path": str(path_obj),
             "duration_sec": round(duration, 3),
             "size_bytes": size,
+            "format_name": format_name,
         }
     except Exception as exc:
         raise RuntimeError(f"ffprobe failed for '{path_obj}': {exc}") from exc
@@ -83,7 +85,7 @@ def run_self_check(
         components["config"] = ComponentHealth(status="error", message=str(exc))
         active_cfg = None
 
-    profile = active_cfg.app.profile if active_cfg else os.environ.get("APP_PROFILE", "demo")
+    profile = active_cfg.app.profile if active_cfg else "demo"
 
     # 2. Registry
     try:

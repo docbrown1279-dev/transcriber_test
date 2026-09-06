@@ -1,7 +1,8 @@
 # Contract: configuration and profiles
 
 Draft updated for layered configs (`base.yaml` + `profiles/{demo,dev,prod}.yaml`).
-Profile is selected with `APP_PROFILE` (`dev | demo | prod`); default is `demo`.
+Profile is `config/base.yaml` → `app.profile` (`demo` | `dev` | `prod`); default is `demo`.
+Optional process override: CLI `--profile` or env `APP_PROFILE`. Do **not** put the profile in `.env`.
 
 ## 1. Rules
 
@@ -50,7 +51,7 @@ See `config/base.yaml`: `audio.gain`, `diarization.merge`, `diarization.embed`.
 
 | Variable | Used by | Required in demo | Provisioned in cloud |
 |---|---|---|---|
-| `APP_PROFILE` | config loader | yes (default `demo`) | yes |
+| `APP_PROFILE` | optional process override (CLI `--profile`). Not in `.env`. Default: `config/base.yaml` `app.profile` (`demo`) | no | optional |
 | `GEMINI_API_KEY` | `llm.backend: gemini` | yes (default backend) | yes when backend is gemini |
 | `NVIDIA_API_KEY` | `llm.backend: nvidia` | only if that backend is selected | optional |
 | `QWEN_API_KEY` | `llm.backend: qwen` | only if that backend is selected | optional |

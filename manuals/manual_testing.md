@@ -11,7 +11,7 @@ uv sync
 export JOB_IP_SALT=local-dev-salt      # обязателен для healthcheck /healthz
 ```
 
-Профиль по умолчанию — `demo` (`APP_PROFILE` не задан). Настройка профилей: [`configuration_guide.md`](configuration_guide.md). Облачный цикл: [`cloud_flow.md`](cloud_flow.md).
+Профиль по умолчанию — `demo` (`config/base.yaml` → `app.profile`). Настройка профилей: [`configuration_guide.md`](configuration_guide.md). Облачный цикл: [`cloud_flow.md`](cloud_flow.md).
 
 ---
 

@@ -18,7 +18,7 @@ src/transcriber/llm/prompts/     # тексты промптов, папка = �
 src/transcriber/llm/schemas/     # JSON Schema ответа, отдельно от промптов
 ```
 
-Загрузка: `base.yaml` ← `base_llm.yaml` ← `profiles/{APP_PROFILE}.yaml`.
+Загрузка: `base.yaml` ← `base_llm.yaml` ← `profiles/{profile}.yaml` (профиль из `config/base.yaml` `app.profile`, не из `.env`).
 
 Эталон содержимого `base_llm.yaml` (копируется в `config/` на этапе D3):  
 [`agent_docs/contracts/llm/base_llm.yaml`](../agent_docs/contracts/llm/base_llm.yaml).

@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Результат — оглавление{% endblock %}
+{% block header_extra %}
+{% if draft_warning %}
+<p class="warn">Черновик: результат создан автоматически и требует проверки.</p>
+{% endif %}
+{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>Распознавание готово</h1>
+  <p class="meta">
+    {% if elapsed_label %}Обработано за {{ elapsed_label }}{% endif %}
+    {% if speaker_ids %} · {{ speaker_ids|length }} спикеров{% endif %}
+  </p>
+  {% if restore_msg == "1" %}
+  <p class="hint">Транскрипт и имена спикеров возвращены к исходному распознаванию.</p>
+  {% endif %}
+  {% if speakers_msg == "1" %}
+  <p class="hint">Имена спикеров сохранены.</p>
+  {% endif %}
+  {% if titles_msg == "1" %}
+  <p class="hint">Названия глав сохранены.</p>
+  {% endif %}
+  {% if summary_done == "1" %}
+  <p class="hint">Саммари готово.</p>
+  {% endif %}
+  {% if stale_msg %}
+  <p class="warn">{{ stale_msg }} Протокол не удалялся — его можно скачать, но лучше пересобрать.</p>
+  {% endif %}
+
+  {% if allow_player %}
+  {% include "partials/player.html" %}
+  {% endif %}
+
+  <h2>Главы</h2>
+  {% if chapters %}
+  {% if allow_editing %}
+  {% for ch in chapters %}
+    {% if ch.id in edited_chapter_ids %}
+    <form id="restore-{{ ch.id }}" class="hidden" method="post" action="/jobs/{{ job.job_id }}/chapters/{{ ch.id }}/restore"></form>
+    {% endif %}
+  {% endfor %}
+  <form class="titles-form" method="post" action="/jobs/{{ job.job_id }}/actions/titles">
+    <ol class="chapters">
+      {% for ch in chapters %}
+      <li class="chapter-row">
+        <span class="chapter-id">{{ ch.id }}</span>
+        <a href="/jobs/{{ job.job_id }}/chapters/{{ ch.id }}">{{ format_clock(ch.start) }}–{{ format_clock(ch.end) }}</a>
+        <input type="hidden" name="chapter_id" value="{{ ch.id }}">
+        <input type="text" name="chapter_title" value="{{ ch.title }}" maxlength="120" aria-label="Название главы {{ ch.id }}">
+        <span class="chapter-flags">
+          {% if ch.id in edited_chapter_ids %}
+          <span class="badge">изменена</span>
+          <button type="submit" class="btn compact" form="restore-{{ ch.id }}">Сбросить к ASR</button>
+          {% endif %}
+        </span>
+      </li>
+      {% endfor %}
+    </ol>
+    <button type="submit" class="btn">Сохранить названия</button>
+  </form>
+  {% else %}
+  <ol class="chapters">
+    {% for ch in chapters %}
+    <li>
+      <span class="chapter-id">{{ ch.id }}</span>
+      <a href="/jobs/{{ job.job_id }}/chapters/{{ ch.id }}">{{ format_clock(ch.start) }}–{{ format_clock(ch.end) }}</a>
+      — {{ ch.title or "(без названия)" }}
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+  {% else %}
+  <p class="hint">Оглавление ещё не готово.</p>
+  {% endif %}
+
+  {% if speaker_ids %}
+  <h2>Спикеры</h2>
+  <p class="hint">Имя — только подпись к кластеру диаризации. Id вроде SPEAKER_00 не меняется: если в кластере несколько людей, все реплики получат одно имя.</p>
+  {% if allow_editing %}
+  <form class="speakers-form" method="post" action="/jobs/{{ job.job_id }}/actions/speakers">
+    {% for sid in speaker_ids %}
+    <div class="speakers-row">
+      <label for="alias-{{ sid }}">{{ sid }}{% if speaker_speech_sec.get(sid) %} · {{ format_elapsed(speaker_speech_sec[sid]) }}{% endif %}</label>
+      <input type="hidden" name="speaker_id" value="{{ sid }}">
+      <input id="alias-{{ sid }}" type="text" name="speaker_alias" value="{{ speaker_aliases.get(sid, '') }}" placeholder="Имя" maxlength="80" autocomplete="off">
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn">Сохранить имена</button>
+  </form>
+  {% else %}
+  <ul class="speakers-list">
+    {% for sid in speaker_ids %}
+    <li>{{ speaker_display(sid, speaker_aliases) }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endif %}
+
+  <div class="actions">
+    <div class="action">
+      <label>
+        Словарь
+        <select disabled>
+          <option>Базовый RU</option>
+          <option disabled>Доменный (скоро)</option>
+        </select>
+      </label>
+      <button type="button" class="btn" id="btn-dict">Проверить по словарю</button>
+      <p class="hint" id="dict-msg"></p>
+    </div>
+    <div class="action">
+      <label>
+        Шаблон саммари
+        <select id="summary-template">
+          {% for item in summary_templates %}
+          <option value="{{ item.value }}" {% if not item.enabled %}disabled{% endif %}>{{ item.label }}{% if not item.enabled %} (скоро){% endif %}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button type="button" class="btn primary" id="btn-summary" {% if summary_remaining == 0 %}disabled{% endif %}>
+        {% if report and summary_remaining > 0 %}Пересобрать саммари{% else %}Сделать саммари{% endif %}
+      </button>
+      <p class="hint" id="summary-msg">
+        {% if summary_max_calls %}Осталось вызовов: {{ summary_remaining }} из {{ summary_max_calls }}.{% endif %}
+      </p>
+    </div>
+  </div>
+
+  {% if report %}
+  <div class="summary-block">
+    <h2>Саммари</h2>
+    {% for para in report.summary.split('\n\n') %}
+    {% if para.strip() %}
+    <p>{{ para }}</p>
+    {% endif %}
+    {% endfor %}
+    {% if report.key_moments %}
+    <h3>Ключевые моменты</h3>
+    <ul>
+      {% for moment in report.key_moments %}
+      <li>{{ format_clock(moment.start) }} — {{ moment.text }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <p class="footer-links">
+    <a href="/jobs/{{ job.job_id }}/download/transcript.json">Скачать транскрипт</a>
+    {% if has_asr_backup %}
+    · <a href="/jobs/{{ job.job_id }}/download/transcript.asr.json">Скачать исходное распознавание</a>
+    {% endif %}
+    · <a href="/jobs/{{ job.job_id }}/download/report.md">Скачать протокол</a>
+    · <a href="/">Новая загрузка</a>
+  </p>
+  {% if allow_editing and (has_transcript_edits or has_speaker_aliases) %}
+  <form class="edit-form" method="post" action="/jobs/{{ job.job_id }}/actions/restore-asr">
+    <button type="submit" class="btn">Сбросить транскрипт и имена спикеров к ASR</button>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/player.js"></script>
+<script src="/static/app.js"></script>
+{% endblock %}

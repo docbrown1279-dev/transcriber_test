@@ -2,6 +2,7 @@
 # Profile overlays live in config/profiles/{demo,dev,prod}.yaml.
 
 app:
+  # Active overlay: demo | dev | prod. Switch here; do not put the profile in .env.
   profile: demo
   storage_root: ./var
   log_level: INFO
@@ -99,3 +100,4 @@ ui:
   allow_editing: true
   allow_player: true
   draft_warning: true
+  summary_max_calls: 2  # on-demand report button; LLM completions per job

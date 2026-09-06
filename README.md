@@ -41,7 +41,7 @@
 |---|---|
 | [`cloud_flow.md`](manuals/cloud_flow.md) | облачный цикл: `/cloud_push`, `/cloud_pull` |
 | [`manual_testing.md`](manuals/manual_testing.md) | ручная проверка / smoke по этапам |
-| [`configuration_guide.md`](manuals/configuration_guide.md) | YAML-профили и `APP_PROFILE` |
+| [`configuration_guide.md`](manuals/configuration_guide.md) | YAML-профили (`app.profile`) и секреты |
 
 ## Быстрый старт (локально, после D0)
 

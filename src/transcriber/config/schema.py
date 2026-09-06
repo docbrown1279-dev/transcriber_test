@@ -260,6 +260,7 @@ class UiConfig(BaseModel):
     allow_editing: bool = False
     allow_player: bool = False
     draft_warning: bool = True
+    summary_max_calls: int = Field(default=2, ge=0)
 
 
 class AppConfig(BaseModel):

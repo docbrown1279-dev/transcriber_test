@@ -13,17 +13,21 @@
 | `config/profiles/dev.yaml` | дельты разработки |
 | `config/profiles/prod.yaml` | дельты боевого контура |
 
-Загрузка: `load_config` делает deep-merge `base.yaml` ← `base_llm.yaml` ← `profiles/{APP_PROFILE}.yaml`, затем валидирует `AppConfig`.
+Загрузка: `load_config` делает deep-merge `base.yaml` ← `base_llm.yaml` ← `profiles/{profile}.yaml`, затем валидирует `AppConfig`.
 
 ## Как выбрать профиль
 
-```bash
-export APP_PROFILE=demo    # по умолчанию, если не задано
-export APP_PROFILE=dev
-export APP_PROFILE=prod
-```
+Профиль **не** хранится в `.env` (там только секреты). Порядок:
 
-Либо флаг CLI там, где есть `--profile` / `-p` (`plan`, `convert-legacy`, `healthcheck`).
+1. флаг CLI `--profile` / `-p`
+2. переменная процесса `APP_PROFILE` (systemd, `export`, `transcriber serve -p`) — не из `.env`
+3. `config/base.yaml` → `app.profile` (**сейчас `demo`**)
+
+```yaml
+# config/base.yaml
+app:
+  profile: demo   # demo | dev | prod
+```
 
 Обязательные секреты/соль (не в YAML):
 

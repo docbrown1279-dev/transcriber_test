@@ -4,7 +4,7 @@
 |---|---|
 | [`cloud_flow.md`](cloud_flow.md) | Облачный цикл: `/cloud_push`, `/cloud_pull`, скрипты `scripts/cloud_*.sh` |
 | [`manual_testing.md`](manual_testing.md) | Ручная проверка / smoke по этапам (D0…) |
-| [`configuration_guide.md`](configuration_guide.md) | Профили `demo`/`dev`/`prod`, `APP_PROFILE`, секреты (кроме детального LLM) |
+| [`configuration_guide.md`](configuration_guide.md) | Профили `demo`/`dev`/`prod` в YAML, секреты в `.env` |
 | [`llm.md`](llm.md) | LLM: `base_llm.yaml`, бэкенды, промпты по таскам, схемы, extra_config |
 
 ## Сопровождение

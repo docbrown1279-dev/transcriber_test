@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Обработка{% endblock %}
+{% block content %}
+<section class="panel" data-job-id="{{ job.job_id }}" data-progress="1" data-created="{{ job.created_at }}" data-state="{{ job.state }}">
+  <h1>Обработка</h1>
+  {% if trim_warning %}
+  <p class="warn">Аудио длиннее {{ max_minutes }} мин — клип обрезан до лимита.</p>
+  {% endif %}
+  <p class="warn {% if not public_error %}hidden{% endif %}" id="job-error">{{ public_error or "" }}</p>
+  <div id="progress-block" class="{% if public_error %}hidden{% endif %}">
+    <div class="progress-track" aria-hidden="true">
+      <div class="progress-bar" id="progress-bar" style="width: {{ overall_pct }}%"></div>
+    </div>
+    <p class="meta"><span id="progress-pct">{{ overall_pct }}</span>%</p>
+  </div>
+  <p class="meta">Время: <span id="elapsed-label">{{ elapsed_label }}</span></p>
+  {% if public_error %}
+  <p class="footer-links"><a href="/">На главную</a></p>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/app.js"></script>
+{% endblock %}

@@ -12,7 +12,7 @@ diarization:
 
 llm:
   mode: api
-  backend: gemini
+  backend: qwen
 
 limits:
   requests_per_ip_per_day: 1
@@ -23,6 +23,7 @@ limits:
 ui:
   type: jinja
   show_progress: true
-  allow_editing: false
-  allow_player: false
+  allow_editing: true
+  allow_player: true
   draft_warning: true
+  summary_max_calls: 2
