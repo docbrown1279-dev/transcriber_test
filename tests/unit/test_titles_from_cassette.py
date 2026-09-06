@@ -1,6 +1,7 @@
 """Offline title generation test using a recorded JSON response."""
 
 from pathlib import Path
+from typing import Any
 
 from transcriber.config.schema import AppConfig
 from transcriber.llm.base import LlmResponse
@@ -24,15 +25,18 @@ class CassetteClient:
         self,
         prompt: str,
         *,
-        max_tokens: int,
-        temperature: float,
+        prompt_id: str,
+        max_tokens: int | None,
+        temperature: float | None,
+        json_schema: dict[str, Any] | None,
+        extra: dict[str, object] | None = None,
     ) -> LlmResponse:
         assert "инженерные сети" in prompt
         return LlmResponse(
             text=self._response_path.read_text(encoding="utf-8"),
             provider=self.name,
             model="fixture",
-            prompt_id="title_p1_v1",
+            prompt_id=prompt_id,
             tokens_in=1,
             tokens_out=1,
             runtime_sec=0,

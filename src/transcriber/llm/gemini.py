@@ -1,4 +1,4 @@
-"""Gemini text-only client for chapter title generation."""
+"""Gemini text-only client."""
 
 from __future__ import annotations
 
@@ -17,20 +17,23 @@ class GeminiLlmClient:
     def __init__(
         self,
         *,
-        model: str = "gemini-2.5-flash",
-        api_key_env: str = "GEMINI_API_KEY",
-        prompt_id: str = "title_p1_v1",
+        model: str,
+        api_key_env: str,
+        timeout_sec: float | None,
     ) -> None:
         self._model = model
         self._api_key_env = api_key_env
-        self._prompt_id = prompt_id
+        self._timeout_sec = timeout_sec
 
     def complete(
         self,
         prompt: str,
         *,
-        max_tokens: int,
-        temperature: float,
+        prompt_id: str,
+        max_tokens: int | None,
+        temperature: float | None,
+        json_schema: dict[str, Any] | None,
+        extra: dict[str, object] | None = None,
     ) -> LlmResponse:
         """Отправляет только текст и возвращает унифицированный ответ провайдера."""
         api_key = os.environ.get(self._api_key_env)
@@ -44,24 +47,32 @@ class GeminiLlmClient:
 
         started = monotonic()
         try:
-            client = genai.Client(api_key=api_key)
+            client_args: dict[str, Any] = {"api_key": api_key}
+            if self._timeout_sec is not None:
+                client_args["http_options"] = types.HttpOptions(
+                    timeout=int(self._timeout_sec * 1000)
+                )
+            client = genai.Client(**client_args)
+            generation_args: dict[str, Any] = {
+                "response_mime_type": "application/json",
+            }
+            if max_tokens is not None:
+                generation_args["max_output_tokens"] = max_tokens
+            if temperature is not None:
+                generation_args["temperature"] = temperature
+            if json_schema is not None:
+                generation_args["response_json_schema"] = json_schema
+            if extra:
+                generation_args.update(extra)
             response = client.models.generate_content(
                 model=self._model,
                 contents=prompt,
-                config=types.GenerateContentConfig(
-                    max_output_tokens=max_tokens,
-                    temperature=temperature,
-                    response_mime_type="application/json",
-                    response_json_schema={
-                        "type": "object",
-                        "properties": {"title": {"type": "string"}},
-                        "required": ["title"],
-                        "additionalProperties": False,
-                    },
-                ),
+                config=types.GenerateContentConfig(**generation_args),
             )
         except Exception as exc:
-            raise RuntimeError(f"Gemini title request failed for model {self._model}") from exc
+            raise RuntimeError(
+                f"Gemini request failed for prompt {prompt_id} using model {self._model}"
+            ) from exc
 
         text = response.text
         if not text:
@@ -73,7 +84,7 @@ class GeminiLlmClient:
             text=text,
             provider=self.name,
             model=self._model,
-            prompt_id=self._prompt_id,
+            prompt_id=prompt_id,
             tokens_in=tokens_in,
             tokens_out=tokens_out,
             runtime_sec=round(monotonic() - started, 3),

@@ -1,14 +1,18 @@
 """Проверки качества артефактов и формирования отчетов шлюзов."""
 
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
 from transcriber.config.schema import AppConfig
+from transcriber.insights.clock_gate import clock_gate
 from transcriber.llm.titles import STAMP_PREFIXES
 from transcriber.models.artifacts import (
     ChaptersArtifact,
+    InsightsArtifact,
     QualityArtifact,
     QualityCheckItem,
+    ReportArtifact,
     TranscriptArtifact,
 )
 from transcriber.quality.chapter_metrics import calculate_chapter_metrics
@@ -336,6 +340,173 @@ def check_chapters(
             value={"missing": missing, "overlaps": overlaps},
             threshold="every non-empty source id exactly once",
             message=f"Missing source ids: {missing}; overlaps: {overlaps}",
+        )
+    )
+    return report
+
+
+def _starts_with_stamp(text: str) -> bool:
+    normalized = text.strip().casefold().lstrip("«\"'([{")
+    return any(normalized.startswith(prefix) for prefix in STAMP_PREFIXES)
+
+
+def check_insights(
+    insights: InsightsArtifact,
+    chapters: ChaptersArtifact,
+    transcript: TranscriptArtifact,
+) -> CheckReport:
+    """Проверяет автоматические условия G3.1–G3.4 и G3.7 для инсайтов."""
+    report = CheckReport()
+    clock = clock_gate(insights, chapters, transcript)
+    report.add(
+        CheckResult(
+            id="G3.1",
+            status="pass" if clock.passed else "fail",
+            value=len(clock.mismatches),
+            threshold="mismatch == 0",
+            message="; ".join(clock.mismatches),
+        )
+    )
+
+    chapter_map = {chapter.id: chapter for chapter in chapters.chapters}
+    segment_map = {segment.id: segment for segment in transcript.segments}
+    invalid_sources: list[str] = []
+    missing_key_sources: list[str] = []
+    invented_numbers: list[str] = []
+    stamped: list[str] = []
+    for insight in insights.chapters:
+        chapter = chapter_map.get(insight.id)
+        allowed = set(chapter.source_ids) if chapter is not None else set()
+        chapter_text = " ".join(
+            segment_map[source_id].text
+            for source_id in allowed
+            if source_id in segment_map
+        )
+        for index, item in enumerate(insight.key_points):
+            if not item.src:
+                missing_key_sources.append(f"{insight.id}:{index}")
+            for digits in re.findall(r"\d+", item.text):
+                if digits not in chapter_text:
+                    invented_numbers.append(f"{insight.id}:{digits}")
+            if _starts_with_stamp(item.text):
+                stamped.append(f"{insight.id}:key_points:{index}")
+        for kind, items in (
+            ("key_points", insight.key_points),
+            ("actions", insight.actions),
+            ("open_questions", insight.open_questions),
+        ):
+            for index, item in enumerate(items):
+                for source in item.src:
+                    if source.segment_id not in allowed:
+                        invalid_sources.append(
+                            f"{insight.id}:{kind}:{index}:{source.segment_id}"
+                        )
+
+    report.add(
+        CheckResult(
+            id="G3.2",
+            status="fail" if invalid_sources else "pass",
+            value=invalid_sources,
+            threshold="every src belongs to its chapter",
+        )
+    )
+    report.add(
+        CheckResult(
+            id="G3.3",
+            status="fail" if missing_key_sources else "pass",
+            value=missing_key_sources,
+            threshold="every key_point has non-empty src",
+        )
+    )
+    report.add(
+        CheckResult(
+            id="G3.4",
+            status="fail" if invented_numbers else "pass",
+            value=invented_numbers,
+            threshold="all digit groups occur in chapter source text",
+        )
+    )
+    report.add(
+        CheckResult(
+            id="G3.7",
+            status="fail" if stamped else "pass",
+            value=stamped,
+            threshold="no forbidden stamp prefix",
+        )
+    )
+    return report
+
+
+def check_report(
+    report_artifact: ReportArtifact,
+    insights: InsightsArtifact,
+    chapters: ChaptersArtifact,
+    transcript: TranscriptArtifact | None = None,
+    *,
+    profile: str = "demo",
+) -> CheckReport:
+    """Проверяет автоматические условия G3.1, G3.6–G3.8 для протокола."""
+    report = CheckReport()
+    if transcript is not None:
+        clock = clock_gate(insights, chapters, transcript, report_artifact)
+        clock_errors = list(clock.mismatches)
+    else:
+        allowed = {
+            (source.start, source.end, source.speaker, chapter.id)
+            for chapter in insights.chapters
+            for item in chapter.key_points + chapter.actions + chapter.open_questions
+            for source in item.src
+        }
+        clock_errors = [
+            f"Report key moment {index} lacks a matching insight source"
+            for index, moment in enumerate(report_artifact.key_moments)
+            if (moment.start, moment.end, moment.speaker, moment.chapter_id) not in allowed
+        ]
+    report.add(
+        CheckResult(
+            id="G3.1",
+            status="pass" if not clock_errors else "fail",
+            value=len(clock_errors),
+            threshold="mismatch == 0",
+            message="; ".join(clock_errors),
+        )
+    )
+
+    count = len(report_artifact.key_moments)
+    report.add(
+        CheckResult(
+            id="G3.6",
+            status="pass" if 5 <= count <= 12 else "warn",
+            value=count,
+            threshold="5..12",
+        )
+    )
+    summary_sentences = re.split(r"(?:[.!?]\s+|\n+)", report_artifact.summary)
+    stamped = [
+        f"summary:{index}"
+        for index, sentence in enumerate(summary_sentences)
+        if sentence.strip() and _starts_with_stamp(sentence)
+    ]
+    stamped.extend(
+        f"key_moments:{index}"
+        for index, moment in enumerate(report_artifact.key_moments)
+        if _starts_with_stamp(moment.text)
+    )
+    report.add(
+        CheckResult(
+            id="G3.7",
+            status="fail" if stamped else "pass",
+            value=stamped,
+            threshold="no forbidden stamp prefix",
+        )
+    )
+    draft_ok = profile != "demo" or report_artifact.draft_warning
+    report.add(
+        CheckResult(
+            id="G3.8",
+            status="pass" if draft_ok else "fail",
+            value=report_artifact.draft_warning,
+            threshold="true in demo",
         )
     )
     return report

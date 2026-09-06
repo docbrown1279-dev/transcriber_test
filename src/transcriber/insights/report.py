@@ -1,0 +1,162 @@
+"""Meeting report generation and deterministic hydration."""
+
+from __future__ import annotations
+
+import json
+from time import monotonic
+
+from pydantic import BaseModel, ConfigDict, ValidationError
+
+from transcriber.config.schema import AppConfig
+from transcriber.llm.base import LlmClient
+from transcriber.llm.factory import complete_json
+from transcriber.llm.prompts import load_prompt, load_schema, render_prompt
+from transcriber.models.artifacts import (
+    ChaptersArtifact,
+    InsightsArtifact,
+    InsightSource,
+    ReportArtifact,
+    ReportChapterRef,
+    ReportKeyMoment,
+    ReportSpeakerItem,
+    TranscriptArtifact,
+)
+
+
+class ReportMomentPayload(BaseModel):
+    """Ключевой момент до гидратации времени и спикера."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    text: str
+    chapter_id: str
+    segment_id: str
+
+
+class ReportPayload(BaseModel):
+    """Ответ модели для сводного протокола."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    summary: str
+    key_moments: list[ReportMomentPayload]
+
+
+def _chapter_index(chapters: ChaptersArtifact) -> str:
+    return "\n".join(
+        f"{chapter.id} | {chapter.start:.3f}-{chapter.end:.3f} | {chapter.title}"
+        for chapter in chapters.chapters
+    )
+
+
+def _insights_for_prompt(insights: InsightsArtifact) -> str:
+    return json.dumps(
+        {"chapters": [chapter.model_dump(mode="json") for chapter in insights.chapters]},
+        ensure_ascii=False,
+        sort_keys=True,
+    )
+
+
+def generate_report(
+    insights: InsightsArtifact,
+    chapters: ChaptersArtifact,
+    transcript: TranscriptArtifact,
+    client: LlmClient,
+    cfg: AppConfig,
+) -> ReportArtifact:
+    """Создаёт один сводный протокол и копирует временные метки источников."""
+    if len({insights.job_id, chapters.job_id, transcript.job_id}) != 1:
+        raise ValueError("Transcript, chapters, and insights job_id values differ")
+    if insights.llm_calls >= cfg.llm.max_calls_per_job:
+        raise RuntimeError("LLM call budget exhausted before report generation")
+
+    started = monotonic()
+    task = cfg.llm.tasks.meeting_insights.report
+    prompt = render_prompt(
+        load_prompt(task.prompt),
+        {
+            "chapter_index": _chapter_index(chapters),
+            "insights_json": _insights_for_prompt(insights),
+        },
+    )
+    schema = load_schema(task.schema_)
+    payload: ReportPayload | None = None
+    response = None
+    for attempt in range(2):
+        response = complete_json(
+            client,
+            prompt=prompt,
+            prompt_id="meeting_insights/v1_report",
+            schema=schema,
+            cfg=cfg.llm,
+            task=task,
+        )
+        try:
+            payload = ReportPayload.model_validate(json.loads(response.text))
+            break
+        except (json.JSONDecodeError, ValidationError) as exc:
+            if attempt == 0:
+                continue
+            raise RuntimeError(f"Invalid report response: {exc}") from exc
+    if payload is None or response is None:
+        raise RuntimeError("No valid report response")
+
+    allowed: dict[tuple[str, str], InsightSource] = {}
+    for chapter in insights.chapters:
+        for item in chapter.key_points + chapter.actions + chapter.open_questions:
+            for source in item.src:
+                allowed[(chapter.id, source.segment_id)] = source
+
+    moments: list[ReportKeyMoment] = []
+    for moment_payload in payload.key_moments:
+        moment_source = allowed.get(
+            (moment_payload.chapter_id, moment_payload.segment_id)
+        )
+        if moment_source is None:
+            raise ValueError(
+                "Report references source absent from insights: "
+                f"{moment_payload.chapter_id}/{moment_payload.segment_id}"
+            )
+        moments.append(
+            ReportKeyMoment(
+                text=moment_payload.text,
+                start=moment_source.start,
+                end=moment_source.end,
+                speaker=moment_source.speaker,
+                chapter_id=moment_payload.chapter_id,
+            )
+        )
+
+    speech_by_speaker: dict[str, float] = {}
+    for segment in transcript.segments:
+        speech_by_speaker[segment.speaker] = (
+            speech_by_speaker.get(segment.speaker, 0.0) + segment.end - segment.start
+        )
+    return ReportArtifact(
+        schema_version="1",
+        job_id=insights.job_id,
+        summary=payload.summary,
+        key_moments=moments,
+        speakers=[
+            ReportSpeakerItem(
+                id=speaker,
+                label=None,
+                speech_sec=round(duration, 3),
+            )
+            for speaker, duration in sorted(speech_by_speaker.items())
+        ],
+        chapters=[
+            ReportChapterRef(
+                id=chapter.id,
+                title=chapter.title,
+                start=chapter.start,
+                end=chapter.end,
+            )
+            for chapter in chapters.chapters
+        ],
+        provider=response.provider,
+        model=response.model,
+        llm_calls=1,
+        draft_warning=cfg.app.profile == "demo",
+        runtime_sec=round(monotonic() - started, 3),
+    )

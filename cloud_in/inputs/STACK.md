@@ -12,18 +12,17 @@ schemas; this file wins for which engine to implement.
 | ASR | GigaAM `v3_rnnt` (CPU torch); ≤25 s splits; per-turn linear gain on slices | Whisper family, Podlodka |
 | Terms | suggestions only; never rewrite transcript | silent auto-replace |
 | Chunking | packing C + `rubert-tiny2` threshold 0.70; speaker packing gap ≤2 s; pack target ~40–80 words; merge cap 180 s; absorb chapters &lt;5 s into neighbour | late chunking Jina (D), hybrid C→D, pairwise LLM (B) |
-| Titles | prompt `title_p1_v1` (P1), ≤10 words, no stamp phrases; Gemini 2.5 Flash in cloud | prompt P2; local LLM in cloud |
-| Insights / report | extract per chapter, then one report call after merge (**D3 — not this stage**) | inventing timestamps |
-| LLM (cloud / demo) | Gemini 2.5 Flash, text only | local LLM in cloud, audio to API |
-| LLM (local / prod path) | Qwen3-8B Q5 via llama.cpp | — |
+| Titles | `llm.tasks.chapter_titles` (`prompts/chapter_titles/v1.md`), ≤10 words, no stamp phrases | prompt P2 |
+| Insights / report | `meeting_insights.extract` per chapter, then `meeting_insights.report` once | inventing timestamps; 3c “no insights” bakeoff |
+| LLM (cloud / demo) | `llm.mode: api`, `llm.backend: gemini`; NVIDIA/Qwen are config backends | local GGUF / llama.cpp in cloud; audio to API |
 | Timecodes | copy from ASR segment bounds only | LLM-generated times |
 
 Chapter density target: 0.4–0.8 chapters/min; prefer 45–180 s chapters (warnings, not hard law).
 
-## Stage D2 pack note
+## Stage D3 pack note
 
-Primary input is **text**: `cloud_in/inputs/artifacts/voice_002/transcript.json`
-(Silero T2 publishable hyp). Do **not** re-run ASR. Do not expect packed audio in this handoff.
+Primary input is **text**: packed `transcript.json` + `chapters.json` (D2 HUMAN_GATE PASS).
+Do **not** re-run ASR or chunking. Do not expect packed audio or GGUF.
 
 Provenance note: full-meeting ASR text is a working hypothesis, not gold.
 Cloud gates never use `eval/`.

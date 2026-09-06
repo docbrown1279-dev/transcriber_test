@@ -35,6 +35,7 @@ embed = [
 llm-local = []
 llm = [
     "google-genai>=2.22.0",
+    "httpx>=0.28.1",
 ]
 
 [project.scripts]
@@ -71,7 +72,15 @@ warn_return_any = true
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["yaml.*", "soundfile.*", "gigaam.*", "speakeronnx.*", "onnxruntime.*", "sklearn.*"]
+module = [
+    "yaml.*",
+    "soundfile.*",
+    "gigaam.*",
+    "speakeronnx.*",
+    "onnxruntime.*",
+    "sklearn.*",
+    "sentence_transformers.*",
+]
 ignore_missing_imports = true
 
 [tool.bandit]

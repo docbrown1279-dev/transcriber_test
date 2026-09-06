@@ -1,0 +1,56 @@
+# LLM settings (example → copy to config/base_llm.yaml on D3)
+
+# Merge: config/base.yaml ← this file ← config/profiles/{profile}.yaml
+# Secrets: only environment variable NAMES. Values come from the process env / .env.
+# Do not put key material in this file.
+
+llm:
+  mode: api                    # api | local  (local is reserved; unused in demo)
+  backend: gemini              # gemini | nvidia | qwen
+  max_calls_per_job: 40        # 14 extract + 1 report + retries
+
+  # Shared generation defaults. A task may override temperature / max_tokens / response_format.
+  base_llm:
+    temperature: 0.2
+    max_tokens: 2048
+    response_format: json      # json | text
+    timeout_sec: 60
+
+  # Three API backends — env names match .env.example
+  # extra_config: only keys that exist on this client and not on the other (or null).
+  backends:
+    gemini:
+      client: gemini
+      api_key_env: GEMINI_API_KEY
+      model: gemini-2.5-flash
+      base_url: null             # native Google GenAI SDK, no OpenAI-compat host
+      extra_config: null
+    nvidia:
+      client: openai_compat
+      api_key_env: NVIDIA_API_KEY
+      model: meta/llama-3.1-70b-instruct
+      base_url: https://integrate.api.nvidia.com/v1
+      extra_config: null
+    qwen:
+      client: openai_compat
+      api_key_env: QWEN_API_KEY
+      model: qwen-plus
+      base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+      extra_config: null
+
+  # Folder name under prompts/ = task. chapter_titles runs before meeting_insights.
+  # No extra_config on tasks — unique API keys stay on the backend.
+  tasks:
+    chapter_titles:
+      prompt: prompts/chapter_titles/v1.md
+      schema: schemas/chapter_title.json
+      max_tokens: 1024
+    meeting_insights:
+      extract:
+        prompt: prompts/meeting_insights/v1_extract.md
+        schema: schemas/chapter_extract.json
+        max_tokens: 4096         # includes Gemini thinking tokens plus JSON output
+      report:
+        prompt: prompts/meeting_insights/v1_report.md
+        schema: schemas/meeting_report.json
+        max_tokens: 4096         # includes Gemini thinking tokens plus JSON output

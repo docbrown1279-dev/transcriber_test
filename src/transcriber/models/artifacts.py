@@ -337,6 +337,12 @@ class KeyPoint(BaseModel):
     src: list[InsightSource] = Field(min_length=1)
 
 
+class AsrNote(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    text: str
+
+
 class InsightChapter(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -344,9 +350,9 @@ class InsightChapter(BaseModel):
     start: float
     end: float
     key_points: list[KeyPoint] = Field(default_factory=list)
-    actions: list[Any] = Field(default_factory=list)
-    open_questions: list[Any] = Field(default_factory=list)
-    asr_notes: list[Any] = Field(default_factory=list)
+    actions: list[KeyPoint] = Field(default_factory=list)
+    open_questions: list[KeyPoint] = Field(default_factory=list)
+    asr_notes: list[AsrNote] = Field(default_factory=list)
 
 
 class InsightsArtifact(BaseModel):

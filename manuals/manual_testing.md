@@ -105,3 +105,40 @@ EVAL_D1_ATTEMPT=6 python3 scripts/eval_d1_manual.py
 - [ ] Записать в `agent_docs/progress/stage_D1.md`: `HUMAN_GATE: PASS|FAIL` + одна фраза  
 
 **Не делать на D1:** главы, LLM-отчёт, веб-загрузка (D2–D4).
+
+---
+
+## Stage D2 — главы и названия
+
+Оглавление на полном транскрипте. Автошлюз G2; человек читает TOC как ориентир.
+
+Критерий: `HUMAN_GATE: PASS` в `agent_docs/progress/stage_D2.md` (уже есть).
+
+---
+
+## Stage D3 — инсайты и отчёт LLM
+
+**Смысл:** extract по главам → один report → `report.md` (рендер JSON, не второй ответ модели). Облако гоняет Gemini на packed `transcript.json` + `chapters.json`. Настройка моделей и промптов: [`llm.md`](llm.md).
+
+**Критерий выхода:** `gate_D3.md` PASS/PASS_WITH_WARNINGS **и** `HUMAN_GATE: PASS` в `stage_D3.md`.
+
+### Smoke после pull
+
+```bash
+uv run transcriber quality check-insights \
+  cloud_out/artifacts/voice_002/insights.json \
+  --chapters cloud_in/inputs/artifacts/voice_002/chapters.json \
+  --transcript cloud_in/inputs/artifacts/voice_002/transcript.json
+# либо пути после ingest: agent_docs/reports/D3/ и data/voice_002/
+```
+
+### Человеческий шлюз D3
+
+- [ ] Прочитать `report.md` целиком на фоне `data/voice_002/transcript.md` (и аудио при желании)
+- [ ] Нет выдуманных поручений, цифр, ФИО; таймкоды выглядят как из глав
+- [ ] Это черновик протокола (`draft_warning`), не итоговый документ
+- [ ] Записать `HUMAN_GATE: PASS|FAIL` + одна фраза в `stage_D3.md`
+
+Смена модели для локальной сверки: `llm.backend` в `config/base_llm.yaml` (NVIDIA/Qwen API), те же промпты. Локальный GGUF на D3 не включаем.
+
+**Не делать на D3:** веб-загрузка (D4), правка транскрипта, новый чанкинг.

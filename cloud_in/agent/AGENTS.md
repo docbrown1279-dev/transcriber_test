@@ -35,7 +35,7 @@ Check and report before installing anything:
 |---|---|
 | `cloud_in/agent/{AGENTS.md,rules.md}`, `cloud_in/prompt.md`, `cloud_in/HANDOFF.md` | stop, `cloud_out/BLOCKED.md` |
 | Every file listed under "Inputs" in `cloud_in/prompt.md` | stop, name the missing files exactly |
-| Secrets required by the stage (`GEMINI_API_KEY`, `HF_TOKEN`) | D2 titles need `GEMINI_API_KEY` — missing key → BLOCKED/FAIL for titles; missing `HF_TOKEN` only if weights not cached. Otherwise skip only the dependent steps, finish the rest, record it |
+| Secrets required by the stage (`GEMINI_API_KEY` for default `llm.backend: gemini`; `HF_TOKEN` only if the stage downloads Hub weights) | Missing active-backend API key → BLOCKED/FAIL for LLM steps. D3 does not need `HF_TOKEN`. NVIDIA/Qwen keys only if yaml `backend` is switched (not this pack). |
 | Host inventory (`nproc`, `free -h`, `df -h .`, `ffmpeg -version`, `python3 --version`) | record in `cloud_out/run_meta.json` |
 
 ## Frozen stack (do not reopen)
@@ -51,11 +51,12 @@ Check and report before installing anything:
 | Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2` 0.70; absorb chapters &lt;5 s | `reports/2b/conclusions.md`, D2 close |
 | Titles | prompt P1, ≤10 words, no "обсуждение …" stamps | `reports/3` |
 | Insights / report | per-chapter extract, then one summary/report call after merge | `reports/3b`, `3c` |
-| LLM in the cloud | Gemini 2.5 Flash, text only | `reports/3c` |
+| LLM in the cloud | **API only**; default Gemini 2.5 Flash; NVIDIA/Qwen via `openai_compat` if `llm.backend` says so | `base_llm.yaml` |
 | Timecodes | copied from ASR segment boundaries; the model never emits time | research plan |
 
-Whisper, pyannote, denoise filters, late chunking (Jina), local LLM and NeMo are **out of scope
-for cloud runs**. They exist as registry stubs only.
+Whisper, pyannote, denoise filters, late chunking (Jina), **local GGUF / llama.cpp** and NeMo are
+**out of scope for cloud runs**. `local_llama` stays a registry stub. `openai_compat` is
+implemented at D3 for NVIDIA/Qwen APIs (gate run still uses Gemini).
 
 ## Hard rules
 
@@ -80,7 +81,7 @@ for cloud runs**. They exist as registry stubs only.
 |---|---|
 | Package installs | ≤2 attempts per tool family, then record a blocker and skip that path |
 | ASR runs | ≤3 per stage total (D1: 1× full packed meeting required + optional short-clip runs within the remaining budget) |
-| Gemini calls | ≤20 per run, cached into artifacts |
+| Gemini calls | ≤40 per run (D3: 14 extract + 1 report + retries), cached into artifacts |
 | Local LLM | not run in the cloud at all |
 | 15-minute hardware slice | stage D5 only, ≤2 runs |
 | Gate retries | ≤2 honest fix attempts, then `FAIL` report + PR |

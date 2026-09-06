@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0–D1 закрыты. D2 HUMAN_GATE PASS (packing C + P1 titles; absorb &lt;5 с). Дальше: **D3** (insights + report). Backlog ASR: `ticket_d1_gigaam_missing.md`.
+**Статус:** D0–D2 закрыты. D3 — PLAN_DRAFT ([`draft_D3_scope.md`](draft_D3_scope.md), обёртка [`draft_llm_wrapper.md`](draft_llm_wrapper.md)). Backlog ASR: `ticket_d1_gigaam_missing.md`.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 
@@ -102,11 +102,11 @@ D0 → D1 → D2 → D3 → D4 по данным, но не по календа�
 |---|---|---|
 | Q1 | откуда облако берёт аудио и фикстуры | не коммитим в `tests/fixtures/`: перед каждым этапом всё нужное кладётся в `cloud_in/inputs/` по правилам handoff, облачный агент проверяет комплектность на старте (preflight) |
 | Q2 | эмбеддинги чанкинга (`bge_small_onnx` в ТЗ vs `rubert-tiny2` в 2b) | `rubert-tiny2` 0,70 как проверенный; `bge-small` — сменный бэкенд-заглушка за портом |
-| Q3 | провайдер LLM | в облаке Gemini 2.5 Flash; локально Qwen3-8B через llama.cpp; `QWEN_API_KEY` в облако **не передаём** |
+| Q3 | провайдер LLM | облако и demo = **только API**; default Gemini; запасные бэкенды NVIDIA/Qwen по имени env (`NVIDIA_API_KEY`, `QWEN_API_KEY`). Значения ключей не в yaml. `llm.mode: local` зарезервирован, на D3 не реализуем |
 | Q4 | золото `eval/` лежит в git | снять с трекинга (`git rm --cached eval/*.json`, файлы остаются на диске) до первого облачного этапа |
 | Q5 | облачные правила и окружение | `.cursor/` остаётся локальным; роль и нормы для облака кладём в `cloud_in/agent/`, путь указывается в промпте |
 | Q6 | словарная коррекция в демке | модуль предложений с пустым базовым словарём: артефакт `suggestions.json` есть, текст транскрипта не правится |
 
 Из Q1 и Q5 следует одна обязательная правка репозитория: каталоги `cloud_in/` и `cloud_out/` сейчас в `.gitignore`, а обменник работает только через git — ignore нужно снять именно с них (`prompts/` остаётся локальным). Подробности и полный чек-лист подготовки — в [облачном процессе](draft_cloud_workflow.md) §4.
 
-Из Q3 следует, что `local_llama` — не заглушка, а рабочий компонент профиля `dev`, реализуемый на этапе D3.
+Из Q3 (ревизия D3): `openai_compat` реализуется для NVIDIA/Qwen API; `local_llama` остаётся заглушкой, пока не включим `llm.mode: local`.

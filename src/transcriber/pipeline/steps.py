@@ -6,9 +6,12 @@ from typing import Any, Protocol
 
 from pydantic import BaseModel
 
-from transcriber.audio.normalize import FfmpegAudioNormalizer
 from transcriber.config.schema import AppConfig
 from transcriber.errors import StageNotImplementedError
+from transcriber.export.markdown import MarkdownExporter
+from transcriber.insights.extract import extract_insights
+from transcriber.insights.report import generate_report
+from transcriber.llm.factory import make_client
 from transcriber.llm.titles import apply_titles
 from transcriber.models.artifacts import (
     AudioArtifact,
@@ -61,6 +64,8 @@ class StepDefinition:
         job_id = getattr(ctx, "job_id", job_dir.name)
 
         if self.stage == "normalize":
+            from transcriber.audio.normalize import FfmpegAudioNormalizer
+
             source_audio = getattr(ctx, "source_audio", None)
             if source_audio is None:
                 # Поиск исходного аудиофайла в job_dir
@@ -127,10 +132,28 @@ class StepDefinition:
         if self.stage == "titles":
             transcript = load_artifact(job_dir / "transcript.json", TranscriptArtifact)
             chapters = load_artifact(job_dir / "chapters.json", ChaptersArtifact)
-            client = build("llm", cfg.llm.provider, cfg.app.profile)
+            client = make_client(cfg.llm)
             titled_chapters, _calls = apply_titles(chapters, transcript, client, cfg.llm)
             out_file = job_dir / self.produces
             dump_artifact(titled_chapters, out_file)
+            return out_file
+
+        if self.stage == "insights_extract":
+            transcript = load_artifact(job_dir / "transcript.json", TranscriptArtifact)
+            chapters = load_artifact(job_dir / "chapters.json", ChaptersArtifact)
+            insights = extract_insights(chapters, transcript, make_client(cfg.llm), cfg)
+            out_file = job_dir / self.produces
+            dump_artifact(insights, out_file)
+            return out_file
+
+        if self.stage == "report":
+            transcript = load_artifact(job_dir / "transcript.json", TranscriptArtifact)
+            chapters = load_artifact(job_dir / "chapters.json", ChaptersArtifact)
+            insights = load_artifact(job_dir / "insights.json", InsightsArtifact)
+            report = generate_report(insights, chapters, transcript, make_client(cfg.llm), cfg)
+            out_file = job_dir / self.produces
+            dump_artifact(report, out_file)
+            MarkdownExporter().export(report, job_dir / "report.md")
             return out_file
 
         raise StageNotImplementedError(stage=self.stage)
@@ -190,14 +213,14 @@ PIPELINE_STEPS: list[StepDefinition] = [
     StepDefinition(
         stage="insights_extract",
         produces="insights.json",
-        requires=("chapters.json",),
+        requires=("chapters.json", "transcript.json"),
         area="llm",
         model_cls=InsightsArtifact,
     ),
     StepDefinition(
         stage="report",
         produces="report.json",
-        requires=("insights.json", "chapters.json"),
+        requires=("insights.json", "chapters.json", "transcript.json"),
         area="export",
         model_cls=ReportArtifact,
     ),

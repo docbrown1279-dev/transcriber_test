@@ -10,6 +10,7 @@ from typing import Any
 
 from transcriber.config.loader import load_config
 from transcriber.config.schema import AppConfig
+from transcriber.llm.factory import make_client
 from transcriber.registry import available, build
 
 
@@ -191,15 +192,13 @@ def run_self_check(
             components["embedder"] = ComponentHealth(status="error", message=str(exc))
 
         try:
-            llm = build("llm", active_cfg.llm.provider, active_cfg.app.profile)
-            key_present = bool(
-                active_cfg.llm.api_key_env
-                and os.environ.get(active_cfg.llm.api_key_env)
-            )
+            backend = active_cfg.llm.active_backend
+            llm = make_client(active_cfg.llm)
+            key_present = bool(os.environ.get(backend.api_key_env))
             components["llm"] = ComponentHealth(
                 status="ok" if key_present else "unavailable",
                 message=None if key_present else "Configured API key variable is missing",
-                details={"provider": llm.name},
+                details={"backend": active_cfg.llm.backend, "client": llm.name},
             )
         except Exception as exc:
             is_healthy = False

@@ -3,6 +3,8 @@
 Все секции используют extra='forbid' для строгой проверки отсутствия неизвестных ключей.
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -155,14 +157,57 @@ class ChunkingConfig(BaseModel):
     late_chunking: LateChunkingConfig = Field(default_factory=LateChunkingConfig)
 
 
-class LlmPromptsConfig(BaseModel):
-    """Идентификаторы зафиксированных промптов для языковой модели."""
+class LlmGenerationConfig(BaseModel):
+    """Общие параметры генерации для языковых моделей."""
 
     model_config = ConfigDict(extra="forbid")
 
-    title: str = "title_p1_v1"
-    extract: str = "extract_v1"
-    report: str = "report_v1"
+    temperature: float | None = Field(default=None, ge=0.0, le=2.0)
+    max_tokens: int | None = Field(default=None, ge=1)
+    response_format: Literal["json", "text"] | None = None
+    timeout_sec: float | None = Field(default=None, gt=0)
+
+
+class LlmBackendConfig(BaseModel):
+    """Настройки транспорта и модели одного API-провайдера."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    client: Literal["gemini", "openai_compat"]
+    api_key_env: str
+    model: str
+    base_url: str | None
+    extra_config: str | None = None
+
+
+class LlmTaskConfig(BaseModel):
+    """Пути к промпту и JSON-схеме отдельной LLM-задачи."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    prompt: str
+    schema_: str = Field(alias="schema", serialization_alias="schema")
+    max_tokens: int | None = Field(default=None, ge=1)
+    temperature: float | None = Field(default=None, ge=0.0, le=2.0)
+    response_format: Literal["json", "text"] | None = None
+
+
+class MeetingInsightsTasksConfig(BaseModel):
+    """Настройки извлечения инсайтов и итогового отчёта."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    extract: LlmTaskConfig
+    report: LlmTaskConfig
+
+
+class LlmTasksConfig(BaseModel):
+    """Настройки всех LLM-задач приложения."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    chapter_titles: LlmTaskConfig
+    meeting_insights: MeetingInsightsTasksConfig
 
 
 class LlmConfig(BaseModel):
@@ -170,21 +215,27 @@ class LlmConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    mode: str
-    provider: str
-    model: str | None = None
-    model_path: str | None = None
-    api_key_env: str | None = None
-    timeout_sec: int | None = Field(default=None, gt=0)
-    max_calls_per_job: int | None = Field(default=None, ge=1)
-    title_max_tokens: int = Field(default=1024, ge=1)
+    mode: Literal["api", "local"]
+    backend: str
+    max_calls_per_job: int = Field(ge=1)
+    base_llm: LlmGenerationConfig
+    backends: dict[str, LlmBackendConfig]
+    tasks: LlmTasksConfig
     title_max_attempts: int = Field(default=2, ge=1)
     title_max_words: int = Field(default=10, ge=1)
-    temperature: float | None = Field(default=0.2, ge=0.0, le=2.0)
-    debug_reasoning: bool | None = False
-    n_ctx: int | None = Field(default=None, gt=0)
-    threads: int | None = Field(default=None, gt=0)
-    prompts: LlmPromptsConfig = Field(default_factory=LlmPromptsConfig)
+
+    @property
+    def active_backend(self) -> LlmBackendConfig:
+        """Возвращает конфигурацию выбранного провайдера."""
+        try:
+            return self.backends[self.backend]
+        except KeyError as exc:
+            raise ValueError(f"Unknown LLM backend: {self.backend}") from exc
+
+    @property
+    def provider(self) -> str:
+        """Возвращает ключ транспорта для обратной совместимости."""
+        return self.active_backend.client
 
 
 class LimitsConfig(BaseModel):

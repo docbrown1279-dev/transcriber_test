@@ -1,0 +1,6 @@
+# Pattern example — NOT attached to a demo backend.
+# Point a backend's extra_config here for keys that exist on one client and not the other.
+# YAML null means "omit this argument from the API call".
+
+temperature: null
+reasoning_effort: medium
