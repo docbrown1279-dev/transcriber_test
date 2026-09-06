@@ -30,7 +30,7 @@ G3.9: Of 49 key points, 41 have substantive token overlap (>= 18%) with their ci
 ## Environment
 
 - Branch: `cursor/demo-d3-insights`
-- Commit: `d034ea9` (pre-final gate commit; see `run_meta.json` for the pushed SHA)
+- Commit: `f43a7ac (final gate commit)
 - Host: 4 vCPU, 15 GiB RAM, 245 GiB free on `/`
 - Python 3.12.3, ffmpeg 6.1.1
 - LLM: gemini / gemini-2.5-flash — 14 extract + 1 report (text only)
