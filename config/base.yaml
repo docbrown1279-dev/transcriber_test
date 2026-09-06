@@ -96,6 +96,6 @@ ui:
   type: jinja
   show_progress: true
   progress_transport: polling
-  allow_editing: false
-  allow_player: false
+  allow_editing: true
+  allow_player: true
   draft_warning: true

@@ -1,0 +1,26 @@
+{
+  "verdict": "PASS",
+  "checks": [
+    {
+      "id": "REG.VAD.IoU",
+      "ok": true,
+      "detail": "iou=0.718 threshold>=0.700 hyp_regions=13"
+    },
+    {
+      "id": "REG.DIAR.speakers",
+      "ok": true,
+      "detail": "speaker_count=2 band=[2,4]"
+    },
+    {
+      "id": "REG.ASR.ru_ratio",
+      "ok": true,
+      "detail": "russian_word_ratio=1.000 threshold>=0.900 words=112"
+    },
+    {
+      "id": "REG.ASR.latin",
+      "ok": true,
+      "detail": "latin_chars=0 max=0"
+    }
+  ],
+  "job_dir": "/tmp/pytest-of-vvp/pytest-57/test_reg_voice_pipeline_soft0/reg_test_voice"
+}

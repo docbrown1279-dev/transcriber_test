@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Глава C01 (stub)</title>
+  <link rel="stylesheet" href="/static/stubs/stub.css" />
+</head>
+<body>
+  <header class="top">
+    <p class="brand">Meeting Transcriber — demo stub</p>
+    <p><a href="/stubs/result">← К оглавлению</a></p>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <h1>C01 · Ливневая канализация</h1>
+      <p class="meta">00:28–03:06 · mock chapter</p>
+
+      <div id="player-root" class="player" data-src=""></div>
+
+      <div class="toolbar">
+        <button type="button" class="btn" id="btn-edit">Редактировать</button>
+        <button type="button" class="btn primary hidden" id="btn-save">Сохранить</button>
+        <button type="button" class="btn hidden" id="btn-cancel">Отменить</button>
+        <span class="hint" id="edit-msg"></span>
+      </div>
+
+      <article id="chapter-view" class="chapter-text">
+        <p><span class="tc">00:28</span> <span class="spk">SPEAKER_00</span>
+          надо через паркинг потому что это определено точками подключения ресурсника…</p>
+        <p><span class="tc">00:51</span> <span class="spk">SPEAKER_00</span>
+          у вас уже есть как появится положительное заключение…</p>
+        <p><span class="tc">01:04</span> <span class="spk">SPEAKER_01</span>
+          а в технических условиях на ливневку там будет прописано…</p>
+      </article>
+
+      <textarea id="chapter-edit" class="chapter-edit hidden" rows="16">00:28 SPEAKER_00: надо через паркинг потому что это определено точками подключения ресурсника…
+00:51 SPEAKER_00: у вас уже есть как появится положительное заключение…
+01:04 SPEAKER_01: а в технических условиях на ливневку там будет прописано…</textarea>
+    </section>
+  </main>
+
+  <script src="/static/stubs/player.js"></script>
+  <script>
+    const view = document.getElementById("chapter-view");
+    const edit = document.getElementById("chapter-edit");
+    const btnEdit = document.getElementById("btn-edit");
+    const btnSave = document.getElementById("btn-save");
+    const btnCancel = document.getElementById("btn-cancel");
+    const msg = document.getElementById("edit-msg");
+    let snapshot = edit.value;
+
+    function setEditing(on) {
+      view.classList.toggle("hidden", on);
+      edit.classList.toggle("hidden", !on);
+      btnEdit.classList.toggle("hidden", on);
+      btnSave.classList.toggle("hidden", !on);
+      btnCancel.classList.toggle("hidden", !on);
+    }
+
+    btnEdit.addEventListener("click", () => {
+      snapshot = edit.value;
+      setEditing(true);
+      msg.textContent = "";
+    });
+    btnCancel.addEventListener("click", () => {
+      edit.value = snapshot;
+      setEditing(false);
+      msg.textContent = "Изменения отменены.";
+    });
+    btnSave.addEventListener("click", () => {
+      snapshot = edit.value;
+      setEditing(false);
+      msg.textContent = "Заглушка: сохранение на сервер ещё не подключено.";
+    });
+  </script>
+</body>
+</html>

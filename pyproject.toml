@@ -92,6 +92,7 @@ markers = [
     "requires_inputs: tests requiring packed cloud_in/inputs data",
     "requires_llm: tests requiring LLM access or cassettes",
     "slow: tests running heavy processing or long audio",
+    "regression: soft backend regressions (WARN+manual review; strict only if REGRESSION_STRICT=1)",
 ]
 
 [tool.uv.sources]
