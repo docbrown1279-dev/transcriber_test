@@ -17,11 +17,13 @@ from transcriber.registry import available, build
 
 
 def test_d3_cfg_01_demo_loads_backend_and_env_name() -> None:
-    """[D3-CFG-01] Demo loads Gemini configuration without storing a key value."""
+    """[D3-CFG-01] Demo loads the active backend without storing a key value."""
     cfg = load_config("demo")
-    assert cfg.llm.backend == "gemini"
-    assert cfg.llm.active_backend.api_key_env == "GEMINI_API_KEY"
-    assert cfg.llm.active_backend.api_key_env.endswith("_API_KEY")
+    assert cfg.llm.backend == "qwen"
+    assert cfg.llm.active_backend.api_key_env == "QWEN_API_KEY"
+    assert cfg.llm.active_backend.client == "openai_compat"
+    assert cfg.llm.backends["gemini"].api_key_env == "GEMINI_API_KEY"
+    assert cfg.llm.backends["gemini"].api_key_env.endswith("_API_KEY")
 
 
 def test_d3_cfg_02_api_backends_select_openai_compat() -> None:

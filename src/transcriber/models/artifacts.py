@@ -451,6 +451,7 @@ class JobArtifact(BaseModel):
     state: str
     stages: list[JobStageItem] = Field(default_factory=list)
     error: str | None = None
+    finished_at: str | None = None
 
     @field_validator("schema_version")
     @classmethod

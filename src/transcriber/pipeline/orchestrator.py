@@ -5,8 +5,10 @@
 Управляет пошаговым выполнением задач (resumable pipeline execution).
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
+from time import monotonic
 from types import SimpleNamespace
 from typing import Literal
 
@@ -14,10 +16,12 @@ from transcriber.config.loader import load_config
 from transcriber.config.schema import AppConfig
 from transcriber.models.artifacts import ChaptersArtifact, TranscriptArtifact, load_artifact
 from transcriber.pipeline.artifacts import JobArtifactPaths
+from transcriber.pipeline.events import StageEvent
 from transcriber.pipeline.steps import PIPELINE_STEPS, StepDefinition
 from transcriber.registry import available
 
 StageStatus = Literal["done", "pending", "unavailable"]
+EventSink = Callable[[StageEvent], None]
 
 
 @dataclass(frozen=True)
@@ -124,11 +128,18 @@ def run_stage(
     raise ValueError(f"Unknown stage: {stage_name}")
 
 
+def _emit(events: EventSink | None, event: StageEvent) -> None:
+    if events is None:
+        return
+    events(event)
+
+
 def run_job(
     job_dir: Path | str,
     source_audio: Path | str | None = None,
     until: str = "correction_suggest",
     cfg: AppConfig | None = None,
+    events: EventSink | None = None,
 ) -> dict[str, Path]:
     """Последовательно выполняет конвейер задачи до указанной стадии.
 
@@ -143,6 +154,7 @@ def run_job(
         job_id=job_path.name,
         job_dir=job_path,
         source_audio=Path(source_audio) if source_audio else None,
+        events=events,
     )
 
     executed: dict[str, Path] = {}
@@ -155,15 +167,34 @@ def run_job(
     for step in PIPELINE_STEPS:
         if transcript_valid and step.stage in pre_asr_stages:
             executed[step.stage] = paths.transcript
+            _emit(
+                events,
+                StageEvent(stage=step.stage, status="done", pct=100, message="resumed"),
+            )
             if step.stage == until:
                 break
             continue
         target_file = paths.path(step.produces)
         if _is_step_done(step, paths):
             executed[step.stage] = target_file
+            _emit(
+                events,
+                StageEvent(stage=step.stage, status="done", pct=100, message="resumed"),
+            )
         else:
+            _emit(events, StageEvent(stage=step.stage, status="running", pct=0))
+            t0 = monotonic()
             produced_path = step.run(ctx, resolved_cfg)
             executed[step.stage] = produced_path
+            _emit(
+                events,
+                StageEvent(
+                    stage=step.stage,
+                    status="done",
+                    pct=100,
+                    runtime_sec=round(monotonic() - t0, 3),
+                ),
+            )
 
         if step.stage == until:
             break

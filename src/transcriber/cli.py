@@ -223,5 +223,24 @@ def cmd_healthcheck(
     typer.echo("Self-check PASSED")
 
 
+@app.command("serve")
+def cmd_serve(
+    host: Annotated[str, typer.Option("--host", help="Адрес прослушивания")] = "127.0.0.1",
+    port: Annotated[int, typer.Option("--port", help="Порт")] = 8000,
+    reload: Annotated[bool, typer.Option("--reload", help="Автоперезагрузка")] = False,
+    profile: Annotated[
+        str | None, typer.Option("--profile", "-p", help="Профиль конфигурации")
+    ] = None,
+) -> None:
+    """Запускает демо-веб-сервер (uvicorn)."""
+    import os
+
+    import uvicorn
+
+    if profile:
+        os.environ["APP_PROFILE"] = profile
+    uvicorn.run("transcriber.web.app:app", host=host, port=port, reload=reload)
+
+
 if __name__ == "__main__":
     app()

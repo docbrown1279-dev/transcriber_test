@@ -4,8 +4,12 @@
 Хеширует IP-адреса клиентов с солью JOB_IP_SALT без сохранения исходных IP.
 """
 
+from __future__ import annotations
+
 import hashlib
+import logging
 import os
+from collections.abc import Iterator
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -17,6 +21,15 @@ from transcriber.models.artifacts import (
     load_artifact,
 )
 from transcriber.pipeline.events import StageEvent
+
+logger = logging.getLogger(__name__)
+
+
+def _dump_job(job: JobArtifact, path: Path) -> None:
+    """Атомарно пишет job.json (tmp + replace), чтобы воркер не читал частично записанный файл."""
+    tmp_path = path.with_name(path.name + ".tmp")
+    dump_artifact(job, tmp_path)
+    tmp_path.replace(path)
 
 
 def hash_client_ip(client_ip: str) -> str:
@@ -42,12 +55,13 @@ def create_job(
     job_id: str,
     client_ip: str,
     storage_root: Path | str,
-    ttl_hours: int = 24,
+    ttl_hours: int | None = 24,
 ) -> JobArtifact:
     """Создает новую запись задачи в состоянии 'queued' и сохраняет job.json."""
     client_hash = hash_client_ip(client_ip)
     now = datetime.now(timezone.utc)
-    expires = now + timedelta(hours=ttl_hours)
+    hours = ttl_hours if ttl_hours is not None else 24 * 365
+    expires = now + timedelta(hours=hours)
 
     job = JobArtifact(
         schema_version="1",
@@ -61,7 +75,7 @@ def create_job(
     )
 
     path = get_job_path(job_id, storage_root)
-    dump_artifact(job, path)
+    _dump_job(job, path)
     return job
 
 
@@ -82,8 +96,10 @@ def update_job_state(
     job.state = state
     if error is not None:
         job.error = error
+    if state in {"done", "failed"} and not job.finished_at:
+        job.finished_at = datetime.now(timezone.utc).isoformat()
     path = get_job_path(job_id, storage_root)
-    dump_artifact(job, path)
+    _dump_job(job, path)
     return job
 
 
@@ -117,5 +133,29 @@ def append_stage_event(
         )
 
     path = get_job_path(job_id, storage_root)
-    dump_artifact(job, path)
+    _dump_job(job, path)
     return job
+
+
+def job_exists(job_id: str, storage_root: Path | str) -> bool:
+    """Проверяет наличие файла job.json."""
+    return get_job_path(job_id, storage_root).is_file()
+
+
+def iter_job_ids(storage_root: Path | str) -> Iterator[str]:
+    """Перечисляет идентификаторы задач, у которых есть job.json."""
+    jobs_root = Path(storage_root) / "jobs"
+    if not jobs_root.is_dir():
+        return
+    for child in sorted(jobs_root.iterdir()):
+        if child.is_dir() and (child / "job.json").is_file():
+            yield child.name
+
+
+def iter_jobs(storage_root: Path | str) -> Iterator[JobArtifact]:
+    """Загружает валидные job.json; битые файлы пропускает без содержимого артефакта."""
+    for job_id in iter_job_ids(storage_root):
+        try:
+            yield get_job(job_id, storage_root)
+        except Exception:
+            logger.warning("skipping unreadable job.json for job_id=%s", job_id)

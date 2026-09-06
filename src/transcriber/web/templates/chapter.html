@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Глава {{ chapter.id }}{% endblock %}
+{% block header_extra %}
+<nav class="chapter-nav">
+  {% if prev_chapter %}
+  <a href="/jobs/{{ job.job_id }}/chapters/{{ prev_chapter.id }}">← {{ prev_chapter.id }}</a>
+  {% else %}
+  <span class="nav-disabled">←</span>
+  {% endif %}
+  <a href="/jobs/{{ job.job_id }}/result">К оглавлению</a>
+  {% if next_chapter %}
+  <a href="/jobs/{{ job.job_id }}/chapters/{{ next_chapter.id }}">{{ next_chapter.id }} →</a>
+  {% else %}
+  <span class="nav-disabled">→</span>
+  {% endif %}
+</nav>
+{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>{{ chapter.id }} · {{ chapter.title or "(без названия)" }}
+    {% if chapter_has_edits %}<span class="badge">изменена</span>{% endif %}
+  </h1>
+  <p class="meta">{{ format_clock(chapter.start) }}–{{ format_clock(chapter.end) }}</p>
+
+  {% if allow_player %}
+  {% include "partials/player.html" %}
+  {% endif %}
+
+  {% if allow_editing %}
+  {% if chapter_has_edits %}
+  <form id="restore-chapter" class="hidden" method="post" action="/jobs/{{ job.job_id }}/chapters/{{ chapter.id }}/restore"></form>
+  {% endif %}
+  <form class="edit-form" method="post" action="/jobs/{{ job.job_id }}/chapters/{{ chapter.id }}/edit">
+    <div class="toolbar">
+      <button type="button" class="btn" id="btn-edit">Редактировать</button>
+      <button type="submit" class="btn primary {% if not edit_open %}hidden{% endif %}" id="btn-save">Сохранить</button>
+      <button type="button" class="btn {% if not edit_open %}hidden{% endif %}" id="btn-cancel">Отменить</button>
+      {% if chapter_has_edits %}
+      <button type="submit" class="btn" form="restore-chapter">Сбросить главу к ASR</button>
+      {% endif %}
+      <span class="hint" id="edit-msg">
+        {% if edit_error %}<span class="warn">{{ edit_error }}</span>{% endif %}
+        {% if edit_msg == "1" %}Сохранено.{% endif %}
+        {% if restore_msg == "1" %}Глава возвращена к исходному распознаванию.{% endif %}
+      </span>
+    </div>
+    <article id="chapter-view" class="chapter-text {% if edit_open %}hidden{% endif %}">
+      {% for seg in segments %}
+      <p><span class="tc">{{ format_clock(seg.start) }}</span> <span class="spk">{{ speaker_display(seg.speaker, speaker_aliases) }}</span> {{ seg.text }}</p>
+      {% else %}
+      <p class="hint">Нет сегментов для этой главы.</p>
+      {% endfor %}
+    </article>
+    <div id="chapter-edit" class="chapter-edit {% if not edit_open %}hidden{% endif %}">
+      {% for seg in segments %}
+      <div class="edit-row">
+        <p class="meta">
+          <span class="tc">{{ format_clock(seg.start) }}</span>
+          <select class="spk-select" name="seg_speaker" aria-label="Спикер">
+            {% for sid in speaker_ids %}
+            <option value="{{ sid }}" {% if sid == seg.speaker %}selected{% endif %}>{{ speaker_display(sid, speaker_aliases) }}</option>
+            {% endfor %}
+          </select>
+        </p>
+        <input type="hidden" name="seg_id" value="{{ seg.id }}">
+        <textarea name="seg_text" rows="2">{{ seg.text }}</textarea>
+      </div>
+      {% endfor %}
+    </div>
+  </form>
+  {% else %}
+  <article class="chapter-text">
+    {% for seg in segments %}
+    <p><span class="tc">{{ format_clock(seg.start) }}</span> <span class="spk">{{ speaker_display(seg.speaker, speaker_aliases) }}</span> {{ seg.text }}</p>
+    {% endfor %}
+  </article>
+  {% endif %}
+
+  <nav class="chapter-nav chapter-nav-bottom">
+    {% if prev_chapter %}
+    <a href="/jobs/{{ job.job_id }}/chapters/{{ prev_chapter.id }}">← {{ prev_chapter.id }}{% if prev_chapter.title %} · {{ prev_chapter.title }}{% endif %}</a>
+    {% else %}
+    <span class="nav-disabled">←</span>
+    {% endif %}
+    {% if next_chapter %}
+    <a href="/jobs/{{ job.job_id }}/chapters/{{ next_chapter.id }}">{{ next_chapter.id }}{% if next_chapter.title %} · {{ next_chapter.title }}{% endif %} →</a>
+    {% else %}
+    <span class="nav-disabled">→</span>
+    {% endif %}
+  </nav>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/player.js"></script>
+<script src="/static/app.js"></script>
+{% endblock %}

@@ -1,8 +1,8 @@
 """Тесты загрузчика и валидатора конфигурационных профилей."""
 
 import os
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import pytest
 import yaml
@@ -12,18 +12,44 @@ from transcriber.errors import ConfigError
 
 
 def test_d0_cfg_01_profiles_load_and_app_profile_selection(monkeypatch: pytest.MonkeyPatch) -> None:
-    """[D0-CFG-01] demo, dev, prod load and validate; APP_PROFILE selects the profile; default is demo."""
+    """[D0-CFG-01] demo, dev, prod load; default is yaml app.profile (demo); CLI/env override."""
     monkeypatch.delenv("APP_PROFILE", raising=False)
     default_cfg = load_config()
     assert default_cfg.app.profile == "demo"
 
     for profile_name in ["demo", "dev", "prod"]:
-        monkeypatch.setenv("APP_PROFILE", profile_name)
-        cfg = load_config()
-        assert cfg.app.profile == profile_name
-
         cfg_explicit = load_config(profile_name)
         assert cfg_explicit.app.profile == profile_name
+
+    monkeypatch.setenv("APP_PROFILE", "prod")
+    assert load_config().app.profile == "prod"
+
+
+def test_dotenv_does_not_select_profile(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    """`.env` may not switch APP_PROFILE; yaml app.profile stays in force."""
+    monkeypatch.delenv("APP_PROFILE", raising=False)
+    config_root = tmp_path / "config"
+    config_root.mkdir()
+    (config_root / "profiles").mkdir()
+    repo_config = Path("config")
+    for name in ("base.yaml", "base_llm.yaml"):
+        (config_root / name).write_text(
+            repo_config.joinpath(name).read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+    (config_root / "profiles" / "demo.yaml").write_text(
+        "app:\n  profile: demo\n",
+        encoding="utf-8",
+    )
+    (config_root / "profiles" / "prod.yaml").write_text(
+        "app:\n  profile: prod\n",
+        encoding="utf-8",
+    )
+    (tmp_path / ".env").write_text("APP_PROFILE=prod\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    cfg = load_config(config_dir=config_root)
+    assert cfg.app.profile == "demo"
+    assert os.environ.get("APP_PROFILE") is None
 
 
 def test_d0_cfg_02_unknown_key_fails_with_path() -> None:
@@ -61,7 +87,8 @@ def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
     assert demo_config.chunking.similarity_threshold == 0.70
     assert demo_config.limits.requests_per_ip_per_day == 1
     assert demo_config.limits.result_ttl_hours == 24
-    assert demo_config.llm.provider == "gemini"
+    assert demo_config.llm.backend == "qwen"
+    assert demo_config.llm.provider == "openai_compat"
     assert demo_config.vad.threshold == 0.45
     assert demo_config.vad.neg_threshold == 0.30
     assert demo_config.vad.min_silence_ms == 350
