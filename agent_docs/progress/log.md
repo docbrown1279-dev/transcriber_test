@@ -29,3 +29,5 @@
 - 2026-09-06T13:26:00+03:00 diarization fix: cluster_distance_threshold 0.80→0.85 on T2 VAD; voice_002 transcript republished (5 speakers); chapters/report left stale by design
 - 2026-09-06T13:35:00+03:00 diarization 0.85 merged main (PR #21); D4 PLAN_DRAFT agent_docs/plans/draft_D4_scope.md (await ✅ → Phase B)
 - 2026-09-06T13:45:00+03:00 D4 decisions: local-only (no cloud handoff); E2E short clip; audio.max_minutes=30 with warn+trim over limit
+- 2026-09-06T14:05:00+03:00 D4 UI wireframe: chapter index → chapter page; dict/summary stubs; edit+player; HTML stubs under web/static/stubs
+- 2026-09-06T14:25:00+03:00 D4 INSTRUCTIONS_READY coder_D4.md tester_D4.md (local; no Playwright; loopback IP exempt; backend module smoke v0)

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Результат — оглавление (stub)</title>
+  <link rel="stylesheet" href="/static/stubs/stub.css" />
+</head>
+<body>
+  <header class="top">
+    <p class="brand">Meeting Transcriber — demo stub</p>
+    <p class="warn">Черновик: результат создан автоматически и требует проверки.</p>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <h1>Распознавание готово</h1>
+      <p class="meta">job <code>stub-voice-002</code> · ~24 мин · 5 спикеров (mock)</p>
+
+      <!-- Shared player -->
+      <div id="player-root" class="player" data-src=""></div>
+
+      <h2>Главы</h2>
+      <ol class="chapters">
+        <li><a href="/stubs/chapter">C00 · 00:00–00:27</a> — Обратная связь по протоколу</li>
+        <li><a href="/stubs/chapter">C01 · 00:28–03:06</a> — Ливневая канализация</li>
+        <li><a href="/stubs/chapter">C02 · 03:08–06:02</a> — Размещение ТП</li>
+        <li><a href="/stubs/chapter">C08 · 15:13–18:09</a> — Планировки и коммерция</li>
+      </ol>
+
+      <div class="actions">
+        <div class="action">
+          <label>
+            Словарь
+            <select disabled title="stub">
+              <option>Базовый RU (пусто)</option>
+              <option>Доменный (скоро)</option>
+            </select>
+          </label>
+          <button type="button" class="btn" id="btn-dict" disabled>Проверить по словарю</button>
+          <p class="hint" id="dict-msg">Заглушка: проверка словаря ещё не подключена.</p>
+        </div>
+        <div class="action">
+          <label>
+            Шаблон саммари
+            <select id="summary-template">
+              <option value="meeting_report/v1">Протокол встречи (v1)</option>
+            </select>
+          </label>
+          <button type="button" class="btn primary" id="btn-summary">Сделать саммари</button>
+          <p class="hint" id="summary-msg"></p>
+        </div>
+      </div>
+
+      <p class="footer-links">
+        <a href="#">Скачать transcript.json</a> ·
+        <a href="#">Скачать report.md</a> ·
+        <a href="/stubs/upload">Новая загрузка</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="/static/stubs/player.js"></script>
+  <script>
+    document.getElementById("btn-dict").addEventListener("click", () => {
+      document.getElementById("dict-msg").textContent =
+        "Заглушка: словарь не применялся.";
+    });
+    document.getElementById("btn-summary").addEventListener("click", () => {
+      const t = document.getElementById("summary-template").value;
+      document.getElementById("summary-msg").textContent =
+        "Заглушка: шаблон «" + t + "» — LLM-саммари ещё не вызывается.";
+    });
+  </script>
+</body>
+</html>

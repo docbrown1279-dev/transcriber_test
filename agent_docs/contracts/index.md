@@ -18,7 +18,7 @@ stays `docs/` (read-only): `docs/dev_specs.md` and `docs/research_results/`.
 | [`llm/schemas/`](llm/schemas/) | JSON Schema files referenced from `llm.tasks.*.schema` |
 
 Plans (Russian, for humans): [`../plans/draft_demo_roadmap.md`](../plans/draft_demo_roadmap.md),
-[`../plans/draft_D4_scope.md`](../plans/draft_D4_scope.md) (current stage, PLAN_DRAFT),
+[`../plans/draft_D4_scope.md`](../plans/draft_D4_scope.md) (current stage, INSTRUCTIONS_READY),
 [`../plans/draft_D3_scope.md`](../plans/draft_D3_scope.md) (closed / predecessor),
 [`../plans/draft_llm_wrapper.md`](../plans/draft_llm_wrapper.md) (API backends + `base_llm.yaml`),
 [`../plans/draft_D2_scope.md`](../plans/draft_D2_scope.md) (closed),

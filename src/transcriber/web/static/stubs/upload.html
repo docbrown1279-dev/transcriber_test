@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Загрузка (stub)</title>
+  <link rel="stylesheet" href="/static/stubs/stub.css" />
+</head>
+<body>
+  <header class="top">
+    <p class="brand">Meeting Transcriber — demo stub</p>
+  </header>
+  <main class="layout">
+    <section class="panel">
+      <h1>Новая задача</h1>
+      <form class="upload" action="/stubs/result" method="get">
+        <label>
+          Аудиофайл
+          <input type="file" accept="audio/*,video/*" />
+        </label>
+        <label>
+          Или ссылка (YouTube / Яндекс Диск) — заглушка
+          <input type="url" name="url" placeholder="https://…" id="url-input" />
+        </label>
+        <p class="hint" id="url-hint">Парсер ссылок: заглушка. Сейчас принимается только файл.</p>
+        <p class="hint trim-demo">Если длиннее <code>audio.max_minutes</code> (сейчас 30) — покажем предупреждение и обрежем клип.</p>
+        <button type="submit" class="btn primary">Запустить обработку</button>
+      </form>
+      <p class="footer-links"><a href="/stubs/result">Перейти к stub результата →</a></p>
+    </section>
+  </main>
+  <script>
+    document.getElementById("url-input").addEventListener("input", (e) => {
+      const v = e.target.value.trim();
+      const hint = document.getElementById("url-hint");
+      if (!v) {
+        hint.textContent = "Парсер ссылок: заглушка. Сейчас принимается только файл.";
+        return;
+      }
+      const kind =
+        /youtu\.?be|youtube\.com/i.test(v) ? "youtube" :
+        /disk\.yandex|yadi\.sk/i.test(v) ? "yandex" : "unknown";
+      hint.textContent =
+        "Распознан тип «" + kind + "» (stub). Загрузка по ссылке ещё не реализована.";
+    });
+  </script>
+</body>
+</html>
