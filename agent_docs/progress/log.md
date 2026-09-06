@@ -44,3 +44,4 @@
 - 2026-09-07T01:55:00+03:00 D4.1 Phase1 A/B: A batch 1call/6.9s; B TTFT~24s total~105s but 14 LLM calls; compare_a_b.md PASS_WITH_WARNINGS
 - 2026-09-07T02:10:00+03:00 D4.1 B fix: title only when next chapter appears (slot-based); backlog ticket_d4_1_title_batch2.md
 - 2026-09-07T02:25:00+03:00 D4.1 wire pipeline.toc_mode b default (a=batch fallback); commit+merge main
+- 2026-09-07T02:30:00+03:00 D4.1 CLOSED on main; toc_mode=b default; reports synced (B 6calls TTFT~20s); next D5

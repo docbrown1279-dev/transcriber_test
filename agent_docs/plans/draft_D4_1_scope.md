@@ -1,6 +1,6 @@
 # Черновик этапа D4.1 — производительность / конвейер (Фаза A→B)
 
-**Статус:** INSTRUCTIONS_READY (rev3)  
+**Статус:** CLOSED (merged main; toc_mode=b default)  
 **Предшественник:** D4 UI на `main`.  
 **Следующий:** D5 Docker + `--cpus=2 --memory=8g` (после выбора победителя A/B).  
 **Инструкции:** [`../instructions/tester_D4_1.md`](../instructions/tester_D4_1.md), [`../instructions/coder_D4_1.md`](../instructions/coder_D4_1.md).

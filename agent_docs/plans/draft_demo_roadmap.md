@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0–D4 закрыты (UI на main). **D4.1** — PLAN_DRAFT ([`draft_D4_1_scope.md`](draft_D4_1_scope.md)): perf до Docker. Далее D5. Backlog: `ticket_d1_gigaam_missing.md`, `ticket_d1_speaker_clusters.md`, `ticket_d2_short_chapters.md`, `ticket_d4_audio_formats.md`.
+**Статус:** D0–D4.1 закрыты на main. **D4.1** perf: `pipeline.toc_mode=b` (A=batch fallback). Далее **D5** Docker. См. [`draft_D4_1_scope.md`](draft_D4_1_scope.md), [`reports/d4_1/`](../reports/d4_1/). Backlog: `ticket_d1_gigaam_missing.md`, `ticket_d1_speaker_clusters.md`, `ticket_d2_short_chapters.md`, `ticket_d4_audio_formats.md`.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 

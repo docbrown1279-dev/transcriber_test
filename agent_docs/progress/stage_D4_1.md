@@ -35,3 +35,11 @@
 - Mode B: `pipeline/pipeline_b.py` ASR slice → incremental pack → async titles
 - Report: `agent_docs/reports/d4_1/compare_a_b.md`
 - Lint: ruff clean on touched files
+
+## 2026-09-07 — Close / merge
+- STATUS: CLOSED
+- Merged `cursor/demo-d4-1-perf` → `main` (`a857eef`)
+- Default: `pipeline.toc_mode: b`; fallback `a` (batch titles)
+- Final B bench: 6 LLM calls, TTFT ~20s, total ~119s from turns (ASR-dominated)
+- Reports: `agent_docs/reports/d4_1/` (compare + gate updated)
+- Next: D5 Docker + `--cpus=2 --memory=8g`

@@ -1,8 +1,9 @@
 # Gate D4.1
 
-**Verdict:** PASS_WITH_WARNINGS
+**Verdict:** PASS
 
 - Phase 0 baseline: PASS
 - Mode A batch titles: PASS (1 call / 6 chapters)
-- Mode B pipeline: PASS functionally (TTFT ~24s) but WARN on LLM call inflation (14) and suffix dedupe
-- Recommendation: enable A in demo; B experimental until commit policy fixed
+- Mode B streaming: PASS after fix (6 calls / 6 chapters, TTFT ~20s; title on next-chapter close)
+- Shipped on `main`: `pipeline.toc_mode: b` default; `a` = batch fallback
+- Backlog: `ticket_d4_1_title_batch2.md`
