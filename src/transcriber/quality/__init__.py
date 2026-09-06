@@ -6,6 +6,7 @@ from transcriber.quality.checks import (
     check_latin_contamination,
     check_russian_ratio,
 )
+from transcriber.quality.intervals import speech_regions_iou
 from transcriber.quality.ru_ratio import (
     RatioResult,
     count_latin_characters,
@@ -20,4 +21,5 @@ __all__ = [
     "check_russian_ratio",
     "count_latin_characters",
     "russian_word_ratio",
+    "speech_regions_iou",
 ]

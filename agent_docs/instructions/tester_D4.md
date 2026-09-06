@@ -42,30 +42,36 @@ Use short audio from `data/test_voice.m4a` or packed fixtures; mark heavy ASR wi
 | G4.7 | Log scrub / no transcript dump in captured logs (best-effort assert) |
 | G4.8 | Result response contains chapter links + action controls; chapter page has edit + player chrome |
 
-## Backend E2E / module smoke — **current expectation** (extend later)
+## Backend E2E / module smoke — **current expectation**
 
-Цель: один (или узкий набор) integration-тест(ов), где **бэкенд-модули** на коротком входе
-возвращают артефакты «похоже на правду» по схеме и здравому смыслу — **без** браузера.
+### Soft regression (primary): `test_voice.m4a`
 
-Пока закладываем такой каркас (человек дополнит пороги по модулям):
+```
+uv run pytest tests/regression/ -v -m regression
+# optional hard fail:
+REGRESSION_STRICT=1 uv run pytest tests/regression/ -v -m regression
+```
+
+Clip: `data/test_voice.m4a`. Reference: `tests/fixtures/regression/test_voice_ref.json`.
+
+| id | Check | Soft on fail |
+|---|---|---|
+| REG.VAD.IoU | speech regions IoU vs gold union ≥ `min_iou` (0.70) | WARN + manual review |
+| REG.DIAR.speakers | `speaker_count` in **2..4** (gold on clip = 2; ~3–4 with tolerance) | WARN + manual review |
+| REG.ASR.ru_ratio | Russian word ratio ≥ 0.90 | WARN + manual review |
+| REG.ASR.latin | Latin chars == 0 | WARN + manual review |
+
+Report: `agent_docs/reports/regression_test_voice.md` (+ `.json`).  
+**Not a merge blocker** unless `REGRESSION_STRICT=1`. Default `pytest tests/` still exits 0 on WARN (warning only).
+
+### Broader module smoke (optional later)
 
 | Step | Artifact | Minimal “truth-like” checks (v0) |
 |---|---|---|
-| normalize | `audio.json` | `duration_sec` > 0; `normalized.path` exists |
-| vad | `speech.json` | `regions` non-empty; `speech_sec` > 0; times within duration |
-| diarize | `turns.json` | `speaker_count` ∈ **1..8** on short clip; turns non-overlapping / sorted |
-| asr | `transcript.json` | nonempty segments; ru-ish text (reuse G1 ratio helper if cheap); times align to turns |
-| chunk | `chapters.json` | ≥1 chapter; `source_ids` ⊆ transcript ids; chapter times coherent |
-| titles | chapters with titles | title non-empty string per chapter (or skip if fixture titles) |
-| insights/report | optional | skip live LLM in default smoke; cassette/fixture OK |
+| normalize | `audio.json` | `duration_sec` > 0; wav exists |
+| … | … | human may extend per module |
 
-**Not required in v0:** full voice_002, live Gemini, Playwright, pixel UI.
-
-If a module is too heavy for default `pytest`, gate it with `requires_models` / `slow` and document
-in `agent_docs/reports/test_D4.md` what was skipped.
-
-Human may append rows/thresholds per module in this table or in `test_D4.md` without changing
-Coder scope.
+**Not required in v0:** Playwright, full voice_002, live Gemini.
 
 ## Unit / API cases
 
@@ -79,7 +85,8 @@ Coder scope.
 | `[D4-WEB-02]` | TestClient: create job → progress events → result has chapter links |
 | `[D4-WEB-03]` | chapter page returns text + edit controls + player root |
 | `[D4-WEB-04]` | concurrent second job rejected |
-| `[D4-SMOKE-01]` | pipeline module smoke table v0 (or skip with reason) |
+| `[D4-SMOKE-01]` | soft regression `tests/regression/` on test_voice (IoU / speakers / RU ASR); WARN≠fail unless STRICT |
+| `[D4-IOU-01]` | unit: speech region IoU helper |
 
 ## Execution
 

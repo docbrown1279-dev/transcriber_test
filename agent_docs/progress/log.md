@@ -31,3 +31,4 @@
 - 2026-09-06T13:45:00+03:00 D4 decisions: local-only (no cloud handoff); E2E short clip; audio.max_minutes=30 with warn+trim over limit
 - 2026-09-06T14:05:00+03:00 D4 UI wireframe: chapter index → chapter page; dict/summary stubs; edit+player; HTML stubs under web/static/stubs
 - 2026-09-06T14:25:00+03:00 D4 INSTRUCTIONS_READY coder_D4.md tester_D4.md (local; no Playwright; loopback IP exempt; backend module smoke v0)
+- 2026-09-06T14:50:00+03:00 add soft regression test_voice (VAD IoU, speakers 2-4, RU ASR); WARN≠block unless REGRESSION_STRICT=1
