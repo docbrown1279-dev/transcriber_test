@@ -48,7 +48,8 @@ diarization:
     min_sec: 0.4
     window_sec: 1.5
     step_sec: 0.75
-    cluster_distance_threshold: 0.80
+    # 0.80 oversplits full meetings (~15 ids on voice_002 T2 VAD); 0.85 → ~5
+    cluster_distance_threshold: 0.85
 
 # --- asr ---
 asr:
