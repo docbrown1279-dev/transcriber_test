@@ -125,9 +125,33 @@ def _build_packing_c() -> Any:
 
 
 def _build_gemini() -> Any:
-    from transcriber.llm.gemini import GeminiLlmClient
+    from transcriber.config.loader import load_config
+    from transcriber.llm.factory import make_client
 
-    return GeminiLlmClient()
+    cfg = load_config("demo")
+    cfg.llm.backend = "gemini"
+    return make_client(cfg.llm)
+
+
+def _build_openai_compat() -> Any:
+    from transcriber.config.loader import load_config
+    from transcriber.llm.factory import make_client
+
+    cfg = load_config("demo")
+    cfg.llm.backend = "nvidia"
+    return make_client(cfg.llm)
+
+
+def _build_markdown_exporter() -> Any:
+    from transcriber.export.markdown import MarkdownExporter
+
+    return MarkdownExporter()
+
+
+def _build_json_exporter() -> Any:
+    from transcriber.export.markdown import JsonExporter
+
+    return JsonExporter()
 
 
 # Регистрация всех компонентов согласно контракту module_interfaces.md §3
@@ -179,12 +203,12 @@ _CONTRACT_COMPONENTS: list[tuple[str, str, Callable[[], Any], tuple[str, ...]]] 
     ),
     ("chunking", "hybrid_c_then_d", _make_stub_factory("chunking", "hybrid_c_then_d"), ("dev",)),
     # llm
-    ("llm", "gemini", _build_gemini, ("demo", "dev")),
+    ("llm", "gemini", _build_gemini, ("demo", "dev", "prod")),
     ("llm", "local_llama", _make_stub_factory("llm", "local_llama"), ("dev", "prod")),
-    ("llm", "openai_compat", _make_stub_factory("llm", "openai_compat"), ("dev", "prod")),
+    ("llm", "openai_compat", _build_openai_compat, ("demo", "dev", "prod")),
     # export
-    ("export", "json", _make_stub_factory("export", "json"), ("demo", "dev", "prod")),
-    ("export", "markdown", _make_stub_factory("export", "markdown"), ("demo", "dev", "prod")),
+    ("export", "json", _build_json_exporter, ("demo", "dev", "prod")),
+    ("export", "markdown", _build_markdown_exporter, ("demo", "dev", "prod")),
     ("export", "pdf", _make_stub_factory("export", "pdf"), ("prod",)),
 ]
 

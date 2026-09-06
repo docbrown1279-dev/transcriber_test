@@ -40,6 +40,10 @@ def test_d0_cfg_02_unknown_key_fails_with_path() -> None:
         (root / "profiles").mkdir()
         with open(root / "base.yaml", "w", encoding="utf-8") as f:
             yaml.dump(raw_data, f)
+        (root / "base_llm.yaml").write_text(
+            Path("config/base_llm.yaml").read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
         with open(root / "profiles" / "demo.yaml", "w", encoding="utf-8") as f:
             yaml.dump({"app": {"profile": "demo"}}, f)
 
@@ -67,9 +71,9 @@ def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
 
 def test_d0_cfg_04_profile_selections_and_secrets(dev_config, prod_config) -> None:
     """[D0-CFG-04] dev selects local_llama, prod selects local components; secrets appear only as env var names."""
-    assert dev_config.llm.provider == "local_llama"
-    assert dev_config.llm.model_path is not None
-    assert "GEMINI_API_KEY" not in str(dev_config.model_dump())
+    assert dev_config.llm.mode == "api"
+    assert dev_config.llm.backend == "gemini"
+    assert dev_config.llm.active_backend.api_key_env == "GEMINI_API_KEY"
 
     assert prod_config.diarization.engine in ["pyannote31", "wespeaker_onnx"]
     assert prod_config.correction.domain_dictionary is True

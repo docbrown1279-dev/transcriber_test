@@ -9,7 +9,8 @@ from pydantic import BaseModel, ConfigDict, ValidationError
 
 from transcriber.config.schema import LlmConfig
 from transcriber.llm.base import LlmClient
-from transcriber.llm.prompts import load_prompt
+from transcriber.llm.factory import complete_json
+from transcriber.llm.prompts import load_prompt, load_schema
 from transcriber.models.artifacts import ChaptersArtifact, TranscriptArtifact
 
 STAMP_PREFIXES = (
@@ -67,13 +68,10 @@ def apply_titles(
     cfg: LlmConfig,
 ) -> tuple[ChaptersArtifact, int]:
     """Генерирует и проверяет заголовок каждой главы с ограниченным повтором."""
-    if cfg.max_calls_per_job is None:
-        raise ValueError("llm.max_calls_per_job must be configured")
-    if cfg.temperature is None:
-        raise ValueError("llm.temperature must be configured")
-
     started = monotonic()
-    prompt_template = load_prompt(cfg.prompts.title)
+    task = cfg.tasks.chapter_titles
+    prompt_template = load_prompt(task.prompt)
+    response_schema = load_schema(task.schema_)
     generated = chapters.model_copy(deep=True)
     used_titles: set[str] = set()
     calls = 0
@@ -89,10 +87,13 @@ def apply_titles(
                 raise RuntimeError(
                     f"Gemini call budget exhausted before title for chapter {chapter.id}"
                 )
-            response = client.complete(
-                prompt,
-                max_tokens=cfg.title_max_tokens,
-                temperature=cfg.temperature,
+            response = complete_json(
+                client,
+                prompt=prompt,
+                prompt_id="chapter_titles/v1",
+                schema=response_schema,
+                cfg=cfg,
+                task=task,
             )
             calls += 1
             try:

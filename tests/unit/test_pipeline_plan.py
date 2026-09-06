@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pytest
 
-from transcriber.errors import StageNotImplementedError
 from transcriber.models.artifacts import TranscriptArtifact, TranscriptSegment, dump_artifact
 from transcriber.pipeline.orchestrator import plan_job, run_job, run_stage
 from transcriber.pipeline.steps import PIPELINE_STEPS
@@ -80,13 +79,13 @@ def test_d0_pln_03_invalid_artifact_not_counted_as_done(tmp_job_dir: Path) -> No
     assert normalize_plan.status in ["pending", "unavailable"]
 
 
-def test_d0_pln_04_calling_unimplemented_stage_raises_and_writes_nothing(tmp_job_dir: Path) -> None:
-    """[D0-PLN-04] calling an unimplemented stage raises StageNotImplementedError and writes no artifact file."""
+def test_d0_pln_04_calling_stage_without_requirements_writes_nothing(tmp_job_dir: Path) -> None:
+    """[D0-PLN-04] calling a stage without required inputs fails and writes no artifact."""
     initial_files = set(tmp_job_dir.iterdir())
 
-    unimplemented_stages = ["insights_extract", "report"]
-    for stage in unimplemented_stages:
-        with pytest.raises(StageNotImplementedError):
+    d3_stages = ["insights_extract", "report"]
+    for stage in d3_stages:
+        with pytest.raises(FileNotFoundError):
             run_stage(stage, tmp_job_dir)
 
     current_files = set(tmp_job_dir.iterdir())

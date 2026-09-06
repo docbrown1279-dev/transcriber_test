@@ -36,5 +36,9 @@
 - Branch: cursor/demo-d3-insights
 - Next: /cloud_push (or cloud_handoff.sh); Cloud Agent on that branch
 
+## 2026-09-06 — Cloud Agent
+- STATUS: READY_FOR_TEST
+- Implemented layered LLM configuration, Gemini and OpenAI-compatible transports, source-hydrated insights, report generation, Markdown export, pipeline stages, and G3 checks.
+- Added offline unit, contract, cassette, registry, and packed-artifact integration coverage for D3.
 
 

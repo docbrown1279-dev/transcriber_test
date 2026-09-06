@@ -12,11 +12,7 @@ diarization:
 
 llm:
   mode: api
-  provider: gemini
-  model: gemini-2.5-flash
-  api_key_env: GEMINI_API_KEY
-  timeout_sec: 60
-  max_calls_per_job: 20
+  backend: gemini
 
 limits:
   requests_per_ip_per_day: 1

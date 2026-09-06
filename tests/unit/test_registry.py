@@ -53,7 +53,6 @@ def test_d0_reg_02_prod_only_keys_raise_in_demo() -> None:
         ("chunking", "late_chunking_jina"),
         ("correction", "domain_dictionaries"),
         ("export", "pdf"),
-        ("llm", "openai_compat"),
     ]
     for area, key in prod_only:
         with pytest.raises(ComponentUnavailableError) as exc_info:
@@ -106,11 +105,12 @@ def test_d1_reg_01_implemented_engines_under_demo() -> None:
 
 
 def test_d0_reg_04_unknown_key_and_availability() -> None:
-    """[D0-REG-04] unknown key raises UnknownComponentError; available('llm', 'demo') contains gemini and excludes local_llama."""
+    """[D0-REG-04] unknown keys fail; demo exposes API LLMs but not local Llama."""
     with pytest.raises(UnknownComponentError) as exc_info:
         build("llm", "nonexistent_model", profile="demo")
     assert exc_info.value.key == "nonexistent_model"
 
     avail_llm = available("llm", "demo")
     assert "gemini" in avail_llm
+    assert "openai_compat" in avail_llm
     assert "local_llama" not in avail_llm

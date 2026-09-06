@@ -1,6 +1,6 @@
 """Интерфейс (порт) клиента больших языковых моделей (LLM)."""
 
-from typing import Protocol
+from typing import Any, Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -28,8 +28,11 @@ class LlmClient(Protocol):
         self,
         prompt: str,
         *,
-        max_tokens: int,
-        temperature: float,
+        prompt_id: str,
+        max_tokens: int | None,
+        temperature: float | None,
+        json_schema: dict[str, Any] | None,
+        extra: dict[str, object] | None = None,
     ) -> LlmResponse:
         """Выполняет запрос генерации текста по промпту."""
         ...

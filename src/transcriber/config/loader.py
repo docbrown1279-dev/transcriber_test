@@ -1,6 +1,6 @@
 """Загрузчик конфигурационных профилей приложения.
 
-Читает base.yaml, deep-merge с profiles/{profile}.yaml, валидирует AppConfig.
+Читает base.yaml, base_llm.yaml и profiles/{profile}.yaml, затем валидирует AppConfig.
 """
 
 from __future__ import annotations
@@ -77,19 +77,24 @@ def load_config(profile: str | None = None, config_dir: Path | str | None = None
     if not base_path.is_file():
         raise ConfigError(f"Base config not found at '{base_path}'")
 
+    llm_path = root / "base_llm.yaml"
+    if not llm_path.is_file():
+        raise ConfigError(f"LLM base config not found at '{llm_path}'")
+
+    base_config = deep_merge(_load_yaml(base_path), _load_yaml(llm_path))
     overlay_path = root / "profiles" / f"{resolved_profile}.yaml"
     if not overlay_path.is_file():
         # Backward-compatible single-file profile (tests may still use this).
         legacy = root / f"{resolved_profile}.yaml"
         if legacy.is_file():
-            merged = _load_yaml(legacy)
+            merged = deep_merge(base_config, _load_yaml(legacy))
         else:
             raise ConfigError(
                 f"Profile overlay not found at '{overlay_path}' "
                 f"(and no legacy '{legacy}')"
             )
     else:
-        merged = deep_merge(_load_yaml(base_path), _load_yaml(overlay_path))
+        merged = deep_merge(base_config, _load_yaml(overlay_path))
 
     # Ensure profile field matches selection
     app_section = merged.setdefault("app", {})

@@ -1,11 +1,10 @@
-"""Offline title generation test using a recorded JSON response."""
+"""Offline D3 extract test using a recorded response."""
 
 from pathlib import Path
 from typing import Any
 
-from transcriber.config.schema import AppConfig
+from transcriber.insights.extract import extract_insights
 from transcriber.llm.base import LlmResponse
-from transcriber.llm.titles import apply_titles
 from transcriber.models.artifacts import (
     ChapterItem,
     ChapterMetrics,
@@ -18,9 +17,6 @@ from transcriber.models.artifacts import (
 class CassetteClient:
     name = "cassette"
 
-    def __init__(self, response_path: Path) -> None:
-        self._response_path = response_path
-
     def complete(
         self,
         prompt: str,
@@ -31,9 +27,11 @@ class CassetteClient:
         json_schema: dict[str, Any] | None,
         extra: dict[str, object] | None = None,
     ) -> LlmResponse:
-        assert "инженерные сети" in prompt
+        assert "s0001 |" in prompt
         return LlmResponse(
-            text=self._response_path.read_text(encoding="utf-8"),
+            text=Path("tests/fixtures/llm/extract_v1_sample.json").read_text(
+                encoding="utf-8"
+            ),
             provider=self.name,
             model="fixture",
             prompt_id=prompt_id,
@@ -43,61 +41,51 @@ class CassetteClient:
         )
 
 
-def test_d2_ttl_01_cassette_title_applied_and_extra_fields_ignored(
-    demo_config: AppConfig,
-) -> None:
-    """[D2-TTL-01] Cassette title is applied while optional P1 fields stay out."""
+def test_d3_cas_01_extract_cassette_is_hydrated(demo_config) -> None:
+    """[D3-CAS-01] Recorded extract output is hydrated from transcript metadata."""
     transcript = TranscriptArtifact(
         schema_version="1",
         job_id="job",
-        engine="gigaam_v3_rnnt",
+        engine="fixture",
         segments=[
             TranscriptSegment(
                 id="s0001",
-                turn_id="t0001",
+                turn_id="t1",
                 start=1,
-                end=61,
+                end=2,
                 speaker="A",
-                text="инженерные сети и подключение",
+                text="срок согласования составляет 10 дней",
             )
         ],
-        max_segment_sec=60,
-        runtime_sec=1,
+        max_segment_sec=25,
+        runtime_sec=0,
     )
     chapters = ChaptersArtifact(
         schema_version="1",
         job_id="job",
         chunker="packing_c",
-        embedding_model="rubert_tiny2",
+        embedding_model="fixture",
         similarity_threshold=0.7,
         chapters=[
             ChapterItem(
                 id="C00",
                 start=1,
-                end=61,
+                end=2,
                 source_ids=["s0001"],
                 speakers=["A"],
-                title="",
-                duration_sec=60,
+                title="Срок",
+                duration_sec=1,
             )
         ],
         metrics=ChapterMetrics(
             chapters_per_minute=1,
-            short_chapters=0,
+            short_chapters=1,
             long_chapters=0,
         ),
-        runtime_sec=1,
+        runtime_sec=0,
     )
-    cassette = Path("tests/fixtures/llm/title_p1_sample.json")
-    titled, calls = apply_titles(chapters, transcript, CassetteClient(cassette), demo_config.llm)
-    assert calls == 1
-    assert titled.chapters[0].title == "Подключение инженерных сетей"
-    assert set(titled.chapters[0].model_dump()) == {
-        "id",
-        "start",
-        "end",
-        "source_ids",
-        "speakers",
-        "title",
-        "duration_sec",
-    }
+    result = extract_insights(
+        chapters, transcript, CassetteClient(), demo_config
+    )
+    assert result.chapters[0].key_points[0].src[0].start == 1
+    assert result.llm_calls == 1

@@ -7,11 +7,18 @@ from pathlib import Path
 from transcriber.config.loader import load_config
 from transcriber.models.artifacts import (
     ChaptersArtifact,
+    InsightsArtifact,
+    ReportArtifact,
     TranscriptArtifact,
     dump_artifact,
     load_artifact,
 )
-from transcriber.quality.checks import build_quality_artifact, check_chapters
+from transcriber.quality.checks import (
+    build_quality_artifact,
+    check_chapters,
+    check_insights,
+    check_report,
+)
 
 
 def main() -> None:
@@ -31,6 +38,18 @@ def main() -> None:
         "--transcript", type=str, required=True, help="Path to transcript.json"
     )
     chapter_parser.add_argument("--profile", type=str, default="demo", help="Config profile")
+
+    insights_parser = subparsers.add_parser("check-insights", help="Check D3 insights quality")
+    insights_parser.add_argument("insights", type=str, help="Path to insights.json")
+    insights_parser.add_argument("--chapters", type=str, required=True)
+    insights_parser.add_argument("--transcript", type=str, required=True)
+
+    report_parser = subparsers.add_parser("check-report", help="Check D3 report quality")
+    report_parser.add_argument("report", type=str, help="Path to report.json")
+    report_parser.add_argument("--insights", type=str, required=True)
+    report_parser.add_argument("--chapters", type=str, required=True)
+    report_parser.add_argument("--transcript", type=str, default=None)
+    report_parser.add_argument("--profile", type=str, default="demo")
 
     args = parser.parse_args()
 
@@ -76,6 +95,45 @@ def main() -> None:
         chapters = load_artifact(chapters_path, ChaptersArtifact)
         transcript = load_artifact(transcript_path, TranscriptArtifact)
         report = check_chapters(chapters, transcript, load_config(args.profile))
+        print(f"Quality verdict: {report.verdict.upper()}")
+        for check in report.checks:
+            print(
+                f"  [{check.status.upper()}] {check.id}: "
+                f"value={check.value}; threshold={check.threshold}"
+            )
+        if report.verdict == "fail":
+            sys.exit(1)
+
+    if args.command == "check-insights":
+        insights = load_artifact(args.insights, InsightsArtifact)
+        chapters = load_artifact(args.chapters, ChaptersArtifact)
+        transcript = load_artifact(args.transcript, TranscriptArtifact)
+        report = check_insights(insights, chapters, transcript)
+        print(f"Quality verdict: {report.verdict.upper()}")
+        for check in report.checks:
+            print(
+                f"  [{check.status.upper()}] {check.id}: "
+                f"value={check.value}; threshold={check.threshold}"
+            )
+        if report.verdict == "fail":
+            sys.exit(1)
+
+    if args.command == "check-report":
+        report_artifact = load_artifact(args.report, ReportArtifact)
+        insights = load_artifact(args.insights, InsightsArtifact)
+        chapters = load_artifact(args.chapters, ChaptersArtifact)
+        transcript = (
+            load_artifact(args.transcript, TranscriptArtifact)
+            if args.transcript is not None
+            else None
+        )
+        report = check_report(
+            report_artifact,
+            insights,
+            chapters,
+            transcript,
+            profile=args.profile,
+        )
         print(f"Quality verdict: {report.verdict.upper()}")
         for check in report.checks:
             print(

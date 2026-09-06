@@ -1,0 +1,9 @@
+{
+  "$id": "chapter_title",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title"],
+  "properties": {
+    "title": { "type": "string" }
+  }
+}
