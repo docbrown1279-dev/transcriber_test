@@ -1,0 +1,53 @@
+{
+  "mode": "b",
+  "audio": "/bench/voice_002_15min.m4a",
+  "job_dir": "/var/transcriber/bench/d5/job_mode_b",
+  "until": "titles",
+  "total_wall_sec": 784.664,
+  "peak_rss_mb": 2183.9,
+  "stages": [
+    {
+      "stage": "normalize",
+      "wall_sec": 1.311,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "vad",
+      "wall_sec": 4.255,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "diarize",
+      "wall_sec": 402.013,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "asr",
+      "wall_sec": 370.528,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "chunk",
+      "wall_sec": 57.21,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "titles",
+      "wall_sec": 57.21,
+      "peak_rss_mb": null
+    }
+  ],
+  "chapters": 9,
+  "titles": [
+    "Обратная связь и уточняющие вопросы",
+    "Экспертиза проекта подключения через паркинг",
+    "Проверка решений разработчиков",
+    "Ландшафтная концепция и размещение светильников",
+    "Прокладка кабеля от улицы к объекту",
+    "Расчёт мощности на квартиру",
+    "Анализ конструкторов и совещание с коллегами",
+    "Подготовка планов и разрезов для помещения",
+    "Мощность корпусов девятого и восьмого"
+  ],
+  "notes": "full run_job from audio; stage wall_sec from artifact runtime_sec where present; peak_rss_mb is process RUSAGE_SELF after run"
+}

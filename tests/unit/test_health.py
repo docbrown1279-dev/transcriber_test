@@ -34,6 +34,8 @@ def test_d0_hlt_02_healthz_broken_component_returns_503(
 ) -> None:
     """[D0-HLT-02] a broken component (unwritable storage root or missing env var) returns 503 naming that component."""
     # Случай 1: отсутствует обязательная переменная окружения
+    # Clear Docker secrets mount so dotenv cannot refill JOB_IP_SALT after delenv.
+    monkeypatch.delenv("TRANSCRIBER_DOTENV", raising=False)
     monkeypatch.delenv("JOB_IP_SALT", raising=False)
     response = client.get("/healthz")
     assert response.status_code == 503

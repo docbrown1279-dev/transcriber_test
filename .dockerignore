@@ -1,0 +1,61 @@
+# VCS / tooling
+.git
+.gitignore
+.gitattributes
+.cursor
+.trash
+.github
+
+# Local envs and secrets (never bake into image layers)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.credentials
+.aws
+.ssh
+
+# Python / caches
+.venv
+venv
+__pycache__
+**/__pycache__
+*.py[cod]
+*.egg-info
+.mypy_cache
+.ruff_cache
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.cache
+
+# Heavy / local-only trees
+var/
+eval/
+results/
+agent_docs/
+docs/
+cloud_in/
+cloud_out/
+prompts/
+manuals/
+progress/
+frontend/
+alembic/
+
+# data: keep only the soft-regression clip
+data/**
+!data/test_voice.m4a
+
+# Model download caches (keep tracked ONNX via explicit COPY path)
+models/.cache
+models/**/.cache
+
+# Editor / OS junk
+.idea
+.vscode
+*.swp
+*~
+.DS_Store

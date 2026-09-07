@@ -6,6 +6,7 @@
 | [`manual_testing.md`](manual_testing.md) | Ручная проверка / smoke по этапам; **демо UI (D4)** |
 | [`configuration_guide.md`](configuration_guide.md) | Профили `demo`/`dev`/`prod` в YAML, секреты в `.env`, UI-лимиты |
 | [`llm.md`](llm.md) | LLM: `base_llm.yaml`, бэкенды, промпты; кнопка саммари в UI |
+| [`docker.md`](docker.md) | Сборка образа, секреты через volume, тесты/serve в контейнере (D5) |
 
 ## Сопровождение
 
@@ -13,3 +14,4 @@
 При смене CLI, smoke-критериев этапа, потока веб-демки или exit criteria — `manual_testing.md`.  
 При смене выбора профиля / раскладки `config/*.yaml` / `ui.*` — `configuration_guide.md`.  
 При смене LLM-бэкендов, промптов, схем или лимита вызовов саммари — `llm.md`.
+При смене Dockerfile / прогона в контейнере / volume секретов — `docker.md`.

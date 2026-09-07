@@ -1,0 +1,73 @@
+{
+  "status": "healthy",
+  "components": {
+    "config": {
+      "status": "ok",
+      "message": null,
+      "details": {
+        "profile": "demo"
+      }
+    },
+    "registry": {
+      "status": "ok",
+      "message": null,
+      "details": {
+        "vad": [
+          "silero"
+        ],
+        "diarization": [
+          "wespeaker_onnx"
+        ],
+        "asr": [
+          "gigaam_v3_rnnt"
+        ],
+        "chunking": [
+          "packing_c"
+        ],
+        "llm": [
+          "gemini",
+          "openai_compat"
+        ]
+      }
+    },
+    "storage": {
+      "status": "ok",
+      "message": null,
+      "details": {
+        "path": "/var/transcriber"
+      }
+    },
+    "tools": {
+      "status": "ok",
+      "message": null,
+      "details": null
+    },
+    "env": {
+      "status": "ok",
+      "message": null,
+      "details": null
+    },
+    "models": {
+      "status": "ok",
+      "message": null,
+      "details": {
+        "silero_vad_onnx": "models/silero_vad.onnx"
+      }
+    },
+    "embedder": {
+      "status": "ok",
+      "message": null,
+      "details": {
+        "engine": "rubert_tiny2"
+      }
+    },
+    "llm": {
+      "status": "ok",
+      "message": null,
+      "details": {
+        "backend": "qwen",
+        "client": "openai_compat"
+      }
+    }
+  }
+}

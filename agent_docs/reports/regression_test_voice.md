@@ -4,7 +4,7 @@
 
 Soft gate: FAIL here means **manual review required**, not an automatic merge block.
 
-Job dir: `/tmp/pytest-of-vvp/pytest-57/test_reg_voice_pipeline_soft0/reg_test_voice`
+Job dir: `/tmp/pytest-of-app/pytest-0/test_reg_voice_pipeline_soft0/reg_test_voice`
 
 | id | ok | detail |
 |---|---|---|

@@ -45,3 +45,9 @@
 - 2026-09-07T02:10:00+03:00 D4.1 B fix: title only when next chapter appears (slot-based); backlog ticket_d4_1_title_batch2.md
 - 2026-09-07T02:25:00+03:00 D4.1 wire pipeline.toc_mode b default (a=batch fallback); commit+merge main
 - 2026-09-07T02:30:00+03:00 D4.1 CLOSED on main; toc_mode=b default; reports synced (B 6calls TTFT~20s); next D5
+- 2026-09-07T02:40:00+03:00 D5 PLAN_DRAFT agent_docs/plans/draft_D5_scope.md (Dockerfile+.dockerignore; compose optional; await ✅ → Phase B)
+- 2026-09-07T02:45:00+03:00 D5 PLAN_DRAFT rev2: test_voice in image; secrets via volume; in-container pytest; Actions→D5.1; await ✅
+- 2026-09-07T02:50:00+03:00 D5 INSTRUCTIONS_READY coder_D5.md tester_D5.md; docker_runtime.md; manuals/docker.md
+- 2026-09-07T07:00:00+03:00 D5 Tester hung on READY wait since ~03:05; relaunched fresh Tester for Phase1–2 (docker OK with all perms)
+- 2026-09-07T07:50:00+03:00 D5 TEST_PASS local Docker G5 wall=784.7s peak_rss=2.13GiB reports=agent_docs/reports/d5/gate_D5.md
+- 2026-09-07T07:55:00+03:00 D5 TEST_PASS await HUMAN_GATE; next D5.1 Actions

@@ -1,0 +1,11 @@
+04:31:51 INFO [transcriber.config.loader] dotenv loaded from /run/secrets/transcriber.env
+04:31:51 INFO [transcriber.config.loader] env names set=['JOB_IP_SALT', 'GEMINI_API_KEY', 'NVIDIA_API_KEY', 'QWEN_API_KEY', 'HF_TOKEN'] missing=[]
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+04:31:51 INFO [transcriber.config.loader] storage_root overridden via TRANSCRIBER_STORAGE_ROOT=/var/transcriber
+04:31:51 INFO [transcriber.web] LLM key env QWEN_API_KEY is set (value not logged)
+04:31:51 INFO [transcriber.web] web demo started profile=demo
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+04:31:53 INFO [transcriber.config.loader] storage_root overridden via TRANSCRIBER_STORAGE_ROOT=/var/transcriber
+INFO:     172.17.0.1:58650 - "GET /healthz HTTP/1.1" 200 OK

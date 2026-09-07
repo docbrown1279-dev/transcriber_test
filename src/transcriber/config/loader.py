@@ -60,13 +60,36 @@ _find_config_dir = find_config_dir
 def load_dotenv_into_environ(config_root: Path | str | None = None) -> list[Path]:
     """Подставляет переменные из `.env`, не перезаписывая уже заданные в окружении.
 
-    Ищет `.env` в cwd и в корне репозитория (рядом с `config/`). Значения секретов
-    не логируются — только пути файлов и *имена* переменных (set/missing).
+    Порядок поиска:
+    1. ``TRANSCRIBER_DOTENV`` (explicit path, e.g. Docker volume ``/run/secrets/…``)
+    2. ``.env`` в cwd
+    3. ``.env`` в корне репозитория (рядом с ``config/``)
+
+    Значения секретов не логируются — только пути файлов и *имена* переменных
+    (set/missing).
     """
     root = Path(config_root) if config_root is not None else _repo_config_dir()
     candidates: list[Path] = []
+
+    override = os.environ.get("TRANSCRIBER_DOTENV", "").strip()
+    if override:
+        override_path = Path(override).expanduser()
+        try:
+            resolved_override = override_path.resolve()
+        except OSError:
+            resolved_override = override_path
+        candidates.append(resolved_override)
+        if not override_path.is_file():
+            logger.warning(
+                "TRANSCRIBER_DOTENV is set but file is missing: %s",
+                override_path,
+            )
+
     for raw in (Path.cwd() / ".env", root.parent / ".env"):
-        resolved = raw.resolve()
+        try:
+            resolved = raw.resolve()
+        except OSError:
+            resolved = raw
         if resolved not in candidates:
             candidates.append(resolved)
 
@@ -220,6 +243,10 @@ def load_config(profile: str | None = None, config_dir: Path | str | None = None
     app_section = merged.setdefault("app", {})
     if isinstance(app_section, dict):
         app_section["profile"] = resolved_profile
+        storage_override = os.environ.get("TRANSCRIBER_STORAGE_ROOT", "").strip()
+        if storage_override:
+            app_section["storage_root"] = storage_override
+            logger.info("storage_root overridden via TRANSCRIBER_STORAGE_ROOT=%s", storage_override)
 
     try:
         return AppConfig.model_validate(merged)

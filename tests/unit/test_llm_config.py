@@ -100,7 +100,8 @@ def test_d3_cfg_05_dotenv_fills_missing_env_only(
     config_root = tmp_path / "config"
     config_root.mkdir()
     (config_root / "profiles").mkdir()
-    repo_config = Path("/work/speech_rec_test/config")
+    # Portable across host checkout and Docker image (/app/config).
+    repo_config = Path(__file__).resolve().parents[2] / "config"
     for name in ("base.yaml", "base_llm.yaml"):
         (config_root / name).write_text(
             repo_config.joinpath(name).read_text(encoding="utf-8"),

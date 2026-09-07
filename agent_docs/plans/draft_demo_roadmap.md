@@ -1,6 +1,6 @@
 # Черновик плана разработки `demo` (Фаза A)
 
-**Статус:** D0–D4.1 закрыты на main. **D4.1** perf: `pipeline.toc_mode=b` (A=batch fallback). Далее **D5** Docker. См. [`draft_D4_1_scope.md`](draft_D4_1_scope.md), [`reports/d4_1/`](../reports/d4_1/). Backlog: `ticket_d1_gigaam_missing.md`, `ticket_d1_speaker_clusters.md`, `ticket_d2_short_chapters.md`, `ticket_d4_audio_formats.md`.
+**Статус:** D0–D4.1 закрыты на main. **D5** TEST_PASS (local Docker G5: wall ~785s, peak RSS ~2.13 GiB) — await HUMAN_GATE / merge. Reports: [`../reports/d5/gate_D5.md`](../reports/d5/gate_D5.md). Next: **D5.1** GitHub Actions. Backlog: `ticket_d1_gigaam_missing.md`, `ticket_d1_speaker_clusters.md`, `ticket_d2_short_chapters.md`, `ticket_d4_audio_formats.md`, `ticket_d4_1_title_batch2.md`.
 **Источники:** [`docs/dev_specs.md`](../../docs/dev_specs.md) (ТЗ, read-only), [`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md) (зафиксированный стек), отчёты этапов в [`docs/research_results/reports/`](../../docs/research_results/reports/).
 **Соседние черновики:** [архитектура](draft_architecture.md), [облачный процесс](draft_cloud_workflow.md), [стратегия тестирования](draft_test_strategy.md).
 
@@ -83,6 +83,12 @@
 
 - Docker-образ; прогон под `--cpus=2 --memory=8g` на 15-минутном срезе; замер wall time и peak RSS по этапам; при промахе — снижение лимита до 10–15 мин (ТЗ §3, §10).
 - **Шлюз облака:** отчёт производительности + отсутствие OOM; **человек:** решение о публикации демки.
+
+### D5.1 — CI на GitHub Actions (после D5)
+
+- Workflow: `docker build` + in-container `pytest` + опционально G5-like job на self-hosted/larger runner.
+- Секреты — GitHub Secrets / OIDC, не в образ.
+- Не начинается, пока D5 не закрыт (локальный образ и ручной gate готовы).
 
 ### Зависимости и параллелизм
 
