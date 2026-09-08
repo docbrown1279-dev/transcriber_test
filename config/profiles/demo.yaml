@@ -2,6 +2,10 @@
 app:
   profile: demo
 
+audio:
+  # Ship gate: 15 min trim (full meeting TTFT too long on 2 vCPU).
+  max_minutes: 15
+
 vad:
   fallback: disabled
 

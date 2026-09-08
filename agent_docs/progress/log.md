@@ -51,3 +51,4 @@
 - 2026-09-07T07:00:00+03:00 D5 Tester hung on READY wait since ~03:05; relaunched fresh Tester for Phase1–2 (docker OK with all perms)
 - 2026-09-07T07:50:00+03:00 D5 TEST_PASS local Docker G5 wall=784.7s peak_rss=2.13GiB reports=agent_docs/reports/d5/gate_D5.md
 - 2026-09-07T07:55:00+03:00 D5 TEST_PASS await HUMAN_GATE; next D5.1 Actions
+- 2026-09-08T21:35:00+03:00 ship prep: stash WIP live-TOC/ETA; demo max_minutes=15; plan draft_ttft_diarize_split.md (anchor clusters); rebuild runtime from clean tree

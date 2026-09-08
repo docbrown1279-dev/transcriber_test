@@ -82,7 +82,7 @@ def test_d0_cfg_02_unknown_key_fails_with_path() -> None:
 
 def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
     """[D0-CFG-03] demo values match the contract."""
-    assert demo_config.audio.max_minutes == 30
+    assert demo_config.audio.max_minutes == 15
     assert demo_config.asr.max_segment_seconds == 25
     assert demo_config.chunking.similarity_threshold == 0.70
     assert demo_config.limits.requests_per_ip_per_day == 1
