@@ -52,3 +52,5 @@
 - 2026-09-07T07:50:00+03:00 D5 TEST_PASS local Docker G5 wall=784.7s peak_rss=2.13GiB reports=agent_docs/reports/d5/gate_D5.md
 - 2026-09-07T07:55:00+03:00 D5 TEST_PASS await HUMAN_GATE; next D5.1 Actions
 - 2026-09-08T21:35:00+03:00 ship prep: stash WIP live-TOC/ETA; demo max_minutes=15; plan draft_ttft_diarize_split.md (anchor clusters); rebuild runtime from clean tree
+- 2026-09-09T23:35:00+03:00 backlog tickets: ticket_d5_gigaam_v3_onnx.md (community HF onnx-asr), ticket_d5_diarize_speed.md (embed-bound; split+anchor)
+- 2026-09-09T23:40:00+03:00 Dockerfile: curl silero_vad.onnx at build (models/ gitignored); ticket_d5_silero_docker_weights.md

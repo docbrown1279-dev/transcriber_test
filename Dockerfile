@@ -73,8 +73,14 @@ COPY --from=builder --chown=app:app /app/.venv /app/.venv
 COPY --chown=app:app pyproject.toml uv.lock README.md ./
 COPY --chown=app:app src ./src
 COPY --chown=app:app config ./config
-COPY --chown=app:app models/silero_vad.onnx ./models/silero_vad.onnx
 COPY --chown=app:app scripts/bench_d4_1.py scripts/bench_d5.py ./scripts/
+
+# Silero weights are gitignored under /models/; fetch snakers4 ONNX at build time
+# (same URL as src/transcriber/vad/silero.py). Ticket: pin commit SHA / checksum.
+RUN mkdir -p /app/models \
+    && curl -fsSL -o /app/models/silero_vad.onnx \
+        "https://raw.githubusercontent.com/snakers4/silero-vad/master/src/silero_vad/data/silero_vad.onnx" \
+    && chown -R app:app /app/models
 
 ENV TRANSCRIBER_STORAGE_ROOT=/var/transcriber \
     HOME=/home/app \
@@ -103,10 +109,14 @@ COPY --from=builder-test --chown=app:app /app/.venv /app/.venv
 COPY --chown=app:app pyproject.toml uv.lock README.md ./
 COPY --chown=app:app src ./src
 COPY --chown=app:app config ./config
-COPY --chown=app:app models/silero_vad.onnx ./models/silero_vad.onnx
 COPY --chown=app:app scripts/bench_d4_1.py scripts/bench_d5.py ./scripts/
 COPY --chown=app:app tests ./tests
 COPY --chown=app:app data/test_voice.m4a ./data/test_voice.m4a
+
+RUN mkdir -p /app/models \
+    && curl -fsSL -o /app/models/silero_vad.onnx \
+        "https://raw.githubusercontent.com/snakers4/silero-vad/master/src/silero_vad/data/silero_vad.onnx" \
+    && chown -R app:app /app/models
 
 # Writable stub so soft-regression can write its default report path inside the
 # image when agent_docs/ is not mounted (prefer mounting or REGRESSION_REPORT_PATH).

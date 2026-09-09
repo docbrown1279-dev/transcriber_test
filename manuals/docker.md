@@ -7,7 +7,7 @@
 ## Что нужно на хосте
 
 - Docker (+ Compose v2: `docker compose`)
-- Файлы для контекста (могут быть gitignore): `data/test_voice.m4a`, `models/` (Silero ONNX)
+- Файлы для контекста: для **runtime** локальный `models/silero*` **не обязателен** (веса качает `Dockerfile` с snakers4). Для target `test` нужен `data/test_voice.m4a` в контексте сборки.
 - Файл секретов **вне git** (ключи как в шаблоне `*.example` в корне репо): `JOB_IP_SALT`, ключ LLM демки, опционально `HF_TOKEN`
 
 ## Compose (предпочтительно)
