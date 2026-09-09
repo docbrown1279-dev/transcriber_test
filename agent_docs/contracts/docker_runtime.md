@@ -65,4 +65,8 @@ docker run --rm --cpus=2 --memory=8g …
 
 ## Out of scope here
 
-GitHub Actions (stage **D5.1**), Compose (optional, not required), GPU images.
+GitHub Actions (stage **D5.1**), GPU images.
+
+## Compose (optional, preferred for local/server run)
+
+Root [`compose.yaml`](../../compose.yaml): build `runtime`, publish `${TRANSCRIBER_PUBLISH_PORT:-8000}:8000`, `cpus: 2` / `mem_limit: 8g`, named volumes for storage + HF cache, `env_file` from host (default `.env`). Secrets never in image layers.

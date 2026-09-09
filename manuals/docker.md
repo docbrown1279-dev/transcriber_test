@@ -6,11 +6,26 @@
 
 ## Что нужно на хосте
 
-- Docker
+- Docker (+ Compose v2: `docker compose`)
 - Файлы для контекста (могут быть gitignore): `data/test_voice.m4a`, `models/` (Silero ONNX)
 - Файл секретов **вне git** (ключи как в шаблоне `*.example` в корне репо): `JOB_IP_SALT`, ключ LLM демки, опционально `HF_TOKEN`
 
-## Сборка
+## Compose (предпочтительно)
+
+Файл [`compose.yaml`](../compose.yaml) в корне. Секреты — только через `env_file` на хосте (по умолчанию `.env` рядом с compose; на сервере можно `COMPOSE_ENV_FILE=/etc/transcriber/transcriber.env`).
+
+```bash
+cp .env.example .env   # заполнить; не коммитить
+docker compose up -d --build
+docker compose ps
+curl -sS http://127.0.0.1:8000/healthz
+docker compose logs -f transcriber
+docker compose down          # остановить (тома jobs/cache сохраняются)
+```
+
+Порт с хоста: `TRANSCRIBER_PUBLISH_PORT=8080 docker compose up -d` (по умолчанию 8000).
+
+## Сборка без Compose
 
 ```bash
 docker build --target runtime -t transcriber:runtime .
@@ -24,6 +39,8 @@ docker build --target test -t transcriber:test .
 Не копировать в образ. Варианты:
 
 ```bash
+# Compose: env_file (.env или COMPOSE_ENV_FILE=…)
+
 # volume + путь для загрузчика
 docker run --rm \
   -e TRANSCRIBER_DOTENV=/run/secrets/transcriber.env \
@@ -33,6 +50,8 @@ docker run --rm \
 # или инжект в process env с хоста
 docker run --rm --env-file /path/to/secrets.env …
 ```
+
+На сервере типично: `scp .env user@host:/opt/transcriber/.env` (права `600`), рядом лежит `compose.yaml` из git.
 
 ## Тесты в контейнере
 
@@ -50,7 +69,7 @@ Default CMD: `pytest tests/unit tests/contract tests/regression -v`.
 Отчёт soft-regression по умолчанию пишет в `/app/agent_docs/reports/regression_test_voice.md`  
 (в образе нет git-дерева `agent_docs/` — смонтируйте путь выше **или** попросите @Tester читать `REGRESSION_REPORT_PATH` в `tests/regression/…`).
 
-## Сервер
+## Сервер (без Compose)
 
 ```bash
 docker run --rm -p 8000:8000 \
@@ -84,3 +103,15 @@ docker run --rm \
 
 Альтернатива titles-only A/B на уже готовом job: `python /app/scripts/bench_d4_1.py` (см. D4.1).  
 Подробности — [`agent_docs/instructions/tester_D5.md`](../agent_docs/instructions/tester_D5.md).
+
+## Деплой и SSH (когда появится Actions)
+
+Пока пуш вручную. Когда будет workflow:
+
+| Секрет | Куда |
+|---|---|
+| Приватный SSH-ключ деплоя | **GitHub → Settings → Secrets and variables → Actions** (например `DEPLOY_SSH_KEY`). Не в репозиторий и не в compose. |
+| Публичный ключ | На сервере в `~/.ssh/authorized_keys` пользователя деплоя |
+| Хост / user | Тоже Secrets (`DEPLOY_HOST`, `DEPLOY_USER`) или Environment |
+
+Отдельный ключ только для деплоя (ed25519), без passphrase в Actions (или с known passphrase в Secrets). Личный основной ключ в Secrets лучше не класть.
