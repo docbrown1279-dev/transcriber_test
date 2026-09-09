@@ -104,14 +104,32 @@ docker run --rm \
 Альтернатива titles-only A/B на уже готовом job: `python /app/scripts/bench_d4_1.py` (см. D4.1).  
 Подробности — [`agent_docs/instructions/tester_D5.md`](../agent_docs/instructions/tester_D5.md).
 
-## Деплой и SSH (когда появится Actions)
+## Деплой (Actions + сервер)
 
-Пока пуш вручную. Когда будет workflow:
+Workflow: [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) — **только** `workflow_dispatch` (кнопка Run workflow). По push образ не пересобирается.
 
-| Секрет | Куда |
+Скрипт на сервере: [`scripts/deploy_remote.sh`](../scripts/deploy_remote.sh) (`docker compose up -d --build` + `/healthz`).
+
+### GitHub Secrets
+
+| Secret | Назначение |
 |---|---|
-| Приватный SSH-ключ деплоя | **GitHub → Settings → Secrets and variables → Actions** (например `DEPLOY_SSH_KEY`). Не в репозиторий и не в compose. |
-| Публичный ключ | На сервере в `~/.ssh/authorized_keys` пользователя деплоя |
-| Хост / user | Тоже Secrets (`DEPLOY_HOST`, `DEPLOY_USER`) или Environment |
+| `DEPLOY_HOST` | IP / hostname |
+| `DEPLOY_USER` | SSH user |
+| `DEPLOY_SSH_KEY` | приватный ключ деплоя (ed25519) |
+| `DEPLOY_PATH` | абсолютный путь к клону репо на сервере |
+| `DEPLOY_SSH_PORT` | опционально, по умолчанию 22 |
 
-Отдельный ключ только для деплоя (ed25519), без passphrase в Actions (или с known passphrase в Secrets). Личный основной ключ в Secrets лучше не класть.
+Публичный ключ — в `~/.ssh/authorized_keys` на сервере. Личный основной ключ в Secrets лучше не класть.
+
+### Один раз на сервере
+
+```bash
+git clone git@github.com:ORG/REPO.git /opt/transcriber   # = DEPLOY_PATH
+scp .env user@host:/opt/transcriber/.env && ssh user@host 'chmod 600 /opt/transcriber/.env'
+# Docker + Compose v2; пользователь в группе docker
+```
+
+### Запуск
+
+GitHub → Actions → **Deploy demo** → Run workflow (ref = `main` или тег).

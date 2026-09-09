@@ -1,0 +1,47 @@
+# Manual deploy only (no rebuild on push).
+# Required GitHub Actions secrets:
+#   DEPLOY_HOST, DEPLOY_USER, DEPLOY_SSH_KEY, DEPLOY_PATH
+# Optional: DEPLOY_SSH_PORT (default 22)
+#
+# Server one-time prep:
+#   git clone <repo> "$DEPLOY_PATH"
+#   scp .env to "$DEPLOY_PATH/.env" (mode 600)
+#   install Docker + Compose v2; deploy user in docker group
+#   add deploy public key to authorized_keys
+
+name: Deploy demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to deploy (branch or tag)
+        required: true
+        default: main
+        type: string
+
+concurrency:
+  group: deploy-demo
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_SSH_PORT || 22 }}
+          script_stop: true
+          command_timeout: 40m
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.DEPLOY_PATH }}"
+            git fetch origin
+            git checkout "${{ inputs.ref }}"
+            git pull --ff-only origin "${{ inputs.ref }}"
+            bash scripts/deploy_remote.sh
