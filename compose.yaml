@@ -4,10 +4,12 @@
 #   cp .env.example .env   # fill keys
 #   docker compose up -d --build
 #
-# Server (after scp of .env next to this file, or set COMPOSE_ENV_FILE):
-#   docker compose up -d --build
+# Server (Caddy on external proxy-net):
+#   docker network create proxy-net   # once, if missing
+#   scp .env; docker compose up -d --build
+#   Caddy upstream: transcriber:8000 (same Docker network)
 #
-# Health: http://127.0.0.1:8000/healthz
+# Health: http://127.0.0.1:8000/healthz (published port) or via Caddy
 
 services:
   transcriber:
@@ -32,8 +34,14 @@ services:
     volumes:
       - transcriber-var:/var/transcriber
       - transcriber-hf-cache:/home/app/.cache
+    networks:
+      - proxy-net
     restart: unless-stopped
 
 volumes:
   transcriber-var:
   transcriber-hf-cache:
+
+networks:
+  proxy-net:
+    external: true

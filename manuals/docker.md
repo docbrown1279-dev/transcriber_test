@@ -25,6 +25,8 @@ docker compose down          # остановить (тома jobs/cache сох�
 
 Порт с хоста: `TRANSCRIBER_PUBLISH_PORT=8080 docker compose up -d` (по умолчанию 8000).
 
+Сеть **Caddy:** сервис в external-сети `proxy-net` (см. `compose.yaml`). Один раз: `docker network create proxy-net`, если её ещё нет. В Caddy upstream: `transcriber:8000`.
+
 ## Сборка без Compose
 
 ```bash
