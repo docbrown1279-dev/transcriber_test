@@ -1,16 +1,15 @@
-# HANDOFF — D5.diar-spectral
+# HANDOFF — D5.diar-twopass
 
 | Field | Value |
 |---|---|
-| CURRENT | **D5.diar-spectral** — spectral / hybrid (+ follow-up window timing) |
-| Branch | `cursor/d5-diar-spectral` |
-| Main task | `cloud_in/prompt.md` (already done) |
-| Follow-up | **`cloud_in/FOLLOWUP.md`** — 5 min windows **1.5/0.75 vs 3.0/1.5** timing only |
-| Role | research only (`AGENTS.md`) — no coder/tester |
-| Secrets | `HF_TOKEN` if WeSpeaker weights needed |
-| Deliverables | `cloud_out/timing_windows_5min.md` + `.json`; push (no PR) |
+| CURRENT | **D5.diar-twopass** — VAD draft pass + WeSpeaker fine pass |
+| Branch | `cursor/d5-diar-twopass` |
+| Task | `cloud_in/prompt.md` |
+| Role | research only — no coder/tester prod ritual |
+| Secrets | `HF_TOKEN` if WeSpeaker Hub weights needed |
+| Deliverables | `cloud_out/report.md`, `results.json`, `run_meta.json`, push (no PR) |
 
 ## Forbidden
 
-Gold/`eval/`, crumb-as-primary, K∈[2,4] hard prior, second embedder, ASR/LLM,
-production pipeline PRs, force-push.
+`eval/` gold, crumb-primary, K∈[2,4] hard prior, second DNN embedder, ASR/LLM,
+production `src/`/`config/` shipping, force-push, opening a PR.

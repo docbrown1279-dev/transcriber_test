@@ -2,9 +2,9 @@
 
 | Field | Value |
 |---|---|
-| CURRENT | **D5.diar-spectral** |
-| Branch | `cursor/d5-diar-spectral` |
-| Goal | Spectral + hybrid clustering; 5 min cold/warm timing; find short solo B-like clusters |
-| Prior | `cursor/d5-ttft-diar` closed for window/threshold grid |
-| Plan | `agent_docs/plans/draft_d5_diar_spectral.md` |
-| Local gold | `eval/d5_diar/gold/` + `eval/d1/transcribe/` (not in pack) |
+| CURRENT | **D5.diar-twopass** |
+| Branch | `cursor/d5-diar-twopass` |
+| Goal | VAD draft (1A/1B/1C) + WeSpeaker fine (2A overlap / 2B no-overlap / 2C unit-embed) |
+| Prior | `cursor/d5-diar-spectral` — sliding windows; coarse 3.0/1.5 not a speed lever; M1≠clean B |
+| Plan | `agent_docs/plans/draft_d5_diar_twopass.md` |
+| Local gold | `eval/d5_diar/gold/`, `eval/d1/transcribe/` (not packed) |
