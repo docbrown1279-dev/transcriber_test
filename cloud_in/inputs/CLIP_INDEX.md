@@ -1,12 +1,15 @@
 # Packed audio (no gold)
 
-| path | duration | human focus (no labels) |
+| path | duration | role |
 |---|---|---|
-| `clips/clip01_embeddings_men.wav` | 60 s | ≥2 men dialogue (embeddings topic) |
-| `clips/clip02_vadim_q.wav` | 60 s | ≥2 men Q/A (must not be one speaker) |
-| `clips/clip03_woman_men.wav` | 60 s | woman + man(s); keep woman separate |
-| `regression/test_apartments.wav` | ~85 s | soft: ~3 speakers |
-| `regression/test_ninth.wav` | ~85 s | soft: ~3 speakers |
+| `clips/clip01.wav` | 60 s | quality — look for short solo greeting ~42–45 s |
+| `clips/clip02.wav` | 60 s | quality — two-man Q/A |
+| `clips/clip03.wav` | 60 s | quality — woman + man |
+| `clips/concat_01_02_03.wav` | 180 s | concat of 01\|02\|03 (offsets 0 / 60 / 120) |
+| `clips/timing_5min.wav` | 300 s | contiguous job slice @ source 500–800 s — **wall only** |
+| `regression/test_apartments.wav` | ~85 s | old clip; watch short/secondary speakers |
+| `regression/test_ninth.wav` | ~85 s | old clip; historically loses a short speaker under coarse settings |
 
-**Soft global band:** **2–4** substantial speakers per clip is normal.  
-1 = undersplit; ≥10 / crumb storm = oversplit. Do **not** invent gold.
+Soft notes (not gold, not a K prior): do **not** force 2–4 speakers. Meetings may have many.
+Do **not** apply duration crumb filters. Log crumb counts only.
+Quality judgement on clip01–03 + apartments/ninth only; timing_5min = timings.

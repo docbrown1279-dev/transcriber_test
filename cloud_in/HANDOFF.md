@@ -1,26 +1,15 @@
-# HANDOFF — D5.TTFT diar research
+# HANDOFF — D5.diar-spectral
 
 | Field | Value |
 |---|---|
-| CURRENT stage | **D5.TTFT-diar** — WeSpeaker windows + cluster tuner (research only) |
-| Branch | `cursor/d5-ttft-diar` |
-| Contract | read **`cloud_in/`** only → write **`cloud_out/`** (+ optional throwaway `scripts/` helper). No product `coder_*.md`. |
-| Role | `cloud_in/agent/AGENTS.md` + `cloud_in/agent/rules.md` |
-| Task | `cloud_in/prompt.md` (S1 windows + cluster/crumb tuner only) |
-| Soft bar | **2–4** substantial speakers / clip (not 1, not ≥10) |
-| No product agents | no `coder_*` / `tester_*` — research reports only |
-| Secrets | `HF_TOKEN` if Hub download needed for WeSpeaker weights; no Gemini |
-| Deliverables | `cloud_out/report.md`, `results.json`, `run_meta.json`, push branch (no PR) |
-
-## Order of work
-
-1. Preflight: role files, prompt, packed wavs (`CLIP_INDEX.md`)
-2. Host inventory → `run_meta.json`
-3. Run S1 window A/B + cluster threshold grid on packed clips (diarize only)
-4. Optional crumb-merge prototype on cluster stats (long-file rule can be simulated with speech_sec threshold)
-5. Write reports → commit → **push this branch**. Do **not** open a PR.
+| CURRENT | **D5.diar-spectral** — spectral / hybrid clustering + 5 min timing |
+| Branch | `cursor/d5-diar-spectral` |
+| Task | `cloud_in/prompt.md` |
+| Role | research only (`AGENTS.md`) — no coder/tester |
+| Secrets | `HF_TOKEN` if WeSpeaker weights needed |
+| Deliverables | `cloud_out/report.md`, `results.json`, `run_meta.json`, push (no PR) |
 
 ## Forbidden
 
-`eval/` (gold), H0 warmup, ASR, LLM, Jina, pyannote, production pipeline/UI/contracts,
-force-push, opening a PR, inventing gold labels.
+Gold/`eval/`, crumb-as-primary, K∈[2,4] hard prior, second embedder, ASR/LLM,
+production pipeline PRs, force-push.
