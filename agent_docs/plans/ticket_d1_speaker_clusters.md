@@ -2,7 +2,8 @@
 
 **Статус:** OPEN (backlog)  
 **Ветка:** от свежего `main` → отдельная ветка diarization (не `cursor/demo-d4-web`)  
-**Приоритет:** не блокирует веб-демку D4. Подхватить после merge UI. Oversplit уже откладывали на D3 HUMAN_GATE.
+**Приоритет:** не блокирует веб-демку D4. Подхватить после merge UI. Oversplit уже откладывали на D3 HUMAN_GATE.  
+**TTFT-эксперименты (окна / крошки 2–3 с / разрез):** сценарии S1–S3 в [`ticket_d5_ttft_experiments.md`](ticket_d5_ttft_experiments.md); этот тикет — глубина по качеству кластеров.
 
 ---
 

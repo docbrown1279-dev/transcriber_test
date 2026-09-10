@@ -63,10 +63,12 @@ docker run --rm --cpus=2 --memory=8g …
 - `HEALTHCHECK` in image should hit `/healthz`.
 - Serve must bind `0.0.0.0` inside the container (CLI default `127.0.0.1` is wrong for Docker).
 
-## Out of scope here
-
-GitHub Actions (stage **D5.1**), GPU images.
-
 ## Compose (optional, preferred for local/server run)
 
 Root [`compose.yaml`](../../compose.yaml): build `runtime`, publish `${TRANSCRIBER_PUBLISH_PORT:-8000}:8000`, `cpus: 2` / `mem_limit: 8g`, named volumes for storage + HF cache, `env_file` from host (default `.env`). Secrets never in image layers.
+
+**Rebuild required after `git pull`:** `src/` and `config/` are `COPY`'d into the image, not bind-mounted. `docker compose up -d` / `restart` alone leave the old image. Use `docker compose up -d --build` (or `scripts/deploy_remote.sh`). See [`manuals/docker.md`](../../manuals/docker.md).
+
+## Out of scope here
+
+GPU images. Actions workflow exists (`workflow_dispatch` only); push does not auto-deploy.

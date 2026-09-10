@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Run on the deploy host from the repo root (after git pull).
+# Always rebuild: src/ and config/ are baked into the image (COPY), not bind-mounted.
+# `docker compose up -d` without --build will keep the old config/code.
 # Secrets: host .env next to compose.yaml (scp once; not managed by this script).
 set -euo pipefail
 

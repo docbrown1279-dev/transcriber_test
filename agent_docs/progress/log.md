@@ -54,3 +54,7 @@
 - 2026-09-08T21:35:00+03:00 ship prep: stash WIP live-TOC/ETA; demo max_minutes=15; plan draft_ttft_diarize_split.md (anchor clusters); rebuild runtime from clean tree
 - 2026-09-09T23:35:00+03:00 backlog tickets: ticket_d5_gigaam_v3_onnx.md (community HF onnx-asr), ticket_d5_diarize_speed.md (embed-bound; split+anchor)
 - 2026-09-09T23:40:00+03:00 Dockerfile: curl silero_vad.onnx at build (models/ gitignored); ticket_d5_silero_docker_weights.md
+
+- 2026-09-10T11:25:00+03:00 deploy note: config/src baked in image — always `compose up -d --build` after pull; manuals/docker.md; IP cap demo=5 (61ff605); Actions blocked (billing); Caddy :8080 root proxy preferred over /transcriber
+- 2026-09-10T11:40:00+03:00 TTFT: VPS 15′≈10:37 wall; ticket_d5_diarize_speed + draft_ttft: H0 warmup, target TTFT 5–6′ via split; Jina D ~570M for ASR-first path B only
+- 2026-09-10T12:00:00+03:00 new ticket_d5_ttft_experiments.md (S1 windows, S2 split+anchor, S3 crumb merge; Jina out); links diarize_speed + draft_ttft + d1_speaker_clusters; job 57cc7073 men-glue note

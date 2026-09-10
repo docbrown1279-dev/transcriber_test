@@ -1,12 +1,35 @@
 # Тикет: ускорение / исследование диаризации (WeSpeaker)
 
-**Статус:** OPEN (backlog)  
-**Приоритет:** высокий для TTFT; качество спикеров — см. также [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md).  
-**Связано:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md) (разрез + якорь кластеров).
+**Статус:** OPEN (backlog) — детали механики WeSpeaker / H0–H6  
+**Приоритет:** высокий для TTFT  
+**Оркестрация экспериментов (S1–S3):** [`ticket_d5_ttft_experiments.md`](ticket_d5_ttft_experiments.md) — начинать оттуда.  
+**Связано:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md), [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md).
 
 ---
 
-## Почему долго (не кластеризация)
+## Полевые замеры (VPS demo, 2026-09-10)
+
+- **15′ клип → полный прогон ~10:37** wall на удалённом 2 vCPU — терпимо для «дождаться конца», всё ещё тяжело как TTFT (первая глава ≈ конец пайплайна).
+- Ориентир по ощущению: **TTFT 5–6 мин** на том же железе реалистичен через **H3 (разрез)** ± H2 (грубее окна), без смены каркаса C.
+- Ещё агрессивнее («пара минут» до черновика TOC): **направление B** — diarize в хвост / ASR-first + late chunking **Jina (вариант D)**; см. draft_ttft + блок Jina ниже.
+
+---
+
+## H0 — холодный старт / «ленивая» загрузка моделей
+
+Симптом: после рестарта контейнера **первый** job заметно дольше; модели (GigaAM torch, WeSpeaker ONNX, rubert, …) поднимаются при первом реальном прогоне («Обработать»), не при `serve` / `/healthz`.
+
+| id | Идея | Ожидание | Риск |
+|---|---|---|---|
+| H0a | Warmup на старте воркера / lifespan `create_app` (после health ok) | первый пользователь не платит load | дольше restart; пик RSS сразу |
+| H0b | Warmup по событию UI: выбор файла / `POST` stub до submit | почти тот же выигрыш, меньше работы если никто не грузит | гонки; нужен лёгкий endpoint |
+| H0c | В отчётах/bench отдельно `model_load_sec` vs `pipeline_sec` | не путать cold TTFT с steady | — |
+
+Предпочтение для демо: **H0a** (рестарт редкий) или **H0b** (файл выбран). Зафиксировать в логах job: cold vs warm.
+
+---
+
+## Почему долго в steady-state (не кластеризация)
 
 Код: `src/transcriber/diarization/wespeaker.py`.
 
@@ -22,15 +45,33 @@
 
 ---
 
+## Jina (вариант D) — тяжёлая ли?
+
+Из research 2b ([`docs/research_results/research_plan.md`](../../docs/research_results/research_plan.md), [`reports/2b/`](../../docs/research_results/reports/2b/)):
+
+| | C (demo сейчас) | D (late chunking) |
+|---|---|---|
+| Модель | `rubert-tiny2` (~десятки М параметров) | `jinaai/jina-embeddings-v3-hf` **~570M**, ctx 8192 |
+| Нужна диаризация до TOC? | **да** (packing cross-speaker) | **нет** для границ глав (эмбеддинги текста) |
+| Роль diarize | обязательна до chunk | можно **после** (метки спикеров ретро) |
+
+Jina **существенно тяжелее** tiny2 по весам/RAM/CPU encode; официальный flash-чекпоинт в исследовании не встал на transformers 5.16 — брали hf-порт. На 2 vCPU / 8 ГБ: риск по диску+пику RSS рядом с GigaAM torch; не «бесплатный» путь к быстрой TOC.
+
+Имеет смысл для TTFT **только** если сознательно идём в ASR-first + D (направление B в draft_ttft): diarize не блокирует первое оглавление. Иначе для 5–6 мин остаёмся на **C + H3**.
+
+---
+
 ## Направления (по приоритету)
 
 | id | Идея | Ожидание | Риск |
 |---|---|---|---|
-| H1 | **Профилировать** embed wall vs cluster vs I/O на 15′ | закрыть спор «что тормозит» цифрами | — |
+| H0 | Warmup моделей (см. выше) | −cold на первом job | RSS / сложность |
+| H1 | **Профилировать** embed wall vs cluster vs I/O vs model_load на 15′ | цифры cold/warm | — |
 | H2 | Грубее окна (напр. 2.0 / 1.0 или 3.0 / 1.5) A/B | −30–50% diarize wall? | хуже DER / склейка мужчин |
-| H3 | **Разрез файла** + diarize part1 → ранний ASR; part2 с **якорем** центроидов part1 | TTFT ~÷2 по diarize до первой главы | стык спикеров; см. draft_ttft |
+| H3 | **Разрез файла** + diarize part1 → ранний ASR; part2 с **якорем** центроидов part1 | TTFT ~5–6 мин на 15′ (цель) | стык спикеров; см. draft_ttft |
 | H4 | Качество: порог / фильтр крошек / мужские голоса | не скорость | [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md) |
 | H5 | Другой движок ради скорости | едва ли ×10; sherpa медленнее в 1f | качество packing C |
+| H6 | ASR-first + Jina D, diarize в хвост | черновой TOC за ~пару минут? | тяжёлая Jina; ломает C; отдельный этап |
 
 Порядок величины «в 10 раз» одним только WeSpeaker **маловероятен** без огрубления окон или урезания объёма речи до первой главы (H3).
 
@@ -38,9 +79,11 @@
 
 ## Цель тикета
 
-1. H1: лог/отчёт `embed_runtime_sec`, `n_windows`, `cluster_runtime_sec` в `turns`/bench.
-2. H2: один A/B на 15′ (качество глазами + wall).
-3. Спека H3 согласована с `draft_ttft_diarize_split.md` → отдельный coder этап при go.
+1. H0: выбрать warmup (startup vs file-pick) + лог cold/warm.
+2. H1: `embed_runtime_sec`, `n_windows`, `cluster_runtime_sec`, `model_load_sec` в `turns`/bench.
+3. H2: один A/B на 15′ (качество глазами + wall).
+4. Спека H3 согласована с `draft_ttft_diarize_split.md` → coder этап при go (основной рычаг к 5–6 мин).
+5. H6 не начинать, пока нет go на смену каркаса C→D / гибрид.
 
 ---
 
@@ -48,3 +91,4 @@
 
 - Live partial TOC с незамёрзшими главами (уже обожглись).
 - Bakeoff pyannote torch на 2 vCPU «для скорости».
+- Тащить Jina в demo «на всякий случай» без спеки B.

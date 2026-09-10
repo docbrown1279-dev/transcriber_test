@@ -1,8 +1,29 @@
 # Docker (демо, этап D5)
 
-Локальная сборка и прогон демки в контейнере. GitHub Actions — этап **D5.1** (ещё нет).
+Локальная сборка и прогон демки в контейнере. Деплой-workflow: [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) (`workflow_dispatch`; по push не собирает).
 
 Контракт: [`agent_docs/contracts/docker_runtime.md`](../agent_docs/contracts/docker_runtime.md).
+
+## Важно: код и config в образе
+
+`src/` и `config/` попадают в образ через `COPY` в Dockerfile. **Они не смонтированы с хоста.**
+
+| Команда | Что делает |
+|---|---|
+| `docker compose up -d` | поднимает **старый** образ; правки в git на диске **не** видны в контейнере |
+| `docker compose restart` | то же — только рестарт процесса |
+| `docker compose up -d --build` | пересобирает слои с изменениями (кэш Docker) и пересоздаёт контейнер |
+| `docker compose up -d --build --force-recreate` | то же + гарантированно новый контейнер |
+
+После `git pull` на сервере всегда нужен **`--build`**. Проверка, что yaml внутри актуальный:
+
+```bash
+docker compose exec transcriber grep requests_per_ip /app/config/profiles/demo.yaml
+```
+
+`--no-cache` не нужен для смены конфига: обычный `--build` пересоберёт только хвост после `COPY config`. Полная пересборка с нуля — только если кэш реально сломан.
+
+Ручной деплой на сервере: `bash scripts/deploy_remote.sh` (уже с `--build` + ожидание `/healthz`).
 
 ## Что нужно на хосте
 
@@ -23,9 +44,9 @@ docker compose logs -f transcriber
 docker compose down          # остановить (тома jobs/cache сохраняются)
 ```
 
-Порт с хоста: `TRANSCRIBER_PUBLISH_PORT=8080 docker compose up -d` (по умолчанию 8000).
+Порт с хоста: `TRANSCRIBER_PUBLISH_PORT=8080 docker compose up -d --build` (по умолчанию 8000). Без `--build` сменится только проброс порта у старого образа.
 
-Сеть **Caddy:** сервис в external-сети `proxy-net` (см. `compose.yaml`). Один раз: `docker network create proxy-net`, если её ещё нет. В Caddy upstream: `transcriber:8000`.
+Сеть **Caddy:** сервис в external-сети `proxy-net` (см. `compose.yaml`). Один раз: `docker network create proxy-net`, если её ещё нет. Приложение слушает внутри `transcriber:8000`. Снаружи без домена удобнее отдельный порт Caddy (например `:8080` → `reverse_proxy transcriber:8000`), а не path-prefix `/transcriber` (ломает абсолютные `/static`, `/jobs`).
 
 ## Сборка без Compose
 
@@ -110,7 +131,8 @@ docker run --rm \
 
 Workflow: [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) — **только** `workflow_dispatch` (кнопка Run workflow). По push образ не пересобирается.
 
-Скрипт на сервере: [`scripts/deploy_remote.sh`](../scripts/deploy_remote.sh) (`docker compose up -d --build` + `/healthz`).
+Скрипт на сервере: [`scripts/deploy_remote.sh`](../scripts/deploy_remote.sh) (`docker compose up -d --build` + `/healthz`).  
+Если Actions недоступны (billing lock и т.п.) — тот же скрипт по SSH после `git pull`. Недостаточно `up -d` / `restart`: см. раздел «Важно: код и config в образе» выше.
 
 ### GitHub Secrets
 
