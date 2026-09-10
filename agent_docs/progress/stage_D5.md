@@ -112,3 +112,12 @@ docker run --rm --cpus=2 --memory=8g \
 - Pack: `cloud_in/` clips 01–03 + apartments/ninth wav; no gold; research AGENTS
 - Local gold: `eval/d5_diar/gold/clip0{1,2,3}.json` human_ok (A/B/C/D legend)
 - Out of cloud: H0 warmup, S2 split+anchor prod, Jina
+
+## 2026-09-10 — Cloud (D5.diar-spectral research)
+- STATUS: REPORT
+- Branch: `cursor/d5-diar-spectral`
+- No production src/config edits; no PR
+- M1 spectral+eigengap: clip01 [42,45] is a non-top1 cluster (41.3s / 15.3s); apartments 3 ids 0 crumbs; ninth loses the ~3.8s third id that AHC 0.85 keeps
+- M2 block-hybrid oversplits; M2_local ≈ AHC 0.85; M3 collapses clip01 to 1 id
+- Timing: first-process model_load 2.089s; repeat 0.184s; 5min embed pass1/pass2 11.596 / 11.567s (366 windows); cluster ≪ 0.3s
+- Artifacts: `cloud_out/{report.md,results.json,run_meta.json,timelines/,scratch/}`

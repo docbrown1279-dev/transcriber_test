@@ -1,0 +1,92 @@
+{
+  "clip": "clip03",
+  "cluster_meta": {
+    "anchor_median_consec": 0.617,
+    "eigengap_gaps": [
+      0.57,
+      0.172,
+      0.12,
+      0.052,
+      0.107,
+      0.017,
+      0.02,
+      0.012,
+      0.017,
+      0.017,
+      0.006,
+      0.029,
+      0.027,
+      0.019,
+      0.023,
+      0.012,
+      0.009,
+      0.036
+    ],
+    "fallback": null,
+    "k": 1,
+    "lap_evals_head": [
+      0.0,
+      0.57,
+      0.742,
+      0.862,
+      0.914,
+      1.021,
+      1.039,
+      1.059,
+      1.071,
+      1.088,
+      1.105,
+      1.111
+    ],
+    "n_anchors": 19,
+    "n_assigned": 56,
+    "n_new_unmatched": 1
+  },
+  "method": "M3_anchor",
+  "n_windows": 76,
+  "schema_version": "1",
+  "turns": [
+    {
+      "end": 38.004,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 0.012
+    },
+    {
+      "end": 40.328,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 38.828
+    },
+    {
+      "end": 44.828,
+      "id": "t0003",
+      "speaker": "SPEAKER_01",
+      "start": 40.328
+    },
+    {
+      "end": 45.578,
+      "id": "t0004",
+      "speaker": "SPEAKER_00",
+      "start": 44.828
+    },
+    {
+      "end": 53.812,
+      "id": "t0005",
+      "speaker": "SPEAKER_01",
+      "start": 45.578
+    },
+    {
+      "end": 58.816,
+      "id": "t0006",
+      "speaker": "SPEAKER_01",
+      "start": 54.316
+    },
+    {
+      "end": 60.0,
+      "id": "t0007",
+      "speaker": "SPEAKER_00",
+      "start": 58.816
+    }
+  ]
+}
