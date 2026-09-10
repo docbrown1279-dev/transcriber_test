@@ -61,3 +61,4 @@
 - 2026-09-10T13:51:39+03:00 handoff D5.TTFT-diar cursor/d5-ttft-diar; gold local eval/d5_diar human_ok; cloud pack clips+apartments+ninth wav only
 - 2026-09-10T16:15:28+03:00 handoff D5.diar-spectral cursor/d5-diar-spectral; plan agent_docs/plans/draft_d5_diar_spectral.md
 - 2026-09-10T13:22:00+00:00 cloud D5.diar-spectral DONE (research): M1 eigengap splits clip01 greeting; hybrid oversplits; ninth 3.8s id lost under M1; 5min embed ~11.6s @2 threads; cloud_out/report.md; no PR
+- 2026-09-10T14:22:00+00:00 cloud D5.diar-spectral timing_windows_5min: baseline 366/11.57s vs coarse 176/10.88s; cloud_out/timing_windows_5min.md; no PR

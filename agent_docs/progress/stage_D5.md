@@ -121,3 +121,9 @@ docker run --rm --cpus=2 --memory=8g \
 - M2 block-hybrid oversplits; M2_local ≈ AHC 0.85; M3 collapses clip01 to 1 id
 - Timing: first-process model_load 2.089s; repeat 0.184s; 5min embed pass1/pass2 11.596 / 11.567s (366 windows); cluster ≪ 0.3s
 - Artifacts: `cloud_out/{report.md,results.json,run_meta.json,timelines/,scratch/}`
+
+## 2026-09-10 — Cloud (D5.diar-spectral timing windows 5 min)
+- STATUS: REPORT
+- Same VAD mask on `timing_5min.wav`: baseline 1.5/0.75 → 366 windows, 11.571 s embed; coarse 3.0/1.5 → 176 windows, 10.883 s
+- Matches prior `results.json` 366 / 11.596 s; coarsening is not a wall win (ms/window 31.6 → 61.8)
+- Artifacts: `cloud_out/timing_windows_5min.{md,json}`; no PR, no quality re-run
