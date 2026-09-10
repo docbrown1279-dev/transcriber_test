@@ -41,11 +41,17 @@ Out of scope here: H0 model warmup, file split+anchor (S2 product), Jina, ASR.
 
 5. Soft expectations (not gold — for your judgement section only):
 
+   **Global bar:** for every packed clip, a **healthy** result is about **2–4**
+   speaker ids with non-trivial speech (≳3–5 s each).  
+   - **1** fat id ≈ undersplit (FAIL soft)  
+   - **≥10** / many crumbs ≈ oversplit (FAIL soft)  
+   Crumbs with speech ≲2.5 s should not count toward the 2–4 band (merge or ignore).
+
    | clip | soft expect |
    |---|---|
-   | clip01, clip02 | ≥2 substantial male clusters (not one monologue id) |
-   | clip03 | a separate female-like cluster + ≥1 male (do not glue all) |
-   | test_apartments, test_ninth | ~3 speakers; **not** 1 and **not** ≥10 |
+   | clip01, clip02 | 2–4 ids; ≥2 substantial male clusters (not one monologue) |
+   | clip03 | 2–4 ids; woman-like cluster separate from ≥1 male |
+   | test_apartments, test_ninth | ~3 speakers inside the 2–4 band |
 
 6. Write `cloud_out/report.md` (tables + recommended preset/threshold or
    “WeSpeaker ceiling”), `cloud_out/results.json`, `cloud_out/run_meta.json`.

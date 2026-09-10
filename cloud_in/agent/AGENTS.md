@@ -2,10 +2,13 @@
 
 ## Mission
 
-Run a **bounded research experiment** on WeSpeaker window size and clustering
-parameters. Produce tables and a recommendation in `cloud_out/`. This is **not**
-a product stage: do **not** implement production pipeline features, contracts,
-UI, or merge-ready refactors.
+Run a **bounded research experiment** on WeSpeaker **window size** and
+**clustering** (threshold + crumb merge). Produce tables and a recommendation in
+`cloud_out/`. Soft quality band: **~2–4** substantial speakers per clip.
+
+This is **not** a product stage: there are **no** `coder_*.md` / `tester_*.md`
+instructions here on purpose (token cost). Do **not** implement production
+pipeline features, contracts, UI, or merge-ready refactors.
 
 ## What to read, in order
 

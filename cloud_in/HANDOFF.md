@@ -6,7 +6,9 @@
 | Branch | `cursor/d5-ttft-diar` |
 | Contract | read **`cloud_in/`** only → write **`cloud_out/`** (+ optional throwaway `scripts/` helper). No product `coder_*.md`. |
 | Role | `cloud_in/agent/AGENTS.md` + `cloud_in/agent/rules.md` |
-| Task | `cloud_in/prompt.md` |
+| Task | `cloud_in/prompt.md` (S1 windows + cluster/crumb tuner only) |
+| Soft bar | **2–4** substantial speakers / clip (not 1, not ≥10) |
+| No product agents | no `coder_*` / `tester_*` — research reports only |
 | Secrets | `HF_TOKEN` if Hub download needed for WeSpeaker weights; no Gemini |
 | Deliverables | `cloud_out/report.md`, `results.json`, `run_meta.json`, push branch (no PR) |
 
