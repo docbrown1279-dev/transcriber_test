@@ -105,3 +105,10 @@ docker run --rm --cpus=2 --memory=8g \
 - Gate: `agent_docs/reports/d5/gate_D5.md` PASS (G5.1–G5.4)
 - Headline: 15 min @ 2CPU/8g → wall ~785s, peak RSS ~2.13 GiB, no OOM; in-container pytest 84 passed
 - Next: human sign-off → merge; then D5.1 (GitHub Actions)
+
+## 2026-09-10 — Planner (D5.TTFT-diar research)
+- STATUS: HANDOFF
+- Branch: `cursor/d5-ttft-diar`
+- Pack: `cloud_in/` clips 01–03 + apartments/ninth wav; no gold; research AGENTS
+- Local gold: `eval/d5_diar/gold/clip0{1,2,3}.json` human_ok (A/B/C/D legend)
+- Out of cloud: H0 warmup, S2 split+anchor prod, Jina

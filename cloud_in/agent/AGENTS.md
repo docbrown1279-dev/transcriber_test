@@ -1,105 +1,45 @@
-# AGENTS.md — meeting transcriber, product development (cloud role)
+# AGENTS.md — diarization / TTFT research (cloud role)
 
 ## Mission
 
-Build the `demo` profile of a Russian meeting-minutes application: audio → normalize → VAD →
-diarization → ASR → term suggestions → semantic chunking → chapter titles → insights → report →
-simple web UI. Development runs stage by stage; each cloud run delivers **one** stage with a
-passing gate and a PR.
-
-**This is product development, not research.** The technology stack is already frozen by the
-research phase — do not re-evaluate it, do not benchmark alternatives, do not "improve" it with a
-different model.
+Run a **bounded research experiment** on WeSpeaker window size and clustering
+parameters. Produce tables and a recommendation in `cloud_out/`. This is **not**
+a product stage: do **not** implement production pipeline features, contracts,
+UI, or merge-ready refactors.
 
 ## What to read, in order
 
-1. `cloud_in/HANDOFF.md` — current stage, branch, deliverables
-2. `cloud_in/prompt.md` — the stage task, inputs, gate, stop-list
-3. `cloud_in/agent/rules.md` — coding, testing and reporting norms
-4. `cloud_in/inputs/` — everything the stage needs (stack summary, artifacts, audio, extras)
-5. Product specs already in git when listed in the prompt: `agent_docs/instructions/`,
-   `agent_docs/contracts/` (not research archives)
-
-**Do not read** `docs/research_results/` — the local planner already distilled decisions into
-`cloud_in/inputs/STACK.md` and this file. Opening research reports to re-argue the stack is a
-stop violation.
-
-Never wait for human approval mid-run: the run is unattended. Make a bounded, documented choice
-and continue; if a decision is genuinely blocked, write `cloud_out/BLOCKED.md` and stop.
-
-## Preflight (always the first step)
-
-Check and report before installing anything:
-
-| Item | On failure |
-|---|---|
-| `cloud_in/agent/{AGENTS.md,rules.md}`, `cloud_in/prompt.md`, `cloud_in/HANDOFF.md` | stop, `cloud_out/BLOCKED.md` |
-| Every file listed under "Inputs" in `cloud_in/prompt.md` | stop, name the missing files exactly |
-| Secrets required by the stage (`GEMINI_API_KEY` for default `llm.backend: gemini`; `HF_TOKEN` only if the stage downloads Hub weights) | Missing active-backend API key → BLOCKED/FAIL for LLM steps. D3 does not need `HF_TOKEN`. NVIDIA/Qwen keys only if yaml `backend` is switched (not this pack). |
-| Host inventory (`nproc`, `free -h`, `df -h .`, `ffmpeg -version`, `python3 --version`) | record in `cloud_out/run_meta.json` |
-
-## Frozen stack (do not reopen)
-
-| Layer | Decision | Source |
-|---|---|---|
-| Loudness | Dual-path: `normalized.wav` (+ linear gain if RMS < −30 dBFS); VAD `vad_input.wav` = raw 16 kHz (no dynaudnorm) | `reports/1e`, D1 Silero T2 |
-| Denoise | **none** — measured harmful or useless | `reports/1a`, `1b` |
-| VAD | Silero on raw `vad_input` (snakers4+context); thr 0.45; `min_silence_ms=350`; TEN hole-fill disabled by default | `reports/1f2`, D1 Silero T2 |
-| Diarization | WeSpeaker on `normalized.wav`; premerge ≤0.5 s; same-speaker gap ≤0.3 s; absorb <1.0 s | `reports/1f`, D1 T2 |
-| ASR | GigaAM `v3_rnnt` (CPU torch runtime); ≤25 s splits; per-turn linear gain | `reports/1e`, D1 dual-path |
-| Terms | suggestions only, never a silent rewrite of the transcript | `reports/2b` |
-| Chunking | variant C: speaker packing (gap ≤2 s) + `rubert-tiny2` 0.70; absorb chapters &lt;5 s | `reports/2b/conclusions.md`, D2 close |
-| Titles | prompt P1, ≤10 words, no "обсуждение …" stamps | `reports/3` |
-| Insights / report | per-chapter extract, then one summary/report call after merge | `reports/3b`, `3c` |
-| LLM in the cloud | **API only**; default Gemini 2.5 Flash; NVIDIA/Qwen via `openai_compat` if `llm.backend` says so | `base_llm.yaml` |
-| Timecodes | copied from ASR segment boundaries; the model never emits time | research plan |
-
-Whisper, pyannote, denoise filters, late chunking (Jina), **local GGUF / llama.cpp** and NeMo are
-**out of scope for cloud runs**. `local_llama` stays a registry stub. `openai_compat` is
-implemented at D3 for NVIDIA/Qwen APIs (gate run still uses Gemini).
+1. `cloud_in/HANDOFF.md`
+2. `cloud_in/prompt.md`
+3. `cloud_in/agent/rules.md` (tooling only; ignore product-gate ceremony)
+4. `cloud_in/inputs/` (audio + CLIP_INDEX)
 
 ## Hard rules
 
-1. **Never read** `eval/`, `.env`, `.credentials`, any secret file, or `docs/research_results/`.
-   Gold and research archives stay with the local planner; gates never need them.
-2. **Never send audio to an API.** LLM calls are text-only.
-3. **Never read** anything under `data/` or paths outside the pack. Process **only** files under
-   `cloud_in/inputs/`. If the stage pack includes the full meeting audio (e.g. D1
-   `voice_002.m4a`), running ASR on that packed file is required and allowed. Do not invent
-   extra audio sources.
-4. **Never print or commit secret values.** Log a call as "provider + purpose".
-5. **Never weaken a gate.** A failing threshold is a `FAIL` report, not a new threshold.
-6. **Never fabricate data.** No fixture, placeholder or model-invented value in a production
-   artifact path; an unimplemented stage raises a clear error instead.
-7. **Do not delete** files. Move unwanted ones to `.trash/`.
-8. Write outputs to `cloud_out/`, code to `src/`, tests to `tests/`; do not touch `docs/`,
-   `agent_docs/contracts/`, `.cursor/`, `data/`, `eval/`.
+1. **Never read** `eval/`, `.env`, secrets, `docs/research_results/`, or `data/`.
+2. Process **only** audio under `cloud_in/inputs/`.
+3. **No gold labels** in the pack — do not invent them. Report stats + timelines.
+4. **No production code** in `src/` / `config/` for this run unless a tiny
+   throwaway helper under `scripts/` or `cloud_out/scratch/` is required to run
+   the grid. Prefer calling existing diarization APIs / a one-off script.
+5. **No ASR**, no LLM, no Jina, no pyannote, no H0 warmup work.
+6. Do not open a PR. Commit + push the handoff branch with `cloud_out/` reports.
+7. Never print secrets. Prefer `.trash/` over `rm -rf`.
 
-## Budgets (a cap includes the first attempt)
+## Budgets
 
 | Block | Cap |
 |---|---|
-| Package installs | ≤2 attempts per tool family, then record a blocker and skip that path |
-| ASR runs | ≤3 per stage total (D1: 1× full packed meeting required + optional short-clip runs within the remaining budget) |
-| Gemini calls | ≤40 per run (D3: 14 extract + 1 report + retries), cached into artifacts |
-| Local LLM | not run in the cloud at all |
-| 15-minute hardware slice | stage D5 only, ≤2 runs |
-| Gate retries | ≤2 honest fix attempts, then `FAIL` report + PR |
+| Window presets (S1) | baseline + ≤2 coarser presets |
+| Cluster thresholds | ≤4 values around 0.85 |
+| Full 15′ audio | **not packed** — do not fetch |
+| ASR / Gemini | 0 |
+| Package installs | only if WeSpeaker deps missing; `uv` only |
 
-Prefer a thin, honest, complete stage over an exhausted budget on one detail.
+## Deliverables
 
-## Deliverables of every run
-
-1. Code under `src/` and tests under `tests/` for the stage in `prompt.md`
-2. `cloud_out/gate_D{N}.md` — every check id with value, threshold, status, plus the agent
-   judgement section the gate asks for
-3. `cloud_out/run_meta.json` — branch, commit, host inventory, package versions, wall time,
-   peak RSS, LLM call count
-4. Appended status lines in `agent_docs/progress/stage_D{N}.md` (append-only)
-5. Commit + push the branch named in `HANDOFF.md`. **Do not open a PR** — the local operator
-   creates a draft PR with `scripts/cloud_pr.sh` after ingest. Never force-push `main`.
-
-## Language
-
-Code, comments, commit messages, gate reports and `run_meta.json` in **English**. Docstrings on
-public APIs and any human-facing notes in **Russian**.
+1. `cloud_out/report.md` — English tables + recommendation
+2. `cloud_out/results.json` — machine-readable grid
+3. `cloud_out/run_meta.json` — host, wall, peak RSS, versions
+4. Optional: `cloud_out/timelines/*.json` — per-clip speaker turns for local review
+5. Push branch named in `HANDOFF.md` (no PR)

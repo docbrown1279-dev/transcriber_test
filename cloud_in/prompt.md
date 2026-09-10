@@ -1,90 +1,72 @@
-# Stage D3 — insights + LLM report
+# Stage D5.TTFT-diar — WeSpeaker speed + speaker split (research)
 
-You are the product development cloud agent. Read `cloud_in/agent/AGENTS.md` and
-`cloud_in/agent/rules.md` first, then this prompt. The run is unattended: do not ask for approval,
-install what the stage lists, finish with a gate report, insight artifacts, and a branch push
-(no PR).
+You are a **research** cloud agent. Read `cloud_in/agent/AGENTS.md` first.
+Unattended run. Do **not** write production pipeline code. Do **not** open a PR.
 
-## Why this stage
+## Why
 
-D2 delivered `chapters.json` (packing C + P1 titles). D3 must produce **insights + a draft
-report**: per-chapter extract, one report call, markdown render. LLM is **API-only**; default
-backend Gemini 2.5 Flash. NVIDIA/Qwen are the same prompts via `openai_compat` + `base_url` in
-`config/base_llm.yaml` — implement the client, do not live-call them in this gate.
+Demo packing C needs diarization before TOC. On 2 vCPU, embed windows dominate
+wall time. Separately, male speakers glue into one fat cluster (`SPEAKER_00`) while
+crumbs appear as extra ids. Goal of this pack: **measure** window coarsening and
+cluster-threshold / crumb heuristics on short clips. Local humans score purity
+against private gold after ingest.
 
-Do not bakeoff extract filters or new prompt wording. Copy frozen files from
-`agent_docs/contracts/llm/`. Human manual already exists: `manuals/llm.md` (do not rewrite).
-
-Roadmap stages are `D0 → D1 → D2 → D3 → …`. **G3** is only the auto-check list inside D3.
+Out of scope here: H0 model warmup, file split+anchor (S2 product), Jina, ASR.
 
 ## Task
 
-1. Follow `agent_docs/instructions/coder_D3.md` step by step.
-2. Follow `agent_docs/instructions/tester_D3.md` for tests and `[TEST-ID]`s.
-3. Run extract + report on the packed transcript and chapters (required). **No ASR. No audio.**
-4. Write `cloud_out/gate_D3.md` for checks G3.0–G3.9.
+1. Use existing WeSpeaker path in the repo (`src/transcriber/diarization/…`,
+   `config/base.yaml` embed settings). Prefer a small runner script under
+   `cloud_out/scratch/` or `scripts/` that loads wav → VAD if required → diarize
+   → prints cluster stats. Do not refactor the product pipeline.
+2. **S1 — window presets** (on all packed clips):
 
-If instruction files and this prompt disagree, the instruction files win; note the discrepancy in
-the gate report.
+   | preset | window_sec | step_sec |
+   |---|---|---|
+   | baseline | 1.5 | 0.75 |
+   | A | 2.0 | 1.0 |
+   | B | 3.0 | 1.5 |
+
+   Record: `n_windows`, embed wall, cluster wall, speaker id count, speech_sec
+   per id, top1 speech share, ids with speech &lt; 3 s (crumbs).
+
+3. **Cluster tuner** (baseline window, or best S1 if clearly faster and not worse
+   on soft criteria): `cluster_distance_threshold` ∈ `{0.80, 0.82, 0.85, 0.88}`.
+   Same metrics. If linkage distances are available, note largest merge gap
+   (“knee”) qualitatively.
+
+4. **Crumb merge prototype** (post-cluster, offline): merge any speaker whose
+   total speech ≤ 2.5 s into nearest centroid (cosine) or nearest large neighbor
+   by time. Report before/after id counts. Do not require production merge.py.
+
+5. Soft expectations (not gold — for your judgement section only):
+
+   | clip | soft expect |
+   |---|---|
+   | clip01, clip02 | ≥2 substantial male clusters (not one monologue id) |
+   | clip03 | a separate female-like cluster + ≥1 male (do not glue all) |
+   | test_apartments, test_ninth | ~3 speakers; **not** 1 and **not** ≥10 |
+
+6. Write `cloud_out/report.md` (tables + recommended preset/threshold or
+   “WeSpeaker ceiling”), `cloud_out/results.json`, `cloud_out/run_meta.json`.
+   Optional timelines for local review.
 
 ## Inputs
 
-Packed for this stage (must pass preflight):
-
 | Path | What |
 |---|---|
-| `cloud_in/inputs/STACK.md` | frozen demo stack — do not reopen bakeoffs |
-| `cloud_in/inputs/artifacts/voice_002/transcript.json` | D1 T2 full-meeting transcript |
-| `cloud_in/inputs/artifacts/voice_002/chapters.json` | D2 HUMAN_GATE PASS chapters (14) |
-| `cloud_in/inputs/artifacts/voice_002/transcript.md` | human-readable dump for G3.5 / G3.9 only |
+| `cloud_in/inputs/CLIP_INDEX.md` | clip list |
+| `cloud_in/inputs/clips/*.wav` | 3×60 s meeting slices |
+| `cloud_in/inputs/regression/*.wav` | apartments + ninth soft regression |
 
-Also in git:
-
-| Path | What |
-|---|---|
-| `agent_docs/instructions/coder_D3.md`, `tester_D3.md` | implementation and test specs |
-| `agent_docs/contracts/*.md` and `agent_docs/contracts/llm/` | schemas, `base_llm.yaml`, prompts |
-| `src/`, `config/`, `tests/` | D0–D2 code on the branch — extend it |
-
-Do **not** open `docs/research_results/`, `docs/dev_specs.md`, `eval/`, `data/`, or `.env`.
+Repo code/config already on the branch may be used read-only for calling diarize.
 
 ## Approved dependencies
 
-`httpx` in extra `llm` (OpenAI-compat). `google-genai` is already present. Install only via
-`uv add` / documented extras. Do **not** add `openai`, `llama-cpp-python`, or GGUF downloads.
-
-Secrets: `GEMINI_API_KEY` for the default backend. Never send audio to an API. Never print key
-values.
-
-## Gate D3 (must pass before push)
-
-Checks G3.0–G3.9 from `agent_docs/contracts/quality_gates.md`, on
-`cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}` vs packed chapters +
-transcript:
-
-- G3.0 preflight (pack + `GEMINI_API_KEY`)
-- G3.1 clock-gate after hydration
-- G3.2 src segment belongs to the chapter
-- G3.3 every key_point has src
-- G3.4 digit groups occur in chapter text
-- G3.5 agent: no invented owners/tasks
-- G3.6 key_moments 5–12 (WARN outside)
-- G3.7 no stamp prefixes
-- G3.8 draft_warning true in demo
-- G3.9 agent: ≥60% verifiable key_points
-
-Also: `uv run pytest tests/ -v`, `ruff`, `mypy`, `bandit` exit 0.
-
-## Deliverables
-
-1. Code under `src/` / `config/` / `pyproject.toml`; tests under `tests/`
-2. `cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}`
-3. `cloud_out/gate_D3.md` + `cloud_out/run_meta.json`
-4. Progress lines in `agent_docs/progress/stage_D3.md`
-5. Commit and **push** branch `cursor/demo-d3-insights`. Do **not** open a pull request.
+Only what the project already uses for WeSpeaker / VAD (`uv sync`). Do not add
+new packages unless BLOCKED without them (document in report).
 
 ## Stop-list
 
-Do not: read `eval/` or `.env`; process or send audio; re-run ASR/VAD/chunking; implement
-local llama.cpp; bakeoff prompts; weaken gate thresholds; force-push; open a PR; read meeting
-text from `data/` (use the packed files only).
+No `eval/`, no gold invention, no ASR, no LLM, no H0, no Jina/pyannote, no
+production feature PRs, no force-push `main`.

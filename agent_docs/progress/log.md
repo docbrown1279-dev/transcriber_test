@@ -58,3 +58,4 @@
 - 2026-09-10T11:25:00+03:00 deploy note: config/src baked in image — always `compose up -d --build` after pull; manuals/docker.md; IP cap demo=5 (61ff605); Actions blocked (billing); Caddy :8080 root proxy preferred over /transcriber
 - 2026-09-10T11:40:00+03:00 TTFT: VPS 15′≈10:37 wall; ticket_d5_diarize_speed + draft_ttft: H0 warmup, target TTFT 5–6′ via split; Jina D ~570M for ASR-first path B only
 - 2026-09-10T12:00:00+03:00 new ticket_d5_ttft_experiments.md (S1 windows, S2 split+anchor, S3 crumb merge; Jina out); links diarize_speed + draft_ttft + d1_speaker_clusters; job 57cc7073 men-glue note
+- 2026-09-10T13:51:39+03:00 handoff D5.TTFT-diar cursor/d5-ttft-diar; gold local eval/d5_diar human_ok; cloud pack clips+apartments+ninth wav only
