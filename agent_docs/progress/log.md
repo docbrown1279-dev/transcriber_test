@@ -64,3 +64,4 @@
 - 2026-09-10T14:22:00+00:00 cloud D5.diar-spectral timing_windows_5min: baseline 366/11.57s vs coarse 176/10.88s; cloud_out/timing_windows_5min.md; no PR
 - 2026-09-10T18:01:32+03:00 handoff D5.diar-twopass cursor/d5-diar-twopass; plan draft_d5_diar_twopass.md
 - 2026-09-10T15:20:00+00:00 cloud D5.diar-twopass DONE (research): 5min n_embed 2A=366/5.94s 2B=193/3.09s 2C=21/3.03s; 2C+AHC0.85 collapses; cheap 1B/1C not useful; 1A keeps clip01 greeting; no PR
+- 2026-09-10T17:55:00+00:00 cloud D5.diar-twopass FOLLOWUP unit-AHC: T1 0.60–0.70 hits greeting+ninth but undersplits clip02; T3 no-op; **REFUSED** ≈2A; 21 vs 366 embeds; file-split next; no PR

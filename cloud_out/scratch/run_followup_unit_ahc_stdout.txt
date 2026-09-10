@@ -1,0 +1,25 @@
+followup unit-AHC glue=1.0 T1=(0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8) T2/T3=(0.4, 0.55, 0.7) anchor_min=3.0s energy_pctl=75.0
+model_load_sec=0.222
+== clip01 ==
+  units=5 embedded=5 n_embed=5 embed_sec=0.673
+  anchors long|loud=5/5 long=5 loud=2
+== clip02 ==
+  units=10 embedded=10 n_embed=10 embed_sec=0.483
+  anchors long|loud=6/10 long=5 loud=3
+== clip03 ==
+  units=3 embedded=3 n_embed=3 embed_sec=0.711
+  anchors long|loud=3/3 long=3 loud=1
+== concat_01_02_03 ==
+  units=17 embedded=17 n_embed=17 embed_sec=1.713
+  anchors long|loud=14/17 long=12 loud=5
+== test_apartments ==
+  units=10 embedded=10 n_embed=10 embed_sec=0.711
+  anchors long|loud=7/10 long=7 loud=3
+== test_ninth ==
+  units=9 embedded=9 n_embed=9 embed_sec=0.732
+  anchors long|loud=7/9 long=6 loud=3
+== timing_5min ==
+  units=21 embedded=21 n_embed=21 embed_sec=2.951
+  anchors long|loud=20/21 long=19 loud=6
+done wall_sec=10.3 peak_rss_mb=533.2
+{"embed_sec": 2.951, "n_embed_calls": 21}

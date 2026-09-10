@@ -1,0 +1,95 @@
+{
+  "clip": "test_apartments",
+  "cluster_meta": {
+    "n_anchor_labels": 2,
+    "n_anchors": 7,
+    "n_assigned_short": 2,
+    "n_labels": 3,
+    "n_new_from_short": 1,
+    "threshold": 0.4
+  },
+  "cluster_sec": 0.0,
+  "cosine_threshold": 0.4,
+  "crumb_count_lt3s": 1,
+  "embed_sec": 0.711,
+  "family": "T3",
+  "method": "T3_anchor0.40",
+  "n_anchors": 7,
+  "n_embed_calls": 10,
+  "n_id": 3,
+  "n_units": 10,
+  "n_units_embedded": 10,
+  "schema_version": "1",
+  "shortest_id_speech_sec": 1.768,
+  "speech_sec_per_id": {
+    "SPEAKER_00": 64.152,
+    "SPEAKER_01": 5.0,
+    "SPEAKER_02": 1.768
+  },
+  "top1_id": "SPEAKER_00",
+  "top1_share": 0.905,
+  "top1_speech_sec": 64.152,
+  "total_turn_speech_sec": 70.92,
+  "turns": [
+    {
+      "end": 23.348,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 1.772
+    },
+    {
+      "end": 31.124,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 24.908
+    },
+    {
+      "end": 37.076,
+      "id": "t0003",
+      "speaker": "SPEAKER_00",
+      "start": 32.908
+    },
+    {
+      "end": 46.1,
+      "id": "t0004",
+      "speaker": "SPEAKER_00",
+      "start": 39.148
+    },
+    {
+      "end": 60.276,
+      "id": "t0005",
+      "speaker": "SPEAKER_00",
+      "start": 47.212
+    },
+    {
+      "end": 64.468,
+      "id": "t0006",
+      "speaker": "SPEAKER_00",
+      "start": 61.484
+    },
+    {
+      "end": 70.196,
+      "id": "t0007",
+      "speaker": "SPEAKER_01",
+      "start": 65.196
+    },
+    {
+      "end": 76.18,
+      "id": "t0008",
+      "speaker": "SPEAKER_00",
+      "start": 72.364
+    },
+    {
+      "end": 78.58,
+      "id": "t0009",
+      "speaker": "SPEAKER_02",
+      "start": 76.812
+    },
+    {
+      "end": 85.004,
+      "id": "t0010",
+      "speaker": "SPEAKER_00",
+      "start": 79.628
+    }
+  ]
+}
