@@ -1,0 +1,109 @@
+{
+  "ahc_threshold": 0.85,
+  "clip": "clip01",
+  "cluster_meta": {
+    "n": 39,
+    "n_labels": 2,
+    "threshold": 0.85
+  },
+  "cluster_sec": 0.001,
+  "crumb_count_lt3s": 0,
+  "embed_sec": 0.616,
+  "greeting_42_45": {
+    "distinct_from_global_top1": true,
+    "global_speech_of_interval_ids": {
+      "SPEAKER_01": 11.18
+    },
+    "global_top1_id": "SPEAKER_00",
+    "ids_in_interval": [
+      "SPEAKER_01"
+    ],
+    "interval": [
+      42.0,
+      45.0
+    ],
+    "n_ids_in_interval": 1,
+    "non_top1_in_interval": {
+      "SPEAKER_01": 2.748
+    },
+    "overlap_sec_per_id": {
+      "SPEAKER_01": 2.748
+    },
+    "turns": [
+      {
+        "end": 49.428,
+        "id": "t0006",
+        "overlap_sec": 2.748,
+        "speaker": "SPEAKER_01",
+        "start": 42.252
+      }
+    ]
+  },
+  "method": "2B_nooverlap_1.5",
+  "n_embed_calls": 39,
+  "n_id": 2,
+  "n_windows": 39,
+  "schema_version": "1",
+  "shortest_id_speech_sec": 11.18,
+  "speech_sec_per_id": {
+    "SPEAKER_00": 45.336,
+    "SPEAKER_01": 11.18
+  },
+  "stage": 2,
+  "step_sec": 1.5,
+  "top1_id": "SPEAKER_00",
+  "top1_share": 0.802,
+  "top1_speech_sec": 45.336,
+  "total_turn_speech_sec": 56.516,
+  "turns": [
+    {
+      "end": 29.14,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 0.044
+    },
+    {
+      "end": 33.252,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 30.252
+    },
+    {
+      "end": 38.88,
+      "id": "t0003",
+      "speaker": "SPEAKER_00",
+      "start": 34.38
+    },
+    {
+      "end": 40.38,
+      "id": "t0004",
+      "speaker": "SPEAKER_01",
+      "start": 38.88
+    },
+    {
+      "end": 41.62,
+      "id": "t0005",
+      "speaker": "SPEAKER_00",
+      "start": 40.38
+    },
+    {
+      "end": 49.428,
+      "id": "t0006",
+      "speaker": "SPEAKER_01",
+      "start": 42.252
+    },
+    {
+      "end": 57.496,
+      "id": "t0007",
+      "speaker": "SPEAKER_00",
+      "start": 49.996
+    },
+    {
+      "end": 60.0,
+      "id": "t0008",
+      "speaker": "SPEAKER_01",
+      "start": 57.496
+    }
+  ],
+  "window_sec": 1.5
+}

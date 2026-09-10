@@ -1,0 +1,35 @@
+{
+  "branch": "cursor/d5-diar-twopass",
+  "commit": "4c62a33b4f2306261e5bd4d0425aab3dfe81dc27",
+  "host": {
+    "cpu_model": "Intel(R) Xeon(R) Processor",
+    "df_h": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vdb        254G  7.5G  246G   3% /",
+    "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "free_h": "total        used        free      shared  buff/cache   available\nMem:            15Gi       5.2Gi       9.3Gi        17Mi       1.4Gi        10Gi\nSwap:             0B          0B          0B",
+    "hf_token": "present",
+    "nproc": 4,
+    "onnx_threads": 2,
+    "packages": {
+      "numpy": "2.5.2",
+      "onnxruntime": "1.23.2",
+      "scipy": "1.18.1",
+      "sklearn": "1.9.0",
+      "soundfile": "0.14.0",
+      "speakeronnx": "unknown",
+      "yaml": "6.0.3"
+    },
+    "python": "3.12.3"
+  },
+  "llm_calls": 0,
+  "model_load_sec": 0.191,
+  "model_load_sec_cold_probe": 2.345,
+  "onnx_threads": 2,
+  "peak_rss_mb": 544.1,
+  "task": "D5.diar-twopass",
+  "timing_5min_n_embed": {
+    "2A": 366,
+    "2B": 193,
+    "2C": 21
+  },
+  "wall_sec": 36.384
+}

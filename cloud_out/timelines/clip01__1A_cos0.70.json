@@ -1,0 +1,94 @@
+{
+  "clip": "clip01",
+  "cluster_sec": 0.0,
+  "cosine_threshold": 0.7,
+  "crumb_count_lt3s": 0,
+  "embed_sec": 0.678,
+  "feature": "wespeaker_unit",
+  "greeting_42_45": {
+    "distinct_from_global_top1": true,
+    "global_speech_of_interval_ids": {
+      "SPEAKER_02": 7.176
+    },
+    "global_top1_id": "SPEAKER_00",
+    "ids_in_interval": [
+      "SPEAKER_02"
+    ],
+    "interval": [
+      42.0,
+      45.0
+    ],
+    "n_ids_in_interval": 1,
+    "non_top1_in_interval": {
+      "SPEAKER_02": 2.748
+    },
+    "overlap_sec_per_id": {
+      "SPEAKER_02": 2.748
+    },
+    "turns": [
+      {
+        "end": 49.428,
+        "id": "t0004",
+        "overlap_sec": 2.748,
+        "speaker": "SPEAKER_02",
+        "start": 42.252
+      }
+    ]
+  },
+  "method": "1A_cos0.70",
+  "n_embed_calls": 5,
+  "n_id": 4,
+  "n_units": 5,
+  "n_units_embedded": 5,
+  "schema_version": "1",
+  "shortest_id_speech_sec": 7.176,
+  "speech_sec_per_id": {
+    "SPEAKER_00": 32.144,
+    "SPEAKER_01": 7.24,
+    "SPEAKER_02": 7.176,
+    "SPEAKER_03": 9.404
+  },
+  "stage": 1,
+  "top1_id": "SPEAKER_00",
+  "top1_share": 0.574,
+  "top1_speech_sec": 32.144,
+  "total_turn_speech_sec": 55.964,
+  "turns": [
+    {
+      "end": 29.14,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 0.044
+    },
+    {
+      "end": 33.3,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 30.252
+    },
+    {
+      "end": 41.62,
+      "id": "t0003",
+      "speaker": "SPEAKER_01",
+      "start": 34.38
+    },
+    {
+      "end": 49.428,
+      "id": "t0004",
+      "speaker": "SPEAKER_02",
+      "start": 42.252
+    },
+    {
+      "end": 58.804,
+      "id": "t0005",
+      "speaker": "SPEAKER_03",
+      "start": 49.996
+    },
+    {
+      "end": 60.0,
+      "id": "t0006",
+      "speaker": "SPEAKER_03",
+      "start": 59.404
+    }
+  ]
+}

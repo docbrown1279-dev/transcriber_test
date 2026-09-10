@@ -63,3 +63,4 @@
 - 2026-09-10T13:22:00+00:00 cloud D5.diar-spectral DONE (research): M1 eigengap splits clip01 greeting; hybrid oversplits; ninth 3.8s id lost under M1; 5min embed ~11.6s @2 threads; cloud_out/report.md; no PR
 - 2026-09-10T14:22:00+00:00 cloud D5.diar-spectral timing_windows_5min: baseline 366/11.57s vs coarse 176/10.88s; cloud_out/timing_windows_5min.md; no PR
 - 2026-09-10T18:01:32+03:00 handoff D5.diar-twopass cursor/d5-diar-twopass; plan draft_d5_diar_twopass.md
+- 2026-09-10T15:20:00+00:00 cloud D5.diar-twopass DONE (research): 5min n_embed 2A=366/5.94s 2B=193/3.09s 2C=21/3.03s; 2C+AHC0.85 collapses; cheap 1B/1C not useful; 1A keeps clip01 greeting; no PR

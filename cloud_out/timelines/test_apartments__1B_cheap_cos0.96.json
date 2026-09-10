@@ -1,0 +1,102 @@
+{
+  "cheap_feature_sec": 0.049,
+  "clip": "test_apartments",
+  "cluster_sec": 0.0,
+  "cosine_threshold": 0.96,
+  "crumb_count_lt3s": 1,
+  "embed_sec": 0.0,
+  "feature": "cheap_mfcc_flux_energy",
+  "method": "1B_cheap_cos0.96",
+  "n_embed_calls": 0,
+  "n_id": 6,
+  "n_units": 10,
+  "schema_version": "1",
+  "shortest_id_speech_sec": 2.984,
+  "speech_sec_per_id": {
+    "SPEAKER_00": 21.576,
+    "SPEAKER_01": 16.128,
+    "SPEAKER_02": 13.064,
+    "SPEAKER_03": 2.984,
+    "SPEAKER_04": 5.36,
+    "SPEAKER_05": 8.944
+  },
+  "stage": 1,
+  "top1_id": "SPEAKER_00",
+  "top1_share": 0.317,
+  "top1_speech_sec": 21.576,
+  "total_turn_speech_sec": 68.056,
+  "turns": [
+    {
+      "end": 23.348,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 1.772
+    },
+    {
+      "end": 31.124,
+      "id": "t0002",
+      "speaker": "SPEAKER_01",
+      "start": 24.908
+    },
+    {
+      "end": 37.076,
+      "id": "t0003",
+      "speaker": "SPEAKER_01",
+      "start": 32.908
+    },
+    {
+      "end": 39.476,
+      "id": "t0004",
+      "speaker": "SPEAKER_01",
+      "start": 39.148
+    },
+    {
+      "end": 46.1,
+      "id": "t0005",
+      "speaker": "SPEAKER_01",
+      "start": 40.684
+    },
+    {
+      "end": 60.276,
+      "id": "t0006",
+      "speaker": "SPEAKER_02",
+      "start": 47.212
+    },
+    {
+      "end": 64.468,
+      "id": "t0007",
+      "speaker": "SPEAKER_03",
+      "start": 61.484
+    },
+    {
+      "end": 70.196,
+      "id": "t0008",
+      "speaker": "SPEAKER_04",
+      "start": 65.196
+    },
+    {
+      "end": 72.724,
+      "id": "t0009",
+      "speaker": "SPEAKER_04",
+      "start": 72.364
+    },
+    {
+      "end": 76.18,
+      "id": "t0010",
+      "speaker": "SPEAKER_05",
+      "start": 74.38
+    },
+    {
+      "end": 78.58,
+      "id": "t0011",
+      "speaker": "SPEAKER_05",
+      "start": 76.812
+    },
+    {
+      "end": 85.004,
+      "id": "t0012",
+      "speaker": "SPEAKER_05",
+      "start": 79.628
+    }
+  ]
+}

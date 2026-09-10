@@ -1,0 +1,92 @@
+{
+  "clip": "clip01",
+  "cluster_sec": 0.0,
+  "crumb_count_lt3s": 0,
+  "embed_sec": 0.678,
+  "greeting_42_45": {
+    "distinct_from_global_top1": false,
+    "global_speech_of_interval_ids": {
+      "SPEAKER_00": 56.564
+    },
+    "global_top1_id": "SPEAKER_00",
+    "ids_in_interval": [
+      "SPEAKER_00"
+    ],
+    "interval": [
+      42.0,
+      45.0
+    ],
+    "n_ids_in_interval": 1,
+    "non_top1_in_interval": {},
+    "overlap_sec_per_id": {
+      "SPEAKER_00": 2.748
+    },
+    "turns": [
+      {
+        "end": 49.428,
+        "id": "t0004",
+        "overlap_sec": 2.748,
+        "speaker": "SPEAKER_00",
+        "start": 42.252
+      }
+    ]
+  },
+  "method": "2C_unit_spectral",
+  "n_embed_calls": 5,
+  "n_id": 1,
+  "n_units": 5,
+  "n_units_embedded": 5,
+  "schema_version": "1",
+  "shortest_id_speech_sec": 56.564,
+  "spectral_meta": {
+    "eigengap_gaps": [
+      1.025,
+      0.276,
+      0.027,
+      0.018
+    ],
+    "k": 1,
+    "k_cap": 4,
+    "n_windows": 5
+  },
+  "speech_sec_per_id": {
+    "SPEAKER_00": 56.564
+  },
+  "stage": 2,
+  "top1_id": "SPEAKER_00",
+  "top1_share": 1.0,
+  "top1_speech_sec": 56.564,
+  "total_turn_speech_sec": 56.564,
+  "turns": [
+    {
+      "end": 29.14,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 0.044
+    },
+    {
+      "end": 33.3,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 30.252
+    },
+    {
+      "end": 41.62,
+      "id": "t0003",
+      "speaker": "SPEAKER_00",
+      "start": 34.38
+    },
+    {
+      "end": 49.428,
+      "id": "t0004",
+      "speaker": "SPEAKER_00",
+      "start": 42.252
+    },
+    {
+      "end": 60.0,
+      "id": "t0005",
+      "speaker": "SPEAKER_00",
+      "start": 49.996
+    }
+  ]
+}

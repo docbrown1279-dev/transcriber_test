@@ -6,3 +6,4 @@
 - 2026-09-10T13:22:00+00:00 cloud D5.diar-spectral: M1 spectral recovers clip01 [42,45] solo cluster; M2 oversplits; 5min embed ~11.6s cold load 2.1s; report in cloud_out/; no PR
 - 2026-09-10T14:22:00+00:00 cloud D5.diar-spectral timing_windows_5min: 1.5/0.75=366 win 11.57s vs 3.0/1.5=176 win 10.88s (same VAD); no PR
 - 2026-09-10T18:01:32+03:00 handoff D5.diar-twopass cursor/d5-diar-twopass (VAD draft 1A/B/C + WeSpeaker fine 2A/B/C)
+- 2026-09-10T15:20:00+00:00 cloud D5.diar-twopass: 5min n_embed 366/193/21; 2C not demo quality at AHC 0.85; report in cloud_out/; no PR

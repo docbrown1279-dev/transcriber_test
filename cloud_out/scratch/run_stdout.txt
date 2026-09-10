@@ -1,0 +1,24 @@
+config vad_premerge_gap_sec=0.5 min_embed=0.4 glue=1.0 onnx_threads=2
+model_load_sec=0.191
+== clip01 ==
+  regions=9 islands=6 units=5 speech=55.964s vad=0.171s
+  2A n_embed=72 embed_sec=1.165 2B n_embed=39 2C n_embed=5
+== clip02 ==
+  regions=13 islands=12 units=10 speech=46.776s vad=0.138s
+  2A n_embed=52 embed_sec=0.85 2B n_embed=36 2C n_embed=10
+== clip03 ==
+  regions=7 islands=3 units=3 speech=58.66s vad=0.137s
+  2A n_embed=76 embed_sec=1.256 2B n_embed=40 2C n_embed=3
+== concat_01_02_03 ==
+  regions=27 islands=19 units=17 speech=161.38s vad=0.432s
+  2A n_embed=201 embed_sec=3.266 2B n_embed=113 2C n_embed=17
+== test_apartments ==
+  regions=14 islands=12 units=10 speech=68.056s vad=0.196s
+  2A n_embed=83 embed_sec=1.346 2B n_embed=47 2C n_embed=10
+== test_ninth ==
+  regions=14 islands=13 units=9 speech=68.84s vad=0.196s
+  2A n_embed=89 embed_sec=1.282 2B n_embed=53 2C n_embed=9
+== timing_5min ==
+  regions=32 islands=22 units=21 speech=281.98s vad=0.897s
+  2A n_embed=366 embed_sec=5.94 2B n_embed=193 2C n_embed=21
+done wall_sec=36.4 peak_rss_mb=544.1

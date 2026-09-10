@@ -127,3 +127,14 @@ docker run --rm --cpus=2 --memory=8g \
 - Same VAD mask on `timing_5min.wav`: baseline 1.5/0.75 → 366 windows, 11.571 s embed; coarse 3.0/1.5 → 176 windows, 10.883 s
 - Matches prior `results.json` 366 / 11.596 s; coarsening is not a wall win (ms/window 31.6 → 61.8)
 - Artifacts: `cloud_out/timing_windows_5min.{md,json}`; no PR, no quality re-run
+
+## 2026-09-10 — Cloud (D5.diar-twopass research)
+- STATUS: REPORT
+- Branch: `cursor/d5-diar-twopass`
+- No production src/config edits; no PR; no eval/gold
+- Glue <1s: islands→units 6→5 (clip01), 13→9 (ninth), 22→21 (5min)
+- 1A WeSpeaker adjacent cos 0.40/0.55 isolates clip01 greeting (7.18s); 1B/1C cheap MFCC+flux are not speaker-useful (1B collapses, 1C_cp oversplits)
+- 2A overlap 1.5/0.75: 5min **366** embeds / 5.94s; clip01 greeting swallowed; ninth keeps 3.82s third id
+- 2B no-overlap 1.5: **193** / 3.09s; clip01 greeting distinct (11.18s blob); extra crumbs
+- 2C one-embed/unit + AHC 0.85: **21** / 3.03s; collapses clip01/02/03/ninth/concat to 1 id (distance 0.81 < 0.85 at greeting)
+- Artifacts: `cloud_out/{report.md,results.json,run_meta.json,timelines/,scratch/}`

@@ -1,0 +1,108 @@
+{
+  "clip": "test_ninth",
+  "cluster_sec": 0.0,
+  "cosine_threshold": 0.55,
+  "crumb_count_lt3s": 3,
+  "embed_sec": 0.736,
+  "feature": "wespeaker_unit",
+  "method": "1A_cos0.55",
+  "n_embed_calls": 9,
+  "n_id": 6,
+  "n_units": 9,
+  "n_units_embedded": 9,
+  "schema_version": "1",
+  "shortest_id_speech_sec": 1.424,
+  "speech_sec_per_id": {
+    "SPEAKER_00": 36.344,
+    "SPEAKER_01": 9.896,
+    "SPEAKER_02": 2.312,
+    "SPEAKER_03": 16.064,
+    "SPEAKER_04": 1.424,
+    "SPEAKER_05": 2.8
+  },
+  "stage": 1,
+  "top1_id": "SPEAKER_00",
+  "top1_share": 0.528,
+  "top1_speech_sec": 36.344,
+  "total_turn_speech_sec": 68.84,
+  "turns": [
+    {
+      "end": 13.876,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 1.292
+    },
+    {
+      "end": 21.556,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 14.732
+    },
+    {
+      "end": 39.06,
+      "id": "t0003",
+      "speaker": "SPEAKER_00",
+      "start": 22.124
+    },
+    {
+      "end": 50.612,
+      "id": "t0004",
+      "speaker": "SPEAKER_01",
+      "start": 40.716
+    },
+    {
+      "end": 53.684,
+      "id": "t0005",
+      "speaker": "SPEAKER_02",
+      "start": 51.372
+    },
+    {
+      "end": 66.388,
+      "id": "t0006",
+      "speaker": "SPEAKER_03",
+      "start": 55.244
+    },
+    {
+      "end": 67.988,
+      "id": "t0007",
+      "speaker": "SPEAKER_03",
+      "start": 67.34
+    },
+    {
+      "end": 72.212,
+      "id": "t0008",
+      "speaker": "SPEAKER_03",
+      "start": 68.524
+    },
+    {
+      "end": 73.364,
+      "id": "t0009",
+      "speaker": "SPEAKER_03",
+      "start": 72.78
+    },
+    {
+      "end": 76.212,
+      "id": "t0010",
+      "speaker": "SPEAKER_04",
+      "start": 75.212
+    },
+    {
+      "end": 77.3,
+      "id": "t0011",
+      "speaker": "SPEAKER_04",
+      "start": 76.876
+    },
+    {
+      "end": 81.716,
+      "id": "t0012",
+      "speaker": "SPEAKER_05",
+      "start": 79.404
+    },
+    {
+      "end": 84.116,
+      "id": "t0013",
+      "speaker": "SPEAKER_05",
+      "start": 83.628
+    }
+  ]
+}
