@@ -138,3 +138,12 @@ docker run --rm --cpus=2 --memory=8g \
 - 2B no-overlap 1.5: **193** / 3.09s; clip01 greeting distinct (11.18s blob); extra crumbs
 - 2C one-embed/unit + AHC 0.85: **21** / 3.03s; collapses clip01/02/03/ninth/concat to 1 id (distance 0.81 < 0.85 at greeting)
 - Artifacts: `cloud_out/{report.md,results.json,run_meta.json,timelines/,scratch/}`
+
+## 2026-09-10 — Cloud (D5.diar-twopass FOLLOWUP unit-AHC)
+- STATUS: REPORT
+- T1 AHC 0.50–0.75 isolates clip01 greeting (7.18s); T1 0.80 still collapses clip01/02
+- No threshold ≈2A: clip02 undersplit (2 vs 3) and/or apartments lose third substantial id
+- T2/T3 not better; T3 no-op (most units ≥3s; 5min 20/21 anchors)
+- timing_5min still **21** embeds / 2.95s vs 2A 366 / 5.94s
+- **Verdict REFUSED** as 2A substitute → file-split next
+- Artifacts: `cloud_out/FOLLOWUP_unit_ahc.{md,json}` + T1/T2/T3 timelines; no PR
