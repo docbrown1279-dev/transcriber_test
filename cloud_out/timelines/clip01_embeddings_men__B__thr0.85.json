@@ -1,0 +1,39 @@
+{
+  "clip": "clip01_embeddings_men",
+  "cluster_distance_threshold": 0.85,
+  "n_windows": 34,
+  "preset": "B",
+  "schema_version": "1",
+  "turns": [
+    {
+      "end": 29.14,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 0.044
+    },
+    {
+      "end": 33.3,
+      "id": "t0002",
+      "speaker": "SPEAKER_00",
+      "start": 30.252
+    },
+    {
+      "end": 41.62,
+      "id": "t0003",
+      "speaker": "SPEAKER_00",
+      "start": 34.38
+    },
+    {
+      "end": 49.428,
+      "id": "t0004",
+      "speaker": "SPEAKER_00",
+      "start": 42.252
+    },
+    {
+      "end": 60.0,
+      "id": "t0005",
+      "speaker": "SPEAKER_00",
+      "start": 49.996
+    }
+  ]
+}

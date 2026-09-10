@@ -1,0 +1,87 @@
+{
+  "clip": "clip01_embeddings_men",
+  "cluster_distance_threshold": 0.8,
+  "n_windows": 72,
+  "preset": "baseline",
+  "schema_version": "1",
+  "turns": [
+    {
+      "end": 4.544,
+      "id": "t0001",
+      "speaker": "SPEAKER_00",
+      "start": 0.044
+    },
+    {
+      "end": 5.294,
+      "id": "t0002",
+      "speaker": "SPEAKER_01",
+      "start": 4.544
+    },
+    {
+      "end": 29.14,
+      "id": "t0003",
+      "speaker": "SPEAKER_00",
+      "start": 5.294
+    },
+    {
+      "end": 33.3,
+      "id": "t0004",
+      "speaker": "SPEAKER_00",
+      "start": 30.252
+    },
+    {
+      "end": 38.13,
+      "id": "t0005",
+      "speaker": "SPEAKER_00",
+      "start": 34.38
+    },
+    {
+      "end": 41.62,
+      "id": "t0006",
+      "speaker": "SPEAKER_01",
+      "start": 38.13
+    },
+    {
+      "end": 45.252,
+      "id": "t0007",
+      "speaker": "SPEAKER_01",
+      "start": 42.252
+    },
+    {
+      "end": 46.752,
+      "id": "t0008",
+      "speaker": "SPEAKER_02",
+      "start": 45.252
+    },
+    {
+      "end": 49.428,
+      "id": "t0009",
+      "speaker": "SPEAKER_01",
+      "start": 46.752
+    },
+    {
+      "end": 55.246,
+      "id": "t0010",
+      "speaker": "SPEAKER_00",
+      "start": 49.996
+    },
+    {
+      "end": 55.996,
+      "id": "t0011",
+      "speaker": "SPEAKER_03",
+      "start": 55.246
+    },
+    {
+      "end": 57.496,
+      "id": "t0012",
+      "speaker": "SPEAKER_00",
+      "start": 55.996
+    },
+    {
+      "end": 60.0,
+      "id": "t0013",
+      "speaker": "SPEAKER_01",
+      "start": 57.496
+    }
+  ]
+}
