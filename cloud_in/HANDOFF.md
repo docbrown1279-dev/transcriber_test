@@ -2,12 +2,13 @@
 
 | Field | Value |
 |---|---|
-| CURRENT | **D5.diar-spectral** — spectral / hybrid clustering + 5 min timing |
+| CURRENT | **D5.diar-spectral** — spectral / hybrid (+ follow-up window timing) |
 | Branch | `cursor/d5-diar-spectral` |
-| Task | `cloud_in/prompt.md` |
+| Main task | `cloud_in/prompt.md` (already done) |
+| Follow-up | **`cloud_in/FOLLOWUP.md`** — 5 min windows **1.5/0.75 vs 3.0/1.5** timing only |
 | Role | research only (`AGENTS.md`) — no coder/tester |
 | Secrets | `HF_TOKEN` if WeSpeaker weights needed |
-| Deliverables | `cloud_out/report.md`, `results.json`, `run_meta.json`, push (no PR) |
+| Deliverables | `cloud_out/timing_windows_5min.md` + `.json`; push (no PR) |
 
 ## Forbidden
 
