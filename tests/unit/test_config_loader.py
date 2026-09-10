@@ -85,7 +85,7 @@ def test_d0_cfg_03_demo_contract_values(demo_config) -> None:
     assert demo_config.audio.max_minutes == 15
     assert demo_config.asr.max_segment_seconds == 25
     assert demo_config.chunking.similarity_threshold == 0.70
-    assert demo_config.limits.requests_per_ip_per_day == 1
+    assert demo_config.limits.requests_per_ip_per_day == 5
     assert demo_config.limits.result_ttl_hours == 24
     assert demo_config.llm.backend == "qwen"
     assert demo_config.llm.provider == "openai_compat"

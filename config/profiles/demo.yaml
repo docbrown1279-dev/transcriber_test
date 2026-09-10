@@ -22,7 +22,7 @@ llm:
   backend: qwen
 
 limits:
-  requests_per_ip_per_day: 1
+  requests_per_ip_per_day: 5
   max_concurrent_jobs: 1
   result_ttl_hours: 24
   queue_max_size: 4
