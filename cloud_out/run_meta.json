@@ -1,60 +1,35 @@
 {
   "branch": "cursor/d5-ttft-split",
-  "git_rev_start": "82c1d26412a979c24cf9334ffb4f6b02da2aa8c2",
+  "git_rev": "59db3e85f81f8fecd9811689a699ca88fa448044",
   "host": {
-    "df_h": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vdc        254G  9.0G  245G   4% /",
+    "df_h": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vdc        254G  9.2G  245G   4% /",
     "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
-    "free_h": "total        used        free      shared  buff/cache   available\nMem:            15Gi       8.9Gi       4.0Gi       9.2Mi       3.0Gi       6.8Gi\nSwap:             0B          0B          0B",
+    "free_h": "total        used        free      shared  buff/cache   available\nMem:            15Gi       8.9Gi       3.8Gi       9.2Mi       3.3Gi       6.8Gi\nSwap:             0B          0B          0B",
     "nproc": 4,
     "python_version": "Python 3.12.3",
-    "torch_get_num_interop_threads": 4,
-    "torch_get_num_threads": 4,
     "uv_version": "uv 0.12.13 (x86_64-unknown-linux-gnu)"
   },
   "llm_call_count": 0,
-  "notes": [
-    "Research spike: no src/config/tests edits, no LLM.",
-    "Weights were not present on this VM; prefetch (~21s) then HF_HUB_OFFLINE=1 for timed runs.",
-    "Peak RSS is process-tree VmRSS sampled every 1s during each timed job.",
-    "nproc=4 so 2-CPU PASS hint is a WARN even though TTFT+2 is 37.396s.",
-    "Follow-up: unsplit 15-minute file wall measured with the same until=chunk runner."
-  ],
   "package_versions": {
-    "gigaam": "0.2.0",
-    "huggingface-hub": "1.30.0",
     "numpy": "2.5.2",
     "onnxruntime": "1.23.2",
     "scikit-learn": "1.9.0",
-    "sentence-transformers": "6.0.1",
     "soundfile": "0.14.0",
     "speakeronnx": "0.0.1",
-    "torch": "2.14.0+cpu",
-    "torchaudio": "2.11.0+cpu"
+    "torch": "2.14.0+cpu"
   },
-  "peak_rss_mb": 1970.2,
-  "peak_rss_mb_full15": 2030.6,
   "preflight": {
-    "cut_plan": "cloud_in/inputs/artifacts/cut_plan_15min_3.json",
-    "packed_audio": "cloud_in/inputs/audio/voice_002_15min.m4a",
-    "runner": "scripts/run_ttft_part1.py",
+    "baseline": "cloud_out/artifacts/split3_unified_norm/",
+    "hypotheses_md": "ABSENT — hyps taken from agent prompt",
+    "missing_required": [],
+    "notes": [
+      "Prompt overrides product AGENTS.md: no src/config/tests edits, no PR, no ASR/LLM.",
+      "Install nothing beyond uv.lock."
+    ],
+    "required_ok": true,
     "status": "ok"
   },
-  "prefetch_sec": 21.0,
   "schema_version": "1",
-  "stage": "D5.TTFT-split-part1",
-  "started_at_utc": "2026-09-11T08:52:03Z",
-  "timing": {
-    "gate_budget_ttft_plus_llm_sec": 360.0,
-    "onnx_threads": 2,
-    "ttft_first_chapter_sec": 35.396,
-    "ttft_plus_llm_budget_sec": 37.396,
-    "wall_full_15min_sec": 89.757,
-    "wall_full_15min_audio_sec": 900.015,
-    "wall_full_15min_n_chapters": 9,
-    "wall_full_15min_n_turns": 141,
-    "wall_full_15min_speaker_count": 5,
-    "wall_total_sec": 35.396
-  },
-  "wall_time_sec": 35.396,
-  "wall_full_15min_sec": 89.757
+  "stage": "D5.TTFT-cluster-rebuild",
+  "written_at_utc": "2026-09-11T23:00:47Z"
 }
