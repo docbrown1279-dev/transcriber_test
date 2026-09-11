@@ -363,13 +363,24 @@ def write_compare(
         ),
     )
     winner = ranked[0]
+    tied = [
+        h
+        for h in ("H1", "H2", "H3")
+        if combined[h]["n_turns_lt_1s"] == combined[winner]["n_turns_lt_1s"]
+        and combined[h]["n_speaker_switches"] == combined[winner]["n_speaker_switches"]
+        and combined[h]["n_speakers_max"] == combined[winner]["n_speakers_max"]
+    ]
+    winner_label = winner if len(tied) == 1 else f"{winner} (tied with {', '.join(tied[1:])})"
     growth = combined[winner]["n_speakers_max"] - base_spk
     crumbs_delta = combined[winner]["n_turns_lt_1s"] - combined["baseline"]["n_turns_lt_1s"]
     switch_delta = combined[winner]["n_speaker_switches"] - combined["baseline"]["n_speaker_switches"]
     huge_growth = growth > 2
     improved = crumbs_delta < 0 or switch_delta < 0
     if improved and not huge_growth:
-        verdict = f"PASS — {winner} reduces crumbs and/or switches vs baseline without huge speaker growth."
+        verdict = (
+            f"PASS — {winner_label} reduces crumbs and/or switches vs baseline "
+            "without huge speaker growth."
+        )
         status = "PASS"
     elif improved and huge_growth:
         verdict = (
@@ -441,7 +452,7 @@ def write_compare(
         "| P1 | sticky-previous-window | not implemented | forbidden | PASS |",
         f"| P2 | embeddings once | {prep.get('n_windows')} | part01–03 dumped | PASS |",
         f"| B0 | baseline part02 lt1s | {all_metrics['baseline']['part02']['n_turns_lt_1s']} | record (unified_norm 13) | PASS (record) |",
-        f"| C1 | best hyp vs baseline lt1s+switches | {winner} Δlt1s={crumbs_delta:+d} Δsw={switch_delta:+d} | lower at least one | "
+        f"| C1 | best hyp vs baseline lt1s+switches | {winner_label} Δlt1s={crumbs_delta:+d} Δsw={switch_delta:+d} | lower at least one | "
         + ("PASS" if improved else "FAIL")
         + " |",
         f"| C2 | speaker growth (best hyp) | {growth:+d} vs baseline max {base_spk} | not huge (>2) | "
@@ -452,12 +463,18 @@ def write_compare(
         "## Agent judgement",
         "",
         f"Rank by (lt1s, switches, n_speakers_max) on part02+part03: **{' > '.join(ranked)}**. "
-        f"Winner **{winner}**.",
+        f"Winner **{winner_label}**.",
         "",
         "H1 maps a whole local AHC cluster to one gallery id (or one new id), which should stop "
         "single-talker flicker across ids inside a cluster. H2 keeps window assign but one centroid "
         "refine + re-assign. H3 is H1 plus a 0.05 clear-winner margin; clusters <2.0 s of union "
         "speech that are ambiguous map to the nearest gallery id (no new micro-id).",
+        "",
+        "On this file H1 and H3 produced **identical** part02/part03 turns: part-local AHC made "
+        "four clusters and every cluster already had d_best≤0.85 with margin≥0.05, so H3's extra "
+        "rule never fired. Short 00↔01 dialogue still appears later in part02 (not a "
+        "sticky-previous-window collapse). SPEAKER_02 from baseline (~4 s crumbs) is absorbed; "
+        "some SPEAKER_01 mass moves into SPEAKER_00 (one large cluster at d_best≈0.57 to 00).",
         "",
         f"Prep: wav={prep.get('wav_meta', {}).get('source')}; shared VAD from unified_norm/full15; "
         f"wall_sec={wall_sec}. Host nproc=4 (not a 2-vCPU TTFT demo). "
@@ -480,6 +497,8 @@ def write_compare(
         "status": status,
         "verdict": verdict,
         "winner": winner,
+        "winner_label": winner_label,
+        "tied": tied,
         "ranked": ranked,
         "combined": combined,
         "crumbs_delta": crumbs_delta,

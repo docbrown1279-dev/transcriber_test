@@ -1,0 +1,64 @@
+{
+  "hotspot_365_375": [
+    {
+      "duration_sec": 0.75,
+      "end": 74.554,
+      "end_abs": 365.946,
+      "id": "t0016",
+      "speaker": "SPEAKER_00",
+      "start": 73.804,
+      "start_abs": 365.196
+    },
+    {
+      "duration_sec": 1.5,
+      "end": 76.054,
+      "end_abs": 367.446,
+      "id": "t0017",
+      "speaker": "SPEAKER_01",
+      "start": 74.554,
+      "start_abs": 365.946
+    },
+    {
+      "duration_sec": 2.25,
+      "end": 78.304,
+      "end_abs": 369.696,
+      "id": "t0018",
+      "speaker": "SPEAKER_00",
+      "start": 76.054,
+      "start_abs": 367.446
+    },
+    {
+      "duration_sec": 0.75,
+      "end": 79.054,
+      "end_abs": 370.446,
+      "id": "t0019",
+      "speaker": "SPEAKER_01",
+      "start": 78.304,
+      "start_abs": 369.696
+    },
+    {
+      "duration_sec": 4.838,
+      "end": 83.892,
+      "end_abs": 375.284,
+      "id": "t0020",
+      "speaker": "SPEAKER_00",
+      "start": 79.054,
+      "start_abs": 370.446
+    }
+  ],
+  "hyp": "baseline",
+  "n_speaker_switches": 43,
+  "n_speakers": 3,
+  "n_turns": 65,
+  "n_turns_lt_1s": 13,
+  "n_turns_lt_2s": 29,
+  "new_ids_vs_part1": [
+    "SPEAKER_02"
+  ],
+  "part": "part02",
+  "speaker_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02"
+  ]
+}

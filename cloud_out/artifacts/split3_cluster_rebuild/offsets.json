@@ -1,0 +1,21 @@
+{
+  "cut_plan": "/workspace/cloud_in/inputs/artifacts/cut_plan_15min_3.json",
+  "parts": {
+    "part01": {
+      "abs_offset": 0.0,
+      "duration_sec": 291.392,
+      "plan_end": 291.392
+    },
+    "part02": {
+      "abs_offset": 291.392,
+      "duration_sec": 310.656,
+      "plan_end": 602.048
+    },
+    "part03": {
+      "abs_offset": 602.048,
+      "duration_sec": 297.952,
+      "plan_end": 900.0
+    }
+  },
+  "schema_version": "1"
+}
