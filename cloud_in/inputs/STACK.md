@@ -1,28 +1,17 @@
-# Frozen demo stack (distilled for cloud)
+# Stack freeze for D5.TTFT-split part1 spike
 
-Source: research closed stages. Cloud agents must not reopen bakeoffs or browse
-`docs/research_results/`. If this file and a contract disagree, contracts win for
-schemas; this file wins for which engine to implement.
+Do **not** reopen bakeoffs. Use existing demo engines.
 
-| Layer | Use in demo | Do not use |
-|---|---|---|
-| Loudness | 16 kHz mono → `normalized.wav` (+ linear gain if RMS < −30 dBFS); VAD path = raw `vad_input.wav` (no dynaudnorm) | denoise / afftdn / DeepFilterNet / RNNoise; file-level dynaudnorm C3 |
-| VAD | Silero ONNX (snakers4 + context); thr 0.45 / neg 0.30; `min_speech_ms=200`; `min_silence_ms=350`; TEN hole-fill **off** | FSMN as primary; deepghs ONNX fork |
-| Diarization | WeSpeaker on `normalized.wav`; premerge ≤0.5 s; same-speaker gap ≤0.3 s; absorb <1.0 s | pyannote 3.1, sherpa-full; merge agg 0.8/2.5 |
-| ASR | GigaAM `v3_rnnt` (CPU torch); ≤25 s splits; per-turn linear gain on slices | Whisper family, Podlodka |
-| Terms | suggestions only; never rewrite transcript | silent auto-replace |
-| Chunking | packing C + `rubert-tiny2` threshold 0.70; speaker packing gap ≤2 s; pack target ~40–80 words; merge cap 180 s; absorb chapters &lt;5 s into neighbour | late chunking Jina (D), hybrid C→D, pairwise LLM (B) |
-| Titles | `llm.tasks.chapter_titles` (`prompts/chapter_titles/v1.md`), ≤10 words, no stamp phrases | prompt P2 |
-| Insights / report | `meeting_insights.extract` per chapter, then `meeting_insights.report` once | inventing timestamps; 3c “no insights” bakeoff |
-| LLM (cloud / demo) | `llm.mode: api`, `llm.backend: gemini`; NVIDIA/Qwen are config backends | local GGUF / llama.cpp in cloud; audio to API |
-| Timecodes | copy from ASR segment bounds only | LLM-generated times |
+| Layer | Setting |
+|---|---|
+| Audio | packed `voice_002_15min.m4a` (~900 s); cut plan JSON is authoritative |
+| VAD | Silero T2 defaults (`config/base.yaml`) |
+| Diarization | WeSpeaker ONNX; `cluster_distance_threshold=0.85`; windows `1.5/0.75` |
+| Short clusters | **keep all** speaker ids — no crumb drop / no cluster speech filter |
+| ASR | GigaAM `v3_rnnt` |
+| Chunking | packing C + `rubert-tiny2` 0.70; **no LLM titles** this stage |
+| TOC mode | force `pipeline.toc_mode=a` for `--until chunk` (see `scripts/run_ttft_part1.py`) |
+| LLM | **none** (budget +2.0 s only in the timing report) |
+| Hardware note | Prefer measuring under 2 CPU threads (`onnx_threads=2`); record `nproc` / RSS |
 
-Chapter density target: 0.4–0.8 chapters/min; prefer 45–180 s chapters (warnings, not hard law).
-
-## Stage D3 pack note
-
-Primary input is **text**: packed `transcript.json` + `chapters.json` (D2 HUMAN_GATE PASS).
-Do **not** re-run ASR or chunking. Do not expect packed audio or GGUF.
-
-Provenance note: full-meeting ASR text is a working hypothesis, not gold.
-Cloud gates never use `eval/`.
+Out of scope: pyannote, Whisper, Jina D, backend/`src/` edits, gold/`eval/` reads.

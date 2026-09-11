@@ -1,9 +1,10 @@
 # Тикет: TTFT — разрез файла + якорь центроидов (S2)
 
-**Статус:** OPEN — **NEXT research** (unit-tune **REFUSED**)  
+**Статус:** OPEN — **IN PROGRESS** research spike (part1 only; `src/` still frozen)  
 **Приоритет:** высокий для TTFT  
-**Ветка (когда откроем):** **новая** `cursor/d5-ttft-split` (от свежего `main` / demo), не follow-up в twopass  
-**Спека направления:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md)
+**Ветка:** `cursor/d5-ttft-split` (от `main`)  
+**Спека направления:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md)  
+**Локальный prep:** [`../reports/d5_ttft_split/README.md`](../reports/d5_ttft_split/README.md) · cut `cut_plan_15min_3` · eval glue `eval/d5_ttft_split/`
 
 ---
 
