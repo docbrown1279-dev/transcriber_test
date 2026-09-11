@@ -13,10 +13,11 @@
   },
   "llm_call_count": 0,
   "notes": [
-    "Research spike: no src/config/tests edits, no LLM, part01 only.",
-    "Weights were not present on this VM; prefetch (~21s) then HF_HUB_OFFLINE=1 for timed run.",
-    "Peak RSS is process-tree VmRSS sampled every 1s during the timed job.",
-    "nproc=4 so 2-CPU PASS hint is a WARN even though TTFT+2 is 37.396s."
+    "Research spike: no src/config/tests edits, no LLM.",
+    "Weights were not present on this VM; prefetch (~21s) then HF_HUB_OFFLINE=1 for timed runs.",
+    "Peak RSS is process-tree VmRSS sampled every 1s during each timed job.",
+    "nproc=4 so 2-CPU PASS hint is a WARN even though TTFT+2 is 37.396s.",
+    "Follow-up: unsplit 15-minute file wall measured with the same until=chunk runner."
   ],
   "package_versions": {
     "gigaam": "0.2.0",
@@ -31,6 +32,7 @@
     "torchaudio": "2.11.0+cpu"
   },
   "peak_rss_mb": 1970.2,
+  "peak_rss_mb_full15": 2030.6,
   "preflight": {
     "cut_plan": "cloud_in/inputs/artifacts/cut_plan_15min_3.json",
     "packed_audio": "cloud_in/inputs/audio/voice_002_15min.m4a",
@@ -46,7 +48,13 @@
     "onnx_threads": 2,
     "ttft_first_chapter_sec": 35.396,
     "ttft_plus_llm_budget_sec": 37.396,
+    "wall_full_15min_sec": 89.757,
+    "wall_full_15min_audio_sec": 900.015,
+    "wall_full_15min_n_chapters": 9,
+    "wall_full_15min_n_turns": 141,
+    "wall_full_15min_speaker_count": 5,
     "wall_total_sec": 35.396
   },
-  "wall_time_sec": 35.396
+  "wall_time_sec": 35.396,
+  "wall_full_15min_sec": 89.757
 }
