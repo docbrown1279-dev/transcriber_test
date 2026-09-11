@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "audio": "cloud_out/artifacts/parts/part01.m4a",
+  "job_dir": "cloud_out/artifacts/part01_job",
+  "profile": "demo",
+  "toc_mode_forced": "a",
+  "until": "chunk",
+  "onnx_threads": 2,
+  "cluster_distance_threshold": 0.85,
+  "marks_sec": {
+    "start": 0.0,
+    "normalize_done": 1.088,
+    "vad_done": 1.839,
+    "diarize_done": 16.097,
+    "asr_done": 32.628,
+    "correction_suggest_done": 32.63,
+    "chunk_done": 35.396
+  },
+  "wall_total_sec": 35.396,
+  "ttft_first_chapter_sec": 35.396,
+  "ttft_plus_llm_budget_sec": 37.396,
+  "llm_budget_sec": 2.0,
+  "speaker_count": 2,
+  "n_turns": 32,
+  "n_chapters": 4,
+  "gate_hint_sec": 300,
+  "notes": [
+    "No LLM titles in this spike; +llm_budget approximates first titled chapter.",
+    "Short clusters kept (no post-filter of speaker ids)."
+  ]
+}

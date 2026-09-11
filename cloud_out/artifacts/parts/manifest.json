@@ -1,0 +1,49 @@
+{
+  "cut_plan": "cloud_in/inputs/artifacts/cut_plan_15min_3.json",
+  "ffmpeg": {
+    "avoid_negative_ts": "make_zero",
+    "copy": true,
+    "movflags": "+faststart"
+  },
+  "parts": [
+    {
+      "codec_copy": true,
+      "duration_delta_sec": 0.006,
+      "ffprobe_duration_sec": 291.398,
+      "id": "part01",
+      "index": 0,
+      "path": "cloud_out/artifacts/parts/part01.m4a",
+      "plan_duration_sec": 291.392,
+      "plan_end": 291.392,
+      "plan_start": 0.0,
+      "size_bytes": 4722038
+    },
+    {
+      "codec_copy": true,
+      "duration_delta_sec": 0.037,
+      "ffprobe_duration_sec": 310.693,
+      "id": "part02",
+      "index": 1,
+      "path": "cloud_out/artifacts/parts/part02.m4a",
+      "plan_duration_sec": 310.656,
+      "plan_end": 602.048,
+      "plan_start": 291.392,
+      "size_bytes": 5034685
+    },
+    {
+      "codec_copy": true,
+      "duration_delta_sec": 0.017,
+      "ffprobe_duration_sec": 297.969,
+      "id": "part03",
+      "index": 2,
+      "path": "cloud_out/artifacts/parts/part03.m4a",
+      "plan_duration_sec": 297.952,
+      "plan_end": 900.0,
+      "plan_start": 602.048,
+      "size_bytes": 4828545
+    }
+  ],
+  "schema_version": "1",
+  "source": "cloud_in/inputs/audio/voice_002_15min.m4a",
+  "source_ffprobe_duration_sec": 900.015
+}
