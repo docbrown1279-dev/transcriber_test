@@ -1,0 +1,2457 @@
+{
+  "matched": 299,
+  "mode": "assign",
+  "n_windows": 305,
+  "new": 6,
+  "new_speaker_ids": [
+    "SPEAKER_02"
+  ],
+  "speakers_after": [
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02"
+  ],
+  "threshold": 0.85,
+  "windows": [
+    {
+      "assigned": "SPEAKER_00",
+      "end": 3.572,
+      "index": 0,
+      "min_distance": 0.7537,
+      "new_speaker": false,
+      "start": 3.116
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 5.428,
+      "index": 1,
+      "min_distance": 0.523,
+      "new_speaker": false,
+      "start": 4.332
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 7.348,
+      "index": 2,
+      "min_distance": 0.5635,
+      "new_speaker": false,
+      "start": 6.252
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 10.132,
+      "index": 3,
+      "min_distance": 0.5467,
+      "new_speaker": false,
+      "start": 9.292
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 13.044,
+      "index": 4,
+      "min_distance": 0.7714,
+      "new_speaker": false,
+      "start": 12.428
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 20.82,
+      "index": 5,
+      "min_distance": 0.4763,
+      "new_speaker": false,
+      "start": 19.756
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 22.42,
+      "index": 6,
+      "min_distance": 0.6997,
+      "new_speaker": false,
+      "start": 21.932
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 35.08,
+      "index": 7,
+      "min_distance": 0.6889,
+      "new_speaker": false,
+      "start": 33.58
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 35.83,
+      "index": 8,
+      "min_distance": 0.7203,
+      "new_speaker": false,
+      "start": 34.33
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 36.564,
+      "index": 9,
+      "min_distance": 0.6924,
+      "new_speaker": false,
+      "start": 35.08
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 39.752,
+      "index": 10,
+      "min_distance": 0.7386,
+      "new_speaker": false,
+      "start": 38.252
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 40.502,
+      "index": 11,
+      "min_distance": 0.7725,
+      "new_speaker": false,
+      "start": 39.002
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 41.252,
+      "index": 12,
+      "min_distance": 0.7414,
+      "new_speaker": false,
+      "start": 39.752
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 42.002,
+      "index": 13,
+      "min_distance": 0.6976,
+      "new_speaker": false,
+      "start": 40.502
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 42.752,
+      "index": 14,
+      "min_distance": 0.6367,
+      "new_speaker": false,
+      "start": 41.252
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 43.502,
+      "index": 15,
+      "min_distance": 0.7071,
+      "new_speaker": false,
+      "start": 42.002
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 44.252,
+      "index": 16,
+      "min_distance": 0.7342,
+      "new_speaker": false,
+      "start": 42.752
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 45.002,
+      "index": 17,
+      "min_distance": 0.7493,
+      "new_speaker": false,
+      "start": 43.502
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 45.752,
+      "index": 18,
+      "min_distance": 0.7671,
+      "new_speaker": false,
+      "start": 44.252
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 46.502,
+      "index": 19,
+      "min_distance": 0.8475,
+      "new_speaker": false,
+      "start": 45.002
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 47.252,
+      "index": 20,
+      "min_distance": 0.6645,
+      "new_speaker": false,
+      "start": 45.752
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 48.002,
+      "index": 21,
+      "min_distance": 0.577,
+      "new_speaker": false,
+      "start": 46.502
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 48.752,
+      "index": 22,
+      "min_distance": 0.486,
+      "new_speaker": false,
+      "start": 47.252
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 49.502,
+      "index": 23,
+      "min_distance": 0.7105,
+      "new_speaker": false,
+      "start": 48.002
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 50.252,
+      "index": 24,
+      "min_distance": 0.8111,
+      "new_speaker": false,
+      "start": 48.752
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 51.002,
+      "index": 25,
+      "min_distance": 0.7892,
+      "new_speaker": false,
+      "start": 49.502
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 51.508,
+      "index": 26,
+      "min_distance": 0.7008,
+      "new_speaker": false,
+      "start": 50.252
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 54.92,
+      "index": 27,
+      "min_distance": 0.5387,
+      "new_speaker": false,
+      "start": 53.42
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 55.67,
+      "index": 28,
+      "min_distance": 0.4757,
+      "new_speaker": false,
+      "start": 54.17
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 56.42,
+      "index": 29,
+      "min_distance": 0.426,
+      "new_speaker": false,
+      "start": 54.92
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 57.17,
+      "index": 30,
+      "min_distance": 0.4548,
+      "new_speaker": false,
+      "start": 55.67
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 57.332,
+      "index": 31,
+      "min_distance": 0.6154,
+      "new_speaker": false,
+      "start": 56.42
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 60.552,
+      "index": 32,
+      "min_distance": 0.4522,
+      "new_speaker": false,
+      "start": 59.052
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 61.302,
+      "index": 33,
+      "min_distance": 0.3944,
+      "new_speaker": false,
+      "start": 59.802
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 62.052,
+      "index": 34,
+      "min_distance": 0.356,
+      "new_speaker": false,
+      "start": 60.552
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 62.802,
+      "index": 35,
+      "min_distance": 0.4289,
+      "new_speaker": false,
+      "start": 61.302
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 63.552,
+      "index": 36,
+      "min_distance": 0.4174,
+      "new_speaker": false,
+      "start": 62.052
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 64.302,
+      "index": 37,
+      "min_distance": 0.4226,
+      "new_speaker": false,
+      "start": 62.802
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 64.436,
+      "index": 38,
+      "min_distance": 0.4608,
+      "new_speaker": false,
+      "start": 63.552
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 67.316,
+      "index": 39,
+      "min_distance": 0.4272,
+      "new_speaker": false,
+      "start": 65.068
+    },
+    {
+      "assigned": "SPEAKER_02",
+      "end": 69.012,
+      "index": 40,
+      "min_distance": 0.8753,
+      "new_speaker": true,
+      "start": 68.236
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 71.572,
+      "index": 41,
+      "min_distance": 0.6567,
+      "new_speaker": false,
+      "start": 70.828
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 75.304,
+      "index": 42,
+      "min_distance": 0.8005,
+      "new_speaker": false,
+      "start": 73.804
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 76.054,
+      "index": 43,
+      "min_distance": 0.8495,
+      "new_speaker": false,
+      "start": 74.554
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 76.804,
+      "index": 44,
+      "min_distance": 0.7633,
+      "new_speaker": false,
+      "start": 75.304
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 77.554,
+      "index": 45,
+      "min_distance": 0.805,
+      "new_speaker": false,
+      "start": 76.054
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 78.304,
+      "index": 46,
+      "min_distance": 0.7049,
+      "new_speaker": false,
+      "start": 76.804
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 79.054,
+      "index": 47,
+      "min_distance": 0.695,
+      "new_speaker": false,
+      "start": 77.554
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 79.804,
+      "index": 48,
+      "min_distance": 0.729,
+      "new_speaker": false,
+      "start": 78.304
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 80.554,
+      "index": 49,
+      "min_distance": 0.7686,
+      "new_speaker": false,
+      "start": 79.054
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 81.304,
+      "index": 50,
+      "min_distance": 0.6904,
+      "new_speaker": false,
+      "start": 79.804
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 82.054,
+      "index": 51,
+      "min_distance": 0.6617,
+      "new_speaker": false,
+      "start": 80.554
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 82.292,
+      "index": 52,
+      "min_distance": 0.7936,
+      "new_speaker": false,
+      "start": 81.304
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 83.892,
+      "index": 53,
+      "min_distance": 0.5901,
+      "new_speaker": false,
+      "start": 83.34
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 86.6,
+      "index": 54,
+      "min_distance": 0.4986,
+      "new_speaker": false,
+      "start": 85.1
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 87.35,
+      "index": 55,
+      "min_distance": 0.4804,
+      "new_speaker": false,
+      "start": 85.85
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 88.02,
+      "index": 56,
+      "min_distance": 0.4671,
+      "new_speaker": false,
+      "start": 86.6
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 89.396,
+      "index": 57,
+      "min_distance": 0.7342,
+      "new_speaker": false,
+      "start": 88.844
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 93.096,
+      "index": 58,
+      "min_distance": 0.4864,
+      "new_speaker": false,
+      "start": 91.596
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 93.846,
+      "index": 59,
+      "min_distance": 0.5375,
+      "new_speaker": false,
+      "start": 92.346
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 94.596,
+      "index": 60,
+      "min_distance": 0.5328,
+      "new_speaker": false,
+      "start": 93.096
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 95.346,
+      "index": 61,
+      "min_distance": 0.5061,
+      "new_speaker": false,
+      "start": 93.846
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 96.096,
+      "index": 62,
+      "min_distance": 0.5919,
+      "new_speaker": false,
+      "start": 94.596
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 96.846,
+      "index": 63,
+      "min_distance": 0.4525,
+      "new_speaker": false,
+      "start": 95.346
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 97.428,
+      "index": 64,
+      "min_distance": 0.4067,
+      "new_speaker": false,
+      "start": 96.096
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 99.816,
+      "index": 65,
+      "min_distance": 0.4371,
+      "new_speaker": false,
+      "start": 98.316
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 100.566,
+      "index": 66,
+      "min_distance": 0.3716,
+      "new_speaker": false,
+      "start": 99.066
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 100.852,
+      "index": 67,
+      "min_distance": 0.408,
+      "new_speaker": false,
+      "start": 99.816
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 104.808,
+      "index": 68,
+      "min_distance": 0.423,
+      "new_speaker": false,
+      "start": 103.308
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 105.558,
+      "index": 69,
+      "min_distance": 0.3965,
+      "new_speaker": false,
+      "start": 104.058
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 106.26,
+      "index": 70,
+      "min_distance": 0.6476,
+      "new_speaker": false,
+      "start": 104.808
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 108.084,
+      "index": 71,
+      "min_distance": 0.6267,
+      "new_speaker": false,
+      "start": 106.956
+    },
+    {
+      "assigned": "SPEAKER_02",
+      "end": 110.12,
+      "index": 72,
+      "min_distance": 0.8573,
+      "new_speaker": true,
+      "start": 108.62
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 110.87,
+      "index": 73,
+      "min_distance": 0.8432,
+      "new_speaker": false,
+      "start": 109.37
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 111.62,
+      "index": 74,
+      "min_distance": 0.7429,
+      "new_speaker": false,
+      "start": 110.12
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 112.37,
+      "index": 75,
+      "min_distance": 0.7439,
+      "new_speaker": false,
+      "start": 110.87
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 113.12,
+      "index": 76,
+      "min_distance": 0.749,
+      "new_speaker": false,
+      "start": 111.62
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 113.87,
+      "index": 77,
+      "min_distance": 0.8097,
+      "new_speaker": false,
+      "start": 112.37
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 114.62,
+      "index": 78,
+      "min_distance": 0.7709,
+      "new_speaker": false,
+      "start": 113.12
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 115.37,
+      "index": 79,
+      "min_distance": 0.7083,
+      "new_speaker": false,
+      "start": 113.87
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 116.12,
+      "index": 80,
+      "min_distance": 0.6782,
+      "new_speaker": false,
+      "start": 114.62
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 116.87,
+      "index": 81,
+      "min_distance": 0.8289,
+      "new_speaker": false,
+      "start": 115.37
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 117.076,
+      "index": 82,
+      "min_distance": 0.7732,
+      "new_speaker": false,
+      "start": 116.12
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 121.3,
+      "index": 83,
+      "min_distance": 0.7036,
+      "new_speaker": false,
+      "start": 120.812
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 123.38,
+      "index": 84,
+      "min_distance": 0.5702,
+      "new_speaker": false,
+      "start": 122.636
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 125.544,
+      "index": 85,
+      "min_distance": 0.4855,
+      "new_speaker": false,
+      "start": 124.044
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 126.294,
+      "index": 86,
+      "min_distance": 0.5873,
+      "new_speaker": false,
+      "start": 124.794
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 127.044,
+      "index": 87,
+      "min_distance": 0.6607,
+      "new_speaker": false,
+      "start": 125.544
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 127.794,
+      "index": 88,
+      "min_distance": 0.7039,
+      "new_speaker": false,
+      "start": 126.294
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 128.544,
+      "index": 89,
+      "min_distance": 0.7835,
+      "new_speaker": false,
+      "start": 127.044
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 129.294,
+      "index": 90,
+      "min_distance": 0.7472,
+      "new_speaker": false,
+      "start": 127.794
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 129.78,
+      "index": 91,
+      "min_distance": 0.6977,
+      "new_speaker": false,
+      "start": 128.544
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 132.072,
+      "index": 92,
+      "min_distance": 0.7557,
+      "new_speaker": false,
+      "start": 130.572
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 132.822,
+      "index": 93,
+      "min_distance": 0.6901,
+      "new_speaker": false,
+      "start": 131.322
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 133.572,
+      "index": 94,
+      "min_distance": 0.6814,
+      "new_speaker": false,
+      "start": 132.072
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 134.322,
+      "index": 95,
+      "min_distance": 0.7694,
+      "new_speaker": false,
+      "start": 132.822
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 135.072,
+      "index": 96,
+      "min_distance": 0.7878,
+      "new_speaker": false,
+      "start": 133.572
+    },
+    {
+      "assigned": "SPEAKER_02",
+      "end": 135.822,
+      "index": 97,
+      "min_distance": 0.8554,
+      "new_speaker": true,
+      "start": 134.322
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 136.572,
+      "index": 98,
+      "min_distance": 0.727,
+      "new_speaker": false,
+      "start": 135.072
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 137.236,
+      "index": 99,
+      "min_distance": 0.7657,
+      "new_speaker": false,
+      "start": 135.822
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 139.4,
+      "index": 100,
+      "min_distance": 0.729,
+      "new_speaker": false,
+      "start": 137.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 140.15,
+      "index": 101,
+      "min_distance": 0.696,
+      "new_speaker": false,
+      "start": 138.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 140.9,
+      "index": 102,
+      "min_distance": 0.4779,
+      "new_speaker": false,
+      "start": 139.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 141.65,
+      "index": 103,
+      "min_distance": 0.511,
+      "new_speaker": false,
+      "start": 140.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 142.4,
+      "index": 104,
+      "min_distance": 0.4951,
+      "new_speaker": false,
+      "start": 140.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 143.15,
+      "index": 105,
+      "min_distance": 0.5653,
+      "new_speaker": false,
+      "start": 141.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 143.9,
+      "index": 106,
+      "min_distance": 0.4851,
+      "new_speaker": false,
+      "start": 142.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 144.65,
+      "index": 107,
+      "min_distance": 0.4235,
+      "new_speaker": false,
+      "start": 143.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 145.4,
+      "index": 108,
+      "min_distance": 0.4079,
+      "new_speaker": false,
+      "start": 143.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 146.15,
+      "index": 109,
+      "min_distance": 0.4559,
+      "new_speaker": false,
+      "start": 144.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 146.9,
+      "index": 110,
+      "min_distance": 0.4157,
+      "new_speaker": false,
+      "start": 145.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 147.65,
+      "index": 111,
+      "min_distance": 0.4909,
+      "new_speaker": false,
+      "start": 146.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 148.4,
+      "index": 112,
+      "min_distance": 0.3522,
+      "new_speaker": false,
+      "start": 146.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 149.15,
+      "index": 113,
+      "min_distance": 0.4755,
+      "new_speaker": false,
+      "start": 147.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 149.9,
+      "index": 114,
+      "min_distance": 0.4981,
+      "new_speaker": false,
+      "start": 148.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 150.65,
+      "index": 115,
+      "min_distance": 0.3723,
+      "new_speaker": false,
+      "start": 149.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 151.4,
+      "index": 116,
+      "min_distance": 0.3575,
+      "new_speaker": false,
+      "start": 149.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 152.15,
+      "index": 117,
+      "min_distance": 0.4924,
+      "new_speaker": false,
+      "start": 150.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 152.9,
+      "index": 118,
+      "min_distance": 0.4998,
+      "new_speaker": false,
+      "start": 151.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 153.65,
+      "index": 119,
+      "min_distance": 0.5232,
+      "new_speaker": false,
+      "start": 152.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 154.4,
+      "index": 120,
+      "min_distance": 0.3837,
+      "new_speaker": false,
+      "start": 152.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 155.15,
+      "index": 121,
+      "min_distance": 0.4215,
+      "new_speaker": false,
+      "start": 153.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 155.9,
+      "index": 122,
+      "min_distance": 0.3609,
+      "new_speaker": false,
+      "start": 154.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 156.65,
+      "index": 123,
+      "min_distance": 0.3209,
+      "new_speaker": false,
+      "start": 155.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 157.4,
+      "index": 124,
+      "min_distance": 0.3282,
+      "new_speaker": false,
+      "start": 155.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 158.15,
+      "index": 125,
+      "min_distance": 0.434,
+      "new_speaker": false,
+      "start": 156.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 158.9,
+      "index": 126,
+      "min_distance": 0.4329,
+      "new_speaker": false,
+      "start": 157.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 159.65,
+      "index": 127,
+      "min_distance": 0.395,
+      "new_speaker": false,
+      "start": 158.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 160.4,
+      "index": 128,
+      "min_distance": 0.4749,
+      "new_speaker": false,
+      "start": 158.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 161.15,
+      "index": 129,
+      "min_distance": 0.4579,
+      "new_speaker": false,
+      "start": 159.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 161.9,
+      "index": 130,
+      "min_distance": 0.5011,
+      "new_speaker": false,
+      "start": 160.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 162.65,
+      "index": 131,
+      "min_distance": 0.7005,
+      "new_speaker": false,
+      "start": 161.15
+    },
+    {
+      "assigned": "SPEAKER_02",
+      "end": 163.4,
+      "index": 132,
+      "min_distance": 0.8888,
+      "new_speaker": true,
+      "start": 161.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 164.15,
+      "index": 133,
+      "min_distance": 0.8169,
+      "new_speaker": false,
+      "start": 162.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 164.9,
+      "index": 134,
+      "min_distance": 0.7473,
+      "new_speaker": false,
+      "start": 163.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 165.65,
+      "index": 135,
+      "min_distance": 0.734,
+      "new_speaker": false,
+      "start": 164.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 166.4,
+      "index": 136,
+      "min_distance": 0.6935,
+      "new_speaker": false,
+      "start": 164.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 167.15,
+      "index": 137,
+      "min_distance": 0.6842,
+      "new_speaker": false,
+      "start": 165.65
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 167.9,
+      "index": 138,
+      "min_distance": 0.6854,
+      "new_speaker": false,
+      "start": 166.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 168.65,
+      "index": 139,
+      "min_distance": 0.6989,
+      "new_speaker": false,
+      "start": 167.15
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 169.4,
+      "index": 140,
+      "min_distance": 0.679,
+      "new_speaker": false,
+      "start": 167.9
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 170.15,
+      "index": 141,
+      "min_distance": 0.7395,
+      "new_speaker": false,
+      "start": 168.65
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 170.644,
+      "index": 142,
+      "min_distance": 0.8363,
+      "new_speaker": false,
+      "start": 169.4
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 173.96,
+      "index": 143,
+      "min_distance": 0.6657,
+      "new_speaker": false,
+      "start": 172.46
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 174.71,
+      "index": 144,
+      "min_distance": 0.726,
+      "new_speaker": false,
+      "start": 173.21
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 175.46,
+      "index": 145,
+      "min_distance": 0.7144,
+      "new_speaker": false,
+      "start": 173.96
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 176.21,
+      "index": 146,
+      "min_distance": 0.4397,
+      "new_speaker": false,
+      "start": 174.71
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 176.96,
+      "index": 147,
+      "min_distance": 0.5759,
+      "new_speaker": false,
+      "start": 175.46
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 177.71,
+      "index": 148,
+      "min_distance": 0.4429,
+      "new_speaker": false,
+      "start": 176.21
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 178.46,
+      "index": 149,
+      "min_distance": 0.5212,
+      "new_speaker": false,
+      "start": 176.96
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 179.21,
+      "index": 150,
+      "min_distance": 0.5796,
+      "new_speaker": false,
+      "start": 177.71
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 179.96,
+      "index": 151,
+      "min_distance": 0.6041,
+      "new_speaker": false,
+      "start": 178.46
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 180.404,
+      "index": 152,
+      "min_distance": 0.398,
+      "new_speaker": false,
+      "start": 179.21
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 182.964,
+      "index": 153,
+      "min_distance": 0.6252,
+      "new_speaker": false,
+      "start": 182.156
+    },
+    {
+      "assigned": "SPEAKER_02",
+      "end": 185.384,
+      "index": 154,
+      "min_distance": 0.8619,
+      "new_speaker": true,
+      "start": 183.884
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 186.134,
+      "index": 155,
+      "min_distance": 0.6174,
+      "new_speaker": false,
+      "start": 184.634
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 186.612,
+      "index": 156,
+      "min_distance": 0.6729,
+      "new_speaker": false,
+      "start": 185.384
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 187.604,
+      "index": 157,
+      "min_distance": 0.6363,
+      "new_speaker": false,
+      "start": 187.116
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 191.016,
+      "index": 158,
+      "min_distance": 0.6896,
+      "new_speaker": false,
+      "start": 189.516
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 191.766,
+      "index": 159,
+      "min_distance": 0.5758,
+      "new_speaker": false,
+      "start": 190.266
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 192.516,
+      "index": 160,
+      "min_distance": 0.5547,
+      "new_speaker": false,
+      "start": 191.016
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 193.266,
+      "index": 161,
+      "min_distance": 0.5988,
+      "new_speaker": false,
+      "start": 191.766
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 194.016,
+      "index": 162,
+      "min_distance": 0.4641,
+      "new_speaker": false,
+      "start": 192.516
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 194.766,
+      "index": 163,
+      "min_distance": 0.6582,
+      "new_speaker": false,
+      "start": 193.266
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 195.516,
+      "index": 164,
+      "min_distance": 0.6212,
+      "new_speaker": false,
+      "start": 194.016
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 196.266,
+      "index": 165,
+      "min_distance": 0.4451,
+      "new_speaker": false,
+      "start": 194.766
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 197.016,
+      "index": 166,
+      "min_distance": 0.5082,
+      "new_speaker": false,
+      "start": 195.516
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 197.766,
+      "index": 167,
+      "min_distance": 0.5576,
+      "new_speaker": false,
+      "start": 196.266
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 198.516,
+      "index": 168,
+      "min_distance": 0.5823,
+      "new_speaker": false,
+      "start": 197.016
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 199.266,
+      "index": 169,
+      "min_distance": 0.5285,
+      "new_speaker": false,
+      "start": 197.766
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 200.016,
+      "index": 170,
+      "min_distance": 0.4694,
+      "new_speaker": false,
+      "start": 198.516
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 200.766,
+      "index": 171,
+      "min_distance": 0.4006,
+      "new_speaker": false,
+      "start": 199.266
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 201.14,
+      "index": 172,
+      "min_distance": 0.4833,
+      "new_speaker": false,
+      "start": 200.016
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 203.924,
+      "index": 173,
+      "min_distance": 0.4731,
+      "new_speaker": false,
+      "start": 202.22
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 205.992,
+      "index": 174,
+      "min_distance": 0.6435,
+      "new_speaker": false,
+      "start": 204.492
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 206.742,
+      "index": 175,
+      "min_distance": 0.5193,
+      "new_speaker": false,
+      "start": 205.242
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 207.492,
+      "index": 176,
+      "min_distance": 0.4105,
+      "new_speaker": false,
+      "start": 205.992
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 208.242,
+      "index": 177,
+      "min_distance": 0.4448,
+      "new_speaker": false,
+      "start": 206.742
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 208.992,
+      "index": 178,
+      "min_distance": 0.5299,
+      "new_speaker": false,
+      "start": 207.492
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 209.742,
+      "index": 179,
+      "min_distance": 0.5446,
+      "new_speaker": false,
+      "start": 208.242
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 210.492,
+      "index": 180,
+      "min_distance": 0.5139,
+      "new_speaker": false,
+      "start": 208.992
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 211.242,
+      "index": 181,
+      "min_distance": 0.4821,
+      "new_speaker": false,
+      "start": 209.742
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 211.992,
+      "index": 182,
+      "min_distance": 0.3895,
+      "new_speaker": false,
+      "start": 210.492
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 212.742,
+      "index": 183,
+      "min_distance": 0.4319,
+      "new_speaker": false,
+      "start": 211.242
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 213.492,
+      "index": 184,
+      "min_distance": 0.439,
+      "new_speaker": false,
+      "start": 211.992
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 214.242,
+      "index": 185,
+      "min_distance": 0.5036,
+      "new_speaker": false,
+      "start": 212.742
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 214.992,
+      "index": 186,
+      "min_distance": 0.4195,
+      "new_speaker": false,
+      "start": 213.492
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 215.742,
+      "index": 187,
+      "min_distance": 0.5237,
+      "new_speaker": false,
+      "start": 214.242
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 216.492,
+      "index": 188,
+      "min_distance": 0.4074,
+      "new_speaker": false,
+      "start": 214.992
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 217.242,
+      "index": 189,
+      "min_distance": 0.4278,
+      "new_speaker": false,
+      "start": 215.742
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 217.992,
+      "index": 190,
+      "min_distance": 0.4456,
+      "new_speaker": false,
+      "start": 216.492
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 218.742,
+      "index": 191,
+      "min_distance": 0.6081,
+      "new_speaker": false,
+      "start": 217.242
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 219.492,
+      "index": 192,
+      "min_distance": 0.6158,
+      "new_speaker": false,
+      "start": 217.992
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 220.242,
+      "index": 193,
+      "min_distance": 0.7286,
+      "new_speaker": false,
+      "start": 218.742
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 220.992,
+      "index": 194,
+      "min_distance": 0.4731,
+      "new_speaker": false,
+      "start": 219.492
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 221.742,
+      "index": 195,
+      "min_distance": 0.3707,
+      "new_speaker": false,
+      "start": 220.242
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 221.844,
+      "index": 196,
+      "min_distance": 0.5847,
+      "new_speaker": false,
+      "start": 220.992
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 223.88,
+      "index": 197,
+      "min_distance": 0.7531,
+      "new_speaker": false,
+      "start": 222.38
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 224.63,
+      "index": 198,
+      "min_distance": 0.7737,
+      "new_speaker": false,
+      "start": 223.13
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 225.38,
+      "index": 199,
+      "min_distance": 0.7259,
+      "new_speaker": false,
+      "start": 223.88
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 226.13,
+      "index": 200,
+      "min_distance": 0.689,
+      "new_speaker": false,
+      "start": 224.63
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 226.88,
+      "index": 201,
+      "min_distance": 0.7462,
+      "new_speaker": false,
+      "start": 225.38
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 227.63,
+      "index": 202,
+      "min_distance": 0.7252,
+      "new_speaker": false,
+      "start": 226.13
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 228.38,
+      "index": 203,
+      "min_distance": 0.5964,
+      "new_speaker": false,
+      "start": 226.88
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 229.13,
+      "index": 204,
+      "min_distance": 0.7494,
+      "new_speaker": false,
+      "start": 227.63
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 229.88,
+      "index": 205,
+      "min_distance": 0.5257,
+      "new_speaker": false,
+      "start": 228.38
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 230.63,
+      "index": 206,
+      "min_distance": 0.6179,
+      "new_speaker": false,
+      "start": 229.13
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 231.38,
+      "index": 207,
+      "min_distance": 0.5036,
+      "new_speaker": false,
+      "start": 229.88
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 232.13,
+      "index": 208,
+      "min_distance": 0.5617,
+      "new_speaker": false,
+      "start": 230.63
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 232.88,
+      "index": 209,
+      "min_distance": 0.7053,
+      "new_speaker": false,
+      "start": 231.38
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 233.63,
+      "index": 210,
+      "min_distance": 0.7856,
+      "new_speaker": false,
+      "start": 232.13
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 234.38,
+      "index": 211,
+      "min_distance": 0.6274,
+      "new_speaker": false,
+      "start": 232.88
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 235.13,
+      "index": 212,
+      "min_distance": 0.5296,
+      "new_speaker": false,
+      "start": 233.63
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 235.88,
+      "index": 213,
+      "min_distance": 0.5135,
+      "new_speaker": false,
+      "start": 234.38
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 236.63,
+      "index": 214,
+      "min_distance": 0.4584,
+      "new_speaker": false,
+      "start": 235.13
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 237.38,
+      "index": 215,
+      "min_distance": 0.5349,
+      "new_speaker": false,
+      "start": 235.88
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 238.13,
+      "index": 216,
+      "min_distance": 0.5169,
+      "new_speaker": false,
+      "start": 236.63
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 238.676,
+      "index": 217,
+      "min_distance": 0.541,
+      "new_speaker": false,
+      "start": 237.38
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 241.192,
+      "index": 218,
+      "min_distance": 0.4506,
+      "new_speaker": false,
+      "start": 239.692
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 241.942,
+      "index": 219,
+      "min_distance": 0.5112,
+      "new_speaker": false,
+      "start": 240.442
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 242.692,
+      "index": 220,
+      "min_distance": 0.458,
+      "new_speaker": false,
+      "start": 241.192
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 243.442,
+      "index": 221,
+      "min_distance": 0.3719,
+      "new_speaker": false,
+      "start": 241.942
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 244.192,
+      "index": 222,
+      "min_distance": 0.385,
+      "new_speaker": false,
+      "start": 242.692
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 244.942,
+      "index": 223,
+      "min_distance": 0.4823,
+      "new_speaker": false,
+      "start": 243.442
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 245.692,
+      "index": 224,
+      "min_distance": 0.4911,
+      "new_speaker": false,
+      "start": 244.192
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 246.442,
+      "index": 225,
+      "min_distance": 0.6284,
+      "new_speaker": false,
+      "start": 244.942
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 247.192,
+      "index": 226,
+      "min_distance": 0.4131,
+      "new_speaker": false,
+      "start": 245.692
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 247.942,
+      "index": 227,
+      "min_distance": 0.4388,
+      "new_speaker": false,
+      "start": 246.442
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 248.692,
+      "index": 228,
+      "min_distance": 0.3412,
+      "new_speaker": false,
+      "start": 247.192
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 249.442,
+      "index": 229,
+      "min_distance": 0.2884,
+      "new_speaker": false,
+      "start": 247.942
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 250.192,
+      "index": 230,
+      "min_distance": 0.2684,
+      "new_speaker": false,
+      "start": 248.692
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 250.942,
+      "index": 231,
+      "min_distance": 0.3879,
+      "new_speaker": false,
+      "start": 249.442
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 251.692,
+      "index": 232,
+      "min_distance": 0.3674,
+      "new_speaker": false,
+      "start": 250.192
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 252.442,
+      "index": 233,
+      "min_distance": 0.3328,
+      "new_speaker": false,
+      "start": 250.942
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 253.192,
+      "index": 234,
+      "min_distance": 0.3597,
+      "new_speaker": false,
+      "start": 251.692
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 253.942,
+      "index": 235,
+      "min_distance": 0.2241,
+      "new_speaker": false,
+      "start": 252.442
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 254.692,
+      "index": 236,
+      "min_distance": 0.2629,
+      "new_speaker": false,
+      "start": 253.192
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 255.442,
+      "index": 237,
+      "min_distance": 0.3103,
+      "new_speaker": false,
+      "start": 253.942
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 256.192,
+      "index": 238,
+      "min_distance": 0.3088,
+      "new_speaker": false,
+      "start": 254.692
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 256.212,
+      "index": 239,
+      "min_distance": 0.5365,
+      "new_speaker": false,
+      "start": 255.442
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 259.24,
+      "index": 240,
+      "min_distance": 0.6854,
+      "new_speaker": false,
+      "start": 257.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 259.99,
+      "index": 241,
+      "min_distance": 0.4942,
+      "new_speaker": false,
+      "start": 258.49
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 260.74,
+      "index": 242,
+      "min_distance": 0.665,
+      "new_speaker": false,
+      "start": 259.24
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 261.49,
+      "index": 243,
+      "min_distance": 0.5493,
+      "new_speaker": false,
+      "start": 259.99
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 262.24,
+      "index": 244,
+      "min_distance": 0.48,
+      "new_speaker": false,
+      "start": 260.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 262.99,
+      "index": 245,
+      "min_distance": 0.4127,
+      "new_speaker": false,
+      "start": 261.49
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 263.74,
+      "index": 246,
+      "min_distance": 0.5129,
+      "new_speaker": false,
+      "start": 262.24
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 264.49,
+      "index": 247,
+      "min_distance": 0.387,
+      "new_speaker": false,
+      "start": 262.99
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 265.24,
+      "index": 248,
+      "min_distance": 0.4744,
+      "new_speaker": false,
+      "start": 263.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 265.99,
+      "index": 249,
+      "min_distance": 0.6112,
+      "new_speaker": false,
+      "start": 264.49
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 266.74,
+      "index": 250,
+      "min_distance": 0.6956,
+      "new_speaker": false,
+      "start": 265.24
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 267.49,
+      "index": 251,
+      "min_distance": 0.4411,
+      "new_speaker": false,
+      "start": 265.99
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 268.24,
+      "index": 252,
+      "min_distance": 0.5213,
+      "new_speaker": false,
+      "start": 266.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 268.99,
+      "index": 253,
+      "min_distance": 0.4406,
+      "new_speaker": false,
+      "start": 267.49
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 269.74,
+      "index": 254,
+      "min_distance": 0.4644,
+      "new_speaker": false,
+      "start": 268.24
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 270.49,
+      "index": 255,
+      "min_distance": 0.5151,
+      "new_speaker": false,
+      "start": 268.99
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 271.24,
+      "index": 256,
+      "min_distance": 0.4529,
+      "new_speaker": false,
+      "start": 269.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 271.99,
+      "index": 257,
+      "min_distance": 0.6402,
+      "new_speaker": false,
+      "start": 270.49
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 272.74,
+      "index": 258,
+      "min_distance": 0.7284,
+      "new_speaker": false,
+      "start": 271.24
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 273.49,
+      "index": 259,
+      "min_distance": 0.6946,
+      "new_speaker": false,
+      "start": 271.99
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 274.24,
+      "index": 260,
+      "min_distance": 0.6057,
+      "new_speaker": false,
+      "start": 272.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 274.99,
+      "index": 261,
+      "min_distance": 0.5904,
+      "new_speaker": false,
+      "start": 273.49
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 275.74,
+      "index": 262,
+      "min_distance": 0.3526,
+      "new_speaker": false,
+      "start": 274.24
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 276.49,
+      "index": 263,
+      "min_distance": 0.4452,
+      "new_speaker": false,
+      "start": 274.99
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 276.756,
+      "index": 264,
+      "min_distance": 0.5052,
+      "new_speaker": false,
+      "start": 275.74
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 278.792,
+      "index": 265,
+      "min_distance": 0.4869,
+      "new_speaker": false,
+      "start": 277.292
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 279.542,
+      "index": 266,
+      "min_distance": 0.481,
+      "new_speaker": false,
+      "start": 278.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 280.292,
+      "index": 267,
+      "min_distance": 0.4874,
+      "new_speaker": false,
+      "start": 278.792
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 281.042,
+      "index": 268,
+      "min_distance": 0.521,
+      "new_speaker": false,
+      "start": 279.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 281.792,
+      "index": 269,
+      "min_distance": 0.5989,
+      "new_speaker": false,
+      "start": 280.292
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 282.542,
+      "index": 270,
+      "min_distance": 0.5554,
+      "new_speaker": false,
+      "start": 281.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 283.292,
+      "index": 271,
+      "min_distance": 0.512,
+      "new_speaker": false,
+      "start": 281.792
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 284.042,
+      "index": 272,
+      "min_distance": 0.4186,
+      "new_speaker": false,
+      "start": 282.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 284.792,
+      "index": 273,
+      "min_distance": 0.4948,
+      "new_speaker": false,
+      "start": 283.292
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 285.542,
+      "index": 274,
+      "min_distance": 0.6804,
+      "new_speaker": false,
+      "start": 284.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 286.292,
+      "index": 275,
+      "min_distance": 0.6711,
+      "new_speaker": false,
+      "start": 284.792
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 287.042,
+      "index": 276,
+      "min_distance": 0.6775,
+      "new_speaker": false,
+      "start": 285.542
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 287.792,
+      "index": 277,
+      "min_distance": 0.7187,
+      "new_speaker": false,
+      "start": 286.292
+    },
+    {
+      "assigned": "SPEAKER_02",
+      "end": 288.542,
+      "index": 278,
+      "min_distance": 0.8589,
+      "new_speaker": true,
+      "start": 287.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 289.292,
+      "index": 279,
+      "min_distance": 0.8368,
+      "new_speaker": false,
+      "start": 287.792
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 290.042,
+      "index": 280,
+      "min_distance": 0.7206,
+      "new_speaker": false,
+      "start": 288.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 290.792,
+      "index": 281,
+      "min_distance": 0.7383,
+      "new_speaker": false,
+      "start": 289.292
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 291.542,
+      "index": 282,
+      "min_distance": 0.6897,
+      "new_speaker": false,
+      "start": 290.042
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 292.292,
+      "index": 283,
+      "min_distance": 0.7582,
+      "new_speaker": false,
+      "start": 290.792
+    },
+    {
+      "assigned": "SPEAKER_01",
+      "end": 293.042,
+      "index": 284,
+      "min_distance": 0.8325,
+      "new_speaker": false,
+      "start": 291.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 293.792,
+      "index": 285,
+      "min_distance": 0.6032,
+      "new_speaker": false,
+      "start": 292.292
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 294.542,
+      "index": 286,
+      "min_distance": 0.4735,
+      "new_speaker": false,
+      "start": 293.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 295.292,
+      "index": 287,
+      "min_distance": 0.4133,
+      "new_speaker": false,
+      "start": 293.792
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 296.042,
+      "index": 288,
+      "min_distance": 0.5577,
+      "new_speaker": false,
+      "start": 294.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 296.792,
+      "index": 289,
+      "min_distance": 0.7222,
+      "new_speaker": false,
+      "start": 295.292
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 297.542,
+      "index": 290,
+      "min_distance": 0.7474,
+      "new_speaker": false,
+      "start": 296.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 298.292,
+      "index": 291,
+      "min_distance": 0.682,
+      "new_speaker": false,
+      "start": 296.792
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 299.042,
+      "index": 292,
+      "min_distance": 0.6451,
+      "new_speaker": false,
+      "start": 297.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 299.792,
+      "index": 293,
+      "min_distance": 0.6469,
+      "new_speaker": false,
+      "start": 298.292
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 300.542,
+      "index": 294,
+      "min_distance": 0.6945,
+      "new_speaker": false,
+      "start": 299.042
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 301.292,
+      "index": 295,
+      "min_distance": 0.7137,
+      "new_speaker": false,
+      "start": 299.792
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 301.94,
+      "index": 296,
+      "min_distance": 0.6519,
+      "new_speaker": false,
+      "start": 300.542
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 305.064,
+      "index": 297,
+      "min_distance": 0.5412,
+      "new_speaker": false,
+      "start": 303.564
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 305.814,
+      "index": 298,
+      "min_distance": 0.5365,
+      "new_speaker": false,
+      "start": 304.314
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 306.564,
+      "index": 299,
+      "min_distance": 0.4707,
+      "new_speaker": false,
+      "start": 305.064
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 307.314,
+      "index": 300,
+      "min_distance": 0.4335,
+      "new_speaker": false,
+      "start": 305.814
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 308.064,
+      "index": 301,
+      "min_distance": 0.4721,
+      "new_speaker": false,
+      "start": 306.564
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 308.814,
+      "index": 302,
+      "min_distance": 0.5284,
+      "new_speaker": false,
+      "start": 307.314
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 309.564,
+      "index": 303,
+      "min_distance": 0.4953,
+      "new_speaker": false,
+      "start": 308.064
+    },
+    {
+      "assigned": "SPEAKER_00",
+      "end": 309.748,
+      "index": 304,
+      "min_distance": 0.4617,
+      "new_speaker": false,
+      "start": 308.814
+    }
+  ]
+}
