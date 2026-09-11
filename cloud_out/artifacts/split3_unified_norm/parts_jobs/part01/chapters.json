@@ -1,0 +1,98 @@
+{
+  "chapters": [
+    {
+      "duration_sec": 155.558,
+      "end": 156.434,
+      "id": "C00",
+      "source_ids": [
+        "s0001",
+        "s0002",
+        "s0003",
+        "s0004",
+        "s0005",
+        "s0006",
+        "s0007",
+        "s0008",
+        "s0009",
+        "s0010",
+        "s0011",
+        "s0012",
+        "s0013",
+        "s0014",
+        "s0015",
+        "s0016",
+        "s0017",
+        "s0018",
+        "s0019"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "start": 0.876,
+      "title": ""
+    },
+    {
+      "duration_sec": 29.826,
+      "end": 186.26,
+      "id": "C01",
+      "source_ids": [
+        "s0020",
+        "s0021"
+      ],
+      "speakers": [
+        "SPEAKER_00"
+      ],
+      "start": 156.434,
+      "title": ""
+    },
+    {
+      "duration_sec": 23.176,
+      "end": 211.188,
+      "id": "C02",
+      "source_ids": [
+        "s0022",
+        "s0023",
+        "s0024",
+        "s0025"
+      ],
+      "speakers": [
+        "SPEAKER_00"
+      ],
+      "start": 188.012,
+      "title": ""
+    },
+    {
+      "duration_sec": 78.792,
+      "end": 290.708,
+      "id": "C03",
+      "source_ids": [
+        "s0026",
+        "s0027",
+        "s0028",
+        "s0029",
+        "s0030",
+        "s0031",
+        "s0032",
+        "s0033",
+        "s0034"
+      ],
+      "speakers": [
+        "SPEAKER_00"
+      ],
+      "start": 211.916,
+      "title": ""
+    }
+  ],
+  "chunker": "packing_c",
+  "embedding_model": "rubert_tiny2",
+  "job_id": "part01",
+  "metrics": {
+    "chapters_per_minute": 0.826,
+    "long_chapters": 0,
+    "short_chapters": 2
+  },
+  "runtime_sec": 2.806,
+  "schema_version": "1",
+  "similarity_threshold": 0.7
+}

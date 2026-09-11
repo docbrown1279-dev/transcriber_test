@@ -1,0 +1,309 @@
+{
+  "centroid_assign_ok": true,
+  "cluster_distance_threshold": 0.85,
+  "cross_part": {
+    "chapters_spanning_cuts": [
+      {
+        "cuts": [
+          291.392
+        ],
+        "end": 346.516,
+        "id": "C03",
+        "start": 211.916
+      },
+      {
+        "cuts": [
+          602.048
+        ],
+        "end": 738.228,
+        "id": "C06",
+        "start": 564.1
+      }
+    ],
+    "speakers_by_part": {
+      "part01": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "part02": [
+        "SPEAKER_00",
+        "SPEAKER_01",
+        "SPEAKER_02"
+      ],
+      "part03": [
+        "SPEAKER_00",
+        "SPEAKER_01",
+        "SPEAKER_02"
+      ]
+    },
+    "stable_ids_part01_part02": [
+      "SPEAKER_00",
+      "SPEAKER_01"
+    ],
+    "stable_ids_part02_part03": [
+      "SPEAKER_00",
+      "SPEAKER_01",
+      "SPEAKER_02"
+    ]
+  },
+  "cut_compare": {
+    "cut_t": 291.392,
+    "full15_long_phrase": "давайте сейчас второй третий пункт немножко перескочим по магистральным сетям информация у вас вся есть насколько я понимаю да",
+    "full15_near_cut": [
+      {
+        "end": 299.892,
+        "start": 292.076,
+        "text": "давайте сейчас второй третий пункт немножко перескочим по магистральным сетям информация у вас вся есть насколько я понимаю да"
+      },
+      {
+        "end": 301.434,
+        "start": 300.684,
+        "text": "да"
+      },
+      {
+        "end": 323.934,
+        "start": 301.434,
+        "text": "вы понимаете понимаете воду вы наверное понимаете помещение кп заявок подавали у вас все есть связь понятно прокладываете что еще там тепло помещение кп у вас"
+      }
+    ],
+    "long_phrase_in_shared_vad": true,
+    "long_phrase_in_unified": true,
+    "shared_vad_part02_open": [
+      {
+        "abs_start": 292.076,
+        "local_start": 0.684,
+        "text": "давайте сейчас второй третий пункт немножко перескочим по магистральным сетям информация у вас вся есть насколько я понимаю да"
+      },
+      {
+        "abs_start": 300.684,
+        "local_start": 9.292,
+        "text": "да"
+      },
+      {
+        "abs_start": 301.434,
+        "local_start": 10.042,
+        "text": "вы понимаете понимаете воду вы наверное понимаете помещение тп заявок подавали у вас все есть связь понятно это прокладываете что еще там тепло помещение тп у вас пока а по тп вот там вопросик"
+      },
+      {
+        "abs_start": 326.434,
+        "local_start": 35.042,
+        "text": "небольшой"
+      }
+    ],
+    "still_ok_vs_full15": true,
+    "unified_norm_part02_open": [
+      {
+        "abs_end": 299.892,
+        "abs_start": 292.076,
+        "local_start": 0.684,
+        "text": "давайте сейчас второй третий пункт немножко перескочим по магистральным сетям информация у вас вся есть насколько я понимаю да"
+      },
+      {
+        "abs_end": 301.434,
+        "abs_start": 300.684,
+        "local_start": 9.292,
+        "text": "да"
+      },
+      {
+        "abs_end": 326.434,
+        "abs_start": 301.434,
+        "local_start": 10.042,
+        "text": "вы понимаете понимаете воду вы наверное услышали понимаете помещение тп заявок подавали у вас все есть связь понятно прокладываете что еще там тепло помещение тп у вас а по тп вот там вопросик"
+      },
+      {
+        "abs_end": 328.02,
+        "abs_start": 326.434,
+        "local_start": 35.042,
+        "text": "небольшой"
+      }
+    ]
+  },
+  "llm_sleep_sec": 2.0,
+  "loudness": {
+    "mode": "unified_full15_then_slice",
+    "part02_turns_lt_1s_shared_vad": 14,
+    "part02_turns_lt_1s_unified": 13,
+    "shared_vad_per_part_gain_db": {
+      "part01": 1.657,
+      "part02": 3.398,
+      "part03": 2.28
+    },
+    "unified": {
+      "gain_applied": true,
+      "gain_db": 1.657,
+      "path": "/workspace/cloud_out/artifacts/full15_job/normalized.wav",
+      "peak_dbfs": -2.657,
+      "reused": true,
+      "rms_dbfs": -33.055
+    }
+  },
+  "merge": {
+    "count_match": true,
+    "monotonic": true,
+    "n_expected": 161,
+    "n_merged": 161,
+    "part_blocks_preserved": true
+  },
+  "merge_mode": "tail_packing_plus_centroid_speakers",
+  "onnx_threads": 2,
+  "parts": {
+    "part01": {
+      "audio": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part01.wav",
+      "cumulative_from_job_start_sec": 34.799,
+      "file_gain_db": 1.657,
+      "n_chapters": 4,
+      "n_segments": 34,
+      "n_turns": 32,
+      "n_turns_lt_1s": 0,
+      "plan_end": 291.392,
+      "plan_start": 0.0,
+      "speaker_count": 2,
+      "stages": {
+        "asr": {
+          "done_sec": 29.989,
+          "skipped": false,
+          "started_sec": 14.748,
+          "wall_sec": 15.241
+        },
+        "chunk": {
+          "done_sec": 32.798,
+          "skipped": false,
+          "started_sec": 29.989,
+          "wall_sec": 2.808
+        },
+        "diarize": {
+          "done_sec": 14.747,
+          "skipped": false,
+          "started_sec": 0.337,
+          "wall_sec": 14.411
+        },
+        "llm_sleep_2s": {
+          "done_sec": 34.798,
+          "skipped": false,
+          "started_sec": 32.798,
+          "wall_sec": 2.0
+        },
+        "normalize": {
+          "done_sec": 0.328,
+          "skipped": true,
+          "started_sec": 0.328,
+          "wall_sec": 0.0
+        },
+        "vad": {
+          "done_sec": 0.336,
+          "skipped": true,
+          "started_sec": 0.336,
+          "wall_sec": 0.0
+        }
+      }
+    },
+    "part02": {
+      "audio": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part02.wav",
+      "cumulative_from_job_start_sec": 69.69,
+      "file_gain_db": 1.657,
+      "n_chapters": 4,
+      "n_segments": 66,
+      "n_turns": 65,
+      "n_turns_lt_1s": 13,
+      "plan_end": 602.048,
+      "plan_start": 291.392,
+      "speaker_count": 3,
+      "stages": {
+        "asr": {
+          "done_sec": 67.563,
+          "skipped": false,
+          "started_sec": 50.164,
+          "wall_sec": 17.398
+        },
+        "chunk": {
+          "done_sec": 67.689,
+          "skipped": false,
+          "started_sec": 67.563,
+          "wall_sec": 0.126
+        },
+        "diarize": {
+          "done_sec": 50.163,
+          "skipped": false,
+          "started_sec": 34.809,
+          "wall_sec": 15.354
+        },
+        "llm_sleep_2s": {
+          "done_sec": 69.689,
+          "skipped": false,
+          "started_sec": 67.689,
+          "wall_sec": 2.0
+        },
+        "normalize": {
+          "done_sec": 34.799,
+          "skipped": true,
+          "started_sec": 34.799,
+          "wall_sec": 0.0
+        },
+        "vad": {
+          "done_sec": 34.808,
+          "skipped": true,
+          "started_sec": 34.808,
+          "wall_sec": 0.0
+        }
+      }
+    },
+    "part03": {
+      "audio": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part03.wav",
+      "cumulative_from_job_start_sec": 100.356,
+      "file_gain_db": 1.657,
+      "n_chapters": 2,
+      "n_segments": 61,
+      "n_turns": 61,
+      "n_turns_lt_1s": 6,
+      "plan_end": 900.0,
+      "plan_start": 602.048,
+      "speaker_count": 3,
+      "stages": {
+        "asr": {
+          "done_sec": 98.253,
+          "skipped": false,
+          "started_sec": 82.172,
+          "wall_sec": 16.081
+        },
+        "chunk": {
+          "done_sec": 98.356,
+          "skipped": false,
+          "started_sec": 98.254,
+          "wall_sec": 0.102
+        },
+        "diarize": {
+          "done_sec": 82.171,
+          "skipped": false,
+          "started_sec": 69.7,
+          "wall_sec": 12.471
+        },
+        "llm_sleep_2s": {
+          "done_sec": 100.356,
+          "skipped": false,
+          "started_sec": 98.356,
+          "wall_sec": 2.0
+        },
+        "normalize": {
+          "done_sec": 69.69,
+          "skipped": true,
+          "started_sec": 69.69,
+          "wall_sec": 0.0
+        },
+        "vad": {
+          "done_sec": 69.699,
+          "skipped": true,
+          "started_sec": 69.699,
+          "wall_sec": 0.0
+        }
+      }
+    }
+  },
+  "prep_sec": 0.328,
+  "schema_version": "1",
+  "toc_mode_forced": "a",
+  "ttft_after_sleep_sec": 34.798,
+  "ttft_first_chapter_sec": 32.798,
+  "vad_mode": "shared_full15_slice",
+  "vad_source": "/workspace/cloud_out/artifacts/full15/speech.json",
+  "wall_total_sec": 100.36
+}
