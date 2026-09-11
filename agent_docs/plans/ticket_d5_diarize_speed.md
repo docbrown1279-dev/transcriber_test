@@ -1,8 +1,8 @@
 # Тикет: ускорение / исследование диаризации (WeSpeaker)
 
-**Статус:** OPEN (backlog) — детали механики WeSpeaker / H0–H6  
-**Приоритет:** высокий для TTFT  
-**Оркестрация экспериментов (S1–S3):** [`ticket_d5_ttft_experiments.md`](ticket_d5_ttft_experiments.md) — начинать оттуда.  
+**Статус:** CLOSED — окна/spectral/twopass/unit-AHC отработаны; демо **2A**; H0 warmup моделей **REFUSED**  
+**TTFT дальше:** [`ticket_d5_ttft_file_split.md`](ticket_d5_ttft_file_split.md)  
+**Отчёты:** [`agent_docs/reports/d5_diar/`](../reports/d5_diar/README.md)  
 **Связано:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md), [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md).
 
 ---
@@ -15,17 +15,9 @@
 
 ---
 
-## H0 — холодный старт / «ленивая» загрузка моделей
+## H0 — cold/warm моделей — **REFUSED (2026-09-11)**
 
-Симптом: после рестарта контейнера **первый** job заметно дольше; модели (GigaAM torch, WeSpeaker ONNX, rubert, …) поднимаются при первом реальном прогоне («Обработать»), не при `serve` / `/healthz`.
-
-| id | Идея | Ожидание | Риск |
-|---|---|---|---|
-| H0a | Warmup на старте воркера / lifespan `create_app` (после health ok) | первый пользователь не платит load | дольше restart; пик RSS сразу |
-| H0b | Warmup по событию UI: выбор файла / `POST` stub до submit | почти тот же выигрыш, меньше работы если никто не грузит | гонки; нужен лёгкий endpoint |
-| H0c | В отчётах/bench отдельно `model_load_sec` vs `pipeline_sec` | не путать cold TTFT с steady | — |
-
-Предпочтение для демо: **H0a** (рестарт редкий) или **H0b** (файл выбран). Зафиксировать в логах job: cold vs warm.
+Разница load WeSpeaker ≈ секунды; на демо не делаем. Preload **аудио** (не моделей) → [`ticket_d5_ui_upload_progress.md`](ticket_d5_ui_upload_progress.md).
 
 ---
 

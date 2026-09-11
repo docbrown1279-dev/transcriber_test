@@ -105,3 +105,44 @@ docker run --rm --cpus=2 --memory=8g \
 - Gate: `agent_docs/reports/d5/gate_D5.md` PASS (G5.1–G5.4)
 - Headline: 15 min @ 2CPU/8g → wall ~785s, peak RSS ~2.13 GiB, no OOM; in-container pytest 84 passed
 - Next: human sign-off → merge; then D5.1 (GitHub Actions)
+## 2026-09-10 — Planner (D5.TTFT-diar research)
+- STATUS: HANDOFF
+- Branch: `cursor/d5-ttft-diar`
+- Pack: `cloud_in/` clips 01–03 + apartments/ninth wav; no gold; research AGENTS
+- Local gold: `eval/d5_diar/gold/clip0{1,2,3}.json` human_ok (A/B/C/D legend)
+- Out of cloud: H0 warmup, S2 split+anchor prod, Jina
+
+## 2026-09-10 — Cloud (D5.diar-spectral research)
+- STATUS: REPORT
+- Branch: `cursor/d5-diar-spectral`
+- No production src/config edits; no PR
+- M1 spectral+eigengap: clip01 [42,45] is a non-top1 cluster (41.3s / 15.3s); apartments 3 ids 0 crumbs; ninth loses the ~3.8s third id that AHC 0.85 keeps
+- M2 block-hybrid oversplits; M2_local ≈ AHC 0.85; M3 collapses clip01 to 1 id
+- Timing: first-process model_load 2.089s; repeat 0.184s; 5min embed pass1/pass2 11.596 / 11.567s (366 windows); cluster ≪ 0.3s
+- Artifacts: `cloud_out/{report.md,results.json,run_meta.json,timelines/,scratch/}`
+
+## 2026-09-10 — Cloud (D5.diar-spectral timing windows 5 min)
+- STATUS: REPORT
+- Same VAD mask on `timing_5min.wav`: baseline 1.5/0.75 → 366 windows, 11.571 s embed; coarse 3.0/1.5 → 176 windows, 10.883 s
+- Matches prior `results.json` 366 / 11.596 s; coarsening is not a wall win (ms/window 31.6 → 61.8)
+- Artifacts: `cloud_out/timing_windows_5min.{md,json}`; no PR, no quality re-run
+
+## 2026-09-10 — Cloud (D5.diar-twopass research)
+- STATUS: REPORT
+- Branch: `cursor/d5-diar-twopass`
+- No production src/config edits; no PR; no eval/gold
+- Glue <1s: islands→units 6→5 (clip01), 13→9 (ninth), 22→21 (5min)
+- 1A WeSpeaker adjacent cos 0.40/0.55 isolates clip01 greeting (7.18s); 1B/1C cheap MFCC+flux are not speaker-useful (1B collapses, 1C_cp oversplits)
+- 2A overlap 1.5/0.75: 5min **366** embeds / 5.94s; clip01 greeting swallowed; ninth keeps 3.82s third id
+- 2B no-overlap 1.5: **193** / 3.09s; clip01 greeting distinct (11.18s blob); extra crumbs
+- 2C one-embed/unit + AHC 0.85: **21** / 3.03s; collapses clip01/02/03/ninth/concat to 1 id (distance 0.81 < 0.85 at greeting)
+- Artifacts: `cloud_out/{report.md,results.json,run_meta.json,timelines/,scratch/}`
+
+## 2026-09-10 — Cloud (D5.diar-twopass FOLLOWUP unit-AHC)
+- STATUS: REPORT
+- T1 AHC 0.50–0.75 isolates clip01 greeting (7.18s); T1 0.80 still collapses clip01/02
+- No threshold ≈2A: clip02 undersplit (2 vs 3) and/or apartments lose third substantial id
+- T2/T3 not better; T3 no-op (most units ≥3s; 5min 20/21 anchors)
+- timing_5min still **21** embeds / 2.95s vs 2A 366 / 5.94s
+- **Verdict REFUSED** as 2A substitute → file-split next
+- Artifacts: `cloud_out/FOLLOWUP_unit_ahc.{md,json}` + T1/T2/T3 timelines; no PR

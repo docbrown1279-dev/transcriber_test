@@ -1,18 +1,21 @@
 # Тикет: TTFT на демо (окна / разрез / качество спикеров)
 
-**Статус:** OPEN — первоочередной эксперимент после шипа 15′ на VPS  
+**Статус:** OPEN — оркестрация; **диаризация bakeoff закрыт** (2A freeze); **NEXT = S2 file-split**  
 **Приоритет:** высокий  
+**Оркестрация этапа (cloud + eval-клипы):** [`draft_d5_ttft_diar_cloud.md`](draft_d5_ttft_diar_cloud.md)  
+**Отчёты:** [`agent_docs/reports/d5_diar/`](../reports/d5_diar/README.md)  
 **Не цель этого тикета:** Jina / вариант D (крайний случай, отдельный этап).
 
 **Связанные документы (не дублировать работу — ссылаться):**
 
 | Тема | Где |
 |---|---|
-| Почему WeSpeaker тормозит (окна embed, не кластер) | [`ticket_d5_diarize_speed.md`](ticket_d5_diarize_speed.md) |
-| Спека разреза + якорь центроидов (направление A) | [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md) |
+| Почему WeSpeaker тормозит | [`ticket_d5_diarize_speed.md`](ticket_d5_diarize_speed.md) — CLOSED (H0 REFUSED) |
+| Unit-AHC / 2C | [`ticket_d5_diar_unit_ahc_tune.md`](ticket_d5_diar_unit_ahc_tune.md) — **REFUSED** |
+| Разрез + якорь (**NEXT**) | [`ticket_d5_ttft_file_split.md`](ticket_d5_ttft_file_split.md) · [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md) |
+| UI preload + прогресс | [`ticket_d5_ui_upload_progress.md`](ticket_d5_ui_upload_progress.md) |
 | Недосплит мужчин + крошки id | [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md) |
-| ASR-first + Jina D («пара минут») | draft_ttft **направление B** — **не** в scope здесь |
-| Warmup / cold load моделей (H0) | ticket_d5_diarize_speed § H0 — можно параллельно, мелко |
+| ASR-first + Jina D | draft_ttft **направление B** — не в scope здесь |
 
 ---
 

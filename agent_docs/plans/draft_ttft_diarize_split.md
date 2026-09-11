@@ -1,9 +1,10 @@
 # Черновик: TTFT / диаризация (после шипа 15 мин)
 
-**Статус:** IDEA — не в коде (спека направления A). Демка: `audio.max_minutes=15`, главы только после полного прогона.  
-**Поле (VPS 2026-09-10):** 15′ → полный прогон **~10:37** wall (2 vCPU). Цель TTFT **~5–6 мин** через направление A; «пара минут» — только через B + Jina D.  
-**Оркестрация A/B экспериментов:** [`ticket_d5_ttft_experiments.md`](ticket_d5_ttft_experiments.md).  
-**Связано:** [`ticket_d5_diarize_speed.md`](ticket_d5_diarize_speed.md) (H0 warmup, окна, Jina note).
+**Статус:** READY — unit-AHC **REFUSED**; следующий research = file-split  
+**Тикет:** [`ticket_d5_ttft_file_split.md`](ticket_d5_ttft_file_split.md)  
+**Поле (VPS 2026-09-10):** 15′ → полный прогон **~10:37** wall (2 vCPU). Цель TTFT **~5–6 мин** через направление A.  
+**Отчёты bakeoff:** [`agent_docs/reports/d5_diar/`](../reports/d5_diar/README.md)  
+**Оркестрация:** [`ticket_d5_ttft_experiments.md`](ticket_d5_ttft_experiments.md).
 
 ## Зафиксированные ограничения
 
