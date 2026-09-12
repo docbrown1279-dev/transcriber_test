@@ -1,84 +1,131 @@
-# Stage D5.TTFT-split — part1 pause-cut + early chapters (no LLM)
+# Stage D5.TTFT-split — FINAL A/B: EOS full-like AHC vs constrained merge vs H1-tune
 
-You are the **research spike** cloud agent for TTFT file-split (S2). Read
-`cloud_in/agent/AGENTS.md` and `cloud_in/agent/rules.md`, then this prompt.
-**This stage overrides product defaults:** do **not** modify `src/`, `config/`,
-`tests/`, or open a PR. Install nothing beyond what the existing `uv.lock` already
-provides. Run unattended; finish with artifacts + timing under `cloud_out/` and
-push this branch.
+You are the **research spike** cloud agent. This prompt overrides product defaults.
+Do **not** edit `src/`, `config/`, `tests/`. No PR. `HF_HUB_OFFLINE=1`.
+Push branch `cursor/d5-ttft-split`.
+
+## Hard constraints (all variants)
+
+- **One unified file gain** (same as `split3_unified_norm`): normalize once, slice wavs.
+- **Shared VAD**: speech regions = slices of full-file/shared speech (not per-part VAD).
+- Same WeSpeaker windows `1.5/0.75`, AHC metric cosine / linkage average / default thr **0.85**.
+- Reuse embeddings under `cloud_out/artifacts/split3_cluster_rebuild/` if present
+  (`part0{1,2,3}_embeddings.npy` + windows + offsets). Re-embed only if missing.
+- No ASR / LLM / gold / sticky-previous-window as a main idea.
+- Compare to: (a) `full15` turns, (b) **H1** under `split3_cluster_rebuild/H1_cluster_then_match/`.
 
 ## Why
 
-Full 15′ demo wall on 2 vCPU is ~10–12 min. Goal: first usable chapter ~5–6 min by
-cutting the file at long pauses and running diarize+ASR+packing **only on part1**.
-Centroid-anchor for part2 is **out of scope** here.
+Hundreds of windows; only a few differ near pause cuts vs a true full-file pass.
+**V1** (one AHC at end on concatenated part embeddings) should be the closest offline
+proxy to full — useful as quality ceiling for split *materials*, not as TTFT (waits for
+all parts). **V2/V3** are online-ish paths that keep early part1 labels.
 
-## Task (exact order)
+---
 
-1. Preflight: packed inputs exist; record host inventory in `cloud_out/run_meta.json`
-   (`nproc`, `free -h`, `df -h .`, `ffmpeg -version`, `python3 --version`, git rev).
-2. Read `cloud_in/inputs/artifacts/cut_plan_15min_3.json` — **do not invent new cuts**.
-3. Split `cloud_in/inputs/audio/voice_002_15min.m4a` with ffmpeg (`-c copy` OK) into
-   `cloud_out/artifacts/parts/part01.m4a` … `part03.m4a` using the plan's
-   `start`/`end` (duration = end−start). Write `cloud_out/artifacts/parts/manifest.json`
-   listing paths + durations (ffprobe).
-4. Run **only part01** through the existing pipeline **without LLM titles**:
+## V1 — Embed per part, cluster **once at EOS** (full-like)
 
-```bash
-export HF_HUB_OFFLINE=1
-uv run python scripts/run_ttft_part1.py \
-  --audio cloud_out/artifacts/parts/part01.m4a \
-  --job-dir cloud_out/artifacts/part01_job \
-  --profile demo \
-  --onnx-threads 2 \
-  --out-timing cloud_out/artifacts/part01_timing.json
-```
+1. Part1/2/3: extract windows + embeddings only (no per-part speaker commit required).
+2. Concatenate all windows in absolute time order.
+3. **Single** AHC on the full concatenation (thr=0.85).
+4. Merge turns (same gap/absorb as config).
+5. Report metrics on part02/part03 slices **and** on the whole 15′.
+6. Remap speaker ids to maximize duration overlap with `full15` (greedy) for comparison
+   only — do not use gold.
 
-   If the helper script is missing, equivalent: load config, force
-   `pipeline.toc_mode="a"`, `run_job(..., until="chunk")`, and write the same timing
-   fields yourself. **Do not** call Gemini/NVIDIA/Qwen.
+**Expectation:** closest to full15 among split-derived methods.
 
-5. Copy/move key job artifacts to `cloud_out/artifacts/part01/`:
-   `turns.json`, `transcript.json`, `chapters.json`, `speech.json`, `audio.json`
-   (plus `part01_timing.json`).
-6. Write `cloud_out/gate_ttft_part1.md` with:
-   - part durations vs plan (tolerance ±1.0 s)
-   - `speaker_count`, `n_turns`, `n_chapters`
-   - `ttft_first_chapter_sec` and `ttft_plus_llm_budget_sec` (= TTFT + 2.0)
-   - PASS hint if TTFT+2 ≤ 360 s on a 2-CPU-like host; otherwise record FAIL/WARN with
-     host `nproc` (do not fake a 2-CPU machine)
-7. Commit + **push branch** `cursor/d5-ttft-split`. Do **not** open a PR.
+---
 
-## Inputs
+## V2 — Per-part clusters, constrained merge into previous (online)
 
-| Path | What |
-|---|---|
-| `cloud_in/inputs/audio/voice_002_15min.m4a` | 15′ slice of voice 002 |
-| `cloud_in/inputs/artifacts/cut_plan_15min_3.json` | pause-balanced 3 parts |
-| `cloud_in/inputs/artifacts/cut_plan_15min_3.md` | human summary |
-| `cloud_in/inputs/STACK.md` | frozen stack |
-| `scripts/run_ttft_part1.py` | runner (on this branch) |
-| `scripts/plan_pause_cuts.py` | reference only |
+Process parts in order. After each part, rebuild a **global** labeling such that
+**all previous parts’ committed labels remain valid** (every earlier window keeps its
+speaker id). Cap search at **20** attempts per part.
 
-## Diarization rules (must)
+### Per part `p`
 
-- `cluster_distance_threshold=0.85` (base/demo default)
-- **Do not** drop short clusters / short turns beyond existing merge absorb in config
-- Keep all speaker ids returned by AHC
+1. Local AHC on part `p` windows (thr=0.85) → local clusters.
+2. Init global centroids = **center of mass** (mean embedding) of each existing global
+   speaker from all windows already committed; for brand-new local mass use local means.
+3. Try to assign each **local cluster** (whole cluster) to a global speaker:
+   - Prefer nearest global centroid if `dist ≤ 0.85` **and** this does not violate the
+     constraint that previously committed windows stay on their ids
+     (i.e. you may only *add* windows to an existing id or create a new id;
+     you must not recolor past windows).
+   - If a local cluster does not fit: create a **new** global id (centroid = its mean).
+4. If the merge is unstable / constraint fails / distances absurd: **nudge** the target
+   centroid toward the mean of its **nearest member windows** (or toward the local
+   cluster mean being absorbed), recompute, retry. Max **20** attempts, then accept
+   best feasible (document failures).
+5. Commit part `p` labels. Update centroids as centers of mass of all committed windows
+   per id. Proceed to next part.
 
-## Stop-list
+Part1 = plain AHC (commit). Part2/3 = constrained merge as above.
 
-- No edits under `src/`, `config/`, `tests/`, `docs/`, `eval/`, `.env`
-- No gold labels; do not read `eval/`
-- No full-file ASR of all three parts (part01 only)
-- No LLM titles / insights / report
-- No force-push; no PR
+---
+
+## V3 — H1 base + one light tune (hybrid)
+
+Start from **H1** (local AHC per part → whole-cluster match to gallery / new id).
+Add **exactly one** extra rule (document which you pick; prefer A unless blocked):
+
+- **A (preferred):** after H1 match, any local cluster with `speech_union < 2.0 s`
+  whose assigned id differs from the **previous local cluster in time** → reassign to
+  that previous cluster’s id (glue micro-clusters only; not per-window sticky).
+- **B:** clear-winner margin 0.05 on gallery match; long ambiguous → new id;
+  short ambiguous → nearest (H3 rule), on top of H1.
+
+Do not combine A and B. Do not reintroduce H2 window refine as the main path.
+
+---
+
+## Metrics (coarse only — no semantic / gold judgment)
+
+There is **no `eval/` and no gold** in cloud. Do **not** claim a quality winner by meaning.
+Human will listen locally later. Cloud only reports **structural proxies**:
+
+| Proxy | Definition | Why we look |
+|---|---|---|
+| `n_turns_lt_1s` / `lt_2s` | turns shorter than 1s / 2s after merge | “fewer crumbs” |
+| `n_speaker_switches` | consecutive turns with different speaker id | less id chatter |
+| `n_speakers` / `new_ids` | speaker inventory | catch explode/collapse |
+| hotspot list | turns overlapping abs `[365.0, 375.5]` | known flicker zone dump |
+| V1 vs full15 | greedy duration remap → agreement % | “is EOS-on-parts near full?” — still not gold |
+
+For V1/V2/V3 and refs (full15, H1), compute these on **part02 and part03** slices.
+V1 also whole-file metrics + remap-vs-full15.
+
+Write `cloud_out/artifacts/split3_final_ab/compare.md` with:
+- tables of the proxies above (V1 / V2 / V3 / H1 / full15)
+- **ranking by proxies only** (e.g. fewer lt1s + switches, without huge n_speakers swing)
+- explicit note: `SEMANTIC_CHECK = local human; cloud did not judge meaning`
+- optional one-line **candidate** for TTFT path (V2/V3/H1) and for ceiling (V1)—labeled
+  `proxy_pick`, not PASS/FAIL
+
+## Task order
+
+1. `cloud_out/run_meta.json` — stage `D5.TTFT-final-ab`
+2. Confirm unified gain + shared VAD + load/reuse embeddings
+3. Run V1, V2, V3 separately (no combined frankenstein)
+4. Metrics + `compare.md`
+5. Commit `cloud_out/artifacts/split3_final_ab/` (+ scripts); push; no PR
 
 ## Deliverables
 
-1. `cloud_out/artifacts/parts/{part01,part02,part03}.m4a` + `manifest.json`
-2. `cloud_out/artifacts/part01/{turns,transcript,chapters,speech,audio}.json`
-3. `cloud_out/artifacts/part01_timing.json`
-4. `cloud_out/run_meta.json`
-5. `cloud_out/gate_ttft_part1.md`
-6. Branch push
+```
+cloud_out/artifacts/split3_final_ab/
+  V1_eos_ahc/
+  V2_constrained_merge/
+  V3_h1_tune/
+  compare.md
+  run notes / attempt logs for V2
+  scripts/
+```
+
+Each variant: `turns_part02.json`, `turns_part03.json`, and for V1 also `turns_full.json`;
+`metrics_*.json`.
+
+## Stop-list
+
+No `src/` edits, no gold/`eval/`, no unbounded search (>20 attempts), no PR.

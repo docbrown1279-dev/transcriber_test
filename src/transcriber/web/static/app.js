@@ -82,7 +82,7 @@
           if (block) block.classList.remove("hidden");
         }
       }
-      if (data.state === "done") {
+      if (data.early_ready || data.state === "done") {
         stopElapsedTick();
         window.location.href = "/jobs/" + jobId + "/result";
         return;
@@ -107,6 +107,25 @@
       elapsedTimer = window.setInterval(tickElapsed, 1000);
       tickElapsed();
     }
+  }
+
+  const resultRoot = document.querySelector("[data-result-poll]");
+  if (resultRoot && resultRoot.getAttribute("data-state") === "running") {
+    const jobId = resultRoot.getAttribute("data-job-id");
+    const pollMs = 4000;
+    let timer = null;
+    function tickResult() {
+      fetch("/jobs/" + jobId + "/events")
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.state === "done" || data.speakers_finalized === true) {
+            if (timer) window.clearInterval(timer);
+            window.location.reload();
+          }
+        })
+        .catch(() => {});
+    }
+    timer = window.setInterval(tickResult, pollMs);
   }
 
   const btnDict = document.getElementById("btn-dict");

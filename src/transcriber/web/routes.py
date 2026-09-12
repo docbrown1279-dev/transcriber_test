@@ -326,6 +326,8 @@ def _chapter_page_context(
         "speaker_aliases": aliases,
         "prev_chapter": prev_chapter,
         "next_chapter": next_chapter,
+        "speakers_finalized": bool(getattr(job, "speakers_finalized", True)),
+        "job_still_running": getattr(job, "state", "") == "running",
     }
 
 
@@ -474,8 +476,11 @@ async def job_progress(
     if not job_exists(job_id, storage):
         return _http_error(request, 404, "Задача не найдена.")
     job = get_job(job_id, storage)
-    if job.state == "done" and not _wants_json(request):
-        return RedirectResponse(url=f"/jobs/{job_id}/result", status_code=303)
+    job_dir = get_job_dir(job_id, storage)
+    if not _wants_json(request):
+        chapters_ready = (job_dir / "chapters.json").is_file()
+        if job.state == "done" or (job.early_ready and chapters_ready):
+            return RedirectResponse(url=f"/jobs/{job_id}/result", status_code=303)
     elapsed = processing_seconds(job)
     return _TEMPLATES.TemplateResponse(
         request,
@@ -551,6 +556,9 @@ async def job_result(job_id: str, request: Request) -> HTMLResponse | JSONRespon
             "titles_msg": request.query_params.get("titles"),
             "summary_done": request.query_params.get("summary"),
             "elapsed_label": format_elapsed_ru(processing_seconds(job)),
+            "speakers_finalized": bool(job.speakers_finalized),
+            "early_ready": bool(job.early_ready),
+            "job_still_running": job.state == "running",
         },
     )
 
@@ -625,6 +633,12 @@ async def save_chapter_edit(
     submitted_texts = _form_strings(form, "seg_text")
     submitted_speakers = _form_strings(form, "seg_speaker")
     segments = _chapter_segments(transcript, chapter)
+    if submitted_speakers and not job.speakers_finalized:
+        return _http_error(
+            request,
+            409,
+            "Спикеры ещё уточняются — смена спикера будет доступна после завершения обработки.",
+        )
     try:
         expected_ids = [seg.id for seg in segments]
         updates = updates_for_chapter(expected_ids, submitted_ids, submitted_texts)
@@ -780,6 +794,13 @@ async def save_speaker_names(
     storage = _storage(cfg)
     if not job_exists(job_id, storage):
         return _http_error(request, 404, "Задача не найдена.")
+    job = get_job(job_id, storage)
+    if not job.speakers_finalized:
+        return _http_error(
+            request,
+            409,
+            "Спикеры ещё уточняются — имена можно задать после завершения обработки.",
+        )
     job_dir = get_job_dir(job_id, storage)
     transcript = _load_optional(job_dir / "transcript.json", TranscriptArtifact)
     if transcript is None:

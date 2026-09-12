@@ -17,6 +17,8 @@ audio:
     rms_threshold_dbfs: -30.0
     target_dbfs: -23.0
     max_db: 18.0
+    # Whole-file normalize when pipeline.ttft_split is on; per-turn ASR keeps max_db.
+    file_max_db: 2.0
     peak_ceiling_dbfs: -1.0
   asr_per_turn_gain: true
   vad_preprocess:
@@ -87,10 +89,19 @@ chunking:
     enabled: false
     provider: disabled
 
-# --- pipeline TOC (D4.1) ---
+# --- pipeline TOC (D4.1) + TTFT file-split (D5.TTFT) ---
 pipeline:
   # a = ASR all → batch titles; b = ASR slices → title when next chapter appears
   toc_mode: b
+  # false = full-file path (unchanged). Demo overlay sets true.
+  ttft_split: false
+  ttft:
+    # 5 min floor → ~3 parts on a 15′ demo clip (was 180 → often 4 parts)
+    min_part_sec: 300
+    max_part_sec: 300
+    target_part_sec: 300
+    min_pause_sec: 0.8
+    search_half_width_sec: 90
 
 # --- runtime ---
 limits:

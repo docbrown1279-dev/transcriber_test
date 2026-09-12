@@ -60,3 +60,16 @@
 - 2026-09-10T12:00:00+03:00 new ticket_d5_ttft_experiments.md (S1 windows, S2 split+anchor, S3 crumb merge; Jina out); links diarize_speed + draft_ttft + d1_speaker_clusters; job 57cc7073 men-glue note
 - 2026-09-11T10:31:53+03:00 ingest D5 diar research reports → agent_docs/reports/d5_diar/; unit-AHC REFUSED; next file-split
 - 2026-09-11T11:00:00+03:00 D5.TTFT-split prep on cursor/d5-ttft-split: pause cut plans (15min/3 part01=291s); scripts plan/run/glue; eval/d5_ttft_split baseline; cloud_in packed 15min+plan (src frozen); await commit+push
+- 2026-09-11T11:46:00+03:00 handoff pushed cursor/d5-ttft-split (82c1d26); cloud: part1 TTFT-split; local glue after pull
+
+- 2026-09-12T01:28:06+03:00 PLAN_DRAFT D5.TTFT-assign-hyps agent_docs/plans/draft_ttft_assign_hyps.md; cloud_in prompt ready; await ✅ commit+push cursor/d5-ttft-split
+
+- 2026-09-12T01:53:27+03:00 PLAN_DRAFT rev2 D5.TTFT-cluster-rebuild H1 cluster-match / H2 refine / H3 clear-winner; cloud_in updated; await ✅ push
+- 2026-09-12T18:06:00+03:00 D5.TTFT product INSTRUCTIONS_READY: coder_D5_ttft.md tester_D5_ttft.md ttft_split.md; TTFT ≤300s @ 2CPU/8GiB; await ✅ → Coder
+- 2026-09-12T18:16:00+03:00 D5.TTFT agents launched: Coder product + Tester Phase0 reference_full15
+- 2026-09-12T18:48:00+03:00 D5.TTFT Coder READY_FOR_TEST; Tester full gate (P0–P3 + G5.T) launched
+- 2026-09-12T19:26:00+03:00 D5.TTFT resume: reference_full15 rebuilt (no stubs); Tester full gate re-launched (single agent)
+- 2026-09-12T20:35:00+03:00 D5.TTFT TEST_PASS_WITH_WARNINGS: TTFT 169.2s @ 2CPU/8g; peak RSS 3.6GiB; reports under agent_docs/reports/d5_ttft_split/
+- 2026-09-12T18:45:00+03:00 D5.TTFT Coder READY_FOR_TEST: ttft_split product path (method B mid, V1 EOS, early TOC, speaker lock); lint/G5 for Tester
+- 2026-09-12T19:00:00+03:00 D5.TTFT Tester Phase0 reference_full15 (PHASE0_BLOCKED shell EAGAIN — rebuild script pending)
+- 2026-09-12T20:34:00+03:00 D5.TTFT TEST_PASS_WITH_WARNINGS: TTFT=169.2s RSS=3.6GiB speakers≥3; reports=agent_docs/reports/d5_ttft_split/product_gate.md

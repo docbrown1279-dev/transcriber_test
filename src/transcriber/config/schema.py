@@ -26,6 +26,8 @@ class AudioGainConfig(BaseModel):
     rms_threshold_dbfs: float = Field(default=-30.0, le=0.0)
     target_dbfs: float = Field(default=-23.0, le=0.0)
     max_db: float = Field(default=18.0, ge=0.0)
+    # Whole-file normalize cap when pipeline.ttft_split is on (per-turn ASR keeps max_db).
+    file_max_db: float = Field(default=2.0, ge=0.0)
     peak_ceiling_dbfs: float = Field(default=-1.0, le=0.0)
 
 
@@ -266,6 +268,18 @@ class UiConfig(BaseModel):
     summary_max_calls: int = Field(default=2, ge=0)
 
 
+class TtftSplitConfig(BaseModel):
+    """Pause-cut part lengths for TTFT file-split (seconds; no literals in src)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    min_part_sec: float = Field(default=300.0, gt=0.0)
+    max_part_sec: float = Field(default=300.0, gt=0.0)
+    target_part_sec: float = Field(default=300.0, gt=0.0)
+    min_pause_sec: float = Field(default=0.8, ge=0.0)
+    search_half_width_sec: float = Field(default=90.0, gt=0.0)
+
+
 class PipelineConfig(BaseModel):
     """How TOC titles are produced relative to ASR."""
 
@@ -273,6 +287,9 @@ class PipelineConfig(BaseModel):
 
     # a = full ASR then batch titles; b = slice ASR + title when next chapter closes
     toc_mode: Literal["a", "b"] = "b"
+    # Process long files in pause-cut parts; early TOC after part1 (demo overlay).
+    ttft_split: bool = False
+    ttft: TtftSplitConfig = Field(default_factory=TtftSplitConfig)
 
 
 class AppConfig(BaseModel):

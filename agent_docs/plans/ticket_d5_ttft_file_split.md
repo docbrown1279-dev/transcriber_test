@@ -1,6 +1,6 @@
 # Тикет: TTFT — разрез файла + якорь центроидов (S2)
 
-**Статус:** OPEN — **IN PROGRESS** research spike (part1 only; `src/` still frozen)  
+**Статус:** OPEN — research spike closed enough for product; **INSTRUCTIONS_READY** (`coder_D5_ttft.md` / `tester_D5_ttft.md`). `src/` still frozen until Coder.  
 **Приоритет:** высокий для TTFT  
 **Ветка:** `cursor/d5-ttft-split` (от `main`)  
 **Спека направления:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md)  
@@ -46,7 +46,7 @@
 
 | Метрика | Цель |
 |---|---|
-| TTFT (первая titled-глава) | ≤ 300–360 с на 15′ @ 2 CPU (warm) |
+| TTFT (первая usable `chapters.json`, titles optional) | ≤ **300 с** на 15′ @ 2 CPU / 8 GiB (warm) |
 | Крупные спикеры part1→full | id стабильны (якорь) |
 | Качество vs 2A full | не хуже заметно на gold / глаз на job |
 
@@ -55,6 +55,6 @@
 ## Definition of done
 
 - [x] Unit-tune закрыт: SKIPPED  
-- [ ] Спека merge+anchor → coder (после research OK)  
-- [ ] Bench TTFT на 15′  
-- [ ] Отчёт: TTFT, стабильность id, вердикт C+split vs нужен B/Jina  
+- [x] Спека merge+anchor → coder instructions (`coder_D5_ttft.md`; mid = assign B, EOS = V1)  
+- [ ] Bench TTFT на 15′ @ 2 CPU / 8 GiB ≤ 300 с  
+- [ ] Отчёт: TTFT, стабильность id, EOS vs full15; H1/V2 не в mid  

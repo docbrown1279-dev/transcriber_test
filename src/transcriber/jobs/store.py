@@ -137,6 +137,24 @@ def append_stage_event(
     return job
 
 
+def update_job_flags(
+    job_id: str,
+    storage_root: Path | str,
+    *,
+    early_ready: bool | None = None,
+    speakers_finalized: bool | None = None,
+) -> JobArtifact:
+    """Updates TTFT early-publish / speaker-lock flags on job.json."""
+    job = get_job(job_id, storage_root)
+    if early_ready is not None:
+        job.early_ready = early_ready
+    if speakers_finalized is not None:
+        job.speakers_finalized = speakers_finalized
+    path = get_job_path(job_id, storage_root)
+    _dump_job(job, path)
+    return job
+
+
 def job_exists(job_id: str, storage_root: Path | str) -> bool:
     """Проверяет наличие файла job.json."""
     return get_job_path(job_id, storage_root).is_file()

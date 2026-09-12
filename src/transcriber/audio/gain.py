@@ -9,6 +9,8 @@ class GainResult:
 
     gain_db: float
     gain_applied: bool
+    # True when raw target gain exceeded max_gain_db (file or per-turn cap).
+    capped: bool = False
 
 
 def calculate_gain(
@@ -26,9 +28,10 @@ def calculate_gain(
     чтобы peak_dbfs + gain_db <= peak_ceiling_dbfs.
     """
     if rms_dbfs >= threshold_dbfs:
-        return GainResult(gain_db=0.0, gain_applied=False)
+        return GainResult(gain_db=0.0, gain_applied=False, capped=False)
 
     raw_gain = target_dbfs - rms_dbfs
+    capped = raw_gain > max_gain_db
     gain = min(raw_gain, max_gain_db)
 
     # Ограничение по пиковому потолку
@@ -37,4 +40,4 @@ def calculate_gain(
 
     gain = max(0.0, round(gain, 3))
     applied = gain > 0.0
-    return GainResult(gain_db=gain, gain_applied=applied)
+    return GainResult(gain_db=gain, gain_applied=applied, capped=capped and applied)

@@ -214,4 +214,6 @@ def job_events_payload(job_id: str, storage_root: Path | str) -> dict[str, Any]:
         "elapsed_running": running,
         "created_at": job.created_at,
         "expires_at": job.expires_at,
+        "early_ready": bool(job.early_ready),
+        "speakers_finalized": bool(job.speakers_finalized),
     }

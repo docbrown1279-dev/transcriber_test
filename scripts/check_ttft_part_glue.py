@@ -164,6 +164,52 @@ def check_transcript(hyp: dict[str, Any], baseline: dict[str, Any]) -> list[dict
     return findings
 
 
+def _turns(doc: dict[str, Any]) -> list[dict[str, Any]]:
+    if "turns" in doc:
+        return list(doc["turns"])
+    raise ValueError(f"expected turns[] in {doc.keys()}")
+
+
+def _speaker_stats(turns: list[dict[str, Any]], *, min_speech_sec: float = 30.0) -> dict[str, Any]:
+    dur: dict[str, float] = {}
+    for t in turns:
+        spk = t.get("speaker")
+        if not spk:
+            continue
+        dur[spk] = dur.get(spk, 0.0) + max(0.0, float(t["end"]) - float(t["start"]))
+    large = sorted(spk for spk, d in dur.items() if d >= min_speech_sec)
+    return {
+        "speaker_count": len(dur),
+        "large_speaker_count": len(large),
+        "large_speakers": large,
+        "speech_sec_by_speaker": {k: round(v, 3) for k, v in sorted(dur.items())},
+    }
+
+
+def check_turns(hyp: dict[str, Any], baseline: dict[str, Any]) -> list[dict[str, Any]]:
+    hyp_stats = _speaker_stats(_turns(hyp))
+    base_stats = _speaker_stats(_turns(baseline))
+    sc_ok = hyp_stats["speaker_count"] == base_stats["speaker_count"]
+    lc_ok = hyp_stats["large_speaker_count"] == base_stats["large_speaker_count"]
+    return [
+        {
+            "id": "D1_speaker_count",
+            "status": "PASS" if sc_ok else "WARN",
+            "detail": (
+                f"hyp={hyp_stats['speaker_count']} baseline={base_stats['speaker_count']}"
+            ),
+        },
+        {
+            "id": "D2_large_speakers_ge30s",
+            "status": "PASS" if lc_ok else "WARN",
+            "detail": (
+                f"hyp={hyp_stats['large_speaker_count']} {hyp_stats['large_speakers']} "
+                f"baseline={base_stats['large_speaker_count']} {base_stats['large_speakers']}"
+            ),
+        },
+    ]
+
+
 def check_chapters(
     hyp: dict[str, Any],
     baseline: dict[str, Any],
@@ -257,12 +303,24 @@ def main() -> int:
     ap.add_argument(
         "--baseline-transcript",
         type=Path,
-        default=Path("eval/d5_ttft_split/baseline_part01_transcript_window.json"),
+        default=Path("eval/d5_ttft_split/reference_full15/part01_transcript.json"),
     )
     ap.add_argument(
         "--baseline-chapters",
         type=Path,
-        default=Path("eval/d5_ttft_split/baseline_part01_chapters_window.json"),
+        default=Path("eval/d5_ttft_split/reference_full15/part01_chapters.json"),
+    )
+    ap.add_argument(
+        "--hyp-turns",
+        type=Path,
+        default=None,
+        help="Optional turns.json for EOS speaker-count compare",
+    )
+    ap.add_argument(
+        "--baseline-turns",
+        type=Path,
+        default=None,
+        help="Baseline turns (default: sibling of baseline-transcript)",
     )
     ap.add_argument("--out-json", type=Path, required=True)
     args = ap.parse_args()
@@ -275,6 +333,15 @@ def main() -> int:
     findings.extend(
         check_chapters(_load(args.hyp_chapters), base_c, part_end=part_end)
     )
+
+    if args.hyp_turns:
+        base_turns_path = args.baseline_turns
+        if base_turns_path is None:
+            stem = args.baseline_transcript.stem.replace("_transcript", "_turns")
+            base_turns_path = args.baseline_transcript.with_name(f"{stem}.json")
+        findings.extend(
+            check_turns(_load(args.hyp_turns), _load(base_turns_path))
+        )
 
     fails = sum(1 for f in findings if f["status"] == "FAIL")
     warns = sum(1 for f in findings if f["status"] == "WARN")

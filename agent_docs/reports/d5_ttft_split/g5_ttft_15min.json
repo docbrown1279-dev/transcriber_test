@@ -1,0 +1,56 @@
+{
+  "mode": "b",
+  "audio": "/bench/voice_002_15min.m4a",
+  "job_dir": "/job",
+  "until": "titles",
+  "ttft_split": true,
+  "ttft_first_chapter_sec": 169.177,
+  "total_wall_sec": 555.905,
+  "peak_rss_mb": 3688.5,
+  "stages": [
+    {
+      "stage": "normalize",
+      "wall_sec": 1.751,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "vad",
+      "wall_sec": 3.918,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "diarize",
+      "wall_sec": 0.0,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "asr",
+      "wall_sec": 118.311,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "chunk",
+      "wall_sec": 553.62,
+      "peak_rss_mb": null
+    },
+    {
+      "stage": "titles",
+      "wall_sec": 553.62,
+      "peak_rss_mb": null
+    }
+  ],
+  "chapters": 10,
+  "titles": [
+    "Подключение к ливневой канализации УДС",
+    "Учет площади застройки и озеленения",
+    "Проверка решений разработчиков",
+    "Ландшафтная концепция и размещение светильников",
+    "Прокладка кабеля и теплообеспечение объекта",
+    "Расчет нагрузки на корпуса и распределение по квартирам",
+    "Расчет нагрузок и инженерное согласование квартир",
+    "Планировочное решение по корпусу восемь",
+    "Подготовка материалов по помещению и энергоснабжению",
+    "Сравнение мощности трансформаторов корпусов"
+  ],
+  "notes": "full run_job from audio; ttft_first_chapter_sec = job start → first valid chapters.json; stage wall_sec from artifact runtime_sec where present; peak_rss_mb is process RUSAGE_SELF after run"
+}

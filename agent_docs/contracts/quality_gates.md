@@ -129,6 +129,22 @@ Stage D4 is developed and gated **locally** (no Cursor Cloud handoff by default)
 | G5.3 | Total wall time for 15 minutes of audio | reported; if unacceptable, recommend lowering `audio.max_minutes` to 10 (spec §3 allows it) |
 | G5.4 | Peak RSS of the web process while a job runs | `< 7 GiB` including the ASR subprocess |
 
+## G5.T — TTFT file-split (stage D5.TTFT, **local**)
+
+Product path: `pipeline.ttft_split` (demo overlay). Contract: `ttft_split.md`.  
+TTFT = job start → first schema-valid `chapters.json` (titles optional). Not `state=done`.
+
+| id | Check | Threshold |
+|---|---|---|
+| G5.T1 | Docker `--cpus=2 --memory=8g`, 15-minute `voice_002` slice, warm cache | `ttft_first_chapter_sec` ≤ **300** |
+| G5.T2 | Same run reaches EOS (speakers refined) | completes, no OOM; peak RSS `< 7 GiB` |
+| G5.T3 | `pipeline.ttft_split: false` | full pipeline path unchanged |
+| G5.T4 | Speaker alias / id edits | rejected until `speakers_finalized` |
+| G5.T5 | After EOS, speakers with speech ≳ 30 s | count **≥ 3** on the 15′ slice (no 3→2 collapse) |
+| G5.T6 | Text/turns vs `eval/d5_ttft_split/reference_full15/` (gitignored full15 slices, not diar gold) | glue script documented; FAIL if roughly half the part text is missing |
+
+G5.T is **local** (Tester). `eval/` is allowed here; cloud research packs still must not read `eval/`.
+
 ## Cloud restrictions during gates
 
 - Inputs come from `cloud_in/inputs/` only; outputs of the gate go to `cloud_out/gate_D{N}.md`
@@ -137,8 +153,9 @@ Stage D4 is developed and gated **locally** (no Cursor Cloud handoff by default)
   Stage D2 returns `cloud_out/artifacts/voice_002/chapters.json` from a packed transcript
   (no audio required). Stage D3 returns insights/report artifacts from packed transcript +
   chapters (no audio, no ASR, no local GGUF).
-- `eval/` must not be read, copied, or referenced in any gate, prompt, or report. Neither must
-  `.env`.
+- `eval/` must not be read, copied, or referenced in any **cloud** gate, prompt, or report.
+  Local G5.T may use gitignored `eval/d5_ttft_split/reference_full15/` (full15 slices, not diar gold).
+  Neither cloud nor local gates may read `.env`.
 - Audio under `data/` is never read directly. Only files packed into `cloud_in/inputs/` may be
   processed. For stage D1 the packed full meeting (`voice_002.m4a`, ~24.5 min) **is** the primary
   ASR input; short clips remain allowed for fast tests. For stage **D2** the primary input is the

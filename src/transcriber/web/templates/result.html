@@ -6,12 +6,25 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-<section class="panel">
-  <h1>Распознавание готово</h1>
+<section
+  class="panel"
+  {% if job_still_running %}
+  data-result-poll="1"
+  data-job-id="{{ job.job_id }}"
+  data-state="{{ job.state }}"
+  {% endif %}
+>
+  <h1>{% if job_still_running %}Черновик оглавления{% else %}Распознавание готово{% endif %}</h1>
   <p class="meta">
     {% if elapsed_label %}Обработано за {{ elapsed_label }}{% endif %}
     {% if speaker_ids %} · {{ speaker_ids|length }} спикеров{% endif %}
   </p>
+  {% if job_still_running or not speakers_finalized %}
+  <p class="warn">
+    Обработка ещё идёт: оглавление уже можно смотреть.
+    {% if not speakers_finalized %}Имена и метки спикеров черновые — правка спикеров будет доступна после уточнения.{% endif %}
+  </p>
+  {% endif %}
   {% if restore_msg == "1" %}
   <p class="hint">Транскрипт и имена спикеров возвращены к исходному распознаванию.</p>
   {% endif %}
@@ -77,7 +90,7 @@
   {% if speaker_ids %}
   <h2>Спикеры</h2>
   <p class="hint">Имя — только подпись к кластеру диаризации. Id вроде SPEAKER_00 не меняется: если в кластере несколько людей, все реплики получат одно имя.</p>
-  {% if allow_editing %}
+  {% if allow_editing and speakers_finalized %}
   <form class="speakers-form" method="post" action="/jobs/{{ job.job_id }}/actions/speakers">
     {% for sid in speaker_ids %}
     <div class="speakers-row">
@@ -91,9 +104,12 @@
   {% else %}
   <ul class="speakers-list">
     {% for sid in speaker_ids %}
-    <li>{{ speaker_display(sid, speaker_aliases) }}</li>
+    <li>{{ speaker_display(sid, speaker_aliases) }}{% if speaker_speech_sec.get(sid) %} · {{ format_elapsed(speaker_speech_sec[sid]) }}{% endif %}</li>
     {% endfor %}
   </ul>
+  {% if allow_editing and not speakers_finalized %}
+  <p class="hint">Правка имён спикеров временно недоступна — ждём уточнение диаризации.</p>
+  {% endif %}
   {% endif %}
   {% endif %}
 

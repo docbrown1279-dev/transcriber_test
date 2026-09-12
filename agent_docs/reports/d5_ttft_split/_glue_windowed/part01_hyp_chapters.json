@@ -1,0 +1,113 @@
+{
+  "chapters": [
+    {
+      "duration_sec": 155.558,
+      "end": 156.434,
+      "id": "C00",
+      "source_ids": [
+        "part01:s0001",
+        "part01:s0002",
+        "part01:s0003",
+        "part01:s0004",
+        "part01:s0005",
+        "part01:s0006",
+        "part01:s0007",
+        "part01:s0008",
+        "part01:s0009",
+        "part01:s0010",
+        "part01:s0011",
+        "part01:s0012",
+        "part01:s0013",
+        "part01:s0014",
+        "part01:s0015",
+        "part01:s0016",
+        "part01:s0017",
+        "part01:s0018",
+        "part01:s0019"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "start": 0.876,
+      "title": "Подключение к ливневой канализации УДС"
+    },
+    {
+      "duration_sec": 29.826,
+      "end": 186.26,
+      "id": "C01",
+      "source_ids": [
+        "part01:s0020",
+        "part01:s0021"
+      ],
+      "speakers": [
+        "SPEAKER_00"
+      ],
+      "start": 156.434,
+      "title": "Учет площади застройки и озеленения"
+    },
+    {
+      "duration_sec": 23.176,
+      "end": 211.188,
+      "id": "C02",
+      "source_ids": [
+        "part01:s0022",
+        "part01:s0023",
+        "part01:s0024",
+        "part01:s0025"
+      ],
+      "speakers": [
+        "SPEAKER_00"
+      ],
+      "start": 188.012,
+      "title": "Проверка решений разработчиков"
+    },
+    {
+      "duration_sec": 134.6,
+      "end": 346.516,
+      "id": "C03",
+      "source_ids": [
+        "part01:s0026",
+        "part02:s0001",
+        "part02:s0002",
+        "part02:s0003",
+        "part02:s0004",
+        "part02:s0005",
+        "part02:s0006",
+        "part02:s0007",
+        "part02:s0008",
+        "part02:s0009",
+        "part02:s0010",
+        "part02:s0011",
+        "part02:s0012",
+        "part02:s0013",
+        "part02:s0014",
+        "part02:s0015",
+        "part02:s0016",
+        "part02:s0017",
+        "part02:s0018",
+        "part02:s0019",
+        "part02:s0020",
+        "part02:s0021"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01",
+        "SPEAKER_02"
+      ],
+      "start": 211.916,
+      "title": "Ландшафтная концепция и размещение светильников"
+    }
+  ],
+  "chunker": "packing_c",
+  "embedding_model": "rubert_tiny2",
+  "job_id": "job",
+  "metrics": {
+    "chapters_per_minute": 0.667,
+    "long_chapters": 0,
+    "short_chapters": 5
+  },
+  "runtime_sec": 553.62,
+  "schema_version": "1",
+  "similarity_threshold": 0.7
+}
