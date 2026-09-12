@@ -1,0 +1,17 @@
+{
+  "agreement_pct_of_full15": 98.521,
+  "agreement_pct_of_src": 98.528,
+  "dice_pct": 98.525,
+  "duration_full15_sec": 773.904,
+  "duration_src_sec": 773.852,
+  "mapping_src_to_full15": {
+    "SPEAKER_00": "SPEAKER_00",
+    "SPEAKER_01": "SPEAKER_01",
+    "SPEAKER_02": "SPEAKER_02",
+    "SPEAKER_03": "SPEAKER_03",
+    "SPEAKER_04": "SPEAKER_04"
+  },
+  "matched_overlap_sec": 762.46,
+  "unmapped_full15": [],
+  "unmapped_src": []
+}

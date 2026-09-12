@@ -1,0 +1,12 @@
+{
+  "embeddings_reused": true,
+  "n_windows": {
+    "part01": 321,
+    "part02": 339,
+    "part03": 289
+  },
+  "source": "/workspace/cloud_out/artifacts/split3_cluster_rebuild",
+  "threshold": 0.85,
+  "unified_gain_note": "embeddings were built from unified_norm wav slices + shared VAD",
+  "v3_rule": "A"
+}

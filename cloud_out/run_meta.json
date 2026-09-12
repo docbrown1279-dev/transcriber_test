@@ -1,6 +1,90 @@
 {
   "branch": "cursor/d5-ttft-split",
-  "git_rev": "16ecd954c6aade2110f6a0f9d5d23ebf51cc5b5e",
+  "final_ab": {
+    "compare": {
+      "all_ranked": [
+        "V2",
+        "V3",
+        "H1",
+        "full15",
+        "V1"
+      ],
+      "combined": {
+        "H1": {
+          "n_speaker_switches": 30,
+          "n_speakers_max": 2,
+          "n_turns": 91,
+          "n_turns_lt_1s": 3,
+          "n_turns_lt_2s": 22
+        },
+        "V1": {
+          "n_speaker_switches": 61,
+          "n_speakers_max": 5,
+          "n_turns": 111,
+          "n_turns_lt_1s": 5,
+          "n_turns_lt_2s": 32
+        },
+        "V2": {
+          "n_speaker_switches": 30,
+          "n_speakers_max": 2,
+          "n_turns": 91,
+          "n_turns_lt_1s": 3,
+          "n_turns_lt_2s": 22
+        },
+        "V3": {
+          "n_speaker_switches": 30,
+          "n_speakers_max": 2,
+          "n_turns": 91,
+          "n_turns_lt_1s": 3,
+          "n_turns_lt_2s": 22
+        },
+        "full15": {
+          "n_speaker_switches": 59,
+          "n_speakers_max": 5,
+          "n_turns": 109,
+          "n_turns_lt_1s": 4,
+          "n_turns_lt_2s": 30
+        }
+      },
+      "proxy_pick_ceiling": "V1",
+      "proxy_pick_ttft": "V2=V3=H1 (all |Δspk|>2 vs full15)",
+      "ttft_excluded_huge_swing": [],
+      "ttft_ranked": [
+        "V2",
+        "V3",
+        "H1"
+      ],
+      "ttft_tied": [
+        "V2",
+        "V3",
+        "H1"
+      ],
+      "v1_agreement_pct_of_full15": 98.521,
+      "v1_dice_pct": 98.525
+    },
+    "prep": {
+      "embeddings_reused": true,
+      "n_windows": {
+        "part01": 321,
+        "part02": 339,
+        "part03": 289
+      },
+      "source": "/workspace/cloud_out/artifacts/split3_cluster_rebuild",
+      "threshold": 0.85,
+      "unified_gain_note": "embeddings were built from unified_norm wav slices + shared VAD",
+      "v3_rule": "A"
+    },
+    "v2_attempts": {
+      "part02_attempts": 1,
+      "part02_fallback": false,
+      "part02_success_before_cap": true,
+      "part03_attempts": 2,
+      "part03_fallback": false,
+      "part03_success_before_cap": true
+    },
+    "v3_rule": "A"
+  },
+  "git_rev": "741daa92ea7f40c53bc86722a813c53de03df45b",
   "host": {
     "df_h": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vdc        254G  9.2G  245G   4% /",
     "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
@@ -10,6 +94,12 @@
     "uv_version": "uv 0.12.13 (x86_64-unknown-linux-gnu)"
   },
   "llm_call_count": 0,
+  "notes": [
+    "Research spike: V1 EOS AHC / V2 constrained merge / V3 H1+rule A.",
+    "SEMANTIC_CHECK = local human; cloud did not judge meaning.",
+    "No src/config/tests edits, no PR, no ASR/LLM/gold.",
+    "nproc=4 so 2-CPU TTFT is not demonstrated."
+  ],
   "preflight": {
     "embeddings_dir": "cloud_out/artifacts/split3_cluster_rebuild/",
     "embeddings_reused": true,
@@ -24,5 +114,6 @@
   },
   "schema_version": "1",
   "stage": "D5.TTFT-final-ab",
-  "written_at_utc": "2026-09-12T12:51:02Z"
+  "wall_time_sec": 0.138,
+  "written_at_utc": "2026-09-12T12:56:23Z"
 }

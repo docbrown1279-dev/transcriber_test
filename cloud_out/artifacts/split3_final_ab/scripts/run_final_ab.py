@@ -458,20 +458,24 @@ def run_v2(parts: dict[str, dict[str, Any]], cfg: Any) -> dict[str, Any]:
                     old_vecs = committed_emb.get(nearest, [])
                     new_vecs = old_vecs + extra_emb.get(nearest, []) + [embs[i] for i in cluster["idxs"]]
                     new_com = _com(new_vecs)
+                    old_cent = working[nearest]
+                    inliers = [vec for vec in old_vecs if _dist(vec, old_cent) <= THRESHOLD]
                     viol = 0
                     max_old = 0.0
-                    for vec in old_vecs:
+                    for vec in inliers:
                         d_old = _dist(vec, new_com)
                         max_old = max(max_old, d_old)
                         if d_old > THRESHOLD:
                             viol += 1
+                    already_out = len(old_vecs) - len(inliers)
                     events.append(
                         {
                             "local_label": cluster["local_label"],
                             "d_best": round(d_best, 4),
                             "nearest": nearest,
-                            "old_windows_gt_thr": viol,
-                            "max_old_to_new_com": round(max_old, 4),
+                            "old_inliers_gt_thr": viol,
+                            "already_outliers": already_out,
+                            "max_inlier_to_new_com": round(max_old, 4),
                             "decision": "match" if viol == 0 else "constraint_fail",
                         }
                     )
@@ -575,7 +579,12 @@ def run_v2(parts: dict[str, dict[str, Any]], cfg: Any) -> dict[str, Any]:
                         old_vecs = committed_emb.get(nearest, [])
                         new_vecs = old_vecs + extra_emb.get(nearest, []) + [embs[i] for i in cluster["idxs"]]
                         new_com = _com(new_vecs)
-                        viol = sum(1 for vec in old_vecs if _dist(vec, new_com) > THRESHOLD)
+                        old_cent = working[nearest]
+                        viol = sum(
+                            1
+                            for vec in old_vecs
+                            if _dist(vec, old_cent) <= THRESHOLD and _dist(vec, new_com) > THRESHOLD
+                        )
                         if viol == 0:
                             mapping[cluster["local_label"]] = nearest
                             extra_emb.setdefault(nearest, []).extend(embs[i] for i in cluster["idxs"])
@@ -891,16 +900,47 @@ def write_compare(
     combined = {name: _combined(m["part02"], m["part03"]) for name, m in methods.items()}
     full_spk = combined["full15"]["n_speakers_max"]
 
+    HUGE_SWING = 2
+
     def rank_key(name: str) -> tuple[int, int, int, int]:
         c = combined[name]
         swing = abs(c["n_speakers_max"] - full_spk)
-        huge = 1 if swing > 2 else 0
+        huge = 1 if swing > HUGE_SWING else 0
         return (c["n_turns_lt_1s"], c["n_speaker_switches"], huge, swing)
 
-    ttft_ranked = sorted(("H1", "V2", "V3"), key=rank_key)
+    def same_proxies(a: str, b: str) -> bool:
+        ca, cb = combined[a], combined[b]
+        return (
+            ca["n_turns_lt_1s"] == cb["n_turns_lt_1s"]
+            and ca["n_speaker_switches"] == cb["n_speaker_switches"]
+            and ca["n_speakers_max"] == cb["n_speakers_max"]
+        )
+
+    swing_ok = [
+        n
+        for n in ("V2", "V3", "H1")
+        if abs(combined[n]["n_speakers_max"] - full_spk) <= HUGE_SWING
+    ]
+    all_ttft = ["V2", "V3", "H1"]
+    if swing_ok:
+        ttft_pool = swing_ok
+        excluded_ttft = [n for n in all_ttft if n not in swing_ok]
+        collapse_note = False
+    else:
+        ttft_pool = all_ttft
+        excluded_ttft = []
+        collapse_note = True
+    ttft_ranked = sorted(ttft_pool, key=rank_key)
     all_ranked = sorted(combined, key=rank_key)
     ceiling = "V1"
     ttft_pick = ttft_ranked[0]
+    tied = [n for n in ttft_ranked if same_proxies(n, ttft_pick)]
+    if len(tied) > 1:
+        ttft_label = "=".join(tied)
+    else:
+        ttft_label = ttft_pick
+    if collapse_note:
+        ttft_label = f"{ttft_label} (all |Δspk|>2 vs full15)"
 
     lines = [
         "# Final A/B — V1 EOS AHC vs V2 constrained merge vs V3 H1-tune",
@@ -912,8 +952,14 @@ def write_compare(
         "",
         f"`proxy_pick` ceiling (offline, waits for all parts): **{ceiling}** "
         "(EOS AHC on concatenated part embeddings).",
-        f"`proxy_pick` TTFT-path (online-ish, keeps part1 labels): **{ttft_pick}** "
-        f"(ranked {ttft_ranked} by lt1s, switches, then |n_speakers−full15|).",
+        f"`proxy_pick` TTFT-path (online-ish, keeps part1 labels): **{ttft_label}** "
+        f"(ranked {ttft_ranked}"
+        + (
+            "; no method kept |Δspk|≤2 vs full15"
+            if collapse_note
+            else f"; excluded |Δspk|>2: {excluded_ttft or 'none'}"
+        )
+        + ").",
         "",
         "## Combined part02+part03 proxies",
         "",
@@ -994,8 +1040,11 @@ def write_compare(
         "## Ranking note (proxies only)",
         "",
         f"All methods by (lt1s, switches, huge-speaker-swing vs full15): **{' > '.join(all_ranked)}**.",
-        "Huge swing = |n_speakers_max − full15| > 2. H1/V3 may look 'clean' on crumbs while collapsing "
-        "inventory vs full15; that is a proxy tradeoff, not a semantic win.",
+        "Huge swing = |n_speakers_max − full15| > 2. Online methods here share the same 2-speaker "
+        "inventory (collapse vs full15 5) while cutting crumbs/switches; that is a proxy tradeoff, "
+        "not a semantic win.",
+        "On this file V2 part02/part03 turns match H1 (and V3: rule A glued 0 clusters). "
+        "V2 part03 needed 2 attempts (one inlier CoM nudge) then matched the same gallery ids.",
         "",
         "## Environment",
         "",
@@ -1011,8 +1060,10 @@ def write_compare(
     (OUT / "compare.md").write_text("\n".join(lines), encoding="utf-8")
     return {
         "proxy_pick_ceiling": ceiling,
-        "proxy_pick_ttft": ttft_pick,
+        "proxy_pick_ttft": ttft_label,
         "ttft_ranked": ttft_ranked,
+        "ttft_tied": tied,
+        "ttft_excluded_huge_swing": excluded_ttft,
         "all_ranked": all_ranked,
         "combined": combined,
         "v1_agreement_pct_of_full15": remap.get("agreement_pct_of_full15"),

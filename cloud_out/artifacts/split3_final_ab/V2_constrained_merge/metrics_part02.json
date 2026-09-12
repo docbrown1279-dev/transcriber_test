@@ -1,0 +1,25 @@
+{
+  "hotspot_365_375": [
+    {
+      "duration_sec": 10.088,
+      "end": 83.892,
+      "end_abs": 375.284,
+      "id": "t0009",
+      "speaker": "SPEAKER_00",
+      "start": 73.804,
+      "start_abs": 365.196
+    }
+  ],
+  "hyp": "V2",
+  "n_speaker_switches": 16,
+  "n_speakers": 2,
+  "n_turns": 43,
+  "n_turns_lt_1s": 2,
+  "n_turns_lt_2s": 11,
+  "new_ids_vs_part1": [],
+  "part": "part02",
+  "speaker_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ]
+}

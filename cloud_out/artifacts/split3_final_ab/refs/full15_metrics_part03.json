@@ -1,0 +1,20 @@
+{
+  "hotspot_365_375": [],
+  "hyp": "full15",
+  "n_speaker_switches": 22,
+  "n_speakers": 4,
+  "n_turns": 53,
+  "n_turns_lt_1s": 1,
+  "n_turns_lt_2s": 15,
+  "new_ids_vs_part1": [
+    "SPEAKER_02",
+    "SPEAKER_03"
+  ],
+  "part": "part03",
+  "speaker_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02",
+    "SPEAKER_03"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "hotspot_365_375": [
+    {
+      "duration_sec": 0.75,
+      "end": 365.946,
+      "end_abs": 365.946,
+      "id": "t0044",
+      "speaker": "SPEAKER_03",
+      "start": 365.196,
+      "start_abs": 365.196
+    },
+    {
+      "duration_sec": 9.338,
+      "end": 375.284,
+      "end_abs": 375.284,
+      "id": "t0045",
+      "speaker": "SPEAKER_02",
+      "start": 365.946,
+      "start_abs": 365.946
+    }
+  ],
+  "hyp": "full15",
+  "n_speaker_switches": 65,
+  "n_speakers": 5,
+  "n_turns": 141,
+  "n_turns_lt_1s": 4,
+  "n_turns_lt_2s": 36,
+  "new_ids_vs_part1": [],
+  "part": "full",
+  "speaker_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02",
+    "SPEAKER_03",
+    "SPEAKER_04"
+  ]
+}

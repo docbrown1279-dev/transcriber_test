@@ -1,0 +1,51 @@
+{
+  "hotspot_365_375": [
+    {
+      "duration_sec": 0.75,
+      "end": 365.946,
+      "end_abs": 365.946,
+      "id": "t0048",
+      "speaker": "SPEAKER_03",
+      "start": 365.196,
+      "start_abs": 365.196
+    },
+    {
+      "duration_sec": 9.338,
+      "end": 375.284,
+      "end_abs": 375.284,
+      "id": "t0049",
+      "speaker": "SPEAKER_02",
+      "start": 365.946,
+      "start_abs": 365.946
+    }
+  ],
+  "hyp": "V1",
+  "n_ahc_labels": 5,
+  "n_speaker_switches": 71,
+  "n_speakers": 5,
+  "n_turns": 147,
+  "n_turns_lt_1s": 7,
+  "n_turns_lt_2s": 40,
+  "n_windows": 949,
+  "new_ids_vs_part1": [],
+  "part": "full",
+  "remap_vs_full15": {
+    "agreement_pct_of_full15": 98.521,
+    "dice_pct": 98.525,
+    "mapping_src_to_full15": {
+      "SPEAKER_00": "SPEAKER_00",
+      "SPEAKER_01": "SPEAKER_01",
+      "SPEAKER_02": "SPEAKER_02",
+      "SPEAKER_03": "SPEAKER_03",
+      "SPEAKER_04": "SPEAKER_04"
+    },
+    "matched_overlap_sec": 762.46
+  },
+  "speaker_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01",
+    "SPEAKER_02",
+    "SPEAKER_03",
+    "SPEAKER_04"
+  ]
+}

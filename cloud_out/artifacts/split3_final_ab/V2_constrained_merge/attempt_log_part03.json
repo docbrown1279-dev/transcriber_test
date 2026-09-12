@@ -1,0 +1,103 @@
+{
+  "attempts": [
+    {
+      "attempt": 1,
+      "fail": {
+        "d_best": 0.0281,
+        "local_label": 1,
+        "old_windows_gt_thr": 1,
+        "target": "SPEAKER_00"
+      },
+      "n_events": 1,
+      "nudge": {
+        "blend": 0.5,
+        "centroid": "SPEAKER_00",
+        "toward": "nearest_member_mean+cluster_mean"
+      },
+      "ok": false
+    },
+    {
+      "attempt": 2,
+      "events": [
+        {
+          "already_outliers": 2,
+          "d_best": 0.0195,
+          "decision": "match",
+          "local_label": 1,
+          "max_inlier_to_new_com": 0.8336,
+          "nearest": "SPEAKER_00",
+          "old_inliers_gt_thr": 0
+        },
+        {
+          "already_outliers": 1,
+          "d_best": 0.6414,
+          "decision": "match",
+          "local_label": 3,
+          "max_inlier_to_new_com": 0.849,
+          "nearest": "SPEAKER_00",
+          "old_inliers_gt_thr": 0
+        },
+        {
+          "already_outliers": 0,
+          "d_best": 0.0878,
+          "decision": "match",
+          "local_label": 0,
+          "max_inlier_to_new_com": 0.8184,
+          "nearest": "SPEAKER_01",
+          "old_inliers_gt_thr": 0
+        },
+        {
+          "already_outliers": 1,
+          "d_best": 0.5173,
+          "decision": "match",
+          "local_label": 2,
+          "max_inlier_to_new_com": 0.8283,
+          "nearest": "SPEAKER_00",
+          "old_inliers_gt_thr": 0
+        }
+      ],
+      "n_events": 4,
+      "ok": true
+    }
+  ],
+  "clusters": [
+    {
+      "assigned_id": "SPEAKER_00",
+      "local_label": 1,
+      "n_windows": 198,
+      "speech_union_sec": 170.244,
+      "start": 0.908
+    },
+    {
+      "assigned_id": "SPEAKER_00",
+      "local_label": 3,
+      "n_windows": 3,
+      "speech_union_sec": 3.75,
+      "start": 8.012
+    },
+    {
+      "assigned_id": "SPEAKER_01",
+      "local_label": 0,
+      "n_windows": 45,
+      "speech_union_sec": 38.128,
+      "start": 20.462
+    },
+    {
+      "assigned_id": "SPEAKER_00",
+      "local_label": 2,
+      "n_windows": 43,
+      "speech_union_sec": 37.966,
+      "start": 119.596
+    }
+  ],
+  "fallback": false,
+  "max_attempts": 20,
+  "n_attempts": 2,
+  "n_local_clusters": 4,
+  "part": "part03",
+  "speakers_after": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ],
+  "success_before_cap": true
+}
