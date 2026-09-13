@@ -11,6 +11,7 @@ from pathlib import Path
 from time import monotonic
 from types import SimpleNamespace
 from typing import Literal
+import logging
 
 from transcriber.config.loader import load_config
 from transcriber.config.schema import AppConfig
@@ -19,6 +20,8 @@ from transcriber.pipeline.artifacts import JobArtifactPaths
 from transcriber.pipeline.events import StageEvent
 from transcriber.pipeline.steps import PIPELINE_STEPS, StepDefinition
 from transcriber.registry import available
+
+logger = logging.getLogger(__name__)
 
 StageStatus = Literal["done", "pending", "unavailable"]
 EventSink = Callable[[StageEvent], None]
@@ -149,6 +152,9 @@ def run_job(
     - ``b`` (default demo): after diarize, fuse ASR+chunk+titles via ``pipeline_b``
       when ``until`` is ``chunk`` / ``titles`` / insights / report.
     - ``a``: full ASR then batch titles (``llm.titles_mode=batch``).
+
+    ``pipeline.ttft_split``: when true and duration ≥ 2× min_part_sec, run the
+    pause-cut TTFT path (early chapters after part1). Short files keep this path.
     """
     resolved_cfg = cfg or load_config()
     if resolved_cfg.pipeline.toc_mode == "a":
@@ -170,6 +176,43 @@ def run_job(
     valid_stages = [s.stage for s in PIPELINE_STEPS]
     if until not in valid_stages:
         raise ValueError(f"Invalid 'until' stage '{until}'. Valid stages: {valid_stages}")
+
+    # TTFT file-split branch (long files only)
+    if resolved_cfg.pipeline.ttft_split:
+        from transcriber.pipeline.ttft_split import run_ttft_split, should_run_ttft_split
+        from transcriber.web.health import probe_audio_file
+
+        src = Path(source_audio) if source_audio else None
+        if src is None:
+            for candidate in sorted(job_path.iterdir()):
+                if (
+                    candidate.is_file()
+                    and candidate.suffix.lower()
+                    in {".wav", ".m4a", ".mp3", ".ogg", ".flac", ".webm", ".mp4"}
+                    and candidate.name not in {"normalized.wav", "vad_input.wav"}
+                ):
+                    src = candidate
+                    break
+        duration_sec = 0.0
+        if src is not None and src.is_file():
+            try:
+                duration_sec = float(probe_audio_file(src)["duration_sec"])
+            except Exception:
+                duration_sec = 0.0
+        if should_run_ttft_split(resolved_cfg, duration_sec):
+            return run_ttft_split(
+                job_path,
+                resolved_cfg,
+                source_audio=src,
+                events=events,
+                until=until,
+            )
+        logger.info(
+            "ttft_split_skipped duration=%.1f min_part=%.1f job_id=%s",
+            duration_sec,
+            resolved_cfg.pipeline.ttft.min_part_sec,
+            job_path.name,
+        )
 
     fuse_b = resolved_cfg.pipeline.toc_mode == "b" and until in {
         "chunk",

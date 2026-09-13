@@ -41,11 +41,21 @@ from transcriber.insights.web_summary import (
     run_web_summary,
 )
 from transcriber.jobs.queue import JobQueue, find_job_audio, job_events_payload, stage_names
+from transcriber.jobs.staging import (
+    claim_staging_to_job,
+    clear_staging,
+    find_staging_file,
+    new_staging_id,
+    read_staging_meta,
+    sweep_stale_staging,
+    write_staging_meta,
+)
 from transcriber.jobs.store import (
     append_stage_event,
     create_job,
     get_job,
     get_job_dir,
+    hash_client_ip,
     job_exists,
 )
 from transcriber.jobs.ttl import remove_job_directory, sweep_expired_jobs
@@ -326,6 +336,8 @@ def _chapter_page_context(
         "speaker_aliases": aliases,
         "prev_chapter": prev_chapter,
         "next_chapter": next_chapter,
+        "speakers_finalized": bool(getattr(job, "speakers_finalized", True)),
+        "job_still_running": getattr(job, "state", "") == "running",
     }
 
 
@@ -358,26 +370,96 @@ async def url_stub_api(url: str = "") -> JSONResponse:
     return JSONResponse({"kind": result.kind, "url": result.url, "message": result.message})
 
 
+@router.post("/staging", response_model=None)
+async def staging_upload(
+    request: Request,
+    audio: Annotated[UploadFile | None, File()] = None,
+) -> JSONResponse | HTMLResponse:
+    """Preload audio into staging before job admit (lazy upload)."""
+    from transcriber.jobs.staging import staging_dir
+
+    cfg = _cfg()
+    storage = _storage(cfg)
+    sweep_stale_staging(storage)
+    if audio is None or not audio.filename:
+        return _http_error(request, 400, "Нужен аудиофайл.", expose=True)
+    client_ip = _client_ip(request)
+    staging_id = new_staging_id()
+    suffix = _upload_suffix(audio.filename)
+    dest = staging_dir(storage, staging_id) / f"upload{suffix}"
+    try:
+        size_bytes = await _write_upload(audio, dest, cfg.audio.max_file_size_mb)
+        size_check = check_file_size(size_bytes, cfg.audio.max_file_size_mb)
+        if size_check.rejected:
+            clear_staging(storage, staging_id)
+            return _http_error(
+                request, 413, size_check.message or "Файл слишком большой", expose=True
+            )
+    except HTTPException as exc:
+        clear_staging(storage, staging_id)
+        detail = exc.detail if isinstance(exc.detail, str) else "Файл слишком большой"
+        return _http_error(request, exc.status_code, detail, expose=True)
+    write_staging_meta(
+        storage,
+        staging_id,
+        filename=Path(audio.filename).name,
+        size_bytes=size_bytes,
+        client_ip_hash=hash_client_ip(client_ip),
+    )
+    return JSONResponse(
+        {
+            "staging_id": staging_id,
+            "filename": Path(audio.filename).name,
+            "size_bytes": size_bytes,
+        }
+    )
+
+
+@router.delete("/staging/{staging_id}", response_model=None)
+async def staging_delete(staging_id: str) -> JSONResponse:
+    cfg = _cfg()
+    clear_staging(_storage(cfg), staging_id)
+    return JSONResponse({"ok": True})
+
+
 @router.post("/jobs", response_model=None)
 async def create_job_upload(
     request: Request,
     audio: Annotated[UploadFile | None, File()] = None,
     url: Annotated[str, Form()] = "",
+    staging_id: Annotated[str, Form()] = "",
 ) -> RedirectResponse | JSONResponse | HTMLResponse:
-    """Создаёт задачу из файла, применяет лимиты, ставит в очередь воркера."""
+    """Создаёт задачу из файла (или staging preload), применяет лимиты, ставит в очередь."""
     cfg = _cfg()
     storage = _storage(cfg)
     sweep_expired_jobs(storage)
+    sweep_stale_staging(storage)
     client_ip = _client_ip(request)
     host = _host(request)
     url_info = classify_media_url(url)
+    staging_id = (staging_id or "").strip()
+    has_staging = bool(staging_id)
+    has_audio = audio is not None and bool(audio.filename)
 
-    if audio is None or not audio.filename:
+    if not has_staging and not has_audio:
         return _http_error(
             request,
             400,
             url_info.message if url.strip() else "Нужен аудиофайл. Ссылки пока не обрабатываются.",
         )
+
+    if has_staging:
+        meta = read_staging_meta(storage, staging_id)
+        staged = find_staging_file(storage, staging_id)
+        stale_msg = "Сессия загрузки устарела. Выберите файл снова."
+        missing_msg = "Файл ещё не загружен. Выберите файл снова."
+        if meta is None or staged is None:
+            return _http_error(request, 400, missing_msg, expose=True)
+        try:
+            if meta.get("client_ip_hash") != hash_client_ip(client_ip):
+                return _http_error(request, 403, stale_msg, expose=True)
+        except Exception:
+            return _http_error(request, 403, stale_msg, expose=True)
 
     queue = _queue(request, cfg)
     with queue.lock:
@@ -388,10 +470,20 @@ async def create_job_upload(
         create_job(job_id, client_ip, storage, ttl_hours=cfg.limits.result_ttl_hours)
 
     job_dir = get_job_dir(job_id, storage)
-    suffix = _upload_suffix(audio.filename)
-    upload_path = job_dir / f"upload{suffix}"
     try:
-        size_bytes = await _write_upload(audio, upload_path, cfg.audio.max_file_size_mb)
+        if has_staging:
+            assert meta is not None
+            filename = str(meta.get("filename") or "upload.bin")
+            suffix = _upload_suffix(filename)
+            upload_path = claim_staging_to_job(
+                storage, staging_id, job_dir, dest_name=f"upload{suffix}"
+            )
+            size_bytes = int(meta.get("size_bytes") or upload_path.stat().st_size)
+        else:
+            assert audio is not None
+            suffix = _upload_suffix(audio.filename)
+            upload_path = job_dir / f"upload{suffix}"
+            size_bytes = await _write_upload(audio, upload_path, cfg.audio.max_file_size_mb)
         size_check = check_file_size(size_bytes, cfg.audio.max_file_size_mb)
         if size_check.rejected:
             remove_job_directory(job_id, storage)
@@ -402,11 +494,23 @@ async def create_job_upload(
         remove_job_directory(job_id, storage)
         detail = exc.detail if isinstance(exc.detail, str) else "Файл слишком большой"
         return _http_error(request, exc.status_code, detail, expose=True)
+    except FileNotFoundError:
+        remove_job_directory(job_id, storage)
+        return _http_error(
+            request, 400, "Файл ещё не загружен. Выберите файл снова.", expose=True
+        )
+    except Exception:
+        logger.exception("upload/staging claim failed job_id=%s", job_id)
+        remove_job_directory(job_id, storage)
+        return _http_error(request, 500, USER_SERVER, expose=True)
 
     try:
         probe = probe_audio_file(upload_path)
         duration_sec = float(probe["duration_sec"])
-        wanted = suffix_from_probe(str(probe.get("format_name") or ""), suffix)
+        wanted = suffix_from_probe(
+            str(probe.get("format_name") or ""),
+            upload_path.suffix.lower(),
+        )
         if upload_path.suffix.lower() != wanted:
             renamed = upload_path.with_suffix(wanted)
             upload_path.rename(renamed)
@@ -421,7 +525,8 @@ async def create_job_upload(
     decision = duration_trim_decision(duration_sec, cfg.audio.max_minutes)
     if decision.will_trim and decision.trim_to_sec is not None:
         try:
-            trim_media_file(upload_path, job_dir / f"input{suffix}", decision.trim_to_sec)
+            input_name = f"input{upload_path.suffix.lower()}"
+            trim_media_file(upload_path, job_dir / input_name, decision.trim_to_sec)
         except Exception:
             logger.exception("media trim failed job_id=%s", job_id)
             remove_job_directory(job_id, storage)
@@ -474,8 +579,11 @@ async def job_progress(
     if not job_exists(job_id, storage):
         return _http_error(request, 404, "Задача не найдена.")
     job = get_job(job_id, storage)
-    if job.state == "done" and not _wants_json(request):
-        return RedirectResponse(url=f"/jobs/{job_id}/result", status_code=303)
+    job_dir = get_job_dir(job_id, storage)
+    if not _wants_json(request):
+        chapters_ready = (job_dir / "chapters.json").is_file()
+        if job.state == "done" or (job.early_ready and chapters_ready):
+            return RedirectResponse(url=f"/jobs/{job_id}/result", status_code=303)
     elapsed = processing_seconds(job)
     return _TEMPLATES.TemplateResponse(
         request,
@@ -551,6 +659,9 @@ async def job_result(job_id: str, request: Request) -> HTMLResponse | JSONRespon
             "titles_msg": request.query_params.get("titles"),
             "summary_done": request.query_params.get("summary"),
             "elapsed_label": format_elapsed_ru(processing_seconds(job)),
+            "speakers_finalized": bool(job.speakers_finalized),
+            "early_ready": bool(job.early_ready),
+            "job_still_running": job.state == "running",
         },
     )
 
@@ -625,6 +736,12 @@ async def save_chapter_edit(
     submitted_texts = _form_strings(form, "seg_text")
     submitted_speakers = _form_strings(form, "seg_speaker")
     segments = _chapter_segments(transcript, chapter)
+    if submitted_speakers and not job.speakers_finalized:
+        return _http_error(
+            request,
+            409,
+            "Спикеры ещё уточняются — смена спикера будет доступна после завершения обработки.",
+        )
     try:
         expected_ids = [seg.id for seg in segments]
         updates = updates_for_chapter(expected_ids, submitted_ids, submitted_texts)
@@ -780,6 +897,13 @@ async def save_speaker_names(
     storage = _storage(cfg)
     if not job_exists(job_id, storage):
         return _http_error(request, 404, "Задача не найдена.")
+    job = get_job(job_id, storage)
+    if not job.speakers_finalized:
+        return _http_error(
+            request,
+            409,
+            "Спикеры ещё уточняются — имена можно задать после завершения обработки.",
+        )
     job_dir = get_job_dir(job_id, storage)
     transcript = _load_optional(job_dir / "transcript.json", TranscriptArtifact)
     if transcript is None:

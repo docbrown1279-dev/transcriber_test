@@ -1,6 +1,7 @@
 """Модуль веб-интерфейса и API."""
 
-from transcriber.web.app import app
+from typing import Any
+
 from transcriber.web.health import ComponentHealth, probe_audio_file, run_self_check
 from transcriber.web.limits import (
     DurationDecision,
@@ -21,3 +22,12 @@ __all__ = [
     "probe_audio_file",
     "run_self_check",
 ]
+
+
+def __getattr__(name: str) -> Any:
+    """Lazy ``app`` export — avoids circular import with ``jobs.queue``."""
+    if name == "app":
+        from transcriber.web.app import app as _app
+
+        return _app
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

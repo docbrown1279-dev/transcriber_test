@@ -4,6 +4,8 @@
 Accepts ``--audio`` (host/container path), ``--mode a|b``, ``--out`` JSON.
 Reuses orchestrator ``run_job`` (same toc_mode A/B behaviour as the web demo).
 For titles-only A/B on a seeded job dir, prefer ``scripts/bench_d4_1.py``.
+
+Records ``ttft_first_chapter_sec`` (job start → first schema-valid chapters.json).
 """
 
 from __future__ import annotations
@@ -13,6 +15,8 @@ import json
 import logging
 import shutil
 import sys
+import threading
+import time
 from pathlib import Path
 from resource import RUSAGE_SELF, getrusage
 from time import monotonic
@@ -74,6 +78,20 @@ def _collect_stages(job_dir: Path) -> list[dict[str, Any]]:
     return stages
 
 
+def _watch_first_chapters(job_dir: Path, t0: float, holder: dict[str, Any]) -> None:
+    """Poll for first schema-valid chapters.json (TTFT clock)."""
+    path = job_dir / "chapters.json"
+    while holder.get("stop") is not True:
+        if path.is_file():
+            try:
+                load_artifact(path, ChaptersArtifact)
+                holder["ttft_first_chapter_sec"] = round(monotonic() - t0, 3)
+                return
+            except Exception:
+                pass
+        time.sleep(0.25)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--audio", type=Path, required=True, help="Input media path")
@@ -112,13 +130,40 @@ def main() -> int:
     dest = job_dir / f"upload{audio.suffix.lower() or '.m4a'}"
     if dest.resolve() != audio:
         shutil.copy2(audio, dest)
-    logger.info("job_dir=%s audio=%s mode=%s", job_dir, dest, args.mode)
+    logger.info(
+        "job_dir=%s audio=%s mode=%s ttft_split=%s",
+        job_dir,
+        dest,
+        args.mode,
+        cfg.pipeline.ttft_split,
+    )
 
     t0 = monotonic()
     peak_before = _rss_mb()
-    run_job(job_dir=job_dir, source_audio=dest, until=args.until, cfg=cfg)
+    ttft_holder: dict[str, Any] = {"ttft_first_chapter_sec": None, "stop": False}
+    watcher = threading.Thread(
+        target=_watch_first_chapters,
+        args=(job_dir, t0, ttft_holder),
+        daemon=True,
+    )
+    watcher.start()
+    try:
+        run_job(job_dir=job_dir, source_audio=dest, until=args.until, cfg=cfg)
+    finally:
+        ttft_holder["stop"] = True
+        watcher.join(timeout=2.0)
     total_wall = round(monotonic() - t0, 3)
     peak_rss = max(peak_before, _rss_mb())
+
+    ttft_sec = ttft_holder.get("ttft_first_chapter_sec")
+    mark_path = job_dir / "ttft_mark.json"
+    if mark_path.is_file():
+        try:
+            mark = json.loads(mark_path.read_text(encoding="utf-8"))
+            if mark.get("ttft_first_chapter_sec") is not None:
+                ttft_sec = float(mark["ttft_first_chapter_sec"])
+        except Exception as exc:
+            logger.warning("ttft_mark read failed: %s", exc)
 
     chapters: list[str] = []
     chapters_path = job_dir / "chapters.json"
@@ -134,13 +179,16 @@ def main() -> int:
         "audio": str(audio),
         "job_dir": str(job_dir),
         "until": args.until,
+        "ttft_split": bool(cfg.pipeline.ttft_split),
+        "ttft_first_chapter_sec": ttft_sec,
         "total_wall_sec": total_wall,
         "peak_rss_mb": peak_rss,
         "stages": _collect_stages(job_dir),
         "chapters": len(chapters),
         "titles": chapters,
         "notes": (
-            "full run_job from audio; stage wall_sec from artifact runtime_sec where present; "
+            "full run_job from audio; ttft_first_chapter_sec = job start → first valid "
+            "chapters.json; stage wall_sec from artifact runtime_sec where present; "
             "peak_rss_mb is process RUSAGE_SELF after run"
         ),
     }

@@ -1,0 +1,41 @@
+{
+  "part_id": "part02",
+  "stages": {
+    "asr": {
+      "done_sec": 71.656,
+      "skipped": false,
+      "started_sec": 51.761,
+      "wall_sec": 19.894
+    },
+    "chunk": {
+      "done_sec": 71.817,
+      "skipped": false,
+      "started_sec": 71.656,
+      "wall_sec": 0.16
+    },
+    "diarize": {
+      "done_sec": 51.759,
+      "skipped": false,
+      "started_sec": 37.277,
+      "wall_sec": 14.483
+    },
+    "llm_sleep_2s": {
+      "done_sec": 73.817,
+      "skipped": false,
+      "started_sec": 71.817,
+      "wall_sec": 2.0
+    },
+    "normalize": {
+      "done_sec": 37.276,
+      "skipped": false,
+      "started_sec": 36.606,
+      "wall_sec": 0.67
+    },
+    "vad": {
+      "done_sec": 37.276,
+      "skipped": true,
+      "started_sec": 37.276,
+      "wall_sec": 0.0
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1",
+  "verdict": "FAIL",
+  "fail_count": 3,
+  "warn_count": 3,
+  "part_end_sec": 602.048,
+  "findings": [
+    {
+      "id": "T1_time_order",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "id": "T2_overlap",
+      "status": "PASS",
+      "detail": "overlaps>0.25s=0"
+    },
+    {
+      "id": "T3_inside_part",
+      "status": "FAIL",
+      "detail": "max_end=900.052 part_end=602.048"
+    },
+    {
+      "id": "T4_text_coverage",
+      "status": "PASS",
+      "detail": "baseline_word_coverage=0.975 jaccard=0.407 hyp_words=1627 base_words=561"
+    },
+    {
+      "id": "T5_length_ratio",
+      "status": "WARN",
+      "detail": "hyp/base word ratio=2.900"
+    },
+    {
+      "id": "C0_nonempty",
+      "status": "PASS",
+      "detail": "hyp_n=10 baseline_n=3"
+    },
+    {
+      "id": "C1_time_order",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "id": "C2_no_overlap",
+      "status": "PASS",
+      "detail": "overlaps=0"
+    },
+    {
+      "id": "C3_inside_part",
+      "status": "FAIL",
+      "detail": "max_end=900.052 part_end=602.048"
+    },
+    {
+      "id": "C4_timeline_vs_baseline",
+      "status": "FAIL",
+      "detail": "recall=0.999 precision=0.534 inter=473.9s base=474.4s hyp=888.0s"
+    },
+    {
+      "id": "C5_count_vs_baseline",
+      "status": "WARN",
+      "detail": "hyp_n/base_n=3.33 (10/3)"
+    },
+    {
+      "id": "D1_speaker_count",
+      "status": "PASS",
+      "detail": "hyp=5 baseline=5"
+    },
+    {
+      "id": "D2_large_speakers_ge30s",
+      "status": "WARN",
+      "detail": "hyp=3 ['SPEAKER_00', 'SPEAKER_01', 'SPEAKER_02'] baseline=2 ['SPEAKER_00', 'SPEAKER_02']"
+    }
+  ]
+}

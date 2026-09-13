@@ -1,0 +1,27 @@
+{
+  "asr_per_turn_gain": true,
+  "job_id": "full15_job",
+  "loudness": {
+    "gain_applied": true,
+    "gain_db": 1.657,
+    "peak_dbfs": -2.657,
+    "rms_dbfs": -33.055
+  },
+  "normalized": {
+    "channels": 1,
+    "path": "normalized.wav",
+    "sample_rate": 16000
+  },
+  "runtime_sec": 1.663,
+  "schema_version": "1",
+  "source": {
+    "duration_sec": 900.015,
+    "filename": "voice_002_15min.m4a",
+    "size_bytes": 14582910
+  },
+  "vad_input": {
+    "applied": false,
+    "filter": null,
+    "path": "vad_input.wav"
+  }
+}

@@ -1,38 +1,346 @@
 {
-  "artifacts": {
-    "insights": "cloud_out/artifacts/voice_002/insights.json",
-    "report_json": "cloud_out/artifacts/voice_002/report.json",
-    "report_md": "cloud_out/artifacts/voice_002/report.md"
-  },
-  "branch": "cursor/demo-d3-insights",
-  "commit": "f43a7ac",
-  "gate": "D3",
-  "host": {
-    "cpu_count": 4,
-    "disk_free": "245G",
-    "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5",
-    "memory_available": "14Gi",
-    "memory_total": "15Gi",
-    "python_version": "Python 3.12.3"
-  },
-  "llm_calls": [
-    {
-      "count": 14,
-      "provider": "gemini",
-      "purpose": "meeting_insights.extract"
+  "branch": "cursor/d5-ttft-split",
+  "cluster_rebuild": {
+    "compare": {
+      "combined": {
+        "H1": {
+          "n_speaker_switches": 30,
+          "n_speakers_max": 2,
+          "n_turns": 91,
+          "n_turns_lt_1s": 3
+        },
+        "H2": {
+          "n_speaker_switches": 66,
+          "n_speakers_max": 2,
+          "n_turns": 123,
+          "n_turns_lt_1s": 18
+        },
+        "H3": {
+          "n_speaker_switches": 30,
+          "n_speakers_max": 2,
+          "n_turns": 91,
+          "n_turns_lt_1s": 3
+        },
+        "baseline": {
+          "n_speaker_switches": 73,
+          "n_speakers_max": 3,
+          "n_turns": 126,
+          "n_turns_lt_1s": 19
+        }
+      },
+      "crumbs_delta": -16,
+      "ranked": [
+        "H1",
+        "H3",
+        "H2"
+      ],
+      "speaker_growth": -1,
+      "status": "PASS",
+      "switch_delta": -43,
+      "verdict": "PASS — H1 (tied with H3) reduces crumbs and/or switches vs baseline without huge speaker growth.",
+      "tied": ["H1", "H3"],
+      "winner": "H1",
+      "winner_label": "H1 (tied with H3)"
     },
-    {
-      "count": 1,
-      "provider": "gemini",
-      "purpose": "meeting_insights.report"
+    "metrics": {
+      "H1": {
+        "part02": {
+          "hotspot_365_375": [
+            {
+              "duration_sec": 10.088,
+              "end": 83.892,
+              "end_abs": 375.284,
+              "id": "t0009",
+              "speaker": "SPEAKER_00",
+              "start": 73.804,
+              "start_abs": 365.196
+            }
+          ],
+          "hyp": "H1",
+          "n_speaker_switches": 16,
+          "n_speakers": 2,
+          "n_turns": 43,
+          "n_turns_lt_1s": 2,
+          "n_turns_lt_2s": 11,
+          "new_ids_vs_part1": [],
+          "part": "part02",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01"
+          ]
+        },
+        "part03": {
+          "hotspot_365_375": [],
+          "hyp": "H1",
+          "n_speaker_switches": 14,
+          "n_speakers": 2,
+          "n_turns": 48,
+          "n_turns_lt_1s": 1,
+          "n_turns_lt_2s": 11,
+          "new_ids_vs_part1": [],
+          "part": "part03",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01"
+          ]
+        }
+      },
+      "H2": {
+        "part02": {
+          "hotspot_365_375": [
+            {
+              "duration_sec": 0.75,
+              "end": 74.554,
+              "end_abs": 365.946,
+              "id": "t0017",
+              "speaker": "SPEAKER_00",
+              "start": 73.804,
+              "start_abs": 365.196
+            },
+            {
+              "duration_sec": 2.25,
+              "end": 76.804,
+              "end_abs": 368.196,
+              "id": "t0018",
+              "speaker": "SPEAKER_01",
+              "start": 74.554,
+              "start_abs": 365.946
+            },
+            {
+              "duration_sec": 0.75,
+              "end": 77.554,
+              "end_abs": 368.946,
+              "id": "t0019",
+              "speaker": "SPEAKER_00",
+              "start": 76.804,
+              "start_abs": 368.196
+            },
+            {
+              "duration_sec": 3.0,
+              "end": 80.554,
+              "end_abs": 371.946,
+              "id": "t0020",
+              "speaker": "SPEAKER_01",
+              "start": 77.554,
+              "start_abs": 368.946
+            },
+            {
+              "duration_sec": 3.338,
+              "end": 83.892,
+              "end_abs": 375.284,
+              "id": "t0021",
+              "speaker": "SPEAKER_00",
+              "start": 80.554,
+              "start_abs": 371.946
+            }
+          ],
+          "hyp": "H2",
+          "n_speaker_switches": 52,
+          "n_speakers": 2,
+          "n_turns": 74,
+          "n_turns_lt_1s": 16,
+          "n_turns_lt_2s": 33,
+          "new_ids_vs_part1": [],
+          "part": "part02",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01"
+          ]
+        },
+        "part03": {
+          "hotspot_365_375": [],
+          "hyp": "H2",
+          "n_speaker_switches": 14,
+          "n_speakers": 2,
+          "n_turns": 49,
+          "n_turns_lt_1s": 2,
+          "n_turns_lt_2s": 13,
+          "new_ids_vs_part1": [],
+          "part": "part03",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01"
+          ]
+        }
+      },
+      "H3": {
+        "part02": {
+          "hotspot_365_375": [
+            {
+              "duration_sec": 10.088,
+              "end": 83.892,
+              "end_abs": 375.284,
+              "id": "t0009",
+              "speaker": "SPEAKER_00",
+              "start": 73.804,
+              "start_abs": 365.196
+            }
+          ],
+          "hyp": "H3",
+          "n_speaker_switches": 16,
+          "n_speakers": 2,
+          "n_turns": 43,
+          "n_turns_lt_1s": 2,
+          "n_turns_lt_2s": 11,
+          "new_ids_vs_part1": [],
+          "part": "part02",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01"
+          ]
+        },
+        "part03": {
+          "hotspot_365_375": [],
+          "hyp": "H3",
+          "n_speaker_switches": 14,
+          "n_speakers": 2,
+          "n_turns": 48,
+          "n_turns_lt_1s": 1,
+          "n_turns_lt_2s": 11,
+          "new_ids_vs_part1": [],
+          "part": "part03",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01"
+          ]
+        }
+      },
+      "baseline": {
+        "part02": {
+          "hotspot_365_375": [
+            {
+              "duration_sec": 0.75,
+              "end": 74.554,
+              "end_abs": 365.946,
+              "id": "t0016",
+              "speaker": "SPEAKER_00",
+              "start": 73.804,
+              "start_abs": 365.196
+            },
+            {
+              "duration_sec": 1.5,
+              "end": 76.054,
+              "end_abs": 367.446,
+              "id": "t0017",
+              "speaker": "SPEAKER_01",
+              "start": 74.554,
+              "start_abs": 365.946
+            },
+            {
+              "duration_sec": 2.25,
+              "end": 78.304,
+              "end_abs": 369.696,
+              "id": "t0018",
+              "speaker": "SPEAKER_00",
+              "start": 76.054,
+              "start_abs": 367.446
+            },
+            {
+              "duration_sec": 0.75,
+              "end": 79.054,
+              "end_abs": 370.446,
+              "id": "t0019",
+              "speaker": "SPEAKER_01",
+              "start": 78.304,
+              "start_abs": 369.696
+            },
+            {
+              "duration_sec": 4.838,
+              "end": 83.892,
+              "end_abs": 375.284,
+              "id": "t0020",
+              "speaker": "SPEAKER_00",
+              "start": 79.054,
+              "start_abs": 370.446
+            }
+          ],
+          "hyp": "baseline",
+          "n_speaker_switches": 43,
+          "n_speakers": 3,
+          "n_turns": 65,
+          "n_turns_lt_1s": 13,
+          "n_turns_lt_2s": 29,
+          "new_ids_vs_part1": [
+            "SPEAKER_02"
+          ],
+          "part": "part02",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01",
+            "SPEAKER_02"
+          ]
+        },
+        "part03": {
+          "hotspot_365_375": [],
+          "hyp": "baseline",
+          "n_speaker_switches": 30,
+          "n_speakers": 3,
+          "n_turns": 61,
+          "n_turns_lt_1s": 6,
+          "n_turns_lt_2s": 23,
+          "new_ids_vs_part1": [
+            "SPEAKER_02"
+          ],
+          "part": "part03",
+          "speaker_ids": [
+            "SPEAKER_00",
+            "SPEAKER_01",
+            "SPEAKER_02"
+          ]
+        }
+      }
+    },
+    "prep": {
+      "embed_sec": {
+        "part01": 12.653,
+        "part02": 14.635,
+        "part03": 12.687
+      },
+      "n_windows": {
+        "part01": 321,
+        "part02": 339,
+        "part03": 289
+      },
+      "wav_source": "unified_norm_slices"
     }
-  ],
-  "packages": {
-    "google-genai": "2.22.0",
-    "httpx": "0.28.1"
   },
-  "runtime": {
-    "peak_rss_kb": 67964,
-    "wall_time_sec": 360
-  }
+  "git_rev": "efcb25506c4f049f27a34c110f2edec995225090",
+  "host": {
+    "df_h": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vdc        254G  9.2G  245G   4% /",
+    "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "free_h": "total        used        free      shared  buff/cache   available\nMem:            15Gi       8.9Gi       3.8Gi       9.2Mi       3.3Gi       6.8Gi\nSwap:             0B          0B          0B",
+    "nproc": 4,
+    "python_version": "Python 3.12.3",
+    "uv_version": "uv 0.12.13 (x86_64-unknown-linux-gnu)"
+  },
+  "llm_call_count": 0,
+  "notes": [
+    "Research spike: cluster rebuild H1/H2/H3, no src/config/tests edits, no PR.",
+    "ASR/packing out of scope. Shared VAD + unified-norm wav slices reused.",
+    "hypotheses.md absent from pack; hyps taken from the agent prompt.",
+    "nproc=4 so 2-CPU TTFT is not demonstrated."
+  ],
+  "package_versions": {
+    "numpy": "2.5.2",
+    "onnxruntime": "1.23.2",
+    "scikit-learn": "1.9.0",
+    "soundfile": "0.14.0",
+    "speakeronnx": "0.0.1",
+    "torch": "2.14.0+cpu"
+  },
+  "preflight": {
+    "baseline": "cloud_out/artifacts/split3_unified_norm/",
+    "hypotheses_md": "ABSENT — hyps taken from agent prompt",
+    "missing_required": [],
+    "notes": [
+      "Prompt overrides product AGENTS.md: no src/config/tests edits, no PR, no ASR/LLM.",
+      "Install nothing beyond uv.lock."
+    ],
+    "required_ok": true,
+    "status": "ok"
+  },
+  "schema_version": "1",
+  "stage": "D5.TTFT-cluster-rebuild",
+  "wall_time_sec": 40.221,
+  "written_at_utc": "2026-09-11T23:04:45Z"
 }

@@ -8,12 +8,13 @@
   {% endif %}
   <p class="warn {% if not public_error %}hidden{% endif %}" id="job-error">{{ public_error or "" }}</p>
   <div id="progress-block" class="{% if public_error %}hidden{% endif %}">
+    <p class="status-line" id="status-label">Готовим задачу…</p>
+    <p class="meta" id="eta-label"></p>
     <div class="progress-track" aria-hidden="true">
       <div class="progress-bar" id="progress-bar" style="width: {{ overall_pct }}%"></div>
     </div>
-    <p class="meta"><span id="progress-pct">{{ overall_pct }}</span>%</p>
   </div>
-  <p class="meta">Время: <span id="elapsed-label">{{ elapsed_label }}</span></p>
+  <p class="meta">Прошло: <span id="elapsed-label">{{ elapsed_label }}</span></p>
   {% if public_error %}
   <p class="footer-links"><a href="/">На главную</a></p>
   {% endif %}

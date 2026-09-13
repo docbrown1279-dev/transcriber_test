@@ -1,0 +1,37 @@
+{
+  "gain_db": 1.657,
+  "parts": [
+    {
+      "duration_delta_sec": 0.064,
+      "ffprobe_duration_sec": 291.456,
+      "id": "part01",
+      "path": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part01.wav",
+      "plan_duration_sec": 291.392,
+      "plan_end": 291.392,
+      "plan_start": 0.0,
+      "size_bytes": 9326670
+    },
+    {
+      "duration_delta_sec": 0.0,
+      "ffprobe_duration_sec": 310.656,
+      "id": "part02",
+      "path": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part02.wav",
+      "plan_duration_sec": 310.656,
+      "plan_end": 602.048,
+      "plan_start": 291.392,
+      "size_bytes": 9941070
+    },
+    {
+      "duration_delta_sec": 0.032,
+      "ffprobe_duration_sec": 297.984,
+      "id": "part03",
+      "path": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part03.wav",
+      "plan_duration_sec": 297.952,
+      "plan_end": 900.0,
+      "plan_start": 602.048,
+      "size_bytes": 9535566
+    }
+  ],
+  "schema_version": "1",
+  "source_wav": "/workspace/cloud_out/artifacts/full15_job/normalized.wav"
+}

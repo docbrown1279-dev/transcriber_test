@@ -1,0 +1,134 @@
+{
+  "chapters": [
+    {
+      "duration_sec": 55.124,
+      "end": 55.124,
+      "id": "C00",
+      "source_ids": [
+        "s0001",
+        "s0002",
+        "s0003",
+        "s0004",
+        "s0005",
+        "s0006",
+        "s0007",
+        "s0008",
+        "s0009",
+        "s0010",
+        "s0011",
+        "s0012",
+        "s0013"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "start": 0.0,
+      "title": ""
+    },
+    {
+      "duration_sec": 50.6,
+      "end": 106.228,
+      "id": "C01",
+      "source_ids": [
+        "s0014",
+        "s0015",
+        "s0016",
+        "s0017",
+        "s0018",
+        "s0019",
+        "s0020",
+        "s0021",
+        "s0022",
+        "s0023",
+        "s0024",
+        "s0025"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "start": 55.628,
+      "title": ""
+    },
+    {
+      "duration_sec": 165.752,
+      "end": 272.708,
+      "id": "C02",
+      "source_ids": [
+        "s0026",
+        "s0027",
+        "s0028",
+        "s0029",
+        "s0030",
+        "s0031",
+        "s0032",
+        "s0033",
+        "s0034",
+        "s0035",
+        "s0036",
+        "s0037",
+        "s0038",
+        "s0039",
+        "s0040",
+        "s0041",
+        "s0042",
+        "s0043",
+        "s0044",
+        "s0045",
+        "s0046",
+        "s0047",
+        "s0048",
+        "s0049",
+        "s0050",
+        "s0051",
+        "s0052",
+        "s0053",
+        "s0054",
+        "s0055",
+        "s0056",
+        "s0057",
+        "s0058",
+        "s0059"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_02",
+        "SPEAKER_01"
+      ],
+      "start": 106.956,
+      "title": ""
+    },
+    {
+      "duration_sec": 37.04,
+      "end": 309.748,
+      "id": "C03",
+      "source_ids": [
+        "s0060",
+        "s0061",
+        "s0062",
+        "s0063",
+        "s0064",
+        "s0065",
+        "s0066"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01"
+      ],
+      "start": 272.708,
+      "title": ""
+    }
+  ],
+  "chunker": "packing_c",
+  "embedding_model": "rubert_tiny2",
+  "job_id": "part02",
+  "metrics": {
+    "chapters_per_minute": 0.775,
+    "long_chapters": 0,
+    "short_chapters": 1
+  },
+  "runtime_sec": 0.125,
+  "schema_version": "1",
+  "similarity_threshold": 0.7
+}

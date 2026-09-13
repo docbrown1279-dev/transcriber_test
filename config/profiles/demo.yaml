@@ -16,6 +16,7 @@ diarization:
 
 pipeline:
   toc_mode: b
+  ttft_split: true
 
 llm:
   mode: api

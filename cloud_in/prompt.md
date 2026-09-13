@@ -1,90 +1,131 @@
-# Stage D3 — insights + LLM report
+# Stage D5.TTFT-split — FINAL A/B: EOS full-like AHC vs constrained merge vs H1-tune
 
-You are the product development cloud agent. Read `cloud_in/agent/AGENTS.md` and
-`cloud_in/agent/rules.md` first, then this prompt. The run is unattended: do not ask for approval,
-install what the stage lists, finish with a gate report, insight artifacts, and a branch push
-(no PR).
+You are the **research spike** cloud agent. This prompt overrides product defaults.
+Do **not** edit `src/`, `config/`, `tests/`. No PR. `HF_HUB_OFFLINE=1`.
+Push branch `cursor/d5-ttft-split`.
 
-## Why this stage
+## Hard constraints (all variants)
 
-D2 delivered `chapters.json` (packing C + P1 titles). D3 must produce **insights + a draft
-report**: per-chapter extract, one report call, markdown render. LLM is **API-only**; default
-backend Gemini 2.5 Flash. NVIDIA/Qwen are the same prompts via `openai_compat` + `base_url` in
-`config/base_llm.yaml` — implement the client, do not live-call them in this gate.
+- **One unified file gain** (same as `split3_unified_norm`): normalize once, slice wavs.
+- **Shared VAD**: speech regions = slices of full-file/shared speech (not per-part VAD).
+- Same WeSpeaker windows `1.5/0.75`, AHC metric cosine / linkage average / default thr **0.85**.
+- Reuse embeddings under `cloud_out/artifacts/split3_cluster_rebuild/` if present
+  (`part0{1,2,3}_embeddings.npy` + windows + offsets). Re-embed only if missing.
+- No ASR / LLM / gold / sticky-previous-window as a main idea.
+- Compare to: (a) `full15` turns, (b) **H1** under `split3_cluster_rebuild/H1_cluster_then_match/`.
 
-Do not bakeoff extract filters or new prompt wording. Copy frozen files from
-`agent_docs/contracts/llm/`. Human manual already exists: `manuals/llm.md` (do not rewrite).
+## Why
 
-Roadmap stages are `D0 → D1 → D2 → D3 → …`. **G3** is only the auto-check list inside D3.
+Hundreds of windows; only a few differ near pause cuts vs a true full-file pass.
+**V1** (one AHC at end on concatenated part embeddings) should be the closest offline
+proxy to full — useful as quality ceiling for split *materials*, not as TTFT (waits for
+all parts). **V2/V3** are online-ish paths that keep early part1 labels.
 
-## Task
+---
 
-1. Follow `agent_docs/instructions/coder_D3.md` step by step.
-2. Follow `agent_docs/instructions/tester_D3.md` for tests and `[TEST-ID]`s.
-3. Run extract + report on the packed transcript and chapters (required). **No ASR. No audio.**
-4. Write `cloud_out/gate_D3.md` for checks G3.0–G3.9.
+## V1 — Embed per part, cluster **once at EOS** (full-like)
 
-If instruction files and this prompt disagree, the instruction files win; note the discrepancy in
-the gate report.
+1. Part1/2/3: extract windows + embeddings only (no per-part speaker commit required).
+2. Concatenate all windows in absolute time order.
+3. **Single** AHC on the full concatenation (thr=0.85).
+4. Merge turns (same gap/absorb as config).
+5. Report metrics on part02/part03 slices **and** on the whole 15′.
+6. Remap speaker ids to maximize duration overlap with `full15` (greedy) for comparison
+   only — do not use gold.
 
-## Inputs
+**Expectation:** closest to full15 among split-derived methods.
 
-Packed for this stage (must pass preflight):
+---
 
-| Path | What |
-|---|---|
-| `cloud_in/inputs/STACK.md` | frozen demo stack — do not reopen bakeoffs |
-| `cloud_in/inputs/artifacts/voice_002/transcript.json` | D1 T2 full-meeting transcript |
-| `cloud_in/inputs/artifacts/voice_002/chapters.json` | D2 HUMAN_GATE PASS chapters (14) |
-| `cloud_in/inputs/artifacts/voice_002/transcript.md` | human-readable dump for G3.5 / G3.9 only |
+## V2 — Per-part clusters, constrained merge into previous (online)
 
-Also in git:
+Process parts in order. After each part, rebuild a **global** labeling such that
+**all previous parts’ committed labels remain valid** (every earlier window keeps its
+speaker id). Cap search at **20** attempts per part.
 
-| Path | What |
-|---|---|
-| `agent_docs/instructions/coder_D3.md`, `tester_D3.md` | implementation and test specs |
-| `agent_docs/contracts/*.md` and `agent_docs/contracts/llm/` | schemas, `base_llm.yaml`, prompts |
-| `src/`, `config/`, `tests/` | D0–D2 code on the branch — extend it |
+### Per part `p`
 
-Do **not** open `docs/research_results/`, `docs/dev_specs.md`, `eval/`, `data/`, or `.env`.
+1. Local AHC on part `p` windows (thr=0.85) → local clusters.
+2. Init global centroids = **center of mass** (mean embedding) of each existing global
+   speaker from all windows already committed; for brand-new local mass use local means.
+3. Try to assign each **local cluster** (whole cluster) to a global speaker:
+   - Prefer nearest global centroid if `dist ≤ 0.85` **and** this does not violate the
+     constraint that previously committed windows stay on their ids
+     (i.e. you may only *add* windows to an existing id or create a new id;
+     you must not recolor past windows).
+   - If a local cluster does not fit: create a **new** global id (centroid = its mean).
+4. If the merge is unstable / constraint fails / distances absurd: **nudge** the target
+   centroid toward the mean of its **nearest member windows** (or toward the local
+   cluster mean being absorbed), recompute, retry. Max **20** attempts, then accept
+   best feasible (document failures).
+5. Commit part `p` labels. Update centroids as centers of mass of all committed windows
+   per id. Proceed to next part.
 
-## Approved dependencies
+Part1 = plain AHC (commit). Part2/3 = constrained merge as above.
 
-`httpx` in extra `llm` (OpenAI-compat). `google-genai` is already present. Install only via
-`uv add` / documented extras. Do **not** add `openai`, `llama-cpp-python`, or GGUF downloads.
+---
 
-Secrets: `GEMINI_API_KEY` for the default backend. Never send audio to an API. Never print key
-values.
+## V3 — H1 base + one light tune (hybrid)
 
-## Gate D3 (must pass before push)
+Start from **H1** (local AHC per part → whole-cluster match to gallery / new id).
+Add **exactly one** extra rule (document which you pick; prefer A unless blocked):
 
-Checks G3.0–G3.9 from `agent_docs/contracts/quality_gates.md`, on
-`cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}` vs packed chapters +
-transcript:
+- **A (preferred):** after H1 match, any local cluster with `speech_union < 2.0 s`
+  whose assigned id differs from the **previous local cluster in time** → reassign to
+  that previous cluster’s id (glue micro-clusters only; not per-window sticky).
+- **B:** clear-winner margin 0.05 on gallery match; long ambiguous → new id;
+  short ambiguous → nearest (H3 rule), on top of H1.
 
-- G3.0 preflight (pack + `GEMINI_API_KEY`)
-- G3.1 clock-gate after hydration
-- G3.2 src segment belongs to the chapter
-- G3.3 every key_point has src
-- G3.4 digit groups occur in chapter text
-- G3.5 agent: no invented owners/tasks
-- G3.6 key_moments 5–12 (WARN outside)
-- G3.7 no stamp prefixes
-- G3.8 draft_warning true in demo
-- G3.9 agent: ≥60% verifiable key_points
+Do not combine A and B. Do not reintroduce H2 window refine as the main path.
 
-Also: `uv run pytest tests/ -v`, `ruff`, `mypy`, `bandit` exit 0.
+---
+
+## Metrics (coarse only — no semantic / gold judgment)
+
+There is **no `eval/` and no gold** in cloud. Do **not** claim a quality winner by meaning.
+Human will listen locally later. Cloud only reports **structural proxies**:
+
+| Proxy | Definition | Why we look |
+|---|---|---|
+| `n_turns_lt_1s` / `lt_2s` | turns shorter than 1s / 2s after merge | “fewer crumbs” |
+| `n_speaker_switches` | consecutive turns with different speaker id | less id chatter |
+| `n_speakers` / `new_ids` | speaker inventory | catch explode/collapse |
+| hotspot list | turns overlapping abs `[365.0, 375.5]` | known flicker zone dump |
+| V1 vs full15 | greedy duration remap → agreement % | “is EOS-on-parts near full?” — still not gold |
+
+For V1/V2/V3 and refs (full15, H1), compute these on **part02 and part03** slices.
+V1 also whole-file metrics + remap-vs-full15.
+
+Write `cloud_out/artifacts/split3_final_ab/compare.md` with:
+- tables of the proxies above (V1 / V2 / V3 / H1 / full15)
+- **ranking by proxies only** (e.g. fewer lt1s + switches, without huge n_speakers swing)
+- explicit note: `SEMANTIC_CHECK = local human; cloud did not judge meaning`
+- optional one-line **candidate** for TTFT path (V2/V3/H1) and for ceiling (V1)—labeled
+  `proxy_pick`, not PASS/FAIL
+
+## Task order
+
+1. `cloud_out/run_meta.json` — stage `D5.TTFT-final-ab`
+2. Confirm unified gain + shared VAD + load/reuse embeddings
+3. Run V1, V2, V3 separately (no combined frankenstein)
+4. Metrics + `compare.md`
+5. Commit `cloud_out/artifacts/split3_final_ab/` (+ scripts); push; no PR
 
 ## Deliverables
 
-1. Code under `src/` / `config/` / `pyproject.toml`; tests under `tests/`
-2. `cloud_out/artifacts/voice_002/{insights.json,report.json,report.md}`
-3. `cloud_out/gate_D3.md` + `cloud_out/run_meta.json`
-4. Progress lines in `agent_docs/progress/stage_D3.md`
-5. Commit and **push** branch `cursor/demo-d3-insights`. Do **not** open a pull request.
+```
+cloud_out/artifacts/split3_final_ab/
+  V1_eos_ahc/
+  V2_constrained_merge/
+  V3_h1_tune/
+  compare.md
+  run notes / attempt logs for V2
+  scripts/
+```
+
+Each variant: `turns_part02.json`, `turns_part03.json`, and for V1 also `turns_full.json`;
+`metrics_*.json`.
 
 ## Stop-list
 
-Do not: read `eval/` or `.env`; process or send audio; re-run ASR/VAD/chunking; implement
-local llama.cpp; bakeoff prompts; weaken gate thresholds; force-push; open a PR; read meeting
-text from `data/` (use the packed files only).
+No `src/` edits, no gold/`eval/`, no unbounded search (>20 attempts), no PR.

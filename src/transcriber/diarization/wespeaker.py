@@ -33,14 +33,18 @@ from transcriber.models.artifacts import (
 )
 
 
-def _l2_normalize(matrix: np.ndarray) -> np.ndarray:
+def l2_normalize(matrix: np.ndarray) -> np.ndarray:
     """Построчная L2-нормализация эмбеддингов (устойчивый cosine)."""
     norms = np.linalg.norm(matrix, axis=1, keepdims=True)
     norms = np.maximum(norms, 1e-12)
     return cast(np.ndarray[Any, Any], matrix / norms)
 
 
-def _renumber_speakers(turns: list[TurnItem]) -> list[TurnItem]:
+# Back-compat alias for older imports
+_l2_normalize = l2_normalize
+
+
+def renumber_speakers(turns: list[TurnItem]) -> list[TurnItem]:
     """Перенумеровывает лейблы в плотный ряд SPEAKER_00… без дыр в id."""
     order: list[str] = []
     for turn in turns:
@@ -50,6 +54,140 @@ def _renumber_speakers(turns: list[TurnItem]) -> list[TurnItem]:
     return [
         TurnItem(id=t.id, start=t.start, end=t.end, speaker=mapping[t.speaker]) for t in turns
     ]
+
+
+_renumber_speakers = renumber_speakers
+
+
+def extract_wespeaker_windows(
+    wav_path: Path | str,
+    speech: SpeechArtifact,
+    cfg: DiarizationConfig,
+    embedder: Any,
+) -> tuple[list[tuple[float, float]], np.ndarray]:
+    """Same windowing as WeSpeakerDiarizer.diarize (embeddings L2-normalized)."""
+    audio, sr = sf.read(str(wav_path))
+    if audio.ndim > 1:
+        audio = audio.mean(axis=1)
+
+    vad_intervals = [Interval(start=r.start, end=r.end) for r in speech.regions]
+    speech_islands = merge_speech_regions(
+        vad_intervals,
+        max_gap_sec=cfg.merge.vad_premerge_gap_sec,
+        min_duration_sec=cfg.embed.min_sec,
+    )
+
+    segments: list[tuple[float, float]] = []
+    embeddings: list[np.ndarray] = []
+    window_sec = cfg.embed.window_sec
+    step_sec = cfg.embed.step_sec
+    min_embed = cfg.embed.min_sec
+
+    for island in speech_islands:
+        dur = island.duration
+        r_start_idx = int(island.start * sr)
+        r_end_idx = int(island.end * sr)
+        if r_end_idx <= r_start_idx:
+            continue
+
+        if dur <= window_sec + step_sec:
+            slice_audio = audio[r_start_idx:r_end_idx]
+            if len(slice_audio) < int(min_embed * sr):
+                continue
+            emb = embedder.embed(slice_audio)
+            segments.append((round(island.start, 3), round(island.end, 3)))
+            embeddings.append(np.asarray(emb, dtype=np.float64))
+            continue
+
+        win_len = int(window_sec * sr)
+        step_len = int(step_sec * sr)
+        curr = r_start_idx
+        while curr + win_len <= r_end_idx:
+            emb = embedder.embed(audio[curr : curr + win_len])
+            segments.append((round(curr / sr, 3), round((curr + win_len) / sr, 3)))
+            embeddings.append(np.asarray(emb, dtype=np.float64))
+            curr += step_len
+
+        rem = r_end_idx - curr
+        if rem >= int(min_embed * sr):
+            emb = embedder.embed(audio[curr:r_end_idx])
+            segments.append((round(curr / sr, 3), round(r_end_idx / sr, 3)))
+            embeddings.append(np.asarray(emb, dtype=np.float64))
+
+    if not embeddings:
+        return [], np.zeros((0, 0), dtype=np.float64)
+    return segments, l2_normalize(np.stack(embeddings))
+
+
+def clip_turn_overlaps(merged: list[TurnItem]) -> list[TurnItem]:
+    out = list(merged)
+    for i in range(len(out) - 1):
+        if out[i].end > out[i + 1].start:
+            new_boundary = round(out[i + 1].start, 3)
+            if new_boundary > out[i].start:
+                out[i] = TurnItem(
+                    id=out[i].id,
+                    start=out[i].start,
+                    end=new_boundary,
+                    speaker=out[i].speaker,
+                )
+    return out
+
+
+def turns_from_window_speakers(
+    segments: list[tuple[float, float]],
+    speaker_ids: list[str],
+    cfg: DiarizationConfig,
+    *,
+    job_id: str,
+    total_duration: float,
+    runtime_sec: float,
+    compact_renumber: bool,
+) -> TurnsArtifact:
+    raw_turns: list[dict[str, Any]] = []
+    for (start, end), spk in zip(segments, speaker_ids, strict=True):
+        raw_turns.append({"start": start, "end": end, "speaker": spk})
+    merged = merge_turns(
+        raw_turns,
+        same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
+        absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
+    )
+    merged = clip_turn_overlaps(merged)
+    if compact_renumber:
+        merged = renumber_speakers(merged)
+    holes = find_holes(merged, total_duration, min_hole_sec=cfg.merge.min_hole_sec)
+    unique_speakers = len({t.speaker for t in merged})
+    return TurnsArtifact(
+        schema_version="1",
+        job_id=job_id,
+        diarizer="wespeaker_onnx",
+        speaker_count=unique_speakers,
+        turns=merged,
+        holes=holes,
+        merge=TurnMergeInfo(
+            same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
+            absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
+        ),
+        runtime_sec=runtime_sec,
+    )
+
+
+def window_speakers_after_turns(
+    segments: list[tuple[float, float]],
+    raw_speaker_ids: list[str],
+    turns: list[TurnItem],
+) -> list[str]:
+    """Map each window to the overlapping merged turn speaker (post-absorb)."""
+    out: list[str] = []
+    for (start, end), raw in zip(segments, raw_speaker_ids, strict=True):
+        mid = (start + end) / 2.0
+        hit = None
+        for turn in turns:
+            if turn.start - 1e-6 <= mid <= turn.end + 1e-6:
+                hit = turn.speaker
+                break
+        out.append(hit or raw)
+    return out
 
 
 class WeSpeakerDiarizer(Diarizer):
@@ -100,59 +238,10 @@ class WeSpeakerDiarizer(Diarizer):
             dump_artifact(artifact, wav_path.parent / "turns.json")
             return artifact
 
-        audio, sr = sf.read(str(wav_path))
-        if audio.ndim > 1:
-            audio = audio.mean(axis=1)
-
-        # 1f2: склейка VAD-фрагментов до окон; чанки < min_embed_sec — пропуск
-        vad_intervals = [Interval(start=r.start, end=r.end) for r in speech.regions]
-        speech_islands = merge_speech_regions(
-            vad_intervals,
-            max_gap_sec=cfg.merge.vad_premerge_gap_sec,
-            min_duration_sec=cfg.embed.min_sec,
-        )
-
         embedder = self._get_embedder()
-        segments: list[tuple[float, float]] = []
-        embeddings: list[np.ndarray] = []
+        segments, x = extract_wespeaker_windows(wav_path, speech, cfg, embedder)
 
-        window_sec = cfg.embed.window_sec
-        step_sec = cfg.embed.step_sec
-        min_embed = cfg.embed.min_sec
-
-        for island in speech_islands:
-            dur = island.duration
-            r_start_idx = int(island.start * sr)
-            r_end_idx = int(island.end * sr)
-            if r_end_idx <= r_start_idx:
-                continue
-
-            # Короткие острова — один эмбеддинг на весь интервал
-            if dur <= window_sec + step_sec:
-                slice_audio = audio[r_start_idx:r_end_idx]
-                if len(slice_audio) < int(min_embed * sr):
-                    continue
-                emb = embedder.embed(slice_audio)
-                segments.append((round(island.start, 3), round(island.end, 3)))
-                embeddings.append(np.asarray(emb, dtype=np.float64))
-                continue
-
-            win_len = int(window_sec * sr)
-            step_len = int(step_sec * sr)
-            curr = r_start_idx
-            while curr + win_len <= r_end_idx:
-                emb = embedder.embed(audio[curr : curr + win_len])
-                segments.append((round(curr / sr, 3), round((curr + win_len) / sr, 3)))
-                embeddings.append(np.asarray(emb, dtype=np.float64))
-                curr += step_len
-
-            rem = r_end_idx - curr
-            if rem >= int(min_embed * sr):
-                emb = embedder.embed(audio[curr:r_end_idx])
-                segments.append((round(curr / sr, 3), round(r_end_idx / sr, 3)))
-                embeddings.append(np.asarray(emb, dtype=np.float64))
-
-        if not embeddings:
+        if not segments:
             artifact = TurnsArtifact(
                 schema_version="1",
                 job_id=resolved_job_id,
@@ -169,7 +258,6 @@ class WeSpeakerDiarizer(Diarizer):
             dump_artifact(artifact, wav_path.parent / "turns.json")
             return artifact
 
-        x = _l2_normalize(np.stack(embeddings))
         if len(x) == 1:
             labels = [0]
         else:
@@ -181,49 +269,15 @@ class WeSpeakerDiarizer(Diarizer):
             )
             labels = clusterer.fit_predict(x).tolist()
 
-        raw_turns: list[dict[str, Any]] = []
-        for (start, end), lbl in zip(segments, labels, strict=True):
-            raw_turns.append(
-                {
-                    "start": start,
-                    "end": end,
-                    "speaker": f"SPEAKER_{int(lbl):02d}",
-                }
-            )
-
-        merged = merge_turns(
-            raw_turns,
-            same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
-            absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
-        )
-
-        for i in range(len(merged) - 1):
-            if merged[i].end > merged[i + 1].start:
-                new_boundary = round(merged[i + 1].start, 3)
-                if new_boundary > merged[i].start:
-                    merged[i] = TurnItem(
-                        id=merged[i].id,
-                        start=merged[i].start,
-                        end=new_boundary,
-                        speaker=merged[i].speaker,
-                    )
-
-        merged = _renumber_speakers(merged)
-        holes = find_holes(merged, total_duration, min_hole_sec=cfg.merge.min_hole_sec)
-        unique_speakers = len({t.speaker for t in merged})
-
-        artifact = TurnsArtifact(
-            schema_version="1",
+        raw_ids = [f"SPEAKER_{int(lbl):02d}" for lbl in labels]
+        artifact = turns_from_window_speakers(
+            segments,
+            raw_ids,
+            cfg,
             job_id=resolved_job_id,
-            diarizer="wespeaker_onnx",
-            speaker_count=unique_speakers,
-            turns=merged,
-            holes=holes,
-            merge=TurnMergeInfo(
-                same_speaker_gap_sec=cfg.merge.same_speaker_gap_sec,
-                absorb_shorter_than_sec=cfg.merge.absorb_turn_shorter_than_sec,
-            ),
+            total_duration=total_duration,
             runtime_sec=round(time.time() - t0, 3),
+            compact_renumber=True,
         )
         dump_artifact(artifact, wav_path.parent / "turns.json")
         return artifact

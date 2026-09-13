@@ -1,0 +1,23 @@
+{
+  "branch": "cursor/d5-ttft-split",
+  "centroid_assign_ok": true,
+  "git_rev": "9a62d00b21f99b80fe39e122825b91d893d52b68",
+  "host": {
+    "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "nproc": 4,
+    "python_version": "Python 3.12.3"
+  },
+  "llm_call_count": 0,
+  "merge_mode": "tail_packing_plus_centroid_speakers",
+  "notes": [
+    "3-part split with shared full15 VAD slices; no per-part Silero; no src/config edits.",
+    "llm_sleep_2s is a wall-clock sleep, not an API call.",
+    "Does not clobber cloud_out/artifacts/split3/."
+  ],
+  "schema_version": "1",
+  "stage": "D5.TTFT-split3-shared-vad",
+  "ttft_after_sleep_sec": 36.605,
+  "ttft_first_chapter_sec": 34.605,
+  "wall_total_sec": 108.819,
+  "written_at_utc": "2026-09-11T10:39:09Z"
+}

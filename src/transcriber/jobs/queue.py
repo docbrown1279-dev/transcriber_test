@@ -14,10 +14,10 @@ from transcriber.jobs.store import (
     append_stage_event,
     get_job,
     get_job_dir,
+    recover_orphaned_running_jobs,
     update_job_state,
 )
 from transcriber.jobs.ttl import sweep_expired_jobs
-from transcriber.pipeline.events import StageEvent
 from transcriber.pipeline.orchestrator import run_job
 from transcriber.pipeline.steps import PIPELINE_STEPS
 from transcriber.web.public_errors import (
@@ -52,8 +52,9 @@ class JobQueue:
         self._lock = threading.Lock()
 
     def start(self) -> None:
-        """Запускает фоновый поток воркера."""
+        """Снимает фантомные running и запускает фоновый поток воркера."""
         with self._lock:
+            recover_orphaned_running_jobs(self.storage_root)
             if self._thread is not None and self._thread.is_alive():
                 return
             self._stop.clear()
@@ -199,19 +200,60 @@ def stage_names() -> list[str]:
     return [step.stage for step in PIPELINE_STEPS]
 
 
+def _active_stage(job: Any) -> Any | None:
+    """Prefer the *latest* running stage (TTFT leaves early stages running otherwise)."""
+    stages = list(getattr(job, "stages", None) or [])
+    running = [item for item in stages if getattr(item, "status", "") == "running"]
+    if running:
+        return running[-1]
+    return stages[-1] if stages else None
+
+
 def job_events_payload(job_id: str, storage_root: Path | str) -> dict[str, Any]:
     """JSON для polling `GET /jobs/{id}/events` (без технических ошибок во фронт)."""
+    from transcriber.pipeline.ttft_progress import format_dual_eta_ru, format_eta_ru
+
     job = get_job(job_id, storage_root)
     total = len(stage_names()) + 1
     elapsed = processing_seconds(job)
     running = job.state in {"queued", "running"}
+    active = _active_stage(job)
+    status_label = None
+    eta_sec = None
+    eta_total_sec = None
+    soft_pct = overall_progress_pct(job.stages, total, job.state)
+    if active is not None:
+        status_label = getattr(active, "message", None) or getattr(active, "stage", None)
+        eta_sec = getattr(active, "eta_sec", None)
+        eta_total_sec = getattr(active, "eta_total_sec", None)
+        if getattr(active, "pct", None) is not None and job.state == "running":
+            # Prefer stage-reported soft pct when present (TTFT clock).
+            try:
+                soft_pct = max(soft_pct, int(float(active.pct)))
+            except (TypeError, ValueError):
+                pass
+    if job.state == "done":
+        status_label = status_label or "Готово"
+        soft_pct = 100
+        eta_sec = None
+        eta_total_sec = None
+    dual = format_dual_eta_ru(eta_sec, eta_total_sec)
+    if dual is None and eta_sec is not None:
+        dual = format_eta_ru(eta_sec)
     return {
         "job_id": job.job_id,
         "state": job.state,
         "error": public_job_error(job.state, job.error),
-        "pct": overall_progress_pct(job.stages, total, job.state),
+        "pct": soft_pct,
         "elapsed_sec": elapsed,
         "elapsed_running": running,
         "created_at": job.created_at,
         "expires_at": job.expires_at,
+        "early_ready": bool(job.early_ready),
+        "speakers_finalized": bool(job.speakers_finalized),
+        "status_label": status_label,
+        "eta_sec": eta_sec,
+        "eta_total_sec": eta_total_sec,
+        "eta_label": dual,
+        "stage": getattr(active, "stage", None) if active is not None else None,
     }

@@ -1,9 +1,10 @@
 # Тикет: TTFT — разрез файла + якорь центроидов (S2)
 
-**Статус:** OPEN — **NEXT research** (unit-tune **REFUSED**)  
-**Приоритет:** высокий для TTFT  
-**Ветка (когда откроем):** **новая** `cursor/d5-ttft-split` (от свежего `main` / demo), не follow-up в twopass  
-**Спека направления:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md)
+**Статус:** CLOSED (2026-09-13) — product file-split in demo (`pipeline.ttft_split`); gate **PASS_WITH_WARNINGS** (`product_gate.md`: TTFT ≈169 s ≤300 @ 2 CPU / 8 GiB).  
+**Приоритет:** —  
+**Ветка:** `cursor/d5-ttft-split` → merge `main`  
+**Спека направления:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md)  
+**Отчёт:** [`../reports/d5_ttft_split/product_gate.md`](../reports/d5_ttft_split/product_gate.md)
 
 ---
 
@@ -45,7 +46,7 @@
 
 | Метрика | Цель |
 |---|---|
-| TTFT (первая titled-глава) | ≤ 300–360 с на 15′ @ 2 CPU (warm) |
+| TTFT (первая usable `chapters.json`, titles optional) | ≤ **300 с** на 15′ @ 2 CPU / 8 GiB (warm) |
 | Крупные спикеры part1→full | id стабильны (якорь) |
 | Качество vs 2A full | не хуже заметно на gold / глаз на job |
 
@@ -54,6 +55,8 @@
 ## Definition of done
 
 - [x] Unit-tune закрыт: SKIPPED  
-- [ ] Спека merge+anchor → coder (после research OK)  
-- [ ] Bench TTFT на 15′  
-- [ ] Отчёт: TTFT, стабильность id, вердикт C+split vs нужен B/Jina  
+- [x] Спека merge+anchor → coder instructions (`coder_D5_ttft.md`; mid = assign B, EOS = V1)  
+- [x] Bench TTFT на 15′ @ 2 CPU / 8 GiB ≤ 300 с (`ttft_first_chapter_sec≈169`)  
+- [x] Отчёт: TTFT, стабильность id, EOS vs full15; H1/V2 не в mid  
+- **Backlog (не блокер):** UI status/ETA poll «подтупливает» — [`ticket_d5_ui_upload_progress.md`](ticket_d5_ui_upload_progress.md)  
+

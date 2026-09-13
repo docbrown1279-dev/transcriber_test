@@ -42,6 +42,7 @@
         {% if edit_error %}<span class="warn">{{ edit_error }}</span>{% endif %}
         {% if edit_msg == "1" %}Сохранено.{% endif %}
         {% if restore_msg == "1" %}Глава возвращена к исходному распознаванию.{% endif %}
+        {% if not speakers_finalized %}Смена спикера временно недоступна — идёт уточнение диаризации.{% endif %}
       </span>
     </div>
     <article id="chapter-view" class="chapter-text {% if edit_open %}hidden{% endif %}">
@@ -56,11 +57,15 @@
       <div class="edit-row">
         <p class="meta">
           <span class="tc">{{ format_clock(seg.start) }}</span>
+          {% if speakers_finalized %}
           <select class="spk-select" name="seg_speaker" aria-label="Спикер">
             {% for sid in speaker_ids %}
             <option value="{{ sid }}" {% if sid == seg.speaker %}selected{% endif %}>{{ speaker_display(sid, speaker_aliases) }}</option>
             {% endfor %}
           </select>
+          {% else %}
+          <span class="spk">{{ speaker_display(seg.speaker, speaker_aliases) }}</span>
+          {% endif %}
         </p>
         <input type="hidden" name="seg_id" value="{{ seg.id }}">
         <textarea name="seg_text" rows="2">{{ seg.text }}</textarea>

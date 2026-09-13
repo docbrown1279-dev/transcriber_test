@@ -1,0 +1,36 @@
+{
+  "baseline_part1_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ],
+  "cluster_distance_threshold": 0.85,
+  "embed_sec": {
+    "part01": 12.653,
+    "part02": 14.635,
+    "part03": 12.687
+  },
+  "embedding_dim": 256,
+  "hotspot_abs": [
+    365.0,
+    375.5
+  ],
+  "n_windows": {
+    "part01": 321,
+    "part02": 339,
+    "part03": 289
+  },
+  "part1_gallery_ids": [
+    "SPEAKER_00",
+    "SPEAKER_01"
+  ],
+  "vad_source": "unified_norm speech.json if present else full15 slice",
+  "wav_meta": {
+    "parts": {
+      "part01": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part01.wav",
+      "part02": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part02.wav",
+      "part03": "/workspace/cloud_out/artifacts/split3_unified_norm/parts/part03.wav"
+    },
+    "reused": true,
+    "source": "unified_norm_slices"
+  }
+}

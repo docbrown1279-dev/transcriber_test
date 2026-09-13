@@ -1,0 +1,143 @@
+{
+  "chapters": [
+    {
+      "duration_sec": 158.504,
+      "end": 689.588,
+      "id": "C06",
+      "source_ids": [
+        "part03:s0015",
+        "part03:s0016",
+        "part03:s0017",
+        "part03:s0018",
+        "part03:s0019",
+        "part03:s0020",
+        "part03:s0021",
+        "part03:s0022",
+        "part03:s0023",
+        "part03:s0024",
+        "part03:s0025",
+        "part03:s0026",
+        "part03:s0027",
+        "part03:s0028",
+        "part03:s0029",
+        "part03:s0030",
+        "part03:s0031",
+        "part03:s0032",
+        "part03:s0033",
+        "part03:s0034",
+        "part03:s0035",
+        "part03:s0036",
+        "part03:s0037",
+        "part03:s0038",
+        "part03:s0039",
+        "part03:s0040",
+        "part03:s0041",
+        "part03:s0042",
+        "part03:s0043",
+        "part03:s0044",
+        "part03:s0045",
+        "part03:s0046",
+        "part03:s0047",
+        "part03:s0048",
+        "part03:s0049",
+        "part03:s0050",
+        "part03:s0051",
+        "part03:s0052",
+        "part03:s0053"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01",
+        "SPEAKER_02"
+      ],
+      "start": 531.084,
+      "title": "Расчет нагрузок и инженерное согласование квартир"
+    },
+    {
+      "duration_sec": 148.712,
+      "end": 841.844,
+      "id": "C07",
+      "source_ids": [
+        "part04:s0001",
+        "part04:s0002",
+        "part04:s0003",
+        "part04:s0004",
+        "part04:s0005",
+        "part04:s0006",
+        "part04:s0007",
+        "part04:s0008",
+        "part04:s0009",
+        "part04:s0010",
+        "part04:s0011",
+        "part04:s0012",
+        "part04:s0013",
+        "part04:s0014",
+        "part04:s0015",
+        "part04:s0016",
+        "part04:s0017",
+        "part04:s0018",
+        "part04:s0019",
+        "part04:s0020",
+        "part04:s0021",
+        "part04:s0022",
+        "part04:s0023",
+        "part04:s0024"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01",
+        "SPEAKER_02"
+      ],
+      "start": 693.132,
+      "title": "Планировочное решение по корпусу восемь"
+    },
+    {
+      "duration_sec": 41.896,
+      "end": 884.276,
+      "id": "C08",
+      "source_ids": [
+        "part04:s0025",
+        "part04:s0026",
+        "part04:s0027",
+        "part04:s0028",
+        "part04:s0029",
+        "part04:s0030"
+      ],
+      "speakers": [
+        "SPEAKER_00",
+        "SPEAKER_01",
+        "SPEAKER_02"
+      ],
+      "start": 842.38,
+      "title": "Подготовка материалов по помещению и энергоснабжению"
+    },
+    {
+      "duration_sec": 14.952,
+      "end": 900.052,
+      "id": "C09",
+      "source_ids": [
+        "part04:s0031",
+        "part04:s0032",
+        "part04:s0033",
+        "part04:s0034"
+      ],
+      "speakers": [
+        "SPEAKER_02",
+        "SPEAKER_00"
+      ],
+      "start": 885.1,
+      "title": "Сравнение мощности трансформаторов корпусов"
+    }
+  ],
+  "chunker": "packing_c",
+  "embedding_model": "rubert_tiny2",
+  "job_id": "job",
+  "metrics": {
+    "chapters_per_minute": 0.667,
+    "long_chapters": 0,
+    "short_chapters": 5
+  },
+  "runtime_sec": 553.62,
+  "schema_version": "1",
+  "similarity_threshold": 0.7
+}

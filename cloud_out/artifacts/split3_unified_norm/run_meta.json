@@ -1,0 +1,44 @@
+{
+  "branch": "cursor/d5-ttft-split",
+  "centroid_assign_ok": true,
+  "gain_db": 1.657,
+  "git_rev": "fad9f2d60f2fa9602d5a70ece75d6d1a15b89d04",
+  "host": {
+    "ffmpeg_version": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+    "nproc": 4,
+    "python_version": "Python 3.12.3"
+  },
+  "llm_call_count": 0,
+  "loudness": {
+    "mode": "unified_full15_then_slice",
+    "part02_turns_lt_1s_shared_vad": 14,
+    "part02_turns_lt_1s_unified": 13,
+    "shared_vad_per_part_gain_db": {
+      "part01": 1.657,
+      "part02": 3.398,
+      "part03": 2.28
+    },
+    "unified": {
+      "gain_applied": true,
+      "gain_db": 1.657,
+      "path": "/workspace/cloud_out/artifacts/full15_job/normalized.wav",
+      "peak_dbfs": -2.657,
+      "reused": true,
+      "rms_dbfs": -33.055
+    }
+  },
+  "merge_mode": "tail_packing_plus_centroid_speakers",
+  "notes": [
+    "A/B loudness: one full-file normalize then wav slices; no per-part re-gain.",
+    "Shared full15 VAD + centroid assign unchanged. ASR per-turn gain still on.",
+    "llm_sleep_2s is a wall-clock sleep, not an API call.",
+    "Does not clobber cloud_out/artifacts/split3_shared_vad/."
+  ],
+  "prep_sec": 0.328,
+  "schema_version": "1",
+  "stage": "D5.TTFT-split3-unified-norm",
+  "ttft_after_sleep_sec": 34.798,
+  "ttft_first_chapter_sec": 32.798,
+  "wall_total_sec": 100.36,
+  "written_at_utc": "2026-09-11T20:50:22Z"
+}

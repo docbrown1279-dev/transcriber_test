@@ -17,6 +17,8 @@ audio:
     rms_threshold_dbfs: -30.0
     target_dbfs: -23.0
     max_db: 18.0
+    # Whole-file normalize when pipeline.ttft_split is on; per-turn ASR keeps max_db.
+    file_max_db: 2.0
     peak_ceiling_dbfs: -1.0
   asr_per_turn_gain: true
   vad_preprocess:
@@ -44,6 +46,8 @@ diarization:
     # T2 soft glue (eval/d1/5): mild absorb, slightly wider VAD premerge
     same_speaker_gap_sec: 0.3
     absorb_turn_shorter_than_sec: 1.0
+    # EOS: absorb whole SPEAKER_* ids whose union speech is below this (not turn absorb)
+    min_speaker_speech_sec: 2.0
     min_hole_sec: 0.5
     vad_premerge_gap_sec: 0.5
   embed:
@@ -87,10 +91,25 @@ chunking:
     enabled: false
     provider: disabled
 
-# --- pipeline TOC (D4.1) ---
+# --- pipeline TOC (D4.1) + TTFT file-split (D5.TTFT) ---
 pipeline:
   # a = ASR all → batch titles; b = ASR slices → title when next chapter appears
   toc_mode: b
+  # false = full-file path (unchanged). Demo overlay sets true.
+  ttft_split: false
+  ttft:
+    # Allowed part length band 4–6 min (target ~5); n_parts is derived, not fixed
+    min_part_sec: 240
+    max_part_sec: 360
+    target_part_sec: 300
+    min_pause_sec: 0.8
+    search_half_width_sec: 90
+    progress:
+      # Empirically ~1% of wall on 15′ @ 2CPU (normalize+VAD+cut); was 0.05 → ETA ~5× too short
+      prep_fraction: 0.01
+      diar_fraction: 0.55
+      asr_fraction: 0.35
+      # rest of each part (~0.10) = packing / embeddings
 
 # --- runtime ---
 limits:

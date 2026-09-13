@@ -1,5 +1,6 @@
 """Нормализация аудио: 16 кГц mono + dual-path (ASR clean / VAD preprocess)."""
 
+import logging
 import subprocess
 import time
 from pathlib import Path
@@ -20,6 +21,8 @@ from transcriber.models.artifacts import (
 )
 from transcriber.web.health import probe_audio_file
 
+logger = logging.getLogger(__name__)
+
 
 class FfmpegAudioNormalizer(AudioNormalizer):
     """Компонент нормализации аудио с помощью ffmpeg и оценки громкости."""
@@ -30,8 +33,14 @@ class FfmpegAudioNormalizer(AudioNormalizer):
         dest: Path,
         cfg: AudioConfig,
         job_id: str | None = None,
+        *,
+        file_gain_max_db: float | None = None,
     ) -> AudioArtifact:
-        """Пишет normalized.wav (для ASR) и vad_input.wav (для Silero)."""
+        """Пишет normalized.wav (для ASR) и vad_input.wav (для Silero).
+
+        ``file_gain_max_db`` overrides ``cfg.gain.max_db`` for whole-file gain
+        (TTFT path uses ``audio.gain.file_max_db``). Per-turn ASR still uses max_db.
+        """
         t0 = time.time()
         source_path = Path(source)
         if not source_path.is_file():
@@ -79,14 +88,26 @@ class FfmpegAudioNormalizer(AudioNormalizer):
                 rms = float(np.sqrt(np.mean(data**2)))
                 rms_dbfs = float(20.0 * np.log10(rms)) if rms > 0 else -100.0
 
+            max_gain = (
+                float(file_gain_max_db)
+                if file_gain_max_db is not None
+                else float(cfg.gain.max_db)
+            )
             # Whole-file linear gain for ASR wav (often blocked by peaks — OK)
             gain_res = calculate_gain(
                 rms_dbfs=rms_dbfs,
                 peak_dbfs=peak_dbfs,
                 threshold_dbfs=cfg.gain.rms_threshold_dbfs,
                 target_dbfs=cfg.gain.target_dbfs,
-                max_gain_db=cfg.gain.max_db,
+                max_gain_db=max_gain,
                 peak_ceiling_dbfs=cfg.gain.peak_ceiling_dbfs,
+            )
+            logger.info(
+                "normalize gain_db=%.3f capped=%s max_gain_db=%.3f job_id=%s",
+                gain_res.gain_db,
+                gain_res.capped,
+                max_gain,
+                resolved_job_id,
             )
 
             if gain_res.gain_applied and gain_res.gain_db > 0:
@@ -180,6 +201,7 @@ class FfmpegAudioNormalizer(AudioNormalizer):
                 peak_dbfs=round(peak_dbfs, 3),
                 gain_db=round(gain_res.gain_db, 3),
                 gain_applied=gain_res.gain_applied,
+                capped=bool(gain_res.capped),
             ),
             vad_input=AudioVadInput(
                 path="vad_input.wav",

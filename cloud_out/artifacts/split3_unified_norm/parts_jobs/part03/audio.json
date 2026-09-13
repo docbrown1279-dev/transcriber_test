@@ -1,0 +1,27 @@
+{
+  "asr_per_turn_gain": true,
+  "job_id": "part03",
+  "loudness": {
+    "gain_applied": true,
+    "gain_db": 1.657,
+    "peak_dbfs": -2.657,
+    "rms_dbfs": -33.055
+  },
+  "normalized": {
+    "channels": 1,
+    "path": "normalized.wav",
+    "sample_rate": 16000
+  },
+  "runtime_sec": 0.0,
+  "schema_version": "1",
+  "source": {
+    "duration_sec": 297.984,
+    "filename": "normalized.wav",
+    "size_bytes": 9535566
+  },
+  "vad_input": {
+    "applied": false,
+    "filter": null,
+    "path": "vad_input.wav"
+  }
+}

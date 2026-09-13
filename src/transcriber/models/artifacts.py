@@ -64,6 +64,8 @@ class AudioLoudness(BaseModel):
     peak_dbfs: float
     gain_db: float
     gain_applied: bool
+    # True when whole-file gain was limited by max_gain_db (e.g. file_max_db).
+    capped: bool = False
 
 
 class AudioVadInput(BaseModel):
@@ -438,6 +440,8 @@ class JobStageItem(BaseModel):
     pct: float = Field(ge=0, le=100)
     runtime_sec: float | None = None
     message: str | None = None
+    eta_sec: float | None = Field(default=None, ge=0.0)
+    eta_total_sec: float | None = Field(default=None, ge=0.0)
 
 
 class JobArtifact(BaseModel):
@@ -452,6 +456,10 @@ class JobArtifact(BaseModel):
     stages: list[JobStageItem] = Field(default_factory=list)
     error: str | None = None
     finished_at: str | None = None
+    # TTFT split: first chapters.json published while job may still be running.
+    early_ready: bool = False
+    # False after early TOC until EOS speaker refine; default True for legacy jobs.
+    speakers_finalized: bool = True
 
     @field_validator("schema_version")
     @classmethod
