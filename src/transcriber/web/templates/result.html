@@ -13,11 +13,16 @@
   data-job-id="{{ job.job_id }}"
   data-state="{{ job.state }}"
   data-speakers-finalized="{{ '1' if speakers_finalized else '0' }}"
+  data-created="{{ job.created_at }}"
   {% endif %}
 >
   <h1>{% if job_still_running %}Черновик оглавления{% else %}Распознавание готово{% endif %}</h1>
   <p class="meta">
-    {% if elapsed_label %}Обработано за {{ elapsed_label }}{% endif %}
+    {% if job_still_running %}
+    Прошло: <span id="result-elapsed-label">{{ elapsed_label }}</span>
+    {% elif elapsed_label %}
+    Обработано за {{ elapsed_label }}
+    {% endif %}
     {% if speaker_ids %} · {{ speaker_ids|length }} спикеров{% endif %}
   </p>
   {% if job_still_running or not speakers_finalized %}

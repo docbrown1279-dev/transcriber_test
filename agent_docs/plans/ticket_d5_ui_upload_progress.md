@@ -1,7 +1,7 @@
 # Тикет: UI — preload аудио + починка индикатора прогресса
 
-**Статус:** PARTIAL — staging preload + progress status fix landed in product UI (2026-09-12); progress ETA still TTFT-table based  
-**Приоритет:** средний (UX / секунды TTFT на аплоаде)  
+**Статус:** OPEN (backlog) — staging preload + dual ETA labels landed with TTFT merge (2026-09-13); **остаток: вялый poll статусов в UI**  
+**Приоритет:** средний (UX)  
 **Ветка (когда откроем):** от `main`, напр. `cursor/d5-ui-upload-progress`  
 **Не цель:** warmup моделей WeSpeaker/GigaAM (H0 закрыт как нерелевантный на малых моделях)
 
@@ -31,6 +31,15 @@
 3. Регрессия: **один** активный job на воркере (как сейчас) + сценарий «два вкладки / два job подряд» — события и артефакты не дырявые.
 4. Не смешивать с file-split early UI в том же PR, если не нужно: split пишет early chapter отдельно.
 
+### C. Backlog — вялое обновление статусов (2026-09-13)
+
+Поле: счётчик elapsed ок; dual ETA и лейблы (`фрагмент N из M`, `глава K из T`) ок по смыслу; **UI обновляет статус с задержкой / рывками** (poll или редкие `StageEvent` во время длинной diar/ASR фазы). Финальная сборка артефактов при этом нормальная — **не чинить сейчас**.
+
+Идеи на потом (не делать без отдельного тикета):
+- чаще эмитить soft status во время длинных фаз; и/или
+- на клиенте тикать ETA от `eta_*_sec` + `elapsed` между poll’ами;
+- не залипать на устаревшем `message` активного stage.
+
 ---
 
 ## Вне scope
@@ -45,5 +54,6 @@
 
 - [x] Preload: файл в staging до submit; staging чистится при следующем select
 - [x] Submit не качает тот же файл второй раз (если preload ok)
-- [ ] Progress %/elapsed адекватны на 15′ job; нет потери stage events при последовательных job *(status label fix landed; full ETA audit optional)*
-- [ ] Тест/ручной чеклист в отчёте; без force-push `main`
+- [x] Status labels + dual ETA (фрагмент / файл) в TTFT path
+- [ ] **Backlog:** плавное/своевременное обновление статусов в UI (см. §C)
+- [ ] Тест/ручной чеклист на poll latency; без force-push `main`

@@ -1,10 +1,10 @@
 # Тикет: TTFT — разрез файла + якорь центроидов (S2)
 
-**Статус:** OPEN — research spike closed enough for product; **INSTRUCTIONS_READY** (`coder_D5_ttft.md` / `tester_D5_ttft.md`). `src/` still frozen until Coder.  
-**Приоритет:** высокий для TTFT  
-**Ветка:** `cursor/d5-ttft-split` (от `main`)  
+**Статус:** CLOSED (2026-09-13) — product file-split in demo (`pipeline.ttft_split`); gate **PASS_WITH_WARNINGS** (`product_gate.md`: TTFT ≈169 s ≤300 @ 2 CPU / 8 GiB).  
+**Приоритет:** —  
+**Ветка:** `cursor/d5-ttft-split` → merge `main`  
 **Спека направления:** [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md)  
-**Локальный prep:** [`../reports/d5_ttft_split/README.md`](../reports/d5_ttft_split/README.md) · cut `cut_plan_15min_3` · eval glue `eval/d5_ttft_split/`
+**Отчёт:** [`../reports/d5_ttft_split/product_gate.md`](../reports/d5_ttft_split/product_gate.md)
 
 ---
 
@@ -56,5 +56,7 @@
 
 - [x] Unit-tune закрыт: SKIPPED  
 - [x] Спека merge+anchor → coder instructions (`coder_D5_ttft.md`; mid = assign B, EOS = V1)  
-- [ ] Bench TTFT на 15′ @ 2 CPU / 8 GiB ≤ 300 с  
-- [ ] Отчёт: TTFT, стабильность id, EOS vs full15; H1/V2 не в mid  
+- [x] Bench TTFT на 15′ @ 2 CPU / 8 GiB ≤ 300 с (`ttft_first_chapter_sec≈169`)  
+- [x] Отчёт: TTFT, стабильность id, EOS vs full15; H1/V2 не в mid  
+- **Backlog (не блокер):** UI status/ETA poll «подтупливает» — [`ticket_d5_ui_upload_progress.md`](ticket_d5_ui_upload_progress.md)  
+

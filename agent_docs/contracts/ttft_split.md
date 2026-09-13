@@ -1,7 +1,7 @@
 # Contract: TTFT file-split (product)
 
-Status: INSTRUCTIONS_READY. Implements [`draft_ttft_split_product.md`](../plans/draft_ttft_split_product.md).  
-Hardware target: **first usable TOC ≤ 300 s** on Docker `--cpus=2 --memory=8g` for the 15-minute `voice_002` slice.
+Status: DONE (2026-09-13). Implements [`draft_ttft_split_product.md`](../plans/draft_ttft_split_product.md).  
+Gate: [`../reports/d5_ttft_split/product_gate.md`](../reports/d5_ttft_split/product_gate.md) **PASS_WITH_WARNINGS** (`ttft_first_chapter_sec≈169` ≤ 300 @ 2 CPU / 8 GiB).
 
 This is **local product work** (same class as D4 / D5). Not a research spike. Frozen stack stays: Silero VAD, WeSpeaker `1.5/0.75` + AHC cosine/average `0.85`, GigaAM v3 RNNT, packing C, `toc_mode=b`.
 

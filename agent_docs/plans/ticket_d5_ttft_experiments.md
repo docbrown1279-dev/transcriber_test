@@ -1,7 +1,7 @@
 # Тикет: TTFT на демо (окна / разрез / качество спикеров)
 
-**Статус:** OPEN — оркестрация; **диаризация bakeoff закрыт** (2A freeze); **NEXT = S2 file-split**  
-**Приоритет:** высокий  
+**Статус:** CLOSED (2026-09-13) — bakeoff 2A freeze; S2 file-split product closed (`ticket_d5_ttft_file_split.md`); S1/coarse windows REFUSED; unit-AHC REFUSED.  
+**Приоритет:** —  
 **Оркестрация этапа (cloud + eval-клипы):** [`draft_d5_ttft_diar_cloud.md`](draft_d5_ttft_diar_cloud.md)  
 **Отчёты:** [`agent_docs/reports/d5_diar/`](../reports/d5_diar/README.md)  
 **Не цель этого тикета:** Jina / вариант D (крайний случай, отдельный этап).
@@ -12,7 +12,7 @@
 |---|---|
 | Почему WeSpeaker тормозит | [`ticket_d5_diarize_speed.md`](ticket_d5_diarize_speed.md) — CLOSED (H0 REFUSED) |
 | Unit-AHC / 2C | [`ticket_d5_diar_unit_ahc_tune.md`](ticket_d5_diar_unit_ahc_tune.md) — **REFUSED** |
-| Разрез + якорь (**NEXT**) | [`ticket_d5_ttft_file_split.md`](ticket_d5_ttft_file_split.md) · [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md) |
+| Разрез + якорь | [`ticket_d5_ttft_file_split.md`](ticket_d5_ttft_file_split.md) — **CLOSED** · [`draft_ttft_diarize_split.md`](draft_ttft_diarize_split.md) |
 | UI preload + прогресс | [`ticket_d5_ui_upload_progress.md`](ticket_d5_ui_upload_progress.md) |
 | Недосплит мужчин + крошки id | [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md) |
 | ASR-first + Jina D | draft_ttft **направление B** — не в scope здесь |
@@ -119,7 +119,7 @@ Gate (черновик): TTFT ≤ 300–360 с на 15′ @ 2 CPU (warm).
 
 ## Definition of done (черновик)
 
-- [ ] Есть цифры S1 (хотя бы один preset лучше baseline по wall без явного регресса женщины).
-- [ ] S2 либо в коде с якорем без гонки id, либо честный blocker + спека.
-- [ ] S3 либо внедрён с порогом «только long», либо отклонён с причиной.
-- [ ] Jina не тащили «за компанию».
+- [x] Есть цифры S1 — coarse windows **REFUSED** (не выигрыш wall / качество).
+- [x] S2 в коде: mid assign B + EOS V1 + early TOC (`ttft_split`); gate PASS_WITH_WARNINGS.
+- [x] S3: micro-speaker absorb по UI speech (`min_speaker_speech_sec`); глубина качества → [`ticket_d1_speaker_clusters.md`](ticket_d1_speaker_clusters.md) (остаётся backlog).
+- [x] Jina не тащили «за компанию».

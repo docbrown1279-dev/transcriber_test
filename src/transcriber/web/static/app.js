@@ -257,12 +257,33 @@
   const resultRoot = document.querySelector("[data-result-poll]");
   if (resultRoot && resultRoot.getAttribute("data-state") === "running") {
     const jobId = resultRoot.getAttribute("data-job-id");
+    const createdRaw = resultRoot.getAttribute("data-created");
     const pollMs = 2000;
     const liveStatus = document.getElementById("live-status-label");
     const liveEta = document.getElementById("live-eta-label");
+    const resultElapsed = document.getElementById("result-elapsed-label");
     let speakersFinal = resultRoot.getAttribute("data-speakers-finalized") === "1";
     let timer = null;
+    let elapsedTimer = null;
     let lastLabel = "";
+
+    function formatElapsed(sec) {
+      sec = Math.max(0, Math.floor(sec));
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      if (h) return h + " ч " + m + " мин " + s + " с";
+      if (m) return m + " мин " + s + " с";
+      return s + " с";
+    }
+
+    function tickResultElapsed() {
+      if (!resultElapsed || !createdRaw) return;
+      const start = Date.parse(createdRaw);
+      if (Number.isNaN(start)) return;
+      resultElapsed.textContent = formatElapsed((Date.now() - start) / 1000);
+    }
+
     function tickResult() {
       fetch("/jobs/" + jobId + "/events")
         .then((r) => r.json())
@@ -276,9 +297,13 @@
           if (liveEta) {
             liveEta.textContent = data.eta_label || "";
           }
+          if (typeof data.elapsed_sec === "number" && resultElapsed) {
+            resultElapsed.textContent = formatElapsed(data.elapsed_sec);
+          }
           const nowFinal = data.speakers_finalized === true;
           if (data.state === "done" || (nowFinal && !speakersFinal)) {
             if (timer) window.clearInterval(timer);
+            if (elapsedTimer) window.clearInterval(elapsedTimer);
             window.location.reload();
           }
         })
@@ -286,6 +311,8 @@
     }
     tickResult();
     timer = window.setInterval(tickResult, pollMs);
+    tickResultElapsed();
+    elapsedTimer = window.setInterval(tickResultElapsed, 1000);
   }
 
   const btnDict = document.getElementById("btn-dict");

@@ -146,3 +146,10 @@ docker run --rm --cpus=2 --memory=8g \
 - timing_5min still **21** embeds / 2.95s vs 2A 366 / 5.94s
 - **Verdict REFUSED** as 2A substitute → file-split next
 - Artifacts: `cloud_out/FOLLOWUP_unit_ahc.{md,json}` + T1/T2/T3 timelines; no PR
+
+## 2026-09-13 — Close diar + TTFT tracks
+- STATUS: D5 diar research **CLOSED** (2A freeze; spectral/twopass/unit-AHC refused); D5.TTFT file-split **CLOSED** (product gate PASS_WITH_WARNINGS)
+- Tickets closed: `ticket_d5_diarize_speed`, `ticket_d5_diar_unit_ahc_tune` (earlier); `ticket_d5_ttft_experiments`, `ticket_d5_ttft_file_split` (now)
+- Quality backlog remains: `ticket_d1_speaker_clusters` (undersplit/crumbs)
+- UX backlog: `ticket_d5_ui_upload_progress` §C (sluggish status poll)
+- Next: merge `cursor/d5-ttft-split` → `main`; deploy server (human)

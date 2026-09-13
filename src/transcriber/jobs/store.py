@@ -119,6 +119,7 @@ def append_stage_event(
             stage_info.runtime_sec = event.runtime_sec
             stage_info.message = event.message
             stage_info.eta_sec = event.eta_sec
+            stage_info.eta_total_sec = event.eta_total_sec
             updated = True
             break
 
@@ -131,6 +132,7 @@ def append_stage_event(
                 runtime_sec=event.runtime_sec,
                 message=event.message,
                 eta_sec=event.eta_sec,
+                eta_total_sec=event.eta_total_sec,
             )
         )
 

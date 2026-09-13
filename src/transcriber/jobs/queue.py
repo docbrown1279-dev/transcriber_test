@@ -211,7 +211,7 @@ def _active_stage(job: Any) -> Any | None:
 
 def job_events_payload(job_id: str, storage_root: Path | str) -> dict[str, Any]:
     """JSON для polling `GET /jobs/{id}/events` (без технических ошибок во фронт)."""
-    from transcriber.pipeline.ttft_progress import format_eta_ru
+    from transcriber.pipeline.ttft_progress import format_dual_eta_ru, format_eta_ru
 
     job = get_job(job_id, storage_root)
     total = len(stage_names()) + 1
@@ -220,10 +220,12 @@ def job_events_payload(job_id: str, storage_root: Path | str) -> dict[str, Any]:
     active = _active_stage(job)
     status_label = None
     eta_sec = None
+    eta_total_sec = None
     soft_pct = overall_progress_pct(job.stages, total, job.state)
     if active is not None:
         status_label = getattr(active, "message", None) or getattr(active, "stage", None)
         eta_sec = getattr(active, "eta_sec", None)
+        eta_total_sec = getattr(active, "eta_total_sec", None)
         if getattr(active, "pct", None) is not None and job.state == "running":
             # Prefer stage-reported soft pct when present (TTFT clock).
             try:
@@ -234,6 +236,10 @@ def job_events_payload(job_id: str, storage_root: Path | str) -> dict[str, Any]:
         status_label = status_label or "Готово"
         soft_pct = 100
         eta_sec = None
+        eta_total_sec = None
+    dual = format_dual_eta_ru(eta_sec, eta_total_sec)
+    if dual is None and eta_sec is not None:
+        dual = format_eta_ru(eta_sec)
     return {
         "job_id": job.job_id,
         "state": job.state,
@@ -247,6 +253,7 @@ def job_events_payload(job_id: str, storage_root: Path | str) -> dict[str, Any]:
         "speakers_finalized": bool(job.speakers_finalized),
         "status_label": status_label,
         "eta_sec": eta_sec,
-        "eta_label": format_eta_ru(eta_sec),
+        "eta_total_sec": eta_total_sec,
+        "eta_label": dual,
         "stage": getattr(active, "stage", None) if active is not None else None,
     }

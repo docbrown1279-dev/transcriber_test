@@ -83,9 +83,9 @@ def test_d5t_cfg_02_demo_overlay_and_no_cut_literals() -> None:
     assert demo.pipeline.ttft.max_part_sec == 360
     assert demo.pipeline.ttft.min_part_sec == 240
     assert demo.pipeline.ttft.target_part_sec == 300
-    assert demo.pipeline.ttft.progress.prep_fraction == 0.05
-    assert demo.pipeline.ttft.progress.diar_fraction == 0.60
-    assert demo.pipeline.ttft.progress.asr_fraction == 0.30
+    assert demo.pipeline.ttft.progress.prep_fraction == 0.01
+    assert demo.pipeline.ttft.progress.diar_fraction == 0.55
+    assert demo.pipeline.ttft.progress.asr_fraction == 0.35
 
     for path in _CUT_MODULE_PATHS:
         text = path.read_text(encoding="utf-8")

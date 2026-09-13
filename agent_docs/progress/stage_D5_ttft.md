@@ -102,3 +102,11 @@ docker run --rm --cpus=2 --memory=8g \
 - Files: `ttft_progress.py`, `ttft_split.py` emits, `queue.job_events_payload`, progress/result templates + `app.js`
 - Verified: `pytest tests/unit/test_ttft_progress.py tests/unit/test_ttft_split.py` 11 passed
 - Docker UI: `ttft_ui_demo` --cpus=2 --memory=8g → http://127.0.0.1:8000/
+
+## 2026-09-13 — Close + merge
+
+- STATUS: **CLOSED** / merge to `main`
+- Tickets: `ticket_d5_ttft_file_split` CLOSED; `ticket_d5_ttft_experiments` CLOSED; diar speed/unit-AHC already CLOSED
+- Product polish: dual ETA (fragment + file), chapter index in titles status, micro-speaker absorb, staging preload, orphan running recovery
+- Backlog only: UI status poll lag → `ticket_d5_ui_upload_progress.md` §C (do not fix now)
+- Next: deploy to server (human)

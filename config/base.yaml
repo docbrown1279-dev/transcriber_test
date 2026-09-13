@@ -105,10 +105,10 @@ pipeline:
     min_pause_sec: 0.8
     search_half_width_sec: 90
     progress:
-      # prep (normalize+VAD+cut) share; remainder split across parts
-      prep_fraction: 0.05
-      diar_fraction: 0.60
-      asr_fraction: 0.30
+      # Empirically ~1% of wall on 15′ @ 2CPU (normalize+VAD+cut); was 0.05 → ETA ~5× too short
+      prep_fraction: 0.01
+      diar_fraction: 0.55
+      asr_fraction: 0.35
       # rest of each part (~0.10) = packing / embeddings
 
 # --- runtime ---

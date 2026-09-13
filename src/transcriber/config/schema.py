@@ -275,9 +275,9 @@ class TtftProgressConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    prep_fraction: float = Field(default=0.05, gt=0.0, lt=1.0)
-    diar_fraction: float = Field(default=0.60, gt=0.0, lt=1.0)
-    asr_fraction: float = Field(default=0.30, gt=0.0, lt=1.0)
+    prep_fraction: float = Field(default=0.01, gt=0.0, lt=1.0)
+    diar_fraction: float = Field(default=0.55, gt=0.0, lt=1.0)
+    asr_fraction: float = Field(default=0.35, gt=0.0, lt=1.0)
 
 
 class TtftSplitConfig(BaseModel):

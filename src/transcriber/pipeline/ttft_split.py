@@ -55,7 +55,7 @@ from transcriber.models.artifacts import (
 )
 from transcriber.pipeline.events import StageEvent
 from transcriber.pipeline.pause_cut import plan, propose_n_parts
-from transcriber.pipeline.ttft_progress import TtftEtaClock, format_eta_ru
+from transcriber.pipeline.ttft_progress import TtftEtaClock
 from transcriber.registry import build
 
 logger = logging.getLogger(__name__)
@@ -82,9 +82,12 @@ def _emit_status(
     phase: str,
     status: str = "running",
     runtime_sec: float | None = None,
+    elapsed_wall_sec: float | None = None,
 ) -> None:
-    """Human-readable status: Russian label + ETA (pct is soft only)."""
-    clock.phase = phase
+    """Human-readable status: Russian label + dual ETA (pct is soft only)."""
+    from transcriber.pipeline.ttft_progress import format_dual_eta_ru
+
+    clock.set_phase(phase)
     # Close prep stages so polling does not stick on «Подготовка…».
     if status == "running" and phase != "prep":
         for stale in ("normalize", "vad"):
@@ -95,7 +98,16 @@ def _emit_status(
                 StageEvent(stage=stale, status="done", pct=100, message=None),
             )
     label = clock.label_ru(phase)
-    eta = clock.eta_for_phase(phase) if status == "running" else None
+    elapsed = elapsed_wall_sec
+    if elapsed is None and clock.run_t0 is not None:
+        from time import monotonic as _mono
+
+        elapsed = _mono() - float(clock.run_t0)
+    eta_part: float | None = None
+    eta_total: float | None = None
+    if status == "running":
+        eta_part = clock.remaining_in_part_sec()
+        eta_total = clock.remaining_eta_sec(elapsed_wall_sec=elapsed)
     _emit(
         events,
         StageEvent(
@@ -104,16 +116,13 @@ def _emit_status(
             pct=clock.overall_pct() if status == "running" else 100,
             message=label,
             runtime_sec=runtime_sec,
-            eta_sec=None if eta is None else round(float(eta), 1),
+            eta_sec=None if eta_part is None else round(float(eta_part), 1),
+            eta_total_sec=None if eta_total is None else round(float(eta_total), 1),
         ),
     )
-    if status == "running" and eta is not None:
-        logger.info(
-            "ttft status=%s eta=%.0fs (%s)",
-            label,
-            eta,
-            format_eta_ru(eta) or "",
-        )
+    if status == "running" and (eta_part is not None or eta_total is not None):
+        dual = format_dual_eta_ru(eta_part, eta_total)
+        logger.info("ttft status=%s %s", label, dual or "")
 
 
 def _emit(events: EventSink | None, event: StageEvent) -> None:
@@ -423,7 +432,7 @@ def run_ttft_split(
         source_path = candidates[0]
 
     # --- normalize (file_max_db) ---
-    clock = TtftEtaClock(cfg=cfg.pipeline.ttft.progress)
+    clock = TtftEtaClock(cfg=cfg.pipeline.ttft.progress, run_t0=t_run0)
     _emit_status(events, clock, stage="normalize", phase="prep")
     t0 = monotonic()
     normalizer = FfmpegAudioNormalizer()
@@ -512,6 +521,8 @@ def run_ttft_split(
             if chapter.title.strip():
                 titled_slots[slot] = chapter.title
                 continue
+            clock.set_title_progress(slot + 1, max(1, len(chapters)))
+            _emit_status(events, clock, stage="titles", phase="titles")
             tr = TranscriptArtifact(
                 schema_version="1",
                 job_id=job_id,
@@ -536,6 +547,8 @@ def run_ttft_split(
                 chapters[slot] = chapter.model_copy(update={"title": title})
             except Exception as exc:
                 logger.warning("ttft title failed slot=%s err=%s", slot, exc)
+        clock.title_index = None
+        clock.title_total = None
 
     _emit_status(events, clock, stage="diarize", phase="diar")
     diar_t0 = monotonic()
