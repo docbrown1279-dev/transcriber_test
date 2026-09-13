@@ -46,6 +46,8 @@ diarization:
     # T2 soft glue (eval/d1/5): mild absorb, slightly wider VAD premerge
     same_speaker_gap_sec: 0.3
     absorb_turn_shorter_than_sec: 1.0
+    # EOS: absorb whole SPEAKER_* ids whose union speech is below this (not turn absorb)
+    min_speaker_speech_sec: 2.0
     min_hole_sec: 0.5
     vad_premerge_gap_sec: 0.5
   embed:
@@ -96,12 +98,18 @@ pipeline:
   # false = full-file path (unchanged). Demo overlay sets true.
   ttft_split: false
   ttft:
-    # 5 min floor → ~3 parts on a 15′ demo clip (was 180 → often 4 parts)
-    min_part_sec: 300
-    max_part_sec: 300
+    # Allowed part length band 4–6 min (target ~5); n_parts is derived, not fixed
+    min_part_sec: 240
+    max_part_sec: 360
     target_part_sec: 300
     min_pause_sec: 0.8
     search_half_width_sec: 90
+    progress:
+      # prep (normalize+VAD+cut) share; remainder split across parts
+      prep_fraction: 0.05
+      diar_fraction: 0.60
+      asr_fraction: 0.30
+      # rest of each part (~0.10) = packing / embeddings
 
 # --- runtime ---
 limits:

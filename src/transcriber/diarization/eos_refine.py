@@ -6,7 +6,146 @@ from typing import Any
 
 import numpy as np
 
-from transcriber.diarization.gallery import ahc_labels
+from transcriber.diarization.gallery import ahc_labels, cosine_distance_matrix
+from transcriber.diarization.wespeaker import l2_normalize
+
+
+def union_speech_sec(intervals: list[tuple[float, float]]) -> float:
+    """Merged coverage of overlapping windows (not a raw duration sum)."""
+    if not intervals:
+        return 0.0
+    ordered = sorted((float(s), float(e)) for s, e in intervals)
+    total = 0.0
+    cur_s, cur_e = ordered[0]
+    for start, end in ordered[1:]:
+        if start <= cur_e:
+            cur_e = max(cur_e, end)
+        else:
+            total += cur_e - cur_s
+            cur_s, cur_e = start, end
+    total += cur_e - cur_s
+    return float(total)
+
+
+def centroids_from_windows(
+    embeddings: np.ndarray,
+    speakers: list[str],
+) -> dict[str, np.ndarray]:
+    """L2 mean embedding per speaker id (skip empty)."""
+    by: dict[str, list[int]] = {}
+    for i, spk in enumerate(speakers):
+        by.setdefault(spk, []).append(i)
+    out: dict[str, np.ndarray] = {}
+    for spk, idxs in by.items():
+        stacked = embeddings[np.array(idxs, dtype=int)]
+        out[spk] = l2_normalize(stacked.mean(axis=0, keepdims=True))[0]
+    return out
+
+
+def absorb_micro_speaker_map(
+    speech_sec: dict[str, float],
+    centroids: dict[str, np.ndarray],
+    *,
+    min_speech_sec: float,
+) -> tuple[dict[str, str], dict[str, Any]]:
+    """Build SPEAKER_* remap using UI speech totals (sum of segment lengths).
+
+    Ids with speech < ``min_speech_sec`` map to the nearest centroid among remaining
+    ids. Returns a full map (identity for kept ids) and a debug summary.
+    """
+    if min_speech_sec <= 0 or not speech_sec:
+        identity = {spk: spk for spk in speech_sec}
+        return identity, {
+            "absorbed": [],
+            "disabled": min_speech_sec <= 0,
+            "metric": "ui_speech_sum",
+        }
+
+    remaining = dict(speech_sec)
+    remap: dict[str, str] = {spk: spk for spk in remaining}
+    absorbed: list[dict[str, Any]] = []
+
+    for _ in range(max(1, len(remaining))):
+        if len(remaining) <= 1:
+            break
+        micros = sorted(
+            ((dur, spk) for spk, dur in remaining.items() if dur < min_speech_sec),
+            key=lambda item: item[0],
+        )
+        if not micros:
+            break
+        _, micro = micros[0]
+        others = [spk for spk in remaining if spk != micro and spk in centroids]
+        if micro not in centroids or not others:
+            # Cannot place — drop from candidates to avoid infinite loop.
+            remaining.pop(micro, None)
+            continue
+        micro_c = centroids[micro].reshape(1, -1)
+        other_c = np.stack([centroids[spk] for spk in others])
+        dist = cosine_distance_matrix(micro_c, other_c)[0]
+        target = others[int(np.argmin(dist))]
+        d_best = float(dist.min())
+        # Point every id currently mapping to micro → target.
+        for src, dst in list(remap.items()):
+            if dst == micro:
+                remap[src] = target
+        remaining[target] = remaining.get(target, 0.0) + remaining.pop(micro)
+        absorbed.append(
+            {
+                "from": micro,
+                "to": target,
+                "speech_sec": round(float(speech_sec.get(micro, 0.0)), 3),
+                "distance": round(d_best, 4),
+            }
+        )
+
+    return remap, {
+        "absorbed": absorbed,
+        "min_speaker_speech_sec": min_speech_sec,
+        "final_speakers": sorted(set(remap.values())),
+        "metric": "ui_speech_sum",
+        "speech_before": {k: round(float(v), 3) for k, v in sorted(speech_sec.items())},
+    }
+
+
+def apply_speaker_id_map(speakers: list[str], remap: dict[str, str]) -> list[str]:
+    return [remap.get(spk, spk) for spk in speakers]
+
+
+def absorb_micro_speakers(
+    embeddings: np.ndarray,
+    segments: list[tuple[float, float]],
+    speakers: list[str],
+    *,
+    min_speech_sec: float,
+    speech_sec: dict[str, float] | None = None,
+) -> tuple[list[str], dict[str, Any]]:
+    """Convenience: absorb using optional UI ``speech_sec``, else window-union."""
+    n = len(speakers)
+    if n == 0 or min_speech_sec <= 0:
+        return list(speakers), {
+            "absorbed": [],
+            "disabled": min_speech_sec <= 0,
+            "metric": "ui_speech_sum" if speech_sec is not None else "window_union",
+        }
+    if len(embeddings) != n or len(segments) != n:
+        raise ValueError("embeddings, segments, speakers length mismatch")
+
+    cents = centroids_from_windows(embeddings, speakers)
+    if speech_sec is None:
+        by_iv: dict[str, list[tuple[float, float]]] = {}
+        for spk, seg in zip(speakers, segments, strict=True):
+            by_iv.setdefault(spk, []).append(seg)
+        speech_sec = {spk: union_speech_sec(ivs) for spk, ivs in by_iv.items()}
+        metric_note = "window_union"
+    else:
+        metric_note = "ui_speech_sum"
+
+    remap, summary = absorb_micro_speaker_map(
+        speech_sec, cents, min_speech_sec=min_speech_sec
+    )
+    summary["metric"] = metric_note
+    return apply_speaker_id_map(speakers, remap), summary
 
 
 def greedy_remap_by_duration(
@@ -82,10 +221,7 @@ def refine_window_speakers_v1(
     distance_threshold: float,
     published_order: list[str] | None = None,
 ) -> tuple[list[str], dict[str, Any]]:
-    """AHC all windows → greedy remap to mid-run SPEAKER_* ids.
-
-    Returns final speaker id per window and a small debug summary.
-    """
+    """AHC all windows → greedy remap. Micro-absorb is applied later (UI speech)."""
     n = len(segments)
     if n == 0:
         return [], {"n_windows": 0, "n_clusters": 0, "mapping": {}}
@@ -106,5 +242,6 @@ def refine_window_speakers_v1(
         "n_clusters": len(set(labels)),
         "mapping": {str(k): v for k, v in sorted(mapping.items())},
         "final_speakers": sorted(set(final)),
+        "micro_absorb": {"deferred": True, "metric": "ui_speech_sum"},
     }
     return final, summary

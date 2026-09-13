@@ -3,11 +3,16 @@
 {% block content %}
 <section class="panel">
   <h1>Новая задача</h1>
-  <form class="upload" action="/jobs" method="post" enctype="multipart/form-data">
+  <form class="upload" id="upload-form" action="/jobs" method="post" enctype="multipart/form-data">
     <label>
       Аудиофайл
-      <input type="file" name="audio" accept="audio/*,video/*" required />
+      <input type="file" name="audio" id="audio-input" accept="audio/*,video/*" required />
     </label>
+    <input type="hidden" name="staging_id" id="staging-id" value="" />
+    <p class="hint" id="staging-status" aria-live="polite"></p>
+    <div class="progress-track hidden" id="staging-track" aria-hidden="true">
+      <div class="progress-bar" id="staging-bar" style="width: 0%"></div>
+    </div>
     <label>
       Или ссылка (YouTube / Яндекс Диск)
       <input type="url" name="url" placeholder="https://…" id="url-input" />
@@ -17,7 +22,7 @@
       Если запись длиннее {{ max_minutes or "—" }} мин — предупредим и обрежем.
       {% if max_file_size_mb %}Максимум {{ max_file_size_mb }} МБ.{% endif %}
     </p>
-    <button type="submit" class="btn primary">Запустить обработку</button>
+    <button type="submit" class="btn primary" id="upload-submit">Запустить обработку</button>
   </form>
 </section>
 {% endblock %}

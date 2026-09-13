@@ -1,6 +1,6 @@
 # Тикет: UI — preload аудио + починка индикатора прогресса
 
-**Статус:** OPEN — backlog (после/параллельно с file-split research; **prod** ветка, не cloud)  
+**Статус:** PARTIAL — staging preload + progress status fix landed in product UI (2026-09-12); progress ETA still TTFT-table based  
 **Приоритет:** средний (UX / секунды TTFT на аплоаде)  
 **Ветка (когда откроем):** от `main`, напр. `cursor/d5-ui-upload-progress`  
 **Не цель:** warmup моделей WeSpeaker/GigaAM (H0 закрыт как нерелевантный на малых моделях)
@@ -43,7 +43,7 @@
 
 ## Definition of done
 
-- [ ] Preload: файл в staging до submit; staging чистится при следующем select
-- [ ] Submit не качает тот же файл второй раз (если preload ok)
-- [ ] Progress %/elapsed адекватны на 15′ job; нет потери stage events при последовательных job
+- [x] Preload: файл в staging до submit; staging чистится при следующем select
+- [x] Submit не качает тот же файл второй раз (если preload ok)
+- [ ] Progress %/elapsed адекватны на 15′ job; нет потери stage events при последовательных job *(status label fix landed; full ETA audit optional)*
 - [ ] Тест/ручной чеклист в отчёте; без force-push `main`

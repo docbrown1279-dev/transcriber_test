@@ -93,3 +93,12 @@ docker run --rm --cpus=2 --memory=8g \
 - Report: `agent_docs/reports/d5_ttft_split/product_gate.md` (+ g5_ttft_15min.md/.json, glue_vs_full15.md)
 - WARN: glue chapter C3 spill vs 3-part reference; product cut=4 parts; full pytest/lint not fully green
 - Next: optional @Coder lint/mypy cleanup; stage sign-off / HUMAN_GATE listen if desired
+
+## 2026-09-12 — Coder (progress UX)
+
+- STATUS: READY_FOR_TEST (progress indicator)
+- UI: stage label + ETA instead of bare %; live status on draft result while parts continue
+- Config: `pipeline.ttft.progress.{prep,diar,asr}_fraction`; min_part_sec=300 (5 min → ~3 parts on 15′)
+- Files: `ttft_progress.py`, `ttft_split.py` emits, `queue.job_events_payload`, progress/result templates + `app.js`
+- Verified: `pytest tests/unit/test_ttft_progress.py tests/unit/test_ttft_split.py` 11 passed
+- Docker UI: `ttft_ui_demo` --cpus=2 --memory=8g → http://127.0.0.1:8000/

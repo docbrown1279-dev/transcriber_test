@@ -50,10 +50,10 @@ app:
 | Правки / плеер в UI | `ui.allow_editing`, `ui.allow_player` |
 | Пороги Silero VAD | `base.yaml` → `vad.threshold` / `neg_threshold` / `min_*` |
 | VAD preprocess (опционально) | `base.yaml` → `audio.vad_preprocess` (по умолчанию **выкл.**; C3 dynaudnorm оставлен только как строка-заготовка) |
-| Склейка фраз / absorb спикеров | `base.yaml` → `diarization.merge` (`vad_premerge_gap_sec`, `same_speaker_gap_sec`, `absorb_turn_shorter_than_sec`) |
+| Склейка фраз / absorb спикеров | `base.yaml` → `diarization.merge` (`vad_premerge_gap_sec`, `same_speaker_gap_sec`, `absorb_turn_shorter_than_sec`, `min_speaker_speech_sec` — EOS: короткие SPEAKER_* к ближайшему) |
 | Per-turn gain перед GigaAM | `base.yaml` → `audio.asr_per_turn_gain` + `audio.gain.max_db` |
 | Whole-file gain cap (TTFT split) | `audio.gain.file_max_db` (used when `pipeline.ttft_split: true`) |
-| TTFT file-split (early TOC) | `pipeline.ttft_split` + `pipeline.ttft.*` (demo overlay sets `true`; `min/max/target_part_sec` default **300** = 5 мин) |
+| TTFT file-split (early TOC) | `pipeline.ttft_split` + `pipeline.ttft.*` (demo: `true`; part length band **min/max/target = 240/360/300** с = 4–6 мин) |
 | Лимит запросов с IP / TTL | `profiles/demo.yaml` → `limits.*` |
 | Сменить облачную LLM | overlay профиля (`profiles/demo.yaml` → `llm.backend`) или `base_llm.yaml`; ключ в `.env`; см. [`llm.md`](llm.md) |
 | Другая модель / URL API | `llm.backends.<name>.model` / `base_url` |

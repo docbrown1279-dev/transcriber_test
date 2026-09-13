@@ -440,6 +440,7 @@ class JobStageItem(BaseModel):
     pct: float = Field(ge=0, le=100)
     runtime_sec: float | None = None
     message: str | None = None
+    eta_sec: float | None = Field(default=None, ge=0.0)
 
 
 class JobArtifact(BaseModel):

@@ -107,7 +107,12 @@ def choose_cuts(
             if window:
                 best = max(window, key=lambda p: (p.duration, -abs(p.mid - ideal_t)))
             else:
-                t = min(max(ideal_t, earliest), latest)
+                # Impossible / empty window (over-constrained n_parts) → clamp to band.
+                if earliest > latest + 1e-6:
+                    t = min(max(ideal_t, min_part_sec), duration_sec - min_part_sec)
+                    t = max(earliest if cuts else min_part_sec, min(t, duration_sec - 1e-3))
+                else:
+                    t = min(max(ideal_t, earliest), latest)
                 cuts.append(
                     Cut(
                         t=round(t, 3),
@@ -151,6 +156,59 @@ def parts_from_cuts(cuts: list[Cut], duration_sec: float) -> list[dict[str, Any]
     return parts
 
 
+def coalesce_short_parts(
+    parts: list[dict[str, Any]],
+    *,
+    min_part_sec: float,
+) -> list[dict[str, Any]]:
+    """Merge parts shorter than ``min_part_sec`` into a neighbour (prefer next, else prev)."""
+    if len(parts) <= 1:
+        return list(parts)
+    work = [
+        {
+            "start": float(p["start"]),
+            "end": float(p["end"]),
+            "duration_sec": float(p["duration_sec"]),
+        }
+        for p in parts
+    ]
+    changed = True
+    while changed and len(work) > 1:
+        changed = False
+        for i, part in enumerate(work):
+            if part["duration_sec"] + 1e-9 >= min_part_sec:
+                continue
+            # Prefer merging into the next part; last crumb → previous.
+            if i < len(work) - 1:
+                nxt = work[i + 1]
+                merged = {
+                    "start": part["start"],
+                    "end": nxt["end"],
+                    "duration_sec": round(nxt["end"] - part["start"], 3),
+                }
+                work = [*work[:i], merged, *work[i + 2 :]]
+            else:
+                prev = work[i - 1]
+                merged = {
+                    "start": prev["start"],
+                    "end": part["end"],
+                    "duration_sec": round(part["end"] - prev["start"], 3),
+                }
+                work = [*work[: i - 1], merged]
+            changed = True
+            break
+    return [
+        {
+            "id": f"part{i + 1:02d}",
+            "index": i,
+            "start": round(p["start"], 3),
+            "end": round(p["end"], 3),
+            "duration_sec": round(p["duration_sec"], 3),
+        }
+        for i, p in enumerate(work)
+    ]
+
+
 def propose_n_parts(
     duration_sec: float,
     *,
@@ -158,11 +216,16 @@ def propose_n_parts(
     max_part_sec: float,
     target_part_sec: float,
 ) -> int:
-    """Choose part count from duration and [min,max,target] constraints."""
+    """Choose part count from duration and [min,max,target] constraints.
+
+    Uses a small epsilon so float wav durations barely above N*max_part_sec
+    do not spuriously force an extra part (which then collapses into a crumb).
+    """
     if duration_sec < 2 * min_part_sec:
         return 1
-    lo = max(2, math.ceil(duration_sec / max_part_sec))
-    hi = max(lo, math.floor(duration_sec / min_part_sec))
+    eps = 1e-3
+    lo = max(2, math.ceil(duration_sec / max_part_sec - eps))
+    hi = max(lo, math.floor(duration_sec / min_part_sec + eps))
     ideal = int(round(duration_sec / target_part_sec))
     return max(lo, min(hi, ideal))
 
@@ -188,13 +251,34 @@ def plan(
         max_part_sec=max_part_sec,
         search_half_width=search_half_width,
     )
-    parts = parts_from_cuts(cuts, duration_sec)
+    parts = coalesce_short_parts(
+        parts_from_cuts(cuts, duration_sec),
+        min_part_sec=min_part_sec,
+    )
+    # Prefer original pause metadata when a coalesced boundary still matches a cut.
+    by_t = {round(c.t, 3): asdict(c) for c in cuts}
+    cuts_out: list[dict[str, Any]] = []
+    for i in range(len(parts) - 1):
+        t = round(float(parts[i]["end"]), 3)
+        if t in by_t:
+            cuts_out.append(by_t[t])
+        else:
+            cuts_out.append(
+                {
+                    "t": t,
+                    "pause_start": t,
+                    "pause_end": t,
+                    "pause_duration": 0.0,
+                    "ideal_t": t,
+                    "offset_from_ideal": 0.0,
+                }
+            )
     durations = [p["duration_sec"] for p in parts]
     return {
         "schema_version": "1",
         "algorithm": "silero_pause_balanced",
         "duration_sec": round(duration_sec, 3),
-        "n_parts": n_parts,
+        "n_parts": len(parts),
         "constraints": {
             "min_part_sec": min_part_sec,
             "max_part_sec": max_part_sec,
@@ -205,7 +289,7 @@ def plan(
         "top_pauses": [
             asdict(p) for p in sorted(pauses, key=lambda x: x.duration, reverse=True)[:15]
         ],
-        "cuts": [asdict(c) for c in cuts],
+        "cuts": cuts_out,
         "parts": parts,
         "metrics": {
             "part_durations_sec": durations,
@@ -213,5 +297,6 @@ def plan(
             "max_part_sec": max(durations) if durations else 0.0,
             "spread_sec": round(max(durations) - min(durations), 3) if durations else 0.0,
             "all_in_range": all(min_part_sec <= d <= max_part_sec for d in durations),
+            "requested_n_parts": n_parts,
         },
     }

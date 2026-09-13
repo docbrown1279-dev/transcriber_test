@@ -1,4 +1,4 @@
-/** Demo UI: URL stub hint, progress polling, dictionary/summary stubs, chapter edit chrome. */
+/** Demo UI: URL stub hint, staging preload, progress polling, dictionary/summary stubs, chapter edit chrome. */
 (function () {
   const urlInput = document.getElementById("url-input");
   const urlHint = document.getElementById("url-hint");
@@ -21,12 +21,152 @@
     });
   }
 
+  const uploadForm = document.getElementById("upload-form");
+  const audioInput = document.getElementById("audio-input");
+  const stagingIdInput = document.getElementById("staging-id");
+  const stagingStatus = document.getElementById("staging-status");
+  const stagingTrack = document.getElementById("staging-track");
+  const stagingBar = document.getElementById("staging-bar");
+  const uploadSubmit = document.getElementById("upload-submit");
+  let stagingXhr = null;
+  let stagingReady = false;
+
+  function setStagingUi(pct, text) {
+    if (stagingStatus) stagingStatus.textContent = text || "";
+    if (stagingTrack) {
+      if (pct == null) {
+        stagingTrack.classList.add("hidden");
+      } else {
+        stagingTrack.classList.remove("hidden");
+        if (stagingBar) stagingBar.style.width = Math.max(0, Math.min(100, pct)) + "%";
+      }
+    }
+  }
+
+  function clearStagingToken() {
+    stagingReady = false;
+    if (stagingIdInput) stagingIdInput.value = "";
+    if (audioInput) audioInput.required = true;
+  }
+
+  function abortStaging() {
+    if (stagingXhr) {
+      try {
+        stagingXhr.abort();
+      } catch (_) {}
+      stagingXhr = null;
+    }
+  }
+
+  function preloadFile(file) {
+    abortStaging();
+    const prevId = stagingIdInput && stagingIdInput.value;
+    clearStagingToken();
+    if (prevId) {
+      fetch("/staging/" + prevId, { method: "DELETE" }).catch(() => {});
+    }
+    if (!file) {
+      setStagingUi(null, "");
+      return;
+    }
+    setStagingUi(0, "Загрузка файла на сервер…");
+    if (uploadSubmit) uploadSubmit.disabled = true;
+    const fd = new FormData();
+    fd.append("audio", file);
+    const xhr = new XMLHttpRequest();
+    stagingXhr = xhr;
+    xhr.open("POST", "/staging");
+    xhr.upload.onprogress = function (ev) {
+      if (!ev.lengthComputable) return;
+      const pct = Math.round((ev.loaded / ev.total) * 100);
+      setStagingUi(pct, "Загрузка файла… " + pct + "%");
+    };
+    xhr.onload = function () {
+      stagingXhr = null;
+      if (uploadSubmit) uploadSubmit.disabled = false;
+      let data = null;
+      try {
+        data = JSON.parse(xhr.responseText || "{}");
+      } catch (_) {}
+      if (xhr.status >= 200 && xhr.status < 300 && data && data.staging_id) {
+        if (stagingIdInput) stagingIdInput.value = data.staging_id;
+        stagingReady = true;
+        if (audioInput) audioInput.required = false;
+        setStagingUi(100, "Файл на сервере — можно запускать обработку.");
+        return;
+      }
+      clearStagingToken();
+      const msg =
+        (data && (data.detail || data.message || data.error)) ||
+        "Не удалось загрузить файл. Попробуйте ещё раз.";
+      setStagingUi(null, typeof msg === "string" ? msg : "Не удалось загрузить файл.");
+    };
+    xhr.onerror = function () {
+      stagingXhr = null;
+      if (uploadSubmit) uploadSubmit.disabled = false;
+      clearStagingToken();
+      setStagingUi(null, "Не удалось загрузить файл. Проверьте сеть.");
+    };
+    xhr.send(fd);
+  }
+
+  if (audioInput) {
+    audioInput.addEventListener("change", () => {
+      const file = audioInput.files && audioInput.files[0];
+      preloadFile(file || null);
+    });
+  }
+
+  if (uploadForm) {
+    uploadForm.addEventListener("submit", (ev) => {
+      if (!stagingReady || !stagingIdInput || !stagingIdInput.value) {
+        return; // native multipart submit
+      }
+      ev.preventDefault();
+      if (uploadSubmit) uploadSubmit.disabled = true;
+      setStagingUi(100, "Запускаем обработку…");
+      const fd = new FormData();
+      fd.append("staging_id", stagingIdInput.value);
+      const urlField = uploadForm.querySelector('input[name="url"]');
+      if (urlField && urlField.value) fd.append("url", urlField.value);
+      fetch("/jobs", {
+        method: "POST",
+        body: fd,
+        headers: { Accept: "application/json" },
+        redirect: "follow",
+      })
+        .then(async (r) => {
+          if (r.redirected && r.url) {
+            window.location.href = r.url;
+            return;
+          }
+          const data = await r.json().catch(() => ({}));
+          if (r.ok && data.job_id) {
+            let loc = "/jobs/" + data.job_id;
+            if (data.trim && data.trim.will_trim) loc += "?trim=1";
+            window.location.href = loc;
+            return;
+          }
+          if (uploadSubmit) uploadSubmit.disabled = false;
+          const msg =
+            (data && (data.detail || data.message || data.error)) ||
+            "Не удалось создать задачу.";
+          setStagingUi(null, typeof msg === "string" ? msg : "Не удалось создать задачу.");
+        })
+        .catch(() => {
+          if (uploadSubmit) uploadSubmit.disabled = false;
+          setStagingUi(null, "Не удалось создать задачу. Попробуйте ещё раз.");
+        });
+    });
+  }
+
   const progressRoot = document.querySelector("[data-progress]");
   if (progressRoot) {
     const jobId = progressRoot.getAttribute("data-job-id");
     const createdRaw = progressRoot.getAttribute("data-created");
     const bar = document.getElementById("progress-bar");
-    const pctEl = document.getElementById("progress-pct");
+    const statusEl = document.getElementById("status-label");
+    const etaEl = document.getElementById("eta-label");
     const errEl = document.getElementById("job-error");
     const block = document.getElementById("progress-block");
     const elapsedEl = document.getElementById("elapsed-label");
@@ -65,7 +205,12 @@
     function render(data) {
       const pct = Math.max(0, Math.min(100, Math.round(data.pct || 0)));
       if (bar) bar.style.width = pct + "%";
-      if (pctEl) pctEl.textContent = String(pct);
+      if (statusEl && data.status_label) {
+        statusEl.textContent = data.status_label;
+      }
+      if (etaEl) {
+        etaEl.textContent = data.eta_label || "";
+      }
       if (typeof data.elapsed_sec === "number" && elapsedEl) {
         elapsedEl.textContent = formatElapsed(data.elapsed_sec);
       }
@@ -112,19 +257,34 @@
   const resultRoot = document.querySelector("[data-result-poll]");
   if (resultRoot && resultRoot.getAttribute("data-state") === "running") {
     const jobId = resultRoot.getAttribute("data-job-id");
-    const pollMs = 4000;
+    const pollMs = 2000;
+    const liveStatus = document.getElementById("live-status-label");
+    const liveEta = document.getElementById("live-eta-label");
+    let speakersFinal = resultRoot.getAttribute("data-speakers-finalized") === "1";
     let timer = null;
+    let lastLabel = "";
     function tickResult() {
       fetch("/jobs/" + jobId + "/events")
         .then((r) => r.json())
         .then((data) => {
-          if (data.state === "done" || data.speakers_finalized === true) {
+          if (liveStatus && data.status_label) {
+            liveStatus.textContent = data.status_label;
+            lastLabel = data.status_label;
+          } else if (liveStatus && !lastLabel) {
+            liveStatus.textContent = "Обработка следующих фрагментов…";
+          }
+          if (liveEta) {
+            liveEta.textContent = data.eta_label || "";
+          }
+          const nowFinal = data.speakers_finalized === true;
+          if (data.state === "done" || (nowFinal && !speakersFinal)) {
             if (timer) window.clearInterval(timer);
             window.location.reload();
           }
         })
         .catch(() => {});
     }
+    tickResult();
     timer = window.setInterval(tickResult, pollMs);
   }
 

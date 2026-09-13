@@ -12,6 +12,7 @@
   data-result-poll="1"
   data-job-id="{{ job.job_id }}"
   data-state="{{ job.state }}"
+  data-speakers-finalized="{{ '1' if speakers_finalized else '0' }}"
   {% endif %}
 >
   <h1>{% if job_still_running %}Черновик оглавления{% else %}Распознавание готово{% endif %}</h1>
@@ -20,10 +21,12 @@
     {% if speaker_ids %} · {{ speaker_ids|length }} спикеров{% endif %}
   </p>
   {% if job_still_running or not speakers_finalized %}
-  <p class="warn">
+  <p class="warn" id="draft-banner">
     Обработка ещё идёт: оглавление уже можно смотреть.
     {% if not speakers_finalized %}Имена и метки спикеров черновые — правка спикеров будет доступна после уточнения.{% endif %}
   </p>
+  <p class="status-line" id="live-status-label">Уточняем следующие фрагменты…</p>
+  <p class="meta" id="live-eta-label"></p>
   {% endif %}
   {% if restore_msg == "1" %}
   <p class="hint">Транскрипт и имена спикеров возвращены к исходному распознаванию.</p>

@@ -80,6 +80,8 @@ class DiarizationMergeConfig(BaseModel):
 
     same_speaker_gap_sec: float = Field(default=0.3, ge=0.0)
     absorb_turn_shorter_than_sec: float = Field(default=1.0, ge=0.0)
+    # EOS: SPEAKER_* with union speech below this → nearest remaining speaker (0 = off).
+    min_speaker_speech_sec: float = Field(default=2.0, ge=0.0)
     min_hole_sec: float = Field(default=0.5, ge=0.0)
     vad_premerge_gap_sec: float = Field(default=0.3, ge=0.0)
 
@@ -268,16 +270,27 @@ class UiConfig(BaseModel):
     summary_max_calls: int = Field(default=2, ge=0)
 
 
+class TtftProgressConfig(BaseModel):
+    """Доли времени для ETA-индикатора TTFT (сумма diar+asr ≤ 1; остаток — pack/embed)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    prep_fraction: float = Field(default=0.05, gt=0.0, lt=1.0)
+    diar_fraction: float = Field(default=0.60, gt=0.0, lt=1.0)
+    asr_fraction: float = Field(default=0.30, gt=0.0, lt=1.0)
+
+
 class TtftSplitConfig(BaseModel):
     """Pause-cut part lengths for TTFT file-split (seconds; no literals in src)."""
 
     model_config = ConfigDict(extra="forbid")
 
-    min_part_sec: float = Field(default=300.0, gt=0.0)
-    max_part_sec: float = Field(default=300.0, gt=0.0)
+    min_part_sec: float = Field(default=240.0, gt=0.0)
+    max_part_sec: float = Field(default=360.0, gt=0.0)
     target_part_sec: float = Field(default=300.0, gt=0.0)
     min_pause_sec: float = Field(default=0.8, ge=0.0)
     search_half_width_sec: float = Field(default=90.0, gt=0.0)
+    progress: TtftProgressConfig = Field(default_factory=TtftProgressConfig)
 
 
 class PipelineConfig(BaseModel):

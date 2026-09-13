@@ -23,7 +23,12 @@ from transcriber.chunking.packing_c import (
     pack_speaker_pieces,
 )
 from transcriber.config.schema import AppConfig
-from transcriber.diarization.eos_refine import refine_window_speakers_v1
+from transcriber.diarization.eos_refine import (
+    absorb_micro_speaker_map,
+    apply_speaker_id_map,
+    centroids_from_windows,
+    refine_window_speakers_v1,
+)
 from transcriber.diarization.gallery import SpeakerGallery, ahc_labels
 from transcriber.diarization.wespeaker import (
     WeSpeakerDiarizer,
@@ -50,6 +55,7 @@ from transcriber.models.artifacts import (
 )
 from transcriber.pipeline.events import StageEvent
 from transcriber.pipeline.pause_cut import plan, propose_n_parts
+from transcriber.pipeline.ttft_progress import TtftEtaClock, format_eta_ru
 from transcriber.registry import build
 
 logger = logging.getLogger(__name__)
@@ -66,6 +72,48 @@ def should_run_ttft_split(cfg: AppConfig, duration_sec: float) -> bool:
     if not cfg.pipeline.ttft_split:
         return False
     return duration_sec >= 2.0 * cfg.pipeline.ttft.min_part_sec
+
+
+def _emit_status(
+    events: EventSink | None,
+    clock: TtftEtaClock,
+    *,
+    stage: str,
+    phase: str,
+    status: str = "running",
+    runtime_sec: float | None = None,
+) -> None:
+    """Human-readable status: Russian label + ETA (pct is soft only)."""
+    clock.phase = phase
+    # Close prep stages so polling does not stick on «Подготовка…».
+    if status == "running" and phase != "prep":
+        for stale in ("normalize", "vad"):
+            if stale == stage:
+                continue
+            _emit(
+                events,
+                StageEvent(stage=stale, status="done", pct=100, message=None),
+            )
+    label = clock.label_ru(phase)
+    eta = clock.eta_for_phase(phase) if status == "running" else None
+    _emit(
+        events,
+        StageEvent(
+            stage=stage,
+            status=status,
+            pct=clock.overall_pct() if status == "running" else 100,
+            message=label,
+            runtime_sec=runtime_sec,
+            eta_sec=None if eta is None else round(float(eta), 1),
+        ),
+    )
+    if status == "running" and eta is not None:
+        logger.info(
+            "ttft status=%s eta=%.0fs (%s)",
+            label,
+            eta,
+            format_eta_ru(eta) or "",
+        )
 
 
 def _emit(events: EventSink | None, event: StageEvent) -> None:
@@ -375,7 +423,8 @@ def run_ttft_split(
         source_path = candidates[0]
 
     # --- normalize (file_max_db) ---
-    _emit(events, StageEvent(stage="normalize", status="running", pct=0))
+    clock = TtftEtaClock(cfg=cfg.pipeline.ttft.progress)
+    _emit_status(events, clock, stage="normalize", phase="prep")
     t0 = monotonic()
     normalizer = FfmpegAudioNormalizer()
     audio_art = normalizer.normalize(
@@ -386,41 +435,22 @@ def run_ttft_split(
         file_gain_max_db=cfg.audio.gain.file_max_db,
     )
     executed["normalize"] = job_path / "audio.json"
-    _emit(
-        events,
-        StageEvent(
-            stage="normalize",
-            status="done",
-            pct=100,
-            runtime_sec=round(monotonic() - t0, 3),
-            message=f"file_max_db capped={audio_art.loudness.capped}",
-        ),
-    )
     if until == "normalize":
         return executed
 
     duration_sec = float(sf.info(str(job_path / "normalized.wav")).duration)
 
     # --- VAD once ---
-    _emit(events, StageEvent(stage="vad", status="running", pct=0))
-    t0 = monotonic()
+    _emit_status(events, clock, stage="vad", phase="prep")
+    detector = build("vad", cfg.vad.engine, cfg.app.profile)
     vad_name = audio_art.vad_input.path if audio_art.vad_input.path else "vad_input.wav"
     vad_wav = job_path / vad_name
     if not vad_wav.is_file():
         vad_wav = job_path / "normalized.wav"
-    detector = build("vad", cfg.vad.engine, cfg.app.profile)
     detector.detect(vad_wav, cfg.vad, job_id=job_id)
     speech = load_artifact(job_path / "speech.json", SpeechArtifact)
     executed["vad"] = job_path / "speech.json"
-    _emit(
-        events,
-        StageEvent(
-            stage="vad",
-            status="done",
-            pct=100,
-            runtime_sec=round(monotonic() - t0, 3),
-        ),
-    )
+    prep_wall = monotonic() - t0
     if until == "vad":
         return executed
 
@@ -443,10 +473,13 @@ def run_ttft_split(
         search_half_width=ttft.search_half_width_sec,
     )
     _atomic_json(job_path / CUT_PLAN_JSON, cut_plan)
+    clock.remember_prep(prep_wall, len(cut_plan["parts"]))
     logger.info(
-        "ttft cut_plan n_parts=%s durations=%s job_id=%s",
+        "ttft cut_plan n_parts=%s durations=%s prep_wall=%.1fs total_est=%.0fs job_id=%s",
         n_parts,
         cut_plan["metrics"]["part_durations_sec"],
+        prep_wall,
+        clock.total_est_sec,
         job_id,
     )
 
@@ -504,7 +537,7 @@ def run_ttft_split(
             except Exception as exc:
                 logger.warning("ttft title failed slot=%s err=%s", slot, exc)
 
-    _emit(events, StageEvent(stage="diarize", status="running", pct=0))
+    _emit_status(events, clock, stage="diarize", phase="diar")
     diar_t0 = monotonic()
     asr_wall = 0.0
 
@@ -512,10 +545,13 @@ def run_ttft_split(
         part_id = str(part["id"])
         part_start = float(part["start"])
         part_end = float(part["end"])
+        part_index = int(part["index"])
         is_last = part is cut_plan["parts"][-1]
         part_dir = parts_dir / part_id
         part_dir.mkdir(parents=True, exist_ok=True)
         part_wav = part_dir / "part.wav"
+        clock.begin_part(part_index, "diar")
+        _emit_status(events, clock, stage="diarize", phase="diar")
         _slice_wav(full_wav, part_wav, part_start, part_end)
         part_speech = _speech_for_part(
             speech, part_start=part_start, part_end=part_end, job_id=f"{job_id}:{part_id}"
@@ -639,19 +675,19 @@ def run_ttft_split(
 
         if until == "diarize" and is_last:
             executed["diarize"] = job_path / "turns.json"
-            _emit(
+            _emit_status(
                 events,
-                StageEvent(
-                    stage="diarize",
-                    status="done",
-                    pct=100,
-                    runtime_sec=round(monotonic() - diar_t0, 3),
-                ),
+                clock,
+                stage="diarize",
+                phase="diar",
+                status="done",
+                runtime_sec=round(monotonic() - diar_t0, 3),
             )
             return executed
 
         # --- ASR on part (relative turns on part wav) ---
-        _emit(events, StageEvent(stage="asr", status="running", pct=10))
+        clock.begin_part(part_index, "asr")
+        _emit_status(events, clock, stage="asr", phase="asr")
         t_asr = monotonic()
         # Relative turns for ASR (ids local)
         rel_turn_items = [
@@ -711,6 +747,8 @@ def run_ttft_split(
         part_segs = fixed_segs
 
         # --- packing (all segments so far; absorb only on last part / EOS) ---
+        clock.begin_part(part_index, "pack")
+        _emit_status(events, clock, stage="chunk", phase="pack")
         all_segments.extend(part_segs)
         publish_chapters = _buffer_to_chapters(
             all_segments, embedder, cfg, apply_absorb=is_last
@@ -749,35 +787,37 @@ def run_ttft_split(
                 runtime_sec=monotonic() - t_run0,
             )
 
-        # Early publish after part1
-        if part["index"] == 0 and publish_chapters and not early_published:
+        # Early publish on first part that actually has chapters (skip empty crumbs).
+        if publish_chapters and not early_published:
             _patch_job_flags(job_path, early_ready=True, speakers_finalized=False)
             _atomic_json(
                 job_path / TTFT_MARK_JSON,
                 {
                     "ttft_first_chapter_sec": round(monotonic() - t_run0, 3),
                     "part_id": part_id,
+                    "part_index": part_index,
                     "n_chapters": len(publish_chapters),
                 },
             )
             early_published = True
-            _emit(
+            _emit_status(
                 events,
-                StageEvent(
-                    stage="chunk",
-                    status="done",
-                    pct=100,
-                    message="ttft_part1",
-                    runtime_sec=round(monotonic() - t_run0, 3),
-                ),
+                clock,
+                stage="chunk",
+                phase="pack",
+                status="done",
+                runtime_sec=round(monotonic() - t_run0, 3),
             )
+            # Keep UI alive: announce next part immediately after early TOC.
             logger.info(
-                "ttft early_ready job_id=%s chapters=%s wall=%.1f",
+                "ttft early_ready job_id=%s part=%s chapters=%s wall=%.1f",
                 job_id,
+                part_id,
                 len(publish_chapters),
                 monotonic() - t_run0,
             )
             if client is not None and len(publish_chapters) > 1:
+                _emit_status(events, clock, stage="titles", phase="titles")
                 _maybe_title(publish_chapters, close_all=False)
                 for i, ch in enumerate(publish_chapters):
                     if i in titled_slots:
@@ -790,11 +830,16 @@ def run_ttft_split(
                     embedder,
                     runtime_sec=monotonic() - t_run0,
                 )
+            if not is_last:
+                clock.begin_part(part_index + 1, "diar")
+                _emit_status(events, clock, stage="diarize", phase="diar")
         elif early_published and client is not None and not is_last:
+            _emit_status(events, clock, stage="titles", phase="titles")
             _maybe_title(publish_chapters, close_all=False)
 
         executed["asr"] = job_path / "transcript.json"
         executed["chunk"] = job_path / "chapters.json"
+        clock.mark_part_done(part_index)
         logger.info(
             "ttft part done id=%s turns=%s segs=%s chapters=%s",
             part_id,
@@ -803,15 +848,13 @@ def run_ttft_split(
             len(publish_chapters),
         )
 
-    _emit(
+    _emit_status(
         events,
-        StageEvent(
-            stage="diarize",
-            status="done",
-            pct=100,
-            runtime_sec=round(monotonic() - diar_t0, 3),
-            message="ttft_method_b",
-        ),
+        clock,
+        stage="diarize",
+        phase="diar",
+        status="done",
+        runtime_sec=round(monotonic() - diar_t0, 3),
     )
     executed["diarize"] = job_path / "turns.json"
     if until == "diarize":
@@ -820,6 +863,8 @@ def run_ttft_split(
         return executed
 
     # --- EOS V1 ---
+    clock.phase = "eos"
+    _emit_status(events, clock, stage="diarize", phase="eos")
     win_segs, win_emb, mid_spk = _load_windows(job_path)
     if win_segs:
         final_window_spk, eos_summary = refine_window_speakers_v1(
@@ -829,7 +874,6 @@ def run_ttft_split(
             distance_threshold=threshold,
             published_order=published_order,
         )
-        _atomic_json(job_path / "eos_remap.json", eos_summary)
         eos_turns = turns_from_window_speakers(
             win_segs,
             final_window_spk,
@@ -839,9 +883,39 @@ def run_ttft_split(
             runtime_sec=0.0,
             compact_renumber=False,
         )
-        dump_artifact(eos_turns, job_path / "turns.json")
+        # UI speech metric = transcript segment duration sum (same as result page).
         transcript = load_artifact(job_path / "transcript.json", TranscriptArtifact)
         transcript = _apply_speaker_map_to_transcript(transcript, eos_turns.turns)
+        ui_speech: dict[str, float] = {}
+        for seg in transcript.segments:
+            ui_speech[seg.speaker] = ui_speech.get(seg.speaker, 0.0) + (
+                float(seg.end) - float(seg.start)
+            )
+        cents = centroids_from_windows(win_emb, final_window_spk)
+        id_remap, micro = absorb_micro_speaker_map(
+            ui_speech,
+            cents,
+            min_speech_sec=float(cfg.diarization.merge.min_speaker_speech_sec),
+        )
+        eos_summary["micro_absorb"] = micro
+        if micro.get("absorbed"):
+            final_window_spk = apply_speaker_id_map(final_window_spk, id_remap)
+            eos_turns = turns_from_window_speakers(
+                win_segs,
+                final_window_spk,
+                cfg.diarization,
+                job_id=job_id,
+                total_duration=duration_sec,
+                runtime_sec=0.0,
+                compact_renumber=False,
+            )
+            transcript = _apply_speaker_map_to_transcript(
+                load_artifact(job_path / "transcript.json", TranscriptArtifact),
+                eos_turns.turns,
+            )
+            eos_summary["final_speakers"] = sorted(set(final_window_spk))
+        _atomic_json(job_path / "eos_remap.json", eos_summary)
+        dump_artifact(eos_turns, job_path / "turns.json")
         dump_artifact(transcript, job_path / "transcript.json")
         if (job_path / "chapters.json").is_file():
             chapters_art = load_artifact(job_path / "chapters.json", ChaptersArtifact)
@@ -863,7 +937,7 @@ def run_ttft_split(
             if i in titled_slots:
                 final_chapters[i] = ch.model_copy(update={"title": titled_slots[i]})
         if client is not None and until in {"titles", "insights_extract", "report"}:
-            _emit(events, StageEvent(stage="titles", status="running", pct=0))
+            _emit_status(events, clock, stage="titles", phase="titles")
             _maybe_title(final_chapters, close_all=True)
             for i, ch in enumerate(final_chapters):
                 if i in titled_slots:
@@ -871,9 +945,13 @@ def run_ttft_split(
             for i, ch in enumerate(final_chapters):
                 if not ch.title.strip():
                     final_chapters[i] = ch.model_copy(update={"title": f"Глава {i + 1}"})
-            _emit(
+            clock.phase = "done"
+            _emit_status(
                 events,
-                StageEvent(stage="titles", status="done", pct=100, message="ttft_eos"),
+                clock,
+                stage="titles",
+                phase="done",
+                status="done",
             )
             executed["titles"] = job_path / "chapters.json"
         _write_chapters(

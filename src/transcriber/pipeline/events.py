@@ -13,3 +13,5 @@ class StageEvent(BaseModel):
     pct: int = Field(ge=0, le=100)
     message: str | None = None
     runtime_sec: float | None = None
+    # Optional ETA for the *current* step (seconds); UI shows Russian label.
+    eta_sec: float | None = Field(default=None, ge=0.0)

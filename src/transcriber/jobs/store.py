@@ -118,6 +118,7 @@ def append_stage_event(
             stage_info.pct = event.pct
             stage_info.runtime_sec = event.runtime_sec
             stage_info.message = event.message
+            stage_info.eta_sec = event.eta_sec
             updated = True
             break
 
@@ -129,6 +130,7 @@ def append_stage_event(
                 pct=event.pct,
                 runtime_sec=event.runtime_sec,
                 message=event.message,
+                eta_sec=event.eta_sec,
             )
         )
 
@@ -177,3 +179,46 @@ def iter_jobs(storage_root: Path | str) -> Iterator[JobArtifact]:
             yield get_job(job_id, storage_root)
         except Exception:
             logger.warning("skipping unreadable job.json for job_id=%s", job_id)
+
+
+# Shown when a running job is orphaned by process/container restart.
+_ORPHAN_RUNNING_ERROR = (
+    "Обработка прервана после перезапуска сервера. "
+    "Если оглавление уже появилось — черновик сохранён; загрузите файл снова для полного прогона."
+)
+
+
+def recover_orphaned_running_jobs(storage_root: Path | str) -> list[str]:
+    """Mark leftover ``running`` jobs as failed (no live worker after restart).
+
+    Docker rebuild / crash leaves ``state=running`` on disk; ``max_concurrent_jobs``
+    then blocks every new upload («фантомная задача»).
+    """
+    root = Path(storage_root)
+    recovered: list[str] = []
+    for job in list(iter_jobs(root)):
+        if job.state != "running":
+            continue
+        update_job_state(
+            job.job_id,
+            "failed",
+            root,
+            error=_ORPHAN_RUNNING_ERROR,
+        )
+        append_stage_event(
+            job.job_id,
+            StageEvent(
+                stage="worker",
+                status="failed",
+                pct=0,
+                message=_ORPHAN_RUNNING_ERROR,
+            ),
+            root,
+        )
+        recovered.append(job.job_id)
+        logger.warning(
+            "orphaned running job recovered job_id=%s early_ready=%s",
+            job.job_id,
+            job.early_ready,
+        )
+    return recovered
