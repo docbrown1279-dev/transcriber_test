@@ -73,3 +73,4 @@
 - 2026-09-12T18:45:00+03:00 D5.TTFT Coder READY_FOR_TEST: ttft_split product path (method B mid, V1 EOS, early TOC, speaker lock); lint/G5 for Tester
 - 2026-09-12T19:00:00+03:00 D5.TTFT Tester Phase0 reference_full15 (PHASE0_BLOCKED shell EAGAIN — rebuild script pending)
 - 2026-09-12T20:34:00+03:00 D5.TTFT TEST_PASS_WITH_WARNINGS: TTFT=169.2s RSS=3.6GiB speakers≥3; reports=agent_docs/reports/d5_ttft_split/product_gate.md
+- 2026-09-13T10:15:00+03:00 D5.TTFT + diar tracks CLOSED; UI status poll lag → backlog ticket_d5_ui_upload_progress §C; merge cursor/d5-ttft-split → main
